@@ -513,11 +513,17 @@ $(document).on('change', '#ingresoId', function(event) {
 
 function CierraModal()
 {
-        alert("A cerrar");
+
             $('#usuariosModal').modal('hide');
-      // 	 $('#usuariosModal').modal(hide);
-           alert("Cerrado");
 }
+
+function CierraModalActualiza()
+{
+        
+            $('#modalActualizaAdmision').modal('hide');
+        
+}
+
 
 function AUsuario()
 {
@@ -1014,15 +1020,19 @@ $('#tablaDatos tbody td').click(function(){
        			    $('#busDocumentoSel').val(Usuarios.documento);
        			    $('#busServicio2').val(Usuarios.servicioNombreIng);
    			    $('#dependenciasIngreso').val(Usuarios.dependenciasIngreso);
-    			    $('#busEspecialidad').val(Usuarios.espMedico);
-    			    $('#dxIngreso').val(Usuarios.dxIngreso);
-    			    $('#medicoIngreso').val(Usuarios.medicoIngresoP);
-    			    $('#viasIngreso').val(Usuarios.viasIngreso);
-    			    $('#causasExterna').val(Usuarios.causasExterna);
-    			    $('#regimenes').val(Usuarios.regimenes);
-    			    $('#tiposCotizante').val(Usuarios.cotizante);
-    			    $('#remitido').val(Usuarios.remitido);
-    			    $('#numManilla').val(Usuarios.numManilla);
+    			    $('#busEspecialidadP').val(Usuarios.espMedico);
+    			    $('#dxIngresoP').val(Usuarios.diagMedico);
+
+    			    $('#viasIngresoT').val(Usuarios.viasIngreso);
+    			    $('#causasExternaP').val(Usuarios.causasExterna);
+    			    $('#regimenesP').val(Usuarios.regimenes);
+    			    $('#tiposCotizanteP').val(Usuarios.cotizante);
+    			    $('#remitidoP').val(Usuarios.remitido);
+    			    $('#numManillaP').val(Usuarios.numManilla);
+
+
+    			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 		 	   
+
 
  
   		   $('#modalActualizaAdmision').modal('show');	

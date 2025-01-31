@@ -333,8 +333,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                             <input type="text" class="form-control" id="busDocumentoSel"  name="busDocumentoSel" disabled="disabled">
                                         </div>
                                         <div class="col">
-                                            <label for="dxIngreso" class="col-sm-6 control-label">Diagnosticos:</label>
-                                            <select class="form-select  h-40 w-100" aria-label="" id="dxIngreso" name="dxIngreso" required>
+                                            <label for="dxIngresoT" class="col-sm-6 control-label">Diagnosticos:</label>
+                                            <select class="form-select  h-40 w-100" aria-label="" id="dxIngresoT" name="dxIngresoT" required>
                                                 {% for diagnosticos in Diagnosticos %}
                                                 <option value="{{diagnosticos.id}}"> {{diagnosticos.nombre}}
                                                 </option>
@@ -347,8 +347,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     <div class="form-row">
 
                                         <div class="col">
-                                            <label for="busEspecialidad"  class="col-sm-6 control-label">Especialidad: </label>
-                                            <select class="form-select  h-40 w-10" aria-label=""  id="busEspecialidad" name="busEspecialidad"  required>
+                                            <label for="busEspecialidadP"  class="col-sm-6 control-label">Especialidad: </label>
+                                            <select class="form-select  h-40 w-10" aria-label=""  id="busEspecialidadP" name="busEspecialidadP"  required>
                                                 {% for especialidades in Especialidades %}
                                                 <option value="{{especialidades.id}}">
                                                     {{especialidades.nombre}}
@@ -359,16 +359,16 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                         <div class="col">
 
-                                            <label for="medicoIngreso" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico: nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label=""  id="medicoIngreso" name="medicoIngreso" required>
+                                            <label for="medicoIngresoP" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico: nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select  h-40 w-100" aria-label=""  id="medicoIngresoP" name="medicoIngresoP" required>
                                                 {% for medicos in Medicos %}
                                                 <option value="{{medicos.id}}"> {{medicos.nombre}}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label for="viasIngreso"  class="col-sm-6 control-label">ViasDeIngreso:</label>
-                                            <select class="form-select  h-40 w-150" aria-label=""   id="viasIngreso" name="viasIngreso" required>
+                                            <label for="viasIngresoP"  class="col-sm-6 control-label">ViasDeIngreso:</label>
+                                            <select class="form-select  h-40 w-150" aria-label=""   id="viasIngresoP" name="viasIngresoP" required>
                                                 {% for viasIngreso in ViasIngreso %}
                                                 <option value="{{viasIngreso.id}}"> {{viasIngreso.nombre}}
                                                 </option>
@@ -379,8 +379,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                     <div class="form-row">
                                         <div class="col">
-                                            <label for="causasExterna"  class="col-sm-6 control-label">CausaExterna:</label>
-                                            <select class="form-select  h-40 w-150" aria-label=""   id="causasExterna" name="causasExterna"
+                                            <label for="causasExternaP"  class="col-sm-6 control-label">CausaExterna:</label>
+                                            <select class="form-select  h-40 w-150" aria-label=""   id="causasExternaP" name="causasExternaP"
                                                     required>
                                                 {% for causasExterna in CausasExterna %}
                                                 <option value="{{causasExterna.id}}"> {{causasExterna.nombre}}
@@ -389,16 +389,16 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label for="regimenes" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Regimen:   &nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label="" id="regimenes"  name="regimenes" required>
+                                            <label for="regimenesP" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Regimen:   &nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select  h-40 w-100" aria-label="" id="regimenesP"  name="regimenesP" required>
                                                 {% for regimenes in Regimenes %}
                                                 <option value="{{regimenes.id}}"> {{regimenes.nombre}}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label for="tiposCotizante" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipos Cotizante: &nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label=""  id="tiposCotizante" name="tiposCotizante" required>
+                                            <label for="tiposCotizanteP" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Tipos Cotizante: &nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select  h-40 w-100" aria-label=""  id="tiposCotizanteP" name="tiposCotizanteP" required>
                                                 {% for tiposCotizante in TiposCotizante %}
                                                 <option value="{{tiposCotizante.id}}">
                                                     {{tiposCotizante.nombre}}
@@ -459,11 +459,10 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                 </div>
                                 <div class="modal-footer">
-                                                                          <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                                onclick="CierraModal()">Close
+                                     <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CierraModalActualiza()">Close
                                         </button>
                                         <input type="button" class="btn btn-primary" value="save" onclick="actualizaAdmision()">
-                                 <!--    </div>  -->
+
 
                                </div>
                             </div>

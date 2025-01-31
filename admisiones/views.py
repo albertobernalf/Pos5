@@ -4335,14 +4335,14 @@ def UsuariosModal(request):
 
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
         curt = miConexiont.cursor()
-        comando = 'SELECT usu.nombre, usu.documento, usu.genero, usu."fechaNacio" fechaNacio, usu.pais_id,  usu.departamentos_id, usu.ciudades_id, usu.direccion, usu.telefono, usu.contacto, usu."centrosC_id", usu."tipoDoc_id", usu."tiposUsuario_id", usu.municipio_id municipio, usu.localidad_id localidad, usu."estadoCivil_id" estadoCivil , usu.ocupacion_id ocupacion, correo correo  FROM usuarios_usuarios usu WHERE usu."tipoDoc_id" = ' + "'"  + str(tipoDoc) + "'" + ' AND usu.documento = ' + "'" + str(documento) + "'"
+        comando = 'SELECT usu.nombre, usu.documento, usu.genero, usu."fechaNacio" fechaNacio, usu.pais_id pais_id,  usu.departamentos_id, usu.ciudades_id, usu.direccion, usu.telefono, usu.contacto, usu."centrosC_id", usu."tipoDoc_id", usu."tiposUsuario_id", usu.municipio_id municipio, usu.localidad_id localidad, usu."estadoCivil_id" estadoCivil , usu.ocupacion_id ocupacion, correo correo  FROM usuarios_usuarios usu WHERE usu."tipoDoc_id" = ' + "'"  + str(tipoDoc) + "'" + ' AND usu.documento = ' + "'" + str(documento) + "'"
         print(comando)
         curt.execute(comando)
 
         Usuarios = {}
 
         for nombre, documento, genero, fechaNacio, pais_id,  departamentos_id, ciudades_id, direccion, telefono, contacto, centrosc_id, tipoDoc_id, tiposUsuario_id, municipio, localidad, estadoCivil, ocupacion, correo  in curt.fetchall():
-            Usuarios = {'nombre': nombre, 'documento': documento, 'genero': genero, 'fechaNacio': fechaNacio , 'pais' : pais,  'departamento' : departamentos_id, 'ciudad': ciudades_id,  'direccion':  direccion, 'telefono' :telefono, 'contacto': contacto, 'centrosc_id':centrosc_id, 'tipoDoc_id':tipoDoc_id,'tiposUsuario_id':tiposUsuario_id,
+            Usuarios = {'nombre': nombre, 'documento': documento, 'genero': genero, 'fechaNacio': fechaNacio , 'pais_id' : pais_id,  'departamento' : departamentos_id, 'ciudad': ciudades_id,  'direccion':  direccion, 'telefono' :telefono, 'contacto': contacto, 'centrosc_id':centrosc_id, 'tipoDoc_id':tipoDoc_id,'tiposUsuario_id':tiposUsuario_id,
                         'municipio':municipio, 'localidad':localidad, 'estadoCivil':estadoCivil, 'ocupacion':ocupacion,'correo':correo}
 
         miConexiont.close()
@@ -4688,7 +4688,7 @@ def guardaCambioServicio(request):
     servicioFin = request.POST["servicioCambio"]
     subServicioFin = request.POST["subServicioCambio"]
     dependenciaFin = request.POST["dependenciaCambio"]
-    fechaOcupacion = datetime.now()
+    fechaOcupacion = datetime.datetime.now()
     fechaRegistro= fechaOcupacion
 
 
@@ -5054,7 +5054,7 @@ def GuardaAbonosAdmision(request):
     ## falta usuarioRegistro_id
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") + "');"
+    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") + "',0,0,0);"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
