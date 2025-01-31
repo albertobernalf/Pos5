@@ -1,8 +1,6 @@
 var $ = jQuery;
 console.log('Hola Alberto Hi!')
-
 var datavta;
-
 
 var x=0
 var  folio_final =0
@@ -14,20 +12,16 @@ console.log(form)
 console.log(form2)
 
 
-
-
 $(document).ready(function () {
-
-
 
 	  var data =  {}   ;
 
           $('input[name="ingresoId"]').prop('checked', true);
 
-	var valor = $('input[name="ingresoId"]:checked').val();
-	var sede = document.getElementById("sede").value;
+         var valor = $('input[name="ingresoId"]:checked').val();
+	 var sede = document.getElementById("sede").value;
 
-     document.getElementById("ingresoIdGlobal").value = valor;
+	 document.getElementById("ingresoIdGlobal").value = valor;
 	 document.getElementById("ingresoId22").value = valor;
 	 document.getElementById("ingresoId").value = valor;
 	 document.getElementById("ingresoId1").value = valor;
@@ -1015,14 +1009,14 @@ $('#tablaDatos tbody td').click(function(){
       	       'consec':consec,
       	       'sede':sede},
 		success: function (Usuarios) {
-			 alert("entre DATOS MODAL de Triage y el  nombre es = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
+			 alert("entre DATOS MODAL  nombre es = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
 		            $('#tipoDoc').val(Usuarios.tipoDoc);
        			    $('#busDocumentoSel').val(Usuarios.documento);
        			    $('#busServicio2').val(Usuarios.servicioNombreIng);
    			    $('#dependenciasIngreso').val(Usuarios.dependenciasIngreso);
     			    $('#busEspecialidad').val(Usuarios.espMedico);
     			    $('#dxIngreso').val(Usuarios.dxIngreso);
-    			    $('#medicoIngreso').val(Usuarios.medicoIngreso);
+    			    $('#medicoIngreso').val(Usuarios.medicoIngresoP);
     			    $('#viasIngreso').val(Usuarios.viasIngreso);
     			    $('#causasExterna').val(Usuarios.causasExterna);
     			    $('#regimenes').val(Usuarios.regimenes);
@@ -1156,8 +1150,12 @@ $(document).on('change', '#busEspecialidad', function(event) {
 
        var Esp =   $(this).val()
 
+	alert("especialidad Nro = " + Esp);
+
+
         var Sede =  document.getElementById("Sede").value;
        // var Sede1 = document.getElementById("FormBuscar").elements["Sede"];
+	alert("Sede = " + Sede);
 
 
 
@@ -1174,10 +1172,10 @@ $(document).on('change', '#busEspecialidad', function(event) {
 	  		  var dato = JSON.parse(respuesta);
 
 
-                     const $id2 = document.querySelector("#medicoIngreso");
+                     const $id2 = document.querySelector("#medicoIngresoP");
 
 
- 	      		     $("#medicoIngreso").empty();
+ 	      		     $("#medicoIngresoP").empty();
 
 
 	                 $.each(dato, function(key,value) {
@@ -1622,6 +1620,7 @@ function abrir_modal(url)
 
 function cerrar_modal()
         {
+      
         $('#modalActualizaAdmision').modal('hide');
 return false;
         }
@@ -1648,11 +1647,13 @@ function findOneAdmision(tipoDoc,Documento,consec, sede)
 
 			 alert("entre DATOS MODAL de admision y el nombre es = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
 
-	            $('#tipoDoc').val(Usuarios.tipoDoc_id);
+	           		
 				$('#documento').val(Usuarios.documento);
-
+				$('#busServicio2').val(Usuarios.servicioNombreIng);
+				$('#busSubServicio2').val(Usuarios.busSubServicio2);
+				$('#dependenciasIngreso').val(Usuarios.dependenciasIngreso);
+				$('#tipoDoc').val(Usuarios.tipoDoc);
 				$('#viasIngreso').val(Usuarios.viasIngreso);
-
 				$('#causasExterna').val(Usuarios.causasExterna);
 				$('#regimenes').val(Usuarios.regimenes);
 				$('#cotizante').val(Usuarios.cotizante);

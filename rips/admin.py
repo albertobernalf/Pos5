@@ -23,10 +23,10 @@ class ripsDetalleAdmin(admin.ModelAdmin):
 
 @admin.register(RipsTransaccion)
 class ripsTransaccionAdmin(admin.ModelAdmin):
-   list_display = ("id", "numDocumentoIdObligado", "numFactura")
-   search_fields =   ("id", "numDocumentoIdObligado", "numFactura")
+   list_display = ("id", "numDocumentoIdObligado")
+   search_fields =   ("id", "numDocumentoIdObligado")
    # Filtrar
-   list_filter =  ("id", "numDocumentoIdObligado", "numFactura")
+   list_filter =  ("id", "numDocumentoIdObligado")
 
 @admin.register(RipsTipoUsuario)
 class ripsTipoUsuarioAdmin(admin.ModelAdmin):

@@ -42,8 +42,9 @@ class RipsDetalle (models.Model):
 class RipsTransaccion (models.Model):
 
     id = models.AutoField(primary_key=True)
+    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle01')
     numDocumentoIdObligado =   models.CharField(max_length=9, blank=True,null= True, editable=True)
-    numFactura  =  models.CharField(max_length=20, blank=True,null= True, editable=True)
+    #numFactura  =  models.CharField(max_length=20, blank=True,null= True, editable=True)
     tipoNota  =  models.ForeignKey('cartera.TiposNotas', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='TipoNota01')
     numNota =  models.CharField(max_length=20, default='S', editable=False)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -96,7 +97,9 @@ class RipsUsuarios (models.Model):
 
 
     id = models.AutoField(primary_key=True)
+    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle02')
     tipoDocumentoIdentificacion =   models.CharField(max_length=9, blank=True,null= True, editable=True)
+    numDocumentoIdentificacion = models.CharField(max_length=20, blank=True,null= True, editable=True)
     tipoUsuario  =  models.CharField(max_length=20, blank=True,null= True, editable=True)
     fechaNacimiento   =   models.DateTimeField(default=now, blank=True, null=True, editable=True)
     codSexo =  models.CharField(max_length=13, default='A', editable=False ,choices = TIPO_SEXO)
@@ -190,6 +193,7 @@ class RipsConsultas (models.Model):
         (TRES, 'Confirmado REPETIDO'),
     )
     id = models.AutoField(primary_key=True)
+    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle03')
     codPrestador =  models.CharField(max_length=12, blank=True,null= True, editable=True)
     fechaInicioAtencion = models.DateTimeField(default=now, blank=True, null=True, editable=True)
     numAutorizacion = models.CharField(max_length=30, blank=True,null= True, editable=True)
@@ -231,6 +235,7 @@ class RipsViasIngresoSalud (models.Model):
 class RipsProcedimientos (models.Model):
 
    id = models.AutoField(primary_key=True)
+   ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle04')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    fechaInicioAtencion = models.DateTimeField(default=now, blank=True, null=True, editable=True)
    idMIPRES = models.CharField(max_length=15, blank=True,null= True, editable=True)
@@ -271,6 +276,7 @@ class RipsDestinoEgreso (models.Model):
 class RipsUrgenciasObservacion (models.Model):
 
    id = models.AutoField(primary_key=True)
+   ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle05')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    fechaInicioAtencion = models.DateTimeField(default=now, blank=True, null=True, editable=True)
    causaMotivoAtencion = models.ForeignKey('rips.RipsCausaExterna', blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -296,6 +302,7 @@ class RipsUrgenciasObservacion (models.Model):
 class RipsHospitalizacion (models.Model):
 
    id = models.AutoField(primary_key=True)
+   ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle09')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    viaIngresoServicioSalud = models.ForeignKey('rips.RipsViasIngresoSalud', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='IngresoSal11')
    fechaInicioAtencion = models.DateTimeField(default=now, blank=True, null=True, editable=True)
@@ -329,6 +336,7 @@ class RipsRecienNacido(models.Model):
 	(I, 'Indeterminado'),
      )
     id = models.AutoField(primary_key=True)
+    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle08')
     codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
     tipoDocumentoIdentificacion = models.ForeignKey('rips.RipsTiposDocumento', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='TipoDocRips01')
     numDocumentoIdentificacion = models.CharField(max_length=20, blank=True,null= True, editable=True)
@@ -414,6 +422,7 @@ class RipsUnidadUpr (models.Model):
 class RipsMedicamentos(models.Model):
 
    id = models.AutoField(primary_key=True)
+   ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle07')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    numAutorizacion = models.CharField(max_length=30, blank=True,null= True, editable=True)
    idMIPRES = models.CharField(max_length=15, blank=True,null= True, editable=True)
@@ -468,6 +477,7 @@ class RipsDci (models.Model):
 class RipsOtrosServicios(models.Model):
 
    id = models.AutoField(primary_key=True)
+   ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle06')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    numAutorizacion = models.CharField(max_length=30, blank=True,null= True, editable=True)
    idMIPRES = models.CharField(max_length=15, blank=True,null= True, editable=True)

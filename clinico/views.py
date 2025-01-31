@@ -1805,7 +1805,7 @@ def crearHistoriaClinica(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT med.id id, med.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(
+        comando = 'SELECT med.id id, pla.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(
             Sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str('MEDICO') + "'" + ' and med.planta_id = p.id'
 
         curt.execute(comando)

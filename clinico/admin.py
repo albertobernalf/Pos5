@@ -24,7 +24,7 @@ class especialidadesAdmin(admin.ModelAdmin):
 
 @admin.register(EspecialidadesMedicos)
 class especialidadesMedicosAdmin(admin.ModelAdmin):
-    list_display = ("id", "especialidades", "planta", "nombre")
+    list_display = ("id", "especialidades" ,  "planta", "nombre")
     search_fields = ("id", "especialidades", "planta", "nombre")
     # Filtrar
     list_filter = ( "especialidades", "planta", "nombre")
@@ -194,10 +194,10 @@ class historialInterconsultasAdmin(admin.ModelAdmin):
 @admin.register(Medicos)
 class medicosAdmin(admin.ModelAdmin):
 
-        list_display = ("id", "planta","tipoDoc","documento","nombre","especialidades","departamento")
-        search_fields = ("id", "planta","tipoDoc","documento","nombre","especialidades","departamento")
+        list_display = ("id", "planta","departamento")
+        search_fields = ("id", "planta","departamento")
         # Filtrar
-        list_filter =("id", "planta", "tipoDoc","documento","nombre","especialidades","departamento")
+        list_filter =("id", "planta", "departamento")
 
 
 

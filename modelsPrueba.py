@@ -339,24 +339,57 @@ IDEAS MODULOS SUBSIGUIENTES:
 En admisiones, autorizacion para el manejop de datos . CLausulas
 
 Modulos:
+	CERO MODULO
+	Generacion de factura
+        Impresion de factura
+	Generacion de xml
+	Generacion de pronto JSON
+	Generacion y envio a la DIAN
+
         PRIMER MODULO:
-	Radicacion (Lista Radicaciones,Crea Radicacion, adhiere Facturas a las Radic)
-      --> Glosas (crea la glosa , creo de radiaccion), detalla la glosa a travez de facturas
-       SEGUNDO MODULO:
-       -- NotasDebito (creo nuevas generarla, crearlas)
-       --> NotasCredito (unas de glosas, otras adicionales)
-       TERCER MODULO:
-       --> Rips , (entregas querys automaticos)
-       CUARTO MODULO:
+        Rips sobre Facturas APROBADAS POR LA DIAN , (entregas querys automaticos)
+	Se pueblan las tablas de RIPS con los datos de las Facturas
+        Generacion JSON conjunto de RIPS para el ministeriop de salud  a partir de la Facturacion
+        Recepcion repuesta JSON RIPS del ministerio de salud  a partir de la Facturacion
+
+        SEGUNDO MODULO:
+	Radicacion de la factura APROBADA POR LA DIAN (son con base en lkas facturas de la clinica .Lista Radicaciones,Crea Radicacion, adhiere Facturas a las Radic, es el envio de Facturas)
+
+        TERCER MODULO:
+	Las glosas son las observaciones que se realizan a los RIPS
+	Entonces parece ahora las glosas vienen inspiradas en las tablas de RIPS
+        Creo debe haber un modulo o un flag en la factura si esta ACEPTADA o no ACEPTADA por la DIAN y CUFE o algo asi
+        Glosas 
+        Recepcion Glosa 
+	Encabezado glosa : (crea la glosa es el encabezado a partir de la radicacion y proveniente de una EPS), Estas glosas las envias las EPS , se recepcionana NORMALITO 
+        Detalle Glosa : Se detalla cada item del RIPS ENVIADO AL MINISTERIO .
+
+        CUARTO MODULO:
+        NotasDebito (creo nuevas generarla, crearlas)
+        NotasCredito por Glosas vienen de las glosas de las EPS
+        NotasCredito por Otras notas que no son rips u Glosas
+
+        Creacion Nota Credito de Acuerdo a la Glosa emitida por la EPS
+        Las notas credito van solo por valores supongo ??? o con detalle  ???
+
+        Generacion JSON de la Nota Credito para enviar al Ministerio de salud
+        Recepcion repuesta JSON notas credito del ministerio de salud
+
+   
+    	QUINTO MODULO:
        --> Cartera, (Consultas, reportes)
+
+        Todo lo voy a aterrizar a JSON y XML : RIPS Y Facturacion respectivamente
+        A partir de aqui si debo poner a trabajar las solicitudes del Minsterio de salud y l DIAN los cuales se deben manejar comotemas aparte
+        Se que hay JSON de Envio
+                 JSON de respuesta
+                 XML de Envio
+                 XML de respuesta
+        Los JSON y XML de respuesta ni an se sabe  NOOO es tema inicial. Orden por favor o si no ñucas.
 
 
 -----------------------------------------------------------------------------------------------------------------------
 --  RIPS 
------------------------------------------------------------------------------------------------------------------------
-
------------------------------------------------------------------------------------------------------------------------
---  REMISIONES 
 -----------------------------------------------------------------------------------------------------------------------
 
 -----------------------------------------------------------------------------------------------------------------------
@@ -365,6 +398,10 @@ Modulos:
 
 
 
+- Desde aquip año 2025, arrancamos papberol. Tamos trabajando con Centos9 - Postgresql-16 y Pos3 windows vulner2/postgres/123456
 
+-- Como se cambio Hisotira campo espeicalidadesMedicos se agrego, quitar ampoespecialidades
+   Anton arreglar en la historia Clinica la validacion del medico en cuanto a que espeiclidaes tiene de acuerdo a la planta y a la sede
+-- La salida del programa me saca hasta una pantalla de reporteador
 
 

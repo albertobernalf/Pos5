@@ -40,12 +40,18 @@ class Servicios(models.Model):
 
 class EspecialidadesMedicos(models.Model):
     id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica301')
     especialidades = models.ForeignKey('clinico.Especialidades', on_delete=models.PROTECT, null=False,related_name ='especialidadesMedicos1')
-    planta = models.ForeignKey('planta.Planta', on_delete = models.PROTECT, null = False)
+    #tiposPlanta = models.ForeignKey('planta.TiposPlanta',    blank=True,null= True, on_delete=models.PROTECT ,related_name ='tiposPlanta301')
+    planta = models.ForeignKey('planta.Planta',      blank=True,null= True ,on_delete = models.PROTECT)
     nombre = models.CharField(max_length=30, default="" , null = False)
     fechaRegistro = models.DateTimeField(default=now, editable=False)
     usuarioRegistro = models.ForeignKey('planta.Planta',  blank=True, null=True, editable=True, on_delete=models.PROTECT,related_name ='usuarioRegistroPlanta')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    class Meta:
+            unique_together = (('sedesClinica','planta','especialidades'),)
+
 
     def __integer__(self):
         return self.nombre
@@ -66,10 +72,10 @@ class Especialidades(models.Model):
 class Medicos(models.Model):
         id = models.AutoField(primary_key=True)
         planta = models.ForeignKey('planta.Planta',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
-        tipoDoc = models.ForeignKey('usuarios.TiposDocumento',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
-        documento = models.IntegerField(default=1)
-        nombre = models.CharField(max_length=30)
-        especialidades = models.ForeignKey('clinico.Especialidades',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
+        #tipoDoc = models.ForeignKey('usuarios.TiposDocumento',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
+        #documento = models.IntegerField(default=1)
+        #nombre = models.CharField(max_length=30)
+        #especialidades = models.ForeignKey('clinico.Especialidades',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
         registroMedico = models.CharField(max_length=50, default='')
         departamento = models.ForeignKey('sitios.Departamentos',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
         ciudad = models.ForeignKey('sitios.Ciudades',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -80,6 +86,9 @@ class Medicos(models.Model):
         #firma = models.file()
 
         estado = models.CharField(max_length=1)
+
+        class Meta:
+            unique_together = (('planta'),)
 
         def __str__(self):
             return self.nombre
@@ -287,6 +296,7 @@ class Historia(models.Model):
     causasExterna = models.ForeignKey('clinico.causasExterna', blank=True, null=True, editable=True,             on_delete=models.PROTECT)
     dependenciasRealizado = models.ForeignKey('sitios.Dependencias', blank=True, null=True, editable=True,            on_delete=models.PROTECT)
     especialidades = models.ForeignKey('clinico.Especialidades', blank=True, null=True, editable=True,             on_delete=models.PROTECT)
+    especialidadesMedicos = models.ForeignKey('clinico.EspecialidadesMedicos', blank=True, null=True, editable=True,             on_delete=models.PROTECT)
     planta = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     motivo = models.CharField(max_length=250,  blank=True, null=True,)
     subjetivo = models.CharField(max_length=250,  blank=True, null=True,)

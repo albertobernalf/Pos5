@@ -60,17 +60,14 @@ def validaAcceso(request):
     username = request.POST["username"].strip()
     print("username=", username)
     contrasena = request.POST["password"]
-    #perfilConseguido = request.POST["seleccion1"]
     sede = request.POST["seleccion2"]
     Sede = sede
     print("Sede Mayuscula = ", Sede)
     print(contrasena)
-    #print("perfilConseguido= ", perfilConseguido)
     print("sede= ", sede)
     context = {}
     context['Documento'] = username
     context['Username'] = username
-    #context['Perfil'] = perfilConseguido
     context['Sede'] = sede
 
     # Variables que tengo en context : Documento, Perfil , Sede,   sedes ,NombreSede
@@ -79,7 +76,6 @@ def validaAcceso(request):
 
     # Consigo la sede Nombre
 
-    #miConexion = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
     comando = "SELECT id, nombre   FROM sitios_sedesClinica WHERE id ='" + sede + "'"
@@ -99,7 +95,6 @@ def validaAcceso(request):
 
     # esta consulta por que se pierde de otras pantallas
 
-    #miConexion = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
     comando = "SELECT id ,nombre FROM sitios_sedesClinica"
@@ -116,18 +111,16 @@ def validaAcceso(request):
 
     context['Sedes'] = sedes
 
-
-    #miConexion0 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexion0 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur0 = miConexion0.cursor()
-    comando = 'select p.id  Username_id , p.nombre profesional , p."sedesClinica_id" from planta_planta p where p.documento = ' + "'"  + username + "'"
+    comando = 'select p.id  Username_id , p.nombre profesional , p."sedesClinica_id" , p.contrasena contrasena from planta_planta p where p.documento = ' + "'"  + username + "'"
     cur0.execute(comando)
     print(comando)
     planta = []
     profesional = ''
 
-    for Username_id, profesional, sedesClinica_id in cur0.fetchall():
-        planta.append({'Username_id': Username_id, 'profesional': profesional, 'sedesClinica_id': sedesClinica_id})
+    for Username_id, profesional, sedesClinica_id , contrasena in cur0.fetchall():
+        planta.append({'Username_id': Username_id, 'profesional': profesional, 'sedesClinica_id': sedesClinica_id, 'contrasena':contrasena})
         context['Username_id'] = Username_id
         profesional = profesional
 
@@ -137,44 +130,33 @@ def validaAcceso(request):
 
     if planta == []:
 
-
         context['Error'] = "Personal invalido ! "
         print("Entre por personal No encontrado")
-
-        miConexion0.close()
-
         return render(request, "inicio/accesoPrincipal1.html", context)
 
     else:
 
+        #miConexion1 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        #cur1 = miConexion1.cursor()
+        #comando = "select p.contrasena contrasena from planta_planta p where p.documento ='" + username + "'" + " AND contrasena = '" + contrasena +"'"
+        #cur1.execute(comando)
 
-        #miConexion1 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexion1 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        cur1 = miConexion1.cursor()
-        comando = "select p.contrasena contrasena from planta_planta p where p.documento ='" + username + "'" + " AND contrasena = '" + contrasena +"'"
-        cur1.execute(comando)
+        #plantaContrasena = []
 
-        plantaContrasena = []
+        #for contrasena in cur1.fetchall():
+        #    plantaContrasena.append({'contrasena': contrasena})
 
-
-
-        for contrasena in cur1.fetchall():
-            plantaContrasena.append({'contrasena': contrasena})
-
-        if plantaContrasena == []:
-            miConexion1.close()
+        if planta[0]['contrasena'] == []:
+	#if plantaContrasena == []:
+            #miConexion1.close()
             context['Error'] = "Contraseña invalida ! "
             return render(request, "inicio/accesoPrincipal1.html", context)
         else:
             print("OJOOO ya valide CONTRASENA")
             #Aqui ya se valido username y contraseña OK
 
-            #miConexion2 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
             miConexion2 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
             cur2 = miConexion2.cursor()
-            #comando = "select perf.tiposPlanta_id  perfil from planta_planta p , planta_perfilesplanta perf , planta_tiposPlanta tp where  p.sedesClinica_id = perf.sedesClinica_id and  p.sedesClinica_id ='" + str(sede) + "' AND p.documento =  '" + str(username) + "' AND perf.planta_id = p.id AND  perf.tiposPlanta_id = " + str(perfilConseguido)
-
-            #comando = 'select gralusu."perfilesClinicaId_id"  perfil from planta_planta p, seguridad_perfilesclinica perf, seguridad_perfilesgralusu  gralusu where p."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' AND p.documento = ' + "'"  +  str(username) + "'" + ' and p.id = gralusu."plantaId_id" AND gralusu."perfilesClinicaId_id" = perf.id AND gralusu."perfilesClinicaId_id" = '  + str(perfilConseguido)
             comando =  'select perfcli.id perfil1 from seguridad_perfilesgralusu gral, sitios_sedesClinica sedes, seguridad_perfilesclinica perfcli, planta_planta planta where planta."sedesClinica_id" = sedes.id and planta.id=gral."plantaId_id" and perfcli.id = gral."perfilesClinicaId_id" and sedes.id = ' + "'" +  str(sede) + "'" +   ' AND  planta.documento = ' + "'" + str(username) + "'"
             print(comando)
             cur2.execute(comando)
@@ -200,7 +182,6 @@ def validaAcceso(request):
 
                 # Combo Modulos
 
-                # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
@@ -226,7 +207,6 @@ def validaAcceso(request):
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
-                #comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
                 comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(username) + "'"
 
                 curt.execute(comando)
@@ -241,7 +221,6 @@ def validaAcceso(request):
                 print(permisosGrales)
 
                 context['PermisosGrales'] = permisosGrales
-
 
                 # Fin Combo PermisosGrales
 
@@ -277,7 +256,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     username = Username
     sede = Sede
-    #perfilConseguido = Perfil
     profesional = Profesional
     documento = Documento
     nombreSede = NombreSede
@@ -293,10 +271,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     ## username_id
     usernameLlave = Planta.objects.get(documento=username.strip())
     username_id= usernameLlave.id
-
-
-    ## Fin username_id
-
 
 
     # Combo PermisosGrales
@@ -322,6 +296,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(permisosGrales)
 
     # Fin Combo PermisosGrales
+
     print("permisosGrales= ", permisosGrales)
 
     context = {}
@@ -335,13 +310,10 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     context['EscogeModulo'] = escogeModulo
     context['Username_id'] = username_id
 
-
-
     # aqui la manada de combos organizarlo segun necesidades
 
-
     # Combo de Servicios
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -364,7 +336,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo servicios
 
     # Combo de SubServicios
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -387,7 +359,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo SubServicios
 
     # Combo TiposDOc
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -409,7 +381,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo TiposDOc
 
     # Combo Habitaciones
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -431,7 +403,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo Habitaciones
 
     # Combo Especialidades
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -454,7 +426,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo EspecialidadesMedicos
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -476,12 +448,12 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo EspecialidadesMedicos
 
     # Combo Medicos
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str('MEDICO') + "'" + ' and med.planta_id = p.id'
+    comando = 'SELECT med.id id, p.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str('MEDICO') + "'" + ' and med.planta_id = p.id'
 
     curt.execute(comando)
     print(comando)
@@ -501,7 +473,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo TiposFolio
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -526,7 +498,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo TiposUsuario
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -551,7 +522,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo TiposDocumento
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -578,7 +548,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Centros
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -602,7 +572,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Diagnosticos
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -627,7 +596,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Pais
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -649,11 +617,8 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Fin combo Pais
 
-
-
     # Combo Departamentos
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -677,7 +642,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Ciudades
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -701,7 +665,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Modulos
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -730,7 +693,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     curt = miConexiont.cursor()
 
     # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
-    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
+    comando =   'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
         username) + "'"
 
     curt.execute(comando)
@@ -780,7 +743,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Vias Ingreso
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -804,7 +766,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Causas Externa
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -828,7 +789,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Regimenes
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -853,7 +813,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Tipos Cotizante
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -877,7 +836,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo municipios
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -901,7 +859,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo localidades
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -926,7 +883,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo estadoCivil
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -951,7 +907,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo ocupaciones
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -976,7 +931,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo ips
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -1001,7 +955,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Empresas
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -1025,7 +978,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo Acompanantes
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -1050,7 +1002,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Combo responsables
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -1078,16 +1029,14 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
 
    # Aqui ya vienen las validaciones de permisos de acceso
-    # Se valida el aaceso al Modulo
-
 
     if (escogeModulo == 'ADMISIONES'):
-        print ("WENTRE ADMISIONES 4")
+        print ("ENTRE ADMISIONES 4")
         print("escogeModulo = ", escogeModulo)
 
         # Combo Convenios
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1111,7 +1060,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo TiposPagos
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1136,7 +1084,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo FormasPagos
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1161,7 +1108,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsServiciosIng
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1186,7 +1132,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsmodalidadGrupoServicioTecSal
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1212,7 +1157,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsViaIngresoServicioSalud
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1237,7 +1181,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsGrupoServicios
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1262,7 +1205,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsCondicionDestinoUsuarioEgreso
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1287,7 +1229,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsCausaMotivoAtencion
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1312,7 +1253,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsDestinoUsuarioEgresoRecienNacido
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1336,12 +1276,10 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         # Fin combo ripsDestinoUsuarioEgresoRecienNacido
 
 
-
         ## Aqui contexto para solo admisiones
 
         ingresos = []
 
-        # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curx = miConexionx.cursor()
@@ -1362,23 +1300,17 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print(ingresos)
         context['Ingresos'] = ingresos
 
-
-        context['EspecialidadesMedicos'] = especialidadesMedicos
-
-        # Fin combo EspecialidadesMedicos
         ## Para los froms FURIPS
 
         context['FuripsForm'] = furipsForm
 
-
         # Combo Indicadores
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
-        #comando = "SELECT c.id id,c.nombre nombre FROM clinico_viasAdministracion c"
+
         comando = 'SELECT ser.nombre, count(*) total FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd  WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + str('O') + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' and tp.id = u."tipoDoc_id" and  i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"  group by ser.nombre UNION SELECT ser.nombre, count(*) total FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , sitios_serviciosSedes sd, clinico_servicios ser WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND  t."sedesClinica_id" =  ' + "'" + str(sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND  t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and  t."tipoDoc_id" = u."tipoDoc_id" and u.id = t."documento_id"  and ser.id = sd.servicios_id and  dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and  t."consecAdmision" = 0 and dep."documento_id" = t."documento_id" and ser.nombre = '  + "'" + str('TRIAGE') + "'" + ' group by ser.nombre'
 
         curt.execute(comando)
@@ -3325,7 +3257,7 @@ def buscarEspecialidadesMedicos(request):
     context = {}
     Esp = request.GET["Esp"]
     Sede = request.GET["Sede"]
-    print ("Entre buscar  Servicio =",Esp)
+    print ("Entre buscar  Especialidad =",Esp)
     print ("Sede = ", Sede)
 
     # Combo de Medicos Especialidades
@@ -3337,9 +3269,9 @@ def buscarEspecialidadesMedicos(request):
 
 
     #comando = 'SELECT m.id id, m.nombre nombre from clinico_medicos m, clinico_Especialidadesmedicos medesp,clinico_especialidades esp,sitios_sedesclinica sed,  planta_planta pla where esp.id = ' + "'" + str(Esp) + "'" + ' and esp.id=medesp.especialidades_id and pla."sedesClinica_id" = sed.id and pla.id = medesp.planta_id and pla."sedesClinica_id"=' + "'" + str(Sede) + "'" + ' order by m.nombre'
-    comando = 'SELECT m.id id, m.nombre nombre from clinico_medicos m, clinico_Especialidadesmedicos medesp,clinico_especialidades esp,sitios_sedesclinica sed,  planta_planta pla where  pla.id=medesp.planta_id and  medesp.especialidades_id = esp.id and m.planta_id = pla.id and  esp.id = ' + "'" + str(
+    comando = 'SELECT m.id id, pla.nombre nombre from clinico_medicos m, clinico_Especialidadesmedicos medesp,clinico_especialidades esp,sitios_sedesclinica sed,  planta_planta pla where  pla.id=medesp.planta_id and  medesp.especialidades_id = esp.id and m.planta_id = pla.id and  esp.id = ' + "'" + str(
         Esp) + "'" + ' and esp.id=medesp.especialidades_id and pla."sedesClinica_id" = sed.id and pla.id = medesp.planta_id and pla."sedesClinica_id"=' + "'" + str(
-        Sede) + "'" + ' order by m.nombre'
+        Sede) + "'" + ' order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -3497,7 +3429,7 @@ def crearAdmisionDef(request):
         dxSalida = ""
         estadoSalida = "1"
 
-        medicoIngreso = request.POST['medicoIngreso']
+        medicoIngreso = request.POST['medicoIngresoP']
         print("medicoIngreso =", medicoIngreso)
         medicoActual = medicoIngreso
         medicoSalida = ""
@@ -4533,7 +4465,7 @@ def encuentraAdmisionModal(request) : #, tipoDoc, documento, consec, sede):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,med1.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id"  ) inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(tipoDoc1.id) + "'" + ' and u.documento = ' + "'" + str(documento) + "'" + ' and i.consec= ' + "'" + str(consec) + "'" + ' and i."fechaSalida" is null'
+        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(tipoDoc1.id) + "'" + ' and u.documento = ' + "'" + str(documento) + "'" + ' and i.consec= ' + "'" + str(consec) + "'" + ' and i."fechaSalida" is null'
 
         print(comando)
         curt.execute(comando)
@@ -4567,11 +4499,7 @@ def cambioServicio(request):
     ingreso = request.POST['valor']
     print("ingreso = ", ingreso)
 
-
-
     datos  = Ingresos.objects.get(id=ingreso)
-
-
     datosTip = TiposDocumento.objects.get(nombre=datos.tipoDoc)
 
     datosDoc = Usuarios.objects.get(nombre=datos.documento)
@@ -4588,7 +4516,7 @@ def cambioServicio(request):
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT i."tipoDoc_id" tipoDocId, tp.nombre tipoDoc,  i.documento_id documentoId, u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,med1.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso, i."contactoResponsable_id" responsable, i."contactoAcompañante_id"  acompanante FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id"  ) inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i.id = ' + "'" + str(ingreso) + "'"
+    comando = 'SELECT i."tipoDoc_id" tipoDocId, tp.nombre tipoDoc,  i.documento_id documentoId, u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso, i."contactoResponsable_id" responsable, i."contactoAcompañante_id"  acompanante FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id")  left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id"  ) left join planta_planta pla on (pla.id = med1.planta_id)   inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i.id = ' + "'" + str(ingreso) + "'"
 
     print(comando)
     curt.execute(comando)
