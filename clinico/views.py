@@ -345,24 +345,6 @@ def crearHistoriaClinica(request):
 
             print("salidaClinicaFinal =", salidaClinica)
 	
-            ## Camio lo anteriro por lo que sigue
-
-            #miConexiont = pyodbc.connect(
-            #    'DRIVER={SQL Server};SERVER=CMKSISTEPC07\MEDICAL;DATABASE=vulnerable ;UID=sa;pwd=75AAbb??')
-            #curt = miConexiont.cursor()
-
-            #comando = "SELECT max(folio) folio FROM dbo.clinico_historia WHERE tipoDoc_id  = '" + str(tipoDoc) + "' AND documento_id = '" + str(idPacienteFinal) + "'"
-
-            #print(comando)
-            #curt.execute(comando)
-
-
-            #ultimofolio = []
-
-            #for folio in curt.fetchall():
-            #    ultimofolio.append({'maximo': folio})
-
-            #miConexiont.close()
 
             ##########################################
 
@@ -381,8 +363,6 @@ def crearHistoriaClinica(request):
             print("causas externa=", causasExterna)
             print("espemedico = ", espMedico)
             print("planta = ", plantados)
-
-
 
             print("usuarioRegistro = ", usuarioRegistro)
 
@@ -446,7 +426,6 @@ def crearHistoriaClinica(request):
                 n = curt.rowcount
                 print ("Registros commit = " , n)
 
-
                 miConexiont.commit()
 
                 #print("historiaid = ", historiaId)
@@ -462,7 +441,6 @@ def crearHistoriaClinica(request):
 
                 print("Historia No : ", historiaId)
                 jsonHistoria = {'id': historiaId}
-
 
                 # Fin Grabacion Historia
 		
@@ -504,7 +482,6 @@ def crearHistoriaClinica(request):
                    print ("Entre a MODIFICAR convenioID") 
 
                 print("ULTIMO valor de convenioId= ", convenioId)
-
 
 	        # Fin Rutina busca convenio del paciente
 
@@ -553,10 +530,7 @@ def crearHistoriaClinica(request):
                 # Rutiva busca en convenio el valor de la tarifa CUPS
                 print("liquidacionId = ", liquidacionId)
 
-
-
                 # Aqui RUTINA busca consecutivo de liquidacion
-
 
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",        password="123456")
                 curt = miConexiont.cursor()
@@ -588,8 +562,6 @@ def crearHistoriaClinica(request):
                     consecLiquidacion=1
 
 	        # Fin RUTINA busca consecutivo de liquidacion
-
-
 
                 #Grabacion Laboratorios
             #

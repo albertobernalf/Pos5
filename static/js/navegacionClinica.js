@@ -1,6 +1,6 @@
 $(document).ready(function() {
-    var $ = jQuery;
-    console.log('Hola Alberto Hi!')
+	var $ = jQuery;
+	console.log('Hola Alberto Hi!')
 
 	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
@@ -66,19 +66,13 @@ $(document).ready(function() {
         --------------------------------------------
         --------------------------------------------*/
         $("body").on("click",".deletePostRadiologia",function(){
-            var current_object = $(this);
-            alert("current_object =" +current_object );
-            var action = current_object.attr('data-action');
-            var token = $("input[name=csrfmiddlewaretoken]").val();
-            var id = current_object.attr('data-pk');
-	     	alert("Entre a borrar el radiologia Nro" + id);
-	     	var table1 = $('#tablaRadiologia');
-            table1.find( 'tbody tr:eq(0)' ).remove();
 
-            alert("valores = " + valores);
-		        	  $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.message);
-			              table1.ajax.reload();
+		alert("Entre a borrar el id Radiologia ");
+      	        var rowIndex = $(this).parent().index('#tablaRadiologia tbody tr');         
+	     	alert("Entre a borrar la fila #  Tadiologia Nro" + rowIndex );
+		var tableL = $('#tablaRadiologia').DataTable(); 
+
+		 tableL.row.remove(rowIndex).draw(false);
 	});
 
 /*------------------------------------------
@@ -170,7 +164,7 @@ $(document).ready(function() {
         Delete Post Code Interconsultas
         --------------------------------------------
         --------------------------------------------*/
-        $("body").on("click",".deletePostDInterconsultas",function(){
+        $("body").on("click",".deletePostInterconsultas",function(){
             var current_object = $(this);
             alert("current_object =" +current_object );
             var action = current_object.attr('data-action');
@@ -219,6 +213,36 @@ $('#tablaLaboratorios tbody').on('click', 'tr', function () {
 		 document.getElementById("tablaLaboratorios").deleteRow(fila-1);
 
 });
+
+$('#tablaRadiologia tbody').on('click', 'tr', function () {
+    confirm("Desea eliminar LA FILA: ");
+       var tableL = $('#tablaRadiologia').DataTable();
+      var fila = $(this).parents("tr")['prevObject']['0']['_DT_RowIndex'];
+          alert("Fila a borrar = " + fila);
+		var rows = tableL
+			    .rows(fila)
+			    .remove()
+			    .draw();
+		 document.getElementById("tablaRadiologia").deleteRow(fila-1);
+
+});
+
+$('#tablaFormulacion tbody').on('click', 'tr', function () {
+    confirm("Desea eliminar LA FILA: ");
+       var tableL = $('#tablaFormulacion').DataTable();
+      var fila = $(this).parents("tr")['prevObject']['0']['_DT_RowIndex'];
+          alert("Fila a borrar = " + fila);
+		var rows = tableL
+			    .rows(fila)
+			    .remove()
+			    .draw();
+		 document.getElementById("tablaFormulacion").deleteRow(fila-1);
+
+});
+
+
+
+
 
 $('#tablaTerapias tbody').on('click', 'tr', function () {
       var tableL = $('#tablaTerapias').DataTable();
@@ -315,18 +339,10 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         --------------------------------------------*/
         $('#BtnAdicionarRadiologia').click(function (e) {
             e.preventDefault();
-           // $(this).html('Sending..');
-	  //      $('#crearLaboratoriosModel').modal('hide');
-         //   $('.success-msg').css('display','block');
-         //   $('.success-msg').text('Dato actualizado');
    	   var table1 = $('#tablaRadiologia').DataTable();   // accede de nuevo a la DataTable.
 
-   	   //var TipoDocPaciente = document.getElementById("tipoDocPaciente3").value;
-	   // var documentoPaciente = document.getElementById("documentoPaciente3").value;
-	   // var IngresoPaciente = document.getElementById("ingresoPaciente3").value;
-	   // var tiposExamen_Id  = document.getElementById("tiposExamen_Id3").value;
 	   var cantidad = document.getElementById("cantidad3").value;
-       var observa = document.getElementById("observa3").value;
+	   var observa = document.getElementById("observa3").value;
            var select = document.getElementById("rad"); /*Obtener el SELECT */
       	   var rad = select.options[select.selectedIndex].value; /* Obtener el valor */
       	   text = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
@@ -343,18 +359,12 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         --------------------------------------------*/
         $('#BtnAdicionarTerapias').click(function (e) {
             e.preventDefault();
-           // $(this).html('Sending..');
-	  //      $('#crearLaboratoriosModel').modal('hide');
          //   $('.success-msg').css('display','block');
          //   $('.success-msg').text('Dato actualizado');
    	   var table3 = $('#tablaTerapias').DataTable();   // accede de nuevo a la DataTable.
 
-   	   //var TipoDocPaciente = document.getElementById("tipoDocPaciente3").value;
-	   // var documentoPaciente = document.getElementById("documentoPaciente3").value;
-	   // var IngresoPaciente = document.getElementById("ingresoPaciente3").value;
-	   // var tiposExamen_Id  = document.getElementById("tiposExamen_Id3").value;
 	   var cantidad = document.getElementById("cantidad4").value;
-       var observa = document.getElementById("observa4").value;
+	   var observa = document.getElementById("observa4").value;
            var select = document.getElementById("ter"); /*Obtener el SELECT */
       	   var ter = select.options[select.selectedIndex].value; /* Obtener el valor */
       	   text = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
@@ -371,16 +381,9 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         --------------------------------------------*/
         $('#BtnAdicionarNoQx').click(function (e) {
             e.preventDefault();
-           // $(this).html('Sending..');
-	  //      $('#crearLaboratoriosModel').modal('hide');
-         //   $('.success-msg').css('display','block');
          //   $('.success-msg').text('Dato actualizado');
    	   var table4 = $('#tablaNoQx').DataTable();   // accede de nuevo a la DataTable.
 
-   	   //var TipoDocPaciente = document.getElementById("tipoDocPaciente3").value;
-	   // var documentoPaciente = document.getElementById("documentoPaciente3").value;
-	   // var IngresoPaciente = document.getElementById("ingresoPaciente3").value;
-	   // var tiposExamen_Id  = document.getElementById("tiposExamen_Id3").value;
 	   var cantidad = document.getElementById("cantidad5").value;
        var observa = document.getElementById("observa5").value;
            var select = document.getElementById("noQx"); /*Obtener el SELECT */
@@ -449,7 +452,7 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
 
    	   var table7 = $('#tablaInterconsultas').DataTable();   // accede de nuevo a la DataTable.
 
-       var descripcion = document.getElementById("descripcionI").value;
+	   var descripcion = document.getElementById("descripcionI").value;
 
            var select = document.getElementById("diagnosticosI"); /*Obtener el SELECT */
       	   var diagnosticos = select.options[select.selectedIndex].value; /* Obtener el valor */
@@ -482,14 +485,13 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
 
    	   var table9 = $('#tablaRevisionSistemas').DataTable();   // accede de nuevo a la DataTable.
 
-          var observa= document.getElementById("observa9").value;
+           var observa= document.getElementById("observa9").value;
 
            var select3 = document.getElementById("rev"); /*Obtener el SELECT */
       	   var revisionSistemas = select3.options[select3.selectedIndex].value; /* Obtener el valor */
       	   textRevisionSistemas = select3.options[select3.selectedIndex].innerText; //El texto de la opción seleccionada
 
-
-	        table9.row.add([ revisionSistemas, textRevisionSistemas,  observa,  '<i class="fa fa-trash"></i>']).draw(false);
+           table9.row.add([ revisionSistemas, textRevisionSistemas,  observa,  '<i class="fa fa-trash"></i>']).draw(false);
         });
 
 
@@ -503,7 +505,7 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
 
    	   var table10 = $('#tablaFormulacion').DataTable();   // accede de nuevo a la DataTable.
 
-              var select3 = document.getElementById("medicamentos"); /*Obtener el SELECT */
+           var select3 = document.getElementById("medicamentos"); /*Obtener el SELECT */
       	   var medicamentos= select3.options[select3.selectedIndex].value; /* Obtener el valor */
       	   textMedicamentos = select3.options[select3.selectedIndex].innerText; //El texto de la opción seleccionada
 
@@ -544,8 +546,6 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         --------------------------------------------*/
         $('#BtnAdicionarLaboratorio').click(function (e) {
             e.preventDefault();
-           // $(this).html('Sending..');
-	  //      $('#crearLaboratoriosModel').modal('hide');
          //   $('.success-msg').css('display','block');
          //   $('.success-msg').text('Dato actualizado');
 
@@ -553,7 +553,7 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
    	   var TipoDocPaciente = document.getElementById("tipoDocPaciente1").value;
 	   var documentoPaciente = document.getElementById("documentoPaciente1").value;
 	   var IngresoPaciente = document.getElementById("ingresoPaciente1").value;
-	   //var tiposExamen_Id  = document.getElementById("tiposExamen_Id").value;
+
 	   var cantidad = document.getElementById("cantidad").value;
        var observa = document.getElementById("observa").value;
            var select = document.getElementById("lab"); /*Obtener el SELECT */
@@ -609,7 +609,7 @@ function tableActionsLaboratorios() {
 
 function tableActionsRadiologia() {
 
-      var table1= $('#tablaRadiologias').DataTable({
+      var table1= $('#tablaRadiologia').DataTable({
                 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -624,19 +624,20 @@ function tableActionsRadiologia() {
                 {
                     "render": function ( data, type, row ) {
                         var btn = '';
-			   btn = btn + " <button class='btn btn-danger deletePostRadiologia' id='borraRad'>" + '<i class="fa fa-trash"></i>' + "</button>";
+			   btn = btn + " <button class='btn btn-danger deletePostRadiologia'>" + '<i class="fa fa-trash"></i>' + "</button>";
                         return btn;
                     },
-                    "targets": 4
+                    "targets": 5
                }
             ],
-        lengthMenu: [5],
+        lengthMenu: [4],
     columns:[
-    //"dummy" configuration
+ 
         { visible: true }, //col 1
         { visible: true }, //col 2
         { visible: true }, //col 3
         { visible: true }, //col 4
+
             ],
     });
 }
@@ -671,7 +672,7 @@ function tableActionsTerapias() {
             ],
         lengthMenu: [5],
     columns:[
-    //"dummy" configuration
+
         { visible: true }, //col 1
         { visible: true }, //col 2
         { visible: true }, //col 3
@@ -710,7 +711,7 @@ function tableActionsNoQx() {
             ],
         lengthMenu: [5],
     columns:[
-    //"dummy" configuration
+
         { visible: true }, //col 1
         { visible: true }, //col 2
         { visible: true }, //col 3
@@ -1403,8 +1404,6 @@ formHistoriaClinica.addEventListener('submit', e=>{
 				// var data  = respuesta2;
  	      		      
      			    $("#mensajes").html(data.message);
-
-		
 
 		        if ( data['Mensaje'] == 'OK')
 		            {

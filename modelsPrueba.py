@@ -353,7 +353,7 @@ Modulos:
         Recepcion repuesta JSON RIPS del ministerio de salud  a partir de la Facturacion
 
         SEGUNDO MODULO:
-	Radicacion de la factura APROBADA POR LA DIAN (son con base en lkas facturas de la clinica .Lista Radicaciones,Crea Radicacion, adhiere Facturas a las Radic, es el envio de Facturas)
+	Radicacion de la factura APROBADA POR LA DIAN y con RIPS se rtadican ante el pagador  (son con base en las facturas de la clinica .Lista Radicaciones,Crea Radicacion, adhiere Facturas a las Radic, es el envio de Facturas)
 
         TERCER MODULO:
 	Las glosas son las observaciones que se realizan a los RIPS
@@ -365,7 +365,7 @@ Modulos:
         Detalle Glosa : Se detalla cada item del RIPS ENVIADO AL MINISTERIO .
 
         CUARTO MODULO:
-        NotasDebito (creo nuevas generarla, crearlas)
+        NotasDebito ( Por ejemplo iutems de factura No cobrados . creo nuevas generarla, crearlas)
         NotasCredito por Glosas vienen de las glosas de las EPS
         NotasCredito por Otras notas que no son rips u Glosas
 
@@ -373,7 +373,7 @@ Modulos:
         Las notas credito van solo por valores supongo ??? o con detalle  ???
 
         Generacion JSON de la Nota Credito para enviar al Ministerio de salud
-        Recepcion repuesta JSON notas credito del ministerio de salud
+        Recepcion respuesta JSON notas credito del ministerio de salud
 
    
     	QUINTO MODULO:
@@ -400,8 +400,21 @@ Modulos:
 
 - Desde aquip año 2025, arrancamos papberol. Tamos trabajando con Centos9 - Postgresql-16 y Pos3 windows vulner2/postgres/123456
 
+-- Lo mejor es iniciar desde los modulos bajops a los altos osea 1-trige,admisiones, despues si hclinica , apoyo y terminar en factutracion, cartera, convenios tarifas
+-- La idea es montar modelo-entidad relacion de los 5 conco modulos anteriores y comenzar a desarrollar estos Modulos con datos que caigan en la facturacion
 -- Como se cambio Hisotira campo espeicalidadesMedicos se agrego, quitar ampoespecialidades
-   Anton arreglar en la historia Clinica la validacion del medico en cuanto a que espeiclidaes tiene de acuerdo a la planta y a la sede
+   Anton arreglar en la historia Clinica la validacion del medico en cuanto a que especialidades tiene de acuerdo a la planta y a la sede
 -- La salida del programa me saca hasta una pantalla de reporteador
+-- La edicion de la Admision no coloca los combos con los valores
+-- La edicion de la Admision no iene funcion que guarde los cambios
+-- El dia lunes termina de estirdiar admisiones.viewd y comenzar con clinico.views/etc
+-- OJJO PARA SELECCIONAR LA PRIMER FILA DE UN TABLE/ PROBAR EN ADMISIONES Y HCLINICA	var $row = $(this).closest('table').children('tr:first');	
+-- Ojo creo que error en el borrado de una radiologia siempre borra la primnera fila, no la seleccionada Verificar, MIERCOLES: Terpais , No qx etx
+   NO PAILANDER PAILAS tiene repetido la funcion borrar . que donde funcina no lo se pero quye esta mal si creo que este mal $('#tablaDiagnosticos tbody').on('click', 'tr', function () {
+-- De pronto verificar borrado de Laboratorios, rx, etc .. Ojo Raos x no borra / proced No qx al borrar el tres me borro dos . el doble dos en una / En medicamentos No borra
+-- Ojo en formulacion de historia cloinica controlar escribir dias en numeros no ñletras
+-- ops grabe un poco de informacion le di retornar sin gusrdar pero me grabo dos folios, ops no se que paso me conto u folio que venia de antes del 31-enero y hot estamos a feb-4
+-- editarGuardarLiquidacionDetalle cor error : Entre EditarGuardarLiquidacionDetalle -- django.utils.datastructures.MultiValueDictKeyError: 'liquidacionDetalleId'
+
 
 

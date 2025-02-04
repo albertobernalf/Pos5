@@ -1431,7 +1431,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         ## Aqui contexto para solo Triage
 
         # Combo de Servicios
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1454,7 +1454,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         # Fin combo servicios
 
         # Combo de SubServicios
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1477,11 +1477,11 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         # Fin combo SubServicios
 
         # Combo de TiposTriage
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
-        #comando = 'SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed."sedesClinica_id" =' + "'" + str(sede) + "'" + ' AND sed."servicios_id" = ser.id and  sed."sedesClinica_id" = sub."sedesClinica_id" and sed."servicios_id" = sub."serviciosSedes_id"'
+
         comando = 'SELECT id, nombre FROM clinico_tipostriage order by id'
         curt.execute(comando)
         print(comando)
@@ -1503,7 +1503,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsServiciosIng
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1527,7 +1527,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsmodalidadGrupoServicioTecSal
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1551,7 +1551,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsViaIngresoServicioSalud
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1575,7 +1575,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsGrupoServicios
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1599,7 +1599,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsCondicionDestinoUsuarioEgreso
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1623,7 +1622,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsCausaMotivoAtencion
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1647,7 +1646,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Combo ripsDestinoUsuarioEgresoRecienNacido
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -1669,11 +1668,8 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Fin combo ripsDestinoUsuarioEgresoRecienNacido
 
-
-
         triage1 = []
 
-        # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
         miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curx = miConexionx.cursor()
@@ -1691,9 +1687,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         miConexionx.close()
         print(triage1)
         context['Triage'] = triage1
-
-
-
 
         ## FIN CONTEXTO
         return render(request, "triage/panelTriage.html", context)
@@ -1768,7 +1761,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Consigo la sede Nombre
 
-    #miConexion = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
     comando = "SELECT nombre   FROM sitios_sedesClinica WHERE id ='" + sede + "'"
@@ -1788,7 +1781,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # esta consulta por que se pierde de otras pantallas
 
-    #miConexion = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
     comando = "SELECT id ,nombre FROM sitios_sedesClinica"
@@ -1807,7 +1800,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     ingresos = []
 
-    #miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
 
@@ -1828,7 +1821,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
     context['Ingresos'] = ingresos
 
     # Combo de Servicios
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT ser.id id ,ser.nombre nombre FROM sitios_serviciosSedes sed, clinico_servicios ser Where sed.sedesClinica_id ='" + str(
@@ -1850,7 +1843,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
     # Fin combo servicios
 
     # Combo de SubServicios
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed.sedesClinica_id ='" + str(
@@ -1873,7 +1866,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
 
     # Combo TiposDOc
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT id ,nombre FROM usuarios_TiposDocumento "
@@ -1894,7 +1887,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
     # Fin combo TiposDOc
 
     # Combo Habitaciones
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     comando = ' SELECT dep.id ,dep.nombre FROM sitios_dependencias dep, sitios_dependenciasTipo tip where dep."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' AND tip.nombre=' + "'" + str('HABITACIONES') + "'" + ' and dep."dependenciasTipo_id" = tip.id'
@@ -1914,7 +1907,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
     # Fin combo Habitaciones
 
     # Combo Especialidades
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT id ,nombre FROM clinico_Especialidades"
@@ -1935,7 +1928,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
     # Fin combo Especialidades
 
     # Combo Medicos
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT p.id id, p.nombre  nombre FROM planta_planta p , planta_perfilesplanta perf WHERE perf.sedesClinica_id = '" + str(
@@ -1959,7 +1952,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Combo Vias Ingreso
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2007,7 +2000,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Combo Regimenes
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2032,7 +2025,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Combo Tipos Cotizante
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2057,7 +2050,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Combo municipios
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2081,7 +2074,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Combo localidades
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2106,7 +2099,7 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
 
     # Combo estadoCivil
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2289,7 +2282,7 @@ def validaPassword(request, username, contrasenaAnt,contrasenaNueva,contrasenaNu
         return HttpResponse(dato)
 
 
-    #miConexion1 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexion1 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur1 = miConexion1.cursor()
     comando = "SELECT documento,contrasena FROM planta_planta WHERE documento = '" + str(username) + "'"
@@ -2357,7 +2350,7 @@ def Modal(request, username, password):
         print(username)
         print(password)
 
-        #miConexion1 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexion1 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
         cur1 = miConexion1.cursor()
         comando = "SELECT documento,contrasena FROM planta_planta WHERE documento = '" + str(username) + "'"
@@ -2401,7 +2394,6 @@ def buscarAdmision(request):
 
     # Consigo la sede Nombre
 
-    #miConexion = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
     comando = "SELECT nombre   FROM sitios_sedesClinica WHERE id ='" + Sede + "'"
@@ -2440,7 +2432,7 @@ def buscarAdmision(request):
 
     ingresos = []
 
-    # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
@@ -2462,7 +2454,7 @@ def buscarAdmision(request):
     context['Ingresos'] = ingresos
 
     # Combo de Servicios
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2485,7 +2477,7 @@ def buscarAdmision(request):
     # Fin combo servicios
 
     # Combo de SubServicios
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2508,7 +2500,7 @@ def buscarAdmision(request):
     # Fin combo SubServicios
 
     # Combo TiposDOc
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2530,7 +2522,7 @@ def buscarAdmision(request):
     # Fin combo TiposDOc
 
     # Combo Habitaciones
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2552,7 +2544,7 @@ def buscarAdmision(request):
     # Fin combo Habitaciones
 
     # Combo Especialidades
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2575,7 +2567,7 @@ def buscarAdmision(request):
 
     # Combo EspecialidadesMedicos
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2597,7 +2589,7 @@ def buscarAdmision(request):
     # Fin combo EspecialidadesMedicos
 
     # Combo Medicos
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2622,7 +2614,7 @@ def buscarAdmision(request):
 
     # Combo TiposFolio
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2647,7 +2639,7 @@ def buscarAdmision(request):
 
     # Combo TiposUsuario
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2672,7 +2664,7 @@ def buscarAdmision(request):
 
     # Combo TiposDocumento
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2697,7 +2689,7 @@ def buscarAdmision(request):
 
     # Combo Centros
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2721,7 +2713,7 @@ def buscarAdmision(request):
 
     # Combo Diagnosticos
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2746,7 +2738,7 @@ def buscarAdmision(request):
 
     # Combo Departamentos
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2771,7 +2763,7 @@ def buscarAdmision(request):
 
     # Combo Ciudades
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2795,7 +2787,7 @@ def buscarAdmision(request):
 
     # Combo Modulos
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2823,7 +2815,7 @@ def buscarAdmision(request):
                                    password="123456")
     curt = miConexiont.cursor()
 
-    # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
+
     comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
         username) + "'"
 
@@ -2871,7 +2863,7 @@ def buscarAdmision(request):
 
     # Combo Vias Ingreso
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2895,7 +2887,7 @@ def buscarAdmision(request):
 
     # Combo Causas Externa
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2919,7 +2911,7 @@ def buscarAdmision(request):
 
     # Combo Regimenes
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2944,7 +2936,7 @@ def buscarAdmision(request):
 
     # Combo Tipos Cotizante
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2968,7 +2960,7 @@ def buscarAdmision(request):
 
     # Combo municipios
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -2992,7 +2984,7 @@ def buscarAdmision(request):
 
     # Combo localidades
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -3017,7 +3009,7 @@ def buscarAdmision(request):
 
     # Combo estadoCivil
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -3042,7 +3034,7 @@ def buscarAdmision(request):
 
     # Combo ocupaciones
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -3068,7 +3060,7 @@ def buscarAdmision(request):
 
     ## Fin Combos para contexto
 
-    #miConexion1 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexion1 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur1 = miConexion1.cursor()
 
@@ -3155,7 +3147,6 @@ def buscarServicios(request):
     print("Sede = ", Sede)
     # Combo de Servicios
 
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -3188,7 +3179,7 @@ def buscarSubServicios(request):
     print ("Sede = ", Sede)
 
     # Combo de SubServicios
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont =psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     #comando = 'SELECT sub.id id ,sub.nombre nombre FROM sitios_serviciosSedes sed ,sitios_subserviciossedes sub Where sed."sedesClinica_id" = ' + "'" + str(Sede) + "'" + '  and sed."sedesClinica_id" = sub."sedesClinica_id" and sed.id = sub."serviciosSedes_id" and sub."serviciosSedes_id" = ' + "'" + str(Serv) + "'"
@@ -3214,7 +3205,6 @@ def buscarSubServicios(request):
     return JsonResponse(json.dumps(subServicios), safe=False)
 
 
-
 def buscarCiudades(request):
     context = {}
     Departamento = request.GET["Departamento"]
@@ -3225,7 +3215,6 @@ def buscarCiudades(request):
     # Combo de Medicos Especialidades
 
 
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
@@ -3235,8 +3224,6 @@ def buscarCiudades(request):
     print(comando)
 
     ciudades = []
-
-
 
     for id, nombre in curt.fetchall():
         ciudades.append({'id': id, 'nombre': nombre})
@@ -3251,8 +3238,6 @@ def buscarCiudades(request):
     return JsonResponse(json.dumps(ciudades), safe=False)
 
 
-
-
 def buscarEspecialidadesMedicos(request):
     context = {}
     Esp = request.GET["Esp"]
@@ -3263,7 +3248,6 @@ def buscarEspecialidadesMedicos(request):
     # Combo de Medicos Especialidades
 
 
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
@@ -3284,7 +3268,6 @@ def buscarEspecialidadesMedicos(request):
 
     miConexiont.close()
     print(medicosEspecialidades)
-
 
     context['MedicosEspecialidades'] = medicosEspecialidades
 
@@ -3310,7 +3293,7 @@ def buscarHabitaciones(request):
 
     # Busco la habitaciones de un Servicio
 
-    #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
@@ -3327,9 +3310,6 @@ def buscarHabitaciones(request):
 
     Habitaciones =[]
 
-
-
-
     for id, nombre in curt.fetchall():
         Habitaciones.append({'id': id, 'nombre': nombre})
 
@@ -3343,8 +3323,6 @@ def buscarHabitaciones(request):
 
     return JsonResponse(json.dumps(Habitaciones), safe=False)
 
-
-
 # aqui nuevo codigo cvrear admision DEF
 
 
@@ -3356,7 +3334,6 @@ def crearAdmisionDef(request):
         print("EntrePost Graba Admision Def")
         data = {}
         context = {}
-
 
         #sedesClinica = request.POST['sedesClinica']
         sedesClinica = request.POST['Sede']
@@ -3589,7 +3566,7 @@ def crearAdmisionDef(request):
 
         ingresos = []
 
-        #miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexionx =  psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
         curx = miConexionx.cursor()
 
@@ -3680,7 +3657,7 @@ def crearAdmisionDef(request):
 
         ingresos = []
 
-        # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curx = miConexionx.cursor()
@@ -3703,7 +3680,7 @@ def crearAdmisionDef(request):
         context['Ingresos'] = ingresos
 
         # Combo de Servicios
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3726,7 +3703,7 @@ def crearAdmisionDef(request):
         # Fin combo servicios
 
         # Combo de SubServicios
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3749,7 +3726,7 @@ def crearAdmisionDef(request):
         # Fin combo SubServicios
 
         # Combo TiposDOc
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3771,7 +3748,7 @@ def crearAdmisionDef(request):
         # Fin combo TiposDOc
 
         # Combo Habitaciones
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3795,7 +3772,7 @@ def crearAdmisionDef(request):
         # Fin combo Habitaciones
 
         # Combo Especialidades
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3818,7 +3795,7 @@ def crearAdmisionDef(request):
 
         # Combo EspecialidadesMedicos
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3841,7 +3818,7 @@ def crearAdmisionDef(request):
         # Fin combo EspecialidadesMedicos
 
         # Combo Medicos
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3868,7 +3845,7 @@ def crearAdmisionDef(request):
 
         # Combo TiposFolio
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3893,7 +3870,7 @@ def crearAdmisionDef(request):
 
         # Combo TiposUsuario
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3918,7 +3895,7 @@ def crearAdmisionDef(request):
 
         # Combo TiposDocumento
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3967,7 +3944,7 @@ def crearAdmisionDef(request):
 
         # Combo Diagnosticos
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -3992,7 +3969,7 @@ def crearAdmisionDef(request):
 
         # Combo Departamentos
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4017,7 +3994,7 @@ def crearAdmisionDef(request):
 
         # Combo Ciudades
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4041,7 +4018,7 @@ def crearAdmisionDef(request):
 
         # Combo Modulos
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4117,7 +4094,7 @@ def crearAdmisionDef(request):
 
         # Combo Vias Ingreso
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4141,7 +4118,7 @@ def crearAdmisionDef(request):
 
         # Combo Causas Externa
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4165,7 +4142,7 @@ def crearAdmisionDef(request):
 
         # Combo Regimenes
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4189,7 +4166,7 @@ def crearAdmisionDef(request):
 
         # Combo Tipos Cotizante
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4213,7 +4190,7 @@ def crearAdmisionDef(request):
 
         # Combo municipios
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -4399,7 +4376,7 @@ def guardarUsuariosModal(request):
     print(documento)
     print(tipoDoc_id)
 
-    #miConexion11 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexion11 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur11 = miConexion11.cursor()
     comando = 'SELECT usu.id, usu."tipoDoc_id", usu.documento FROM usuarios_usuarios usu WHERE usu."tipoDoc_id" = ' + "'" + str(tipoDoc_id) + "'" + ' AND usu.documento = ' + "'" + str(documento) + "'"
@@ -4420,7 +4397,7 @@ def guardarUsuariosModal(request):
     if Usuarios == []:
 
          print("Entre a crear")
-         #miConexion3 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
          miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
          cur3 = miConexion3.cursor()
          comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio", pais_id,  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", municipio_id, localidad_id, "estadoCivil_id", ocupacion_id, correo ,"fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" +  ', ' + "'" + str(pais) + "'" + ', ' + "'" + str(departamento) + "'" +  '  , ' + "'" +  str(ciudad) + "'" + '  , ' + "'" +  str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosc_id) + "'" +  ', ' + "'" + str(tipoDoc_id) + "'" + ', ' + "'" + str(tiposUsuario_id) + "' , " + "'" + str(municipio) + "'" +   ', ' + "'" + str(localidad) + "'" + ", " + "'" + str(estadoCivil) + "'" + ", " + "'" + str(ocupacion) + "'" + ", " + "'" + str(correo) + "', " +  "'"  + str(fechaRegistro) + "'"  +  ", 'A'"  +      ')'
@@ -4431,7 +4408,7 @@ def guardarUsuariosModal(request):
          return HttpResponse("Usuario Creado ! ")
     else:
         print("Entre a actualizar")
-        #miConexion3 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
         cur3 = miConexion3.cursor()
         comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosc_id) + "'" + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario_id) + "' , "   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= ' + "'" + str(estadoCivil) + "'" + ', ocupacion_id = ' + "'" + str(ocupacion) + "'"  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
@@ -4565,7 +4542,7 @@ def cambioServicio(request):
 
 
     # Combo de Servicios
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -4588,7 +4565,7 @@ def cambioServicio(request):
     # Fin combo servicios
 
     # Combo de SubServicios
-    # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -4906,13 +4883,12 @@ def load_dataConvenioAdmisiones(request, data):
     print ("sede:", sede)
     print ("ingresoId:", ingresoId)
 
-   
 
     #print("data = ", request.GET('data'))
 
     conveniosPacienteIngresos = []
 
-    # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",     password="123456")
     curx = miConexionx.cursor()
    
@@ -5173,9 +5149,6 @@ def GuardaFurips(request):
     print ("numeroFactura = ", numeroFactura)
     primerNombreVictima = request.POST["primerNombreVictima"]
     print ("primerNombreVictima = ", primerNombreVictima)
-
-
-
     
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
