@@ -85,7 +85,6 @@ def load_dataLiquidacion(request, data):
 
     liquidacion = []
 
-    # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",     password="123456")
     curx = miConexionx.cursor()
    
@@ -554,8 +553,6 @@ def load_dataLiquidacionDetalle(request, data):
     print("username:", username)
     print("username_id:", username_id)
 
-    
-
 
     # Abro Conexion para la Liquidacion Detalle
 
@@ -605,7 +602,6 @@ def PostConsultaLiquidacionDetalle(request):
 
     # Combo Cups
 
-    # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
@@ -653,8 +649,6 @@ def PostConsultaLiquidacionDetalle(request):
     print(suministros)
 
     # Fin combo suministros
-
-
 
     # Aqui RUTINA Leer el registro liquidacionDetalle
 
@@ -714,9 +708,13 @@ def GuardaAbonosFacturacion(request):
     print ("Entre GuardaAbonosFacturacion" )
 
     liquidacionId = request.POST['liquidacionId2']
+    print("liquidacionId =", liquidacionId)
     #sede = request.POST['sede']
     tipoPago = request.POST['tipoPago']
+    print ("tipoPago =", tipoPago)
+
     formaPago = request.POST['formaPago']
+    print ("formaPago =", formaPago)
     valor = request.POST['valorAbono']
     descripcion = request.POST['descripcionAbono']
     print ("liquidacionId  = ", liquidacionId )
@@ -733,6 +731,19 @@ def GuardaAbonosFacturacion(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
     comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg", saldo, "totalAplicado", "valorEnCurso") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consecAdmision) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") +  "','" + str(valor) + "',0,0);"
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+    # Actualizo el total recibido
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE  facturacion_liquidacion SET "totalRecibido" = "anticipos" +  "totalAbonos" + "totalCuotaModeradora" +  "totalCopagos"  WHERE id = ' + "'" + str(liquidacionId) + "'"
+
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
@@ -938,6 +949,9 @@ def EditarGuardarLiquidacionDetalle(request):
     print ("Entre EditarGuardarLiquidacionDetalle" )
 
     liquidacionDetalleId = request.POST['liquidacionDetalleId']
+
+    print ("liquidacionDetalleId =", liquidacionDetalleId)
+
     cups = request.POST["ldcups"]
     suministros = request.POST["ldsuministros"]
     cantidad = request.POST['ldcantidad']
@@ -988,9 +1002,15 @@ def EditarGuardarLiquidacionDetalle(request):
     totalAbonos = registroPago.totalAbonos
     #valorEnCurso = registroPago.valorEnCurso
     totalRecibido = registroPago.totalRecibido
+    if totalRecibido == None:
+           totalRecibido=0
+
+    print ("totalRecibido", totalRecibido )
     totalAnticipos = registroPago.anticipos
     totalLiquidacion = totalSuministros + totalProcedimientos
+    print("totalLiquidacion", totalLiquidacion)
     valorApagar = totalLiquidacion -  totalRecibido
+    print("valorApagar", valorApagar)
     
 
     # Rutina Guarda en cabezote los totales
@@ -1448,6 +1468,9 @@ def GuardaApliqueAbonosFacturacion(request):
     print ("liquidacionId  = ", liquidacionId )
     abonoId = request.POST["aabonoId"]
     print ("abonoId = ", abonoId)
+    aformaPago = request.POST["aformaPago"]
+
+    print("aformaPago = ", aformaPago)
 
     fechaRegistro = datetime.datetime.now()
 
@@ -1459,7 +1482,44 @@ def GuardaApliqueAbonosFacturacion(request):
     ## falta usuarioRegistro_id
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'UPDATE cartera_Pagos SET "valorEnCurso" = ' + str(valorEnCurso) + ' WHERE id = ' + str(abonoId)
+    comando = 'UPDATE cartera_Pagos SET saldo = saldo - ' + str(valorEnCurso)  +  ' ,  "valorEnCurso" = ' + str(valorEnCurso) + ' WHERE id = ' + str(abonoId)
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+    # Aqui falta Adicionar o actualizar el total de Abonos pero si no hay cabezote ??
+    # Voy a actualizar el total de Abono, o Moderadora o Anticipo
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    cur3 = miConexion3.cursor()
+
+    if aformaPago == "1":
+        print("Entre 1")
+        comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = "anticipos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+    if aformaPago == "2":
+        print("Entre 2")
+        comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" = "totalAbonos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+    if aformaPago == "3":
+        print("Entre 3")
+        comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = "totalCuotaModeradora" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+    if aformaPago == "4":
+        print ("Entre 4")
+        comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = "totalCopagos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    # Actualizo el total recibido
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE  facturacion_liquidacion SET "totalRecibido" = "anticipos" +  "totalAbonos" + "totalCuotaModeradora" +  "totalCopagos"  WHERE id = ' + "'" + str(liquidacionId) + "'"
+
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()

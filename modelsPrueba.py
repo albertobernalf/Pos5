@@ -387,6 +387,20 @@ Modulos:
                  XML de respuesta
         Los JSON y XML de respuesta ni an se sabe  NOOO es tema inicial. Orden por favor o si no ñucas.
 
+	IDEAS : Todo de pronto bajo el programa de RIPS
+
+	-- Pantalla Generacion de XML , facturacion electronica para la DIAN   PENDIENTE
+
+        -- Pantalla crea envios : Muestra envios existentes / Crea Envios a partir de Facturas sin rips
+	-- Pantalla Envio de Rips al ministerio de Salud. Puebla las tablas de Rips y Genera JSON-RIPS (Facturas-Notas Credito)
+        -- Pantalla Recepcion de rips ( Respuesta de Rips)
+
+	-- Pantalla Creacion de Glosas a partir de Rips
+	-- Pantalla Recepcion de Glosas a nivel de cada Rips-Factura-Item
+	-- Pantalla captura de Otras Notas credito
+        -- Pantalla captura de Notas Debito
+
+
 
 -----------------------------------------------------------------------------------------------------------------------
 --  RIPS 
@@ -396,6 +410,7 @@ Modulos:
 --  RADICACIONES
 -----------------------------------------------------------------------------------------------------------------------
 
+      -- Radica con FEC y FEV documentos ante los pagadores  de salud (EPS-Entes territoriales, etc)
 
 
 - Desde aquip año 2025, arrancamos papberol. Tamos trabajando con Centos9 - Postgresql-16 y Pos3 windows vulner2/postgres/123456
@@ -414,7 +429,22 @@ Modulos:
 -- De pronto verificar borrado de Laboratorios, rx, etc .. Ojo Raos x no borra / proced No qx al borrar el tres me borro dos . el doble dos en una / En medicamentos No borra
 -- Ojo en formulacion de historia cloinica controlar escribir dias en numeros no ñletras
 -- ops grabe un poco de informacion le di retornar sin gusrdar pero me grabo dos folios, ops no se que paso me conto u folio que venia de antes del 31-enero y hot estamos a feb-4
--- editarGuardarLiquidacionDetalle cor error : Entre EditarGuardarLiquidacionDetalle -- django.utils.datastructures.MultiValueDictKeyError: 'liquidacionDetalleId'
+-- cuando cvrea un abono no regfresca en liquidaciondetalle los totales de abajo
+-- Me muestra mas abonos de los que deben ser solo tengo tres y me muestra de cuatro paciuentes.. creo que el del problema es la cuenta triage
+-- Al editar liquidacionDetalle no se puede cambiar de cums a cups y visceversa., Cuando se edita procedimiento inactiva combo suministros y visceversa, cuandpo se edita suministro inactiva procedimiento
+-- Ojo arregla valorEnCurso , Aplicado. Elvalor en curspo deb actualizar el totalabonos pejemplo en facturacion_liquidacion. Cuando se factura se aplica el valor en curso. Osea se aplica y el valor en curso queda en ceros
+-- Tengo problemas cuando se modifica mas de una vez elk valorEnCurso . Verificar y arreglar
+-- cuando edito liquidaciondetalle. No ,me perite cambiar cups o suministros y tan solo debe permitir uno no mas.- deben ser comottexct o algo asi que solo se muestre si no pues que anulen y entrn el corregido
+-- Ojo cuando crfeo la factura no desaparecio los datos de liquidaciondetalle y no actualizo la pantalla de facturtacion
+-- oPS EN liquidaciondetalle cuando seleccion un TRIAGE se pierden los combos suministrs/cups d ela pantalla liquidaciondetalle
+-- en la pantalla d eliquidaciondetalla  mostrar si el paciente tiene salida clinica
+-- ops tengo un error en cuando selecciono en liquidacion un  paciente triage:
 
+  File "C:\EntornosPython\Pos3\vulner\facturacion\views.py", line 296, in PostConsultaLiquidacion
+    print(ConveniosPaciente)
+NameError: name 'ConveniosPaciente' is not defined
+--OJO cuando selecciono una factura en facturacion el ultimo registro noi me activa la pantalla de anulacion y refacturacion de esa factura
+
+-- LISTO YA TENGO TRES FACTURAS PARA COMENZAR RIPS
 
 

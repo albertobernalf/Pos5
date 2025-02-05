@@ -419,6 +419,7 @@ function RefrescarPantalla() {
 			<input type="hidden" id="documento_id" name="documentoc_id" value="0" readonly>
 			<input type="hidden" id="liquidacionId" name="liquidacionId" value="0" readonly>
 		        <input type="hidden" id="liquidacionId1" name="liquidacionId1" value="0" readonly>
+			<input type="hidden" id="tipoFactura" name="tipoFactura" value="FACTURA" readonly>
 
 	       <div class="row row-cols-8" style="height=25px;">
 						
@@ -597,7 +598,7 @@ function RefrescarPantalla() {
 					<div class="form-group row">
 					 <label for="BtnAdicionarLiquidacion" class="col-form-label col-sm-6"> + </label>
 
-					     <div class="col col-sm-6">
+					     <div class="col col-sm-3">
 			                        <input type="button" class="form-control form-control-sm" id="BtnAdicionarLiquidacion"  name="BtnAdicionarLiquidacion" value="Adicionar" onclick="AdicionarLiquidacion()">
 					</div>
 					</div>
@@ -608,7 +609,7 @@ function RefrescarPantalla() {
 					<div class="form-group row">
 					 <label for="BtnRefrescarLiquidacionDetalle" class="col-form-label col-sm-6">  </label>
 
-					     <div class="col col-sm-6">
+					     <div class="col col-sm-3">
 			                        <input type="button" class="form-control form-control-sm" id="BtnRefrescarLiquidacionDetalle"  name="BtnRefrescarLiquidacionDetalle" value="Refrescar" onclick="RefrescarLiquidacionDetalle()">
 					</div>
 					</div>
@@ -785,7 +786,7 @@ function RefrescarPantalla() {
                                 <div class="col">
                                     <label for="ldcups" class="col-sm-2 control-label">Cups:</label>
                                     <select class="form-select  h-100 w-200" aria-label="" id="ldcups"
-                                            name="ldcups">
+                                            name="ldcups" >
                                         {% for cups in Cups %}
                                         <option value="{{cups.id}}"> {{cups.nombre}}</option>
                                         {% endfor %}
@@ -795,7 +796,7 @@ function RefrescarPantalla() {
                                 <div class="col">
                                     <label for="ldsuministros" class="col-sm-2 control-label">Suministro:</label>
                                     <select class="form-select  h-100 w-200" aria-label="" id="ldsuministros"
-                                            name="ldsuministros">
+                                            name="ldsuministros" >
                                         {% for suministros in Suministros %}
                                         <option value="{{suministros.id}}"> {{suministros.nombre}}</option>
                                         {% endfor %}
@@ -1088,12 +1089,15 @@ function RefrescarPantalla() {
                                 <div class="col">
 				  <div class="form-group row">
                                     <label for="aformaPago" class="col-sm-2 control-label">Forma Pago:</label>
-                                    <select class="form-select  h-100 w-200" aria-label="" id="aformaPago"
+                                     <input type="text" id="aformaPago" name="aformaPago" value="" readonly></input>
+					<!--
+					<select class="form-select  h-100 w-200" aria-label="" id="aformaPago"
                                             name="aformaPago" disabled >
                                         {% for formasPagos in FormasPagos %}
                                         <option value="{{formasPagos.id}}"> {{formasPagos.nombre}}</option>
                                         {% endfor %}
                                     </select>
+					-->
 				 </div>
                                 </div>
 

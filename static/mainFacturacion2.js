@@ -357,17 +357,19 @@ $(document).ready(function () {
 
 
 
-                     const $id437 = document.querySelector("#aformaPago");
+                   //  const $id437 = document.querySelector("#aformaPago");
 
- 	      		     $("#aformaPago").empty();
+// 	      		     $("#aformaPago").empty();
 
-	                 $.each(data['FormasPagos'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id437.appendChild(option);
- 	      		      });
+//	                 $.each(data['FormasPagos'], function(key,value) {
+ //                                   options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+  //                                 option = document.createElement("option");
+   //                                 option.value = value.id;
+    //                               option.text = value.nombre;
+     //                               $id437.appendChild(option);
+ //	      		      });
+
+
 			$('#AtipoPago').val(data.tipoPago_id);
 			$('#aformaPago').val(data.formaPago_id);
 
@@ -724,7 +726,7 @@ function initTableLiquidacionDetalle(data) {
                     },
             processing: true,
             serverSide: false,
-            scrollY: '220px',
+            scrollY: '200px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -955,12 +957,13 @@ function AFacturar()
 
  	var liquidacionId = document.getElementById("liquidacionId").value;
  	var username_id = document.getElementById("username_id").value;
+	var tipoFactura = document.getElementById("tipoFactura").value;
 
 
 		$.ajax({
 	           url: '/facturarCuenta/',
 	            data :
-	            {'liquidacionId':liquidacionId, 'username_id':username_id},
+	            {'liquidacionId':liquidacionId, 'username_id':username_id, 'tipoFactura':tipoFactura},
 	           type: 'POST',
 	           dataType : 'json',
 	  		success: function (data) {
