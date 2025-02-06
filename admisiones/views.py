@@ -1731,6 +1731,15 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         return render(request, "tarifas/Paneltarifas.html", context)
 
 
+    if (escogeModulo == 'RIPS'):
+        print("WENTRE PERMSISO RIPS")
+        ## Aqui contexto para solo Rips
+
+        ## FIN CONTEXTO
+        return render(request, "rips/PanelRips.html", context)
+
+
+
 
     return render(request, "panelVacio.html", context)
 

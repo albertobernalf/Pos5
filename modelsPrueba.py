@@ -429,22 +429,23 @@ Modulos:
 -- De pronto verificar borrado de Laboratorios, rx, etc .. Ojo Raos x no borra / proced No qx al borrar el tres me borro dos . el doble dos en una / En medicamentos No borra
 -- Ojo en formulacion de historia cloinica controlar escribir dias en numeros no ñletras
 -- ops grabe un poco de informacion le di retornar sin gusrdar pero me grabo dos folios, ops no se que paso me conto u folio que venia de antes del 31-enero y hot estamos a feb-4
--- cuando cvrea un abono no regfresca en liquidaciondetalle los totales de abajo
+
+
+-- cuando crea un abono no refresca en liquidaciondetalle los totales de abajo
 -- Me muestra mas abonos de los que deben ser solo tengo tres y me muestra de cuatro paciuentes.. creo que el del problema es la cuenta triage
 -- Al editar liquidacionDetalle no se puede cambiar de cums a cups y visceversa., Cuando se edita procedimiento inactiva combo suministros y visceversa, cuandpo se edita suministro inactiva procedimiento
--- Ojo arregla valorEnCurso , Aplicado. Elvalor en curspo deb actualizar el totalabonos pejemplo en facturacion_liquidacion. Cuando se factura se aplica el valor en curso. Osea se aplica y el valor en curso queda en ceros
--- Tengo problemas cuando se modifica mas de una vez elk valorEnCurso . Verificar y arreglar
+-- Tengo problemas cuando se modifica mas de una vez elk valorEnCurso dentro de una misma factura . Verificar y arreglar
 -- cuando edito liquidaciondetalle. No ,me perite cambiar cups o suministros y tan solo debe permitir uno no mas.- deben ser comottexct o algo asi que solo se muestre si no pues que anulen y entrn el corregido
--- Ojo cuando crfeo la factura no desaparecio los datos de liquidaciondetalle y no actualizo la pantalla de facturtacion
--- oPS EN liquidaciondetalle cuando seleccion un TRIAGE se pierden los combos suministrs/cups d ela pantalla liquidaciondetalle
--- en la pantalla d eliquidaciondetalla  mostrar si el paciente tiene salida clinica
--- ops tengo un error en cuando selecciono en liquidacion un  paciente triage:
+-- Ojo cuando creo la factura no desaparecio los datos de liquidaciondetalle y no actualizo la pantalla de facturacion
+-- OJO HAY UN PROBLEMA CUANDO UN PACIENTE ES TRIAGE Y quiere realizar un abono
+-- OJO ERROR APOYO TERAPEUTICO
+  response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\EntornosPython\Pos3\vulner\terapeutico\views.py", line 94, in load_dataApoyoTerapeutico
+    curt.execute(comando)
+psycopg2.errors.UndefinedColumn: no existe la columna med.nombre
+LINE 1: SELECT med.id id, med.nombre nombre FROM clinico_medicos med...
 
-  File "C:\EntornosPython\Pos3\vulner\facturacion\views.py", line 296, in PostConsultaLiquidacion
-    print(ConveniosPaciente)
-NameError: name 'ConveniosPaciente' is not defined
---OJO cuando selecciono una factura en facturacion el ultimo registro noi me activa la pantalla de anulacion y refacturacion de esa factura
 
 -- LISTO YA TENGO TRES FACTURAS PARA COMENZAR RIPS
-
+-- Mañana seguir con detalle de enviorips
 

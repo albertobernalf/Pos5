@@ -137,7 +137,7 @@ function RefrescarPantalla() {
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="alert alert-success success-msg" style="display:none"></div>
-                                        <table  id= "tablaLiquidacion" class="display nowrap table table table-bordered  tablaLiquidacion table-hover table-sm dtr-inline" style="width:100%;">
+                                        <table  id= "tablaLiquidacion" class="display nowrap table table table-bordered  tablaLiquidacion table-hover table-sm dtr-inline" style="width:100%;  margin-left: 0;">
                                            <thead>
                                             <tr>                                      
                                                 <th>id</th>
@@ -277,7 +277,7 @@ function RefrescarPantalla() {
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="alert alert-success success-msg" style="display:none"></div>
-                                        <table  id= "tablaFacturacion" class="display nowrap table table table-bordered  tablaFacturacion table-hover table-sm dtr-inline" style="width:100%;">
+                                        <table  id= "tablaFacturacion" class="display nowrap table table table-bordered  tablaFacturacion table-hover table-sm dtr-inline" style="width:100%;  margin-left: 0;">
                                            <thead>
                                             <tr>
                                                 <th>Factura</th>
@@ -421,11 +421,11 @@ function RefrescarPantalla() {
 		        <input type="hidden" id="liquidacionId1" name="liquidacionId1" value="0" readonly>
 			<input type="hidden" id="tipoFactura" name="tipoFactura" value="FACTURA" readonly>
 
-	       <div class="row row-cols-8" style="height=25px;">
+	       <div class="row row-cols-11" style="height=25px;">
 						
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="fecha" class="col-form-label col-sm-4">Fecha:</label>
+						 Fecha:
 						 <div class="col-sm-5">
 							  <input type="text" id="fecha" name="fecha" value="0" readonly>
 	                                        </div>
@@ -434,8 +434,8 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="tipoDoc" class="col-form-label col-sm-4">TipoDoc:</label>
-						 <div class="col-sm-4">
+						TipoDoc:
+						 <div class="col-sm-2">
 							  <input type="text" id="tipoDoc" name="tipoDoc" value="0" readonly>
 	                                        </div>
           	                            </div>
@@ -443,8 +443,8 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="documento" class="col-form-label col-sm-4">DocNo:</label>
-						 <div class="col-sm-4">
+						 DocNo:
+						 <div class="col-sm-1">
 							  <input type="text" id="pdocumento" name="pdocumento" value="0" readonly>
 	                                        </div>
           	                            </div>
@@ -452,7 +452,7 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-					<label for="paciente" class="col-form-label col-sm-4">Paciente:</label>
+					 Paciente:
 						 <div class="col-sm-4">
 							  <input type="text" id="paciente" name="paciente" value="0" readonly>
 	                                        </div>
@@ -461,8 +461,8 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="consecAdmision" class="col-form-label col-sm-4">Consec:</label>
-						 <div class="col-sm-4">
+						 Consec:
+						 <div class="col-sm-1">
 							  <input type="text" id="consecAdmision" name="consecAdmision" value="0" readonly>
 	                                        </div>
           	                            </div>
@@ -470,7 +470,7 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="nombreConvenio" class="col-form-label col-sm-4">Convenio:</label>
+						 Convenio:
 						 <div class="col-sm-4">
 							  <input type="text" id="nombreConvenio" name="nombreConvenio" value="0" readonly>
 	                                        </div>
@@ -479,18 +479,29 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="cama" class="col-form-label col-sm-4">Cama:</label>
-						 <div class="col-sm-4">
+						Cama:
+
+						 <div class="col-sm-3">
 							  <input type="text" id="cama" name="cama" value="0" readonly>
 	                                        </div>
           	                            </div>
                                       </div>
 
+					<div class="col">
+			  		     <div class="form-group row">
+						>salidaClinica:
+						 <div class="col-sm-1">
+							  <input type="text" id="salidaClinica" name="salidaClinica" value="0" readonly>
+	                                        </div>
+          	                            </div>
+                                      </div>
+
+
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="servicio" class="col-form-label col-sm-4">Servicio:</label>
-						 <div class="col-sm-4">
+						Servicio:
+						 <div class="col-sm-3">
 							  <input type="text" id="servicio" name="servicio" value="0" readonly>
 	                                        </div>
           	                            </div>
@@ -498,8 +509,8 @@ function RefrescarPantalla() {
 
 					<div class="col">
 			  		     <div class="form-group row">
-						 <label for="observaciones" class="col-form-label col-sm-4"></label>
-						 <div class="col-sm-4">
+						 observaciones
+						 <div class="col-sm-3">
 							  <input type="hidden" id="observaciones" name="observaciones" value="0" readonly>
 	                                        </div>
           	                            </div>
@@ -964,7 +975,7 @@ function RefrescarPantalla() {
                                             <div class="card-body" >
                                                 <div class="row">
                                                     <div class="col-sm-12">
-                                                        <table id=tablaAbonosFacturacion class="display nowrap table table table-bordered  tablaAbonosFacturacion table-hover table-sm dtr-inline" style="width:100%;">
+                                                        <table id=tablaAbonosFacturacion class="display nowrap table table table-bordered  tablaAbonosFacturacion table-hover table-sm dtr-inline" style="width:100%;  margin-left: 0;">
                                                             <thead style="height:15px; margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;">
                                                             <tr>
 				                                <th>Tipo Pago                </th>

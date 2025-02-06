@@ -34,6 +34,7 @@ from clinico import views as viewsClinico
 from terapeutico import views as viewsApoyoTerapeutico
 from facturacion import views as viewsFacturacion
 from contratacion import views as viewsConvenios
+from rips import views as viewsRips
 #from mecanicosPacientes import views as viewsmecanicosPacientes
 
 
@@ -198,6 +199,13 @@ urlpatterns = [
     path('guardaApliqueAbonosFacturacion/', viewsFacturacion.GuardaApliqueAbonosFacturacion, name='guardaApliqueAbonosFacturacion'),
     path('trasladarConvenio/', viewsFacturacion.TrasladarConvenio, name='trasladarConvenio'),
     path('buscoAbono/', viewsFacturacion.BuscoAbono, name='buscoAbono'),
+
+    # Rips
+
+    path('load_dataEnviosRips/<str:data>', viewsRips.load_dataEnviosRips, name='loaddataEnviosRips'),
+    path('guardaEnviosRips/', viewsRips.GuardaEnviosRips, name='GuardaEnviosRips'),
+
+
 
     # Contratacion
     path('load_dataConvenios/<str:data>', viewsConvenios.load_dataConvenios, name='loaddataConvenios'),

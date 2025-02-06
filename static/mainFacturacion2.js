@@ -8,6 +8,7 @@ $(document).ready(function () {
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
+         
 
         var data =  {}   ;
 
@@ -49,10 +50,11 @@ $(document).ready(function () {
 
 
          initTableLiquidacion(data);
-		 initTableLiquidacionDetalle(data);
-        	 initTableFacAbonos(data);
-	          initTableFacturacion(data);
+	 initTableLiquidacionDetalle(data);
+       	 initTableFacAbonos(data);
+         initTableFacturacion(data);
 
+	
        /*--------------------------------------------
         Click to Edit Button
         --------------------------------------------
@@ -62,6 +64,8 @@ $(document).ready(function () {
 
 	          var post_id = $(this).data('pk');
           alert("pk1 = " + $(this).data('pk'));
+	
+
 
         var username_id = document.getElementById("username_id").value;
 
@@ -106,6 +110,7 @@ $(document).ready(function () {
 		$('#observaciones').val(data.observaciones);
 		$('#cama').val(data.dependenciaNombre);
 		$('#servicio').val(data.servicioNombre);
+		$('#salidaClinica').val(data.salidaClinica);
 
 
 			// Colocar Totales
@@ -381,6 +386,7 @@ $(document).ready(function () {
                         $('.success-msg').text(data.error);
                 }
             });
+
 
 
       
@@ -665,6 +671,9 @@ $(document).ready(function () {
             $.each( msg, function( key, value ) {
                 $(".error-msg").find("ul").append('<li>'+value+'</li>');
             });
+
+
+
         }
 
 function initTableLiquidacion(data) {
@@ -861,6 +870,14 @@ function initTableFacturacion(data) {
  });
 }
 
+	// Supongamos aqui fin de Varque inicial
+
+
+
+	$('#tablaLiquidacion tr').eq(0).addClass('selected');
+	$('#tablaLiquidacion tr').eq(1).addClass('selected');
+
+
 	// if ( $.fn.dataTable.isDataTable( '#tablaLiquidacion' ) ) {
 	//	    table = $('#tablaLiquidacion').DataTable();
 	 //   	table.ajax.reload();
@@ -1004,6 +1021,8 @@ function AFacturar()
 			data2['desdeFactura'] = desdeFactura;
 			data2['hastaFactura'] = hastaFactura;
 			data2['bandera'] = 'Por Fecha';
+
+			alert("Este es el mensaje de regreso COINCIDE ??" + data.message);
 
 
                      if (data.message != 'Paciente NO tiene Salida Clinica. Consultar medico tratante !')

@@ -1,0 +1,315 @@
+{% extends "rips/menuRips.html" %}
+{% load static %}
+
+{% block head %}
+
+
+<link rel="stylesheet" type="text/css" href={% static 'css/panelRips.css' %}>
+<link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %}>
+<link rel="stylesheet" type="text/css"  href = {% static 'css/litle.css' %} >
+<script src={% static 'js/panelTabsRips.js' %} defer >         </script>
+<script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
+ <script src={% static 'mainRips.js' %} defer > </script>
+
+<div class="marco">
+    <ul class="tabs">
+
+        <li><a href="#Rips"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Envios Rips </a></li>
+        <li><a href="#Creacion_Envios_Rips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
+        <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Json Rips </a></li>
+        <li><a href="#Radicacion"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span>Radicacion Cuentas </a></li>
+
+    </ul>
+</div>
+
+<style>
+div.dataTables_wrapper  div.dataTables_filter input {
+   height: 2px;
+   padding:10px;
+   border-radius:8px;
+}
+
+div.dataTables_filter input {
+    width: 50px;
+  }
+</style>
+
+
+{% endblock %}
+
+{% block encabezado %}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="marco">
+    <div class="secciones">
+
+        <article id="Rips">
+        <center><h3>Envios Rips</h3></center>
+	  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+            <form action="/enviosRips/" method="get" id="FormEnviosRips">
+
+                <input type="hidden" id="username" name="username" value="{{Username}}">
+                <input type="hidden" id="sedeSeleccionada" name="sedeSeleccionada" value="{{SedeSeleccionada}}">
+                <input type="hidden" id="numreporte" name="numreporte" value="{{numreporte}}">
+                <input type="hidden" id="grupo" name="grupo" value="{{Grupo}}">
+                <input type="hidden" id="subGrupo" name="subGrupo" value="{{SubGrupo}}">
+                <!--  Estos si de la Aplixcacion base -->
+                <input type="hidden" id="sede" name="sede" value="{{Sede}}">
+                <input type="hidden" id="documento" name="documento" value="{{Documento}}">
+                <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+                <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}">
+                <input type="hidden" id="permisosGrales" name="permisosGrales" value="{{PermisosGrales}}">
+                <input type="hidden" id="permisosDetalle" name="permisosDetalle" value="{{PermisosDetalle}}">
+                <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
+                <input type="hidden" id="username_id" name="username_id" value="{{Username_id}}">
+
+                <input type="hidden" id="tipoDocId" name="tipoDocId" value="">
+                <input type="hidden" id="nombreTipoDoc" name="nombreTipoDoc" value="">
+                <input type="hidden" id="documentoId" name="documentoId" value="">
+                <input type="hidden" id="documento2" name="documento2" value="">
+                <input type="hidden" id="consec" name="consec" value="">
+                <input type="hidden" id="tipoIng" name="tipoIng" value="{{tipoIng}}">
+		<input type="hidden" id="convenioId" name="convenioId" value="{{convenioId}}">
+	
+            </form>
+
+            <!-- INICIO TABLE DE  EL DATATABLE  -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" style="height:45px; margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;">
+                            <div class="row">
+				<div class="col-md-10">	
+				</div>
+				 <div class="col-md-2">	
+				
+	                        <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnvioRips"  name="BtnEnvioRips" value="Adicionar" onclick= "EnvioRips()" >				    
+                               </div>
+                            </div>
+                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-success success-msg" style="display:none"></div>
+                                        <table  id= "tablaEnviosRips" class="display nowrap table table table-bordered tablaEnviosRips table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
+                                           <thead>
+                                            <tr>    
+						<bold>                                  
+                                                <th>id</th>
+                                                <th>NumeroEnvio</th>
+                                                <th>FechaEnvio</th>
+                                                <th>FechaRespuesta</th>
+                                                <th>Facturas</th>
+                                                <th>Pasaron</th>
+                                                <th>Rechazadas</th>
+                                                <th>AlMinisterio</th>
+						<th>JsonError</th>
+						<th>JsonAprobado</th>
+						<th>FechaRegistro</th>
+						<th>UsuarioRegistro</th>
+                                                <th>Action</th>
+						</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody style="vertical-align:bottom; horizontal-align:left">
+                                            <tr style="height:10%">
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> <!-- cierra body -->
+                    </div> <!-- cierra card -->
+                </div> <!-- cierra col -->
+            </div> <!-- cierra row -->
+
+	   </div> <!-- cierra div -->
+
+
+
+	            <!-- Espacio Modales  EnviosRips-->
+
+            <div class="modal fade" id="crearModelEnviosRips" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modelHeadingEnviosRips"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+                            <form id="postFormEnviosRips" name="postFormEnviosRips" class="form-horizontal"
+                                  novalidate>
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" id="post_id">
+                     
+				<div class="row row-cols-8" style="height=1px;">
+				<div class="col">
+                                    NumeroEnvio
+                                    <input type="text" id="numeroEnvio" name="numeroEnvio" value="0" ></input>
+                                </div>
+                          
+				<div class="col">
+                                   Fecha Envio:
+                               
+					 <input type="datetime-local" id="fechaEnvio" name="fechaEnvio"  >
+                                </div>
+
+				<div class="col">
+                                    Fecha Respuesta:
+					 <input type="datetime-local" id="fechaRespuesta" name="fechaRespuesta">
+                                </div>
+
+				<div class="col">
+                                    CantidadFacturas:
+                                    <input type="text" id="cantidadFacturas" name="cantidadFacturas" value="0" readonly></input>
+                                </div>
+				<div class="col">
+                                    CantidadPasaron:
+                                    <input type="text" id="cantidadPasaron" name="cantidadPasaron" value="0" readonly></input>
+                                </div>
+				<div class="col">
+                                    CantidadRechazadas:
+                                    <input type="text" id="cantidadRechazadas" name="cantidadRechazadas" value="0" readonly></input>
+	                                </div>
+
+
+                                <div class="col">
+                                    EstadoPasoMinisterio:
+                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="N"></input>
+                                </div>
+                                <div class="col">
+                                    JsonError:
+                                    <input type="text" id="jsonError" name="jsonError" value="" > </input>
+                                </div>
+
+                                <div class="col">
+                                    JsonAprobado:
+                                    <input type="text" id="jsonAprobado" name="jsonAprobado" value="" > </input>
+                                </div>
+
+
+                                <div class="col">
+                                   
+                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+                                </div>
+
+
+
+                                <div class="col">
+                                    EstadoRegistro:
+                                    <input type="text" id="estadoReg" name="estadoReg" value="A"  readonly> </input>
+                                </div>
+
+
+
+                                <div class="col">
+                                    UsuarioRegistro_id:
+                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
+                                </div>
+
+
+                                <div class="col-sm-offset-2 col-sm-10 mt-2">
+                                    <button type="button" class="btn btn-primary" id="saveBtnCrearEnviosRips"   value="create" onclick="CrearEnviosRips()">Guardar </button>
+                                </div>
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+                        </div> <!-- CIERRA BODY -->
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+     <!-- FIN Espacio Modales  -->
+
+
+
+        </article>
+
+
+<article id="Creacion_Envios_Rips">
+        	    <center><h3>Creacion Envios Rips</h3></center>
+		  <div style="height: 450px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="GenerarJsonRips">
+        	    <center><h3>Generar Json Rips</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="Radicacion">
+        	    <center><h3>Radicacion</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+
+<article id="Glosas">
+        	    <center><h3>Glosas</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="NotasCredito">
+        	    <center><h3>Notas Credito</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+
+<article id="NotasDebito">
+        	    <center><h3>Notas Debito</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+     
+    </div>
+</div>
+
+{% endblock %}
+
+{% block mensajeria %}
+<div class="marco">
+<span> ... </span>
+     <span id="mensajes" name="mensajes">. </span>
+
+</div>
+{% endblock %}
+
+
+{% block footer %}
+
+<div class="marco">
+    <ul class="tabs">
+        <li><a href="#Glosas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Glosas </a></li>
+        <li><a href="#NotasCredito"><span  class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Notas Credito </a></li>
+        <li><a href="#NotasDebito"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Notas Debitora </a></li>      
+    </ul>
+</div>
+
+{% endblock %}
+
+
+
