@@ -3,14 +3,22 @@ from django.contrib import admin
 # Register your models here.
 
 from rips.models import RipsEnvios, RipsDetalle, RipsTransaccion, RipsTipoUsuario, RipsPaises, RipsUsuarios, RipsGrupoServicios, RipsModalidadAtencion, RipsServicios, RipsCausaExterna, RipsConceptoRecaudo, RipsTiposDocumento, RipsConsultas, RipsViasIngresoSalud, RipsProcedimientos, RipsDestinoEgreso, RipsUrgenciasObservacion
-from rips.models import RipsTipoOtrosServicios,  RipsHospitalizacion, RipsRecienNacido, RipsTipoMedicamento, RipsCums, RipsUmm, RipsFormaFarmaceutica, RipsUnidadUpr, RipsMedicamentos, RipsOtrosServicios, RipsFinalidadConsulta, RipsDci
+from rips.models import RipsTipoOtrosServicios,  RipsHospitalizacion, RipsRecienNacido, RipsTipoMedicamento, RipsCums, RipsUmm, RipsFormaFarmaceutica, RipsUnidadUpr, RipsMedicamentos, RipsOtrosServicios, RipsFinalidadConsulta, RipsDci, RipsTipos
+
+
+@admin.register(RipsTipos)
+class ripsTiposAdmin(admin.ModelAdmin):
+   list_display = ("id",  "codigo", "nombre")
+   search_fields =  ("id",  "codigo", "nombre")
+   # Filtrar
+   list_filter = ("id",  "codigo", "nombre")
 
 @admin.register(RipsEnvios)
 class ripsEnviosAdmin(admin.ModelAdmin):
-   list_display = ("id", "numeroEnvio", "fechaEnvio")
-   search_fields =  ("id", "numeroEnvio", "fechaEnvio")
+   list_display = ("id",  "fechaEnvio")
+   search_fields =  ("id", "fechaEnvio")
    # Filtrar
-   list_filter = ("id", "numeroEnvio", "fechaEnvio")
+   list_filter = ("id",  "fechaEnvio")
 
 
 @admin.register(RipsDetalle)

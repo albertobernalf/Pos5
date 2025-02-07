@@ -401,6 +401,25 @@ Modulos:
         -- Pantalla captura de Notas Debito
 
 
+GLOSA RECEPCION
+CAPTURA CABEZOTE GLOSA  Selecciona Empresa / Selecciona Envio Rips
+
+---------------------
+
+CAPTURA DETALLE GLOSA: Muestra seleccion de :  Muestra Facturas con rips de la Empresa --> selecciona Factura --> Selecciona RipsTipos --> Selecciona Rips-items
+
+------------
+------------
+------------
+------------
+IGUAL CON NOTAS CREDITO
+NOTAS DEBITO NOSE EXACTAMENTE
+
+AHORA SI YA CRUZE O FILTRE CON LOS RIPS--> PUES NADA LAS GRABO EN LA TABLA GLOSAS Y LAS GRABO EN LA TABLA RIPS
+
+AHORA COMO CONTROLAR LOS SALDOS DE LA FACTURA: PUES EN LA TABLA DE FACTURACION,,.. ANTON NO SOBRA.. 
+digamos el valor d ela factura inicial nop cambia y los daso de los detalle pueden estar en Faturacion y glosas y notas credito. Mejor no llevarlas desde los RIPS No CREE ?
+
 
 -----------------------------------------------------------------------------------------------------------------------
 --  RIPS 
@@ -448,4 +467,7 @@ LINE 1: SELECT med.id id, med.nombre nombre FROM clinico_medicos med...
 
 -- LISTO YA TENGO TRES FACTURAS PARA COMENZAR RIPS
 -- Mañana seguir con detalle de enviorips
+-- Ojo en admisiones se debe colocar elk motivo de la salida o sea en salida clinica combo motivo_salida con tabla motivosSalida buscar
+-- Ops en admisiones no se esta capturando la empresa_id. Ah pero bueno el convenio si tiene la empresa_id
+-- Ops hay tablas grtandes como facturacion el campo de sede sedesClinica_id donde se hizo error crazo papaberolisismo sedesClinica_id
 
