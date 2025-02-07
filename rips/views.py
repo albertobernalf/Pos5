@@ -94,19 +94,18 @@ def load_dataEnviosRips(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id, "numeroEnvio", "fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas", "estadoPasoMinisterio", "jsonError", "jsonAprobado", "fechaRegistro", "estadoReg", "usuarioRegistro_id" FROM public.rips_ripsenvios'
+    detalle = 'SELECT id,  "fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas", "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id"  FROM public.rips_ripsenvios'
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, numeroEnvio, fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, jsonError, jsonAprobado, fechaRegistro, estadoReg, usuarioRegistro_id in curx.fetchall():
+    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id in curx.fetchall():
         enviosRips.append(
             {"model": "rips.ripsEnvios", "pk": id, "fields":
-                {'id': id, 'numeroEnvio': numeroEnvio, 'fechaEnvio': fechaEnvio, 'fechaRespuesta': fechaRespuesta, 'cantidadFacturas': cantidadFacturas,
+                {'id': id, 'fechaEnvio': fechaEnvio, 'fechaRespuesta': fechaRespuesta, 'cantidadFacturas': cantidadFacturas,
                  'cantidadPasaron': cantidadPasaron, 'cantidadRechazadas': cantidadRechazadas,
-                 'estadoPasoMinisterio': estadoPasoMinisterio, 'jsonError': jsonError,
-                 'jsonAprobado': jsonAprobado, 'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id}})
+                 'estadoPasoMinisterio': estadoPasoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id}})
 
     miConexionx.close()
     print("EnviosRips "  , enviosRips)
@@ -121,8 +120,12 @@ def GuardaEnviosRips(request):
 
     print ("Entre Guarda Envios Rips" )
 
-    numeroEnvio = request.POST['numeroEnvio']
-    print ("numeroEnvio =", numeroEnvio)
+    empresa_id = request.POST['empresa_id']
+    print("empresa_id =", empresa_id)
+
+    sedesClinica_id = request.POST['sedesClinica_id']
+    print("sedesClinica_id =", sedesClinica_id)
+
     fechaEnvio = request.POST['fechaEnvio']
     print ("fechaEnvio =", fechaEnvio)
 
@@ -152,7 +155,7 @@ def GuardaEnviosRips(request):
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into rips_ripsEnvios  ("numeroEnvio", "fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "jsonError", "jsonAprobado", "fechaRegistro", "estadoReg", "usuarioRegistro_id") values ('  + "'" + str(numeroEnvio) + "'," +    "'" + str(fechaEnvio) + "'," + "'" + str(fechaRespuesta) + "'," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , ' + "'" + str(jsonError) + "'" + ', ' + "'" + str(jsonAprobado) + "',"   + "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "');"
+    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "jsonError", "jsonAprobado", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id") values ('  +  "'" + str(fechaEnvio) + "'," + "'" + str(fechaRespuesta) + "'," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , ' + "'" + str(jsonError) + "'" + ', ' + "'" + str(jsonAprobado) + "',"   + "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "');"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()

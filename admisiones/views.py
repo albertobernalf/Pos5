@@ -1692,14 +1692,14 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         return render(request, "triage/panelTriage.html", context)
 
     if (escogeModulo == 'AUTORIZACIONES'):
-        print ("WENTRE PERMSISO AUTORIZACIONES")
+        print ("ENTRE PERMSISO AUTORIZACIONES")
         ## Aqui contexto para solo Triage
 
         ## FIN CONTEXTO
         return render(request, "autorizaciones/panelAutorizaciones.html", context)
 
     if (escogeModulo == 'FACTURACION'):
-        print("WENTRE PERMSISO FACTURACION")
+        print("ENTRE PERMSISO FACTURACION")
         ## Aqui contexto para solo Facturacion
 
         ## FIN CONTEXTO
@@ -1707,7 +1707,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         return render(request, "facturacion/panelFacturacion2.html", context)
 
     if (escogeModulo == 'CONTRATACION'):
-        print("WENTRE PERMSISO FACTURACION")
+        print("ENTRE PERMSISO FACTURACION")
         ## Aqui contexto para solo Facturacion
 
         ## FIN CONTEXTO
@@ -1716,7 +1716,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
 
     if (escogeModulo == 'APOYO TERAPEUTICO'):
-        print("WENTRE PERMSISO APOYO TERAPEUTICO")
+        print("ENTRE PERMSISO APOYO TERAPEUTICO")
         ## Aqui contexto para solo Triage
 
         ## FIN CONTEXTO
@@ -1724,7 +1724,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
 
     if (escogeModulo == 'TARIFAS'):
-        print("WENTRE PERMSISO TARIFAS")
+        print("ENTRE PERMSISO TARIFAS")
         ## Aqui contexto para solo Triage
 
         ## FIN CONTEXTO
@@ -1732,11 +1732,19 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
 
     if (escogeModulo == 'RIPS'):
-        print("WENTRE PERMSISO RIPS")
+        print("ENTRE PERMSISO RIPS")
         ## Aqui contexto para solo Rips
 
         ## FIN CONTEXTO
         return render(request, "rips/PanelRips.html", context)
+
+
+    if (escogeModulo == 'GLOSAS'):
+        print("ENTRE PERMSISO GLOSAS")
+        ## Aqui contexto para solo Rips
+
+        ## FIN CONTEXTO
+        return render(request, "cartera/PanelGlosas.html", context)
 
 
 

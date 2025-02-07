@@ -47,9 +47,9 @@ $(document).ready(function () {
      	initTableEnviosRips(data);	
 
 
-function initTableEnviosRips(data) {
+function initTableGlosas(data) {
 
-	return new DataTable('.tablaEnviosRips', {
+	return new DataTable('.tablaGlosas', {
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -64,15 +64,15 @@ function initTableEnviosRips(data) {
                 {
                     "render": function ( data, type, row ) {
                         var btn = '';
-                          btn = btn + " <input type='radio'  class='form-check-input editPostEnviosRips' data-pk='"  + row.pk + "'>" + "</input>";
+                          btn = btn + " <input type='radio'  class='form-check-input editPostGlosas' data-pk='"  + row.pk + "'>" + "</input>";
                         return btn;
                     },
            
-                    "targets": 11
+                    "targets": 13
                }
             ],
             ajax: {
-                 url:"/load_dataEnviosRips/" +  data,
+                 url:"/load_dataGlosas/" +  data,
                  type: "POST",
                 dataSrc: ""
             },
@@ -90,6 +90,8 @@ function initTableEnviosRips(data) {
 
 		{ data: "fields.cantidadRechazadas"},
                 { data: "fields.estadoPasoMinisterio"},
+		 { data: "fields.jsonError"},
+		 { data: "fields.jsonAprobado"},
 		 { data: "fields.fechaRegistro"},
 		 { data: "fields.usuarioRegistro_id"},
 
@@ -109,15 +111,15 @@ function initTableEnviosRips(data) {
         --------------------------------------------
         --------------------------------------------*/
 
-function EnvioRips()
+function Glosas()
 {
     
 	
 	
             $('#post_id').val('');
-            $('#postFormCrearEnviosRips').trigger("reset");
-            $('#modelHeadingEnviosRips').html("Creacion Envios Rips");
-            $('#crearModelEnviosRips').modal('show');
+            $('#postFormCrearGlosas').trigger("reset");
+            $('#modelHeadingGlosas').html("Creacion Glosas");
+            $('#crearModelGlosas').modal('show');
         
 }
 
@@ -128,23 +130,23 @@ function EnvioRips()
         --------------------------------------------
         --------------------------------------------*/
 
-function CrearEnviosRips()
+function CrearGlosas()
 {
 
             $.ajax({
-                data: $('#postFormEnviosRips').serialize(),
-	        url: "/guardaEnviosRips/",
+                data: $('#postFormGlosas').serialize(),
+	        url: "/guardaGlosas/",
                 type: "POST",
                 dataType: 'json',
                 success: function (data) {
 
 		   $("#mensajes").html(data.message);
-                  $('#postFormEnviosRips').trigger("reset");
+                  $('#postFormGlosas').trigger("reset");
 
-	 	  var tableA = $('#tablaEnviosRips').DataTable();
+	 	  var tableA = $('#tablaGlosas').DataTable();
 	          tableA.ajax.reload();
 
- 		 $('#crearModelEnviosRips').modal('hide');
+ 		 $('#crearModelGlosas').modal('hide');
                 },
                 error: function (data) {
                         $('.success-msg').css('display','block');

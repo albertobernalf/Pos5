@@ -1,25 +1,27 @@
-{% extends "rips/menuRips.html" %}
+{% extends "cartera/menuGlosas.html" %}
 {% load static %}
 
 {% block head %}
 
 
-<link rel="stylesheet" type="text/css" href={% static 'css/panelRips.css' %}>
+<link rel="stylesheet" type="text/css" href={% static 'css/panelGlosas.css' %}>
 <link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %}>
 <link rel="stylesheet" type="text/css"  href = {% static 'css/litle.css' %} >
 <script src={% static 'js/panelTabsRips.js' %} defer >         </script>
 <script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
- <script src={% static 'mainRips.js' %} defer > </script>
+ <script src={% static 'mainGlosas.js' %} defer > </script>
+
 
 <div class="marco">
     <ul class="tabs">
-
-        <li><a href="#Rips"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Envios Rips </a></li>
-        <li><a href="#Creacion_Envios_Rips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
-        <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Json Rips </a></li>
- 
+        <li><a href="#Glosas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Glosas </a></li>
+        <li><a href="#GlosasDetalle"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Glosas Detalle </a></li>
+        <li><a href="#NotasCredito"><span  class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Notas Credito </a></li>
+        <li><a href="#NotasDebito"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Notas Debitora </a></li>      
     </ul>
 </div>
+
+
 
 <style>
 div.dataTables_wrapper  div.dataTables_filter input {
@@ -48,8 +50,9 @@ div.dataTables_filter input {
 <div class="marco">
     <div class="secciones">
 
-        <article id="Rips">
-        <center><h3>Envios Rips</h3></center>
+
+  <article id="Glosas">
+       <center><h3>Glosas</h3></center>
 	  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
             <form action="/enviosRips/" method="get" id="FormEnviosRips">
 
@@ -96,7 +99,7 @@ div.dataTables_filter input {
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="alert alert-success success-msg" style="display:none"></div>
-                                        <table  id= "tablaEnviosRips" class="display nowrap table table table-bordered tablaEnviosRips table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
+                                        <table  id= "tablaGlosas" class="display nowrap table table table-bordered tablaGlosas table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -109,6 +112,8 @@ div.dataTables_filter input {
                                                 <th>Pasaron</th>
                                                 <th>Rechazadas</th>
                                                 <th>AlMinisterio</th>
+						<th>JsonError</th>
+						<th>JsonAprobado</th>
 						<th>FechaRegistro</th>
 						<th>UsuarioRegistro</th>
                                                 <th>Action</th>
@@ -134,22 +139,22 @@ div.dataTables_filter input {
 
 	            <!-- Espacio Modales  EnviosRips-->
 
-            <div class="modal fade" id="crearModelEnviosRips" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="crearModelGlosas" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeadingEnviosRips"></h4>
+                            <h4 class="modal-title" id="modelHeadingGlosas"></h4>
                         </div>
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
                                 <ul class="mb-0"></ul>
                             </div>
-                            <form id="postFormEnviosRips" name="postFormEnviosRips" class="form-horizontal"
+                            <form id="postFormGlosas" name="postFormGlosas" class="form-horizontal"
                                   novalidate>
                                 {% csrf_token %}
                                 <input type="hidden" name="post_id" id="post_id">
                      
-				<div class="row row-cols-12" style="height=1px;">
+				<div class="row row-cols-8" style="height=1px;">
 
 				<div class="col">
                                     Sede Clinica:
@@ -190,7 +195,17 @@ div.dataTables_filter input {
                                     EstadoPasoMinisterio:
                                     <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="N"></input>
                                 </div>
-           
+                                <div class="col">
+                                    JsonError:
+                                    <input type="text" id="jsonError" name="jsonError" value="" > </input>
+                                </div>
+
+                                <div class="col">
+                                    JsonAprobado:
+                                    <input type="text" id="jsonAprobado" name="jsonAprobado" value="" > </input>
+                                </div>
+
+
                                 <div class="col">
                                    
                                     <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
@@ -226,24 +241,35 @@ div.dataTables_filter input {
 
 
 
-        </article>
+  </article>
 
-
-<article id="Creacion_Envios_Rips">
-        	    <center><h3>Creacion Envios Rips</h3></center>
-		  <div style="height: 450px;  width:100%; background-color:#EBEBEB;">
-		
-		
-		 </div>
-</article>
-
-<article id="GenerarJsonRips">
-        	    <center><h3>Generar Json Rips</h3></center>
+<article id="GlosasDetalle">
+        	    <center><h3>Detalle de Glosas</h3></center>
 		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
 		
 		
 		 </div>
 </article>
+
+
+<article id="NotasCredito">
+        	    <center><h3>Notas Credito</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+
+<article id="NotasDebito">
+        	    <center><h3>Notas Debito</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+
 
 
      
@@ -263,6 +289,11 @@ div.dataTables_filter input {
 
 {% block footer %}
 
+<div class="marco">
+    <ul class="tabs">
+        <li><a href="#Radicacion"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span>Radicacion Cuentas </a></li>
+    </ul>
+</div>
 
 
 {% endblock %}
