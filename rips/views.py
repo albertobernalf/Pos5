@@ -142,10 +142,6 @@ def GuardaEnviosRips(request):
 
     estadoPasoMinisterio = request.POST['estadoPasoMinisterio']
     print ("estadoPasoMinisterio =", estadoPasoMinisterio)
-    jsonError = request.POST['jsonError']
-    print ("jsonError =", jsonError)
-    jsonAprobado = request.POST['jsonAprobado']
-    print ("jsonAprobado =", jsonAprobado)
     usuarioRegistro_id = request.POST['usuarioRegistro_id']
     print ("usuarioRegistro_id =", usuarioRegistro_id)
     estadoReg = 'A'
@@ -155,7 +151,7 @@ def GuardaEnviosRips(request):
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "jsonError", "jsonAprobado", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id") values ('  +  "'" + str(fechaEnvio) + "'," + "'" + str(fechaRespuesta) + "'," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , ' + "'" + str(jsonError) + "'" + ', ' + "'" + str(jsonAprobado) + "',"   + "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "');"
+    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id") values ('  +  "'" + str(fechaEnvio) + "'," + "'" + str(fechaRespuesta) + "'," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "');"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
