@@ -1683,7 +1683,36 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                 <br><center>
 
             <h3>SalidaClinica</h3></center>
-	<input type="checkbox" id="salClinica" name="salClinica"/>
+		
+	   <div class="row">
+                <div class="col-sm-5">
+                 </div>
+
+
+                                                    <div class="col-sm-2">
+
+                                                        <select class="select-css"  id="tiposSalidas"
+                                                                name="tiposSalidas">
+                                                            {% for tiposSalidas in TiposSalidas %}
+                                                            <option value="{{tiposSalidas.id}}">
+                                                                {{tiposSalidas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+
+                <div class="col-sm-5">
+			<input type="checkbox" id="salClinica" name="salClinica"/>
+                 </div>
+
+
+
+
+
+
+
+	</div>
 
     </article>
 

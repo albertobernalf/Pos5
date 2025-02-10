@@ -432,7 +432,7 @@ digamos el valor d ela factura inicial nop cambia y los daso de los detalle pued
       -- Radica con FEC y FEV documentos ante los pagadores  de salud (EPS-Entes territoriales, etc)
 
 
-- Desde aquip año 2025, arrancamos papberol. Tamos trabajando con Centos9 - Postgresql-16 y Pos3 windows vulner2/postgres/123456
+- Desde aquip año 2025, arrancamos papaberol. Tamos trabajando con Centos9 - Postgresql-16 y Pos3 windows vulner2/postgres/123456
 
 -- Lo mejor es iniciar desde los modulos bajops a los altos osea 1-trige,admisiones, despues si hclinica , apoyo y terminar en factutracion, cartera, convenios tarifas
 -- La idea es montar modelo-entidad relacion de los 5 conco modulos anteriores y comenzar a desarrollar estos Modulos con datos que caigan en la facturacion
@@ -445,16 +445,13 @@ digamos el valor d ela factura inicial nop cambia y los daso de los detalle pued
 -- OJJO PARA SELECCIONAR LA PRIMER FILA DE UN TABLE/ PROBAR EN ADMISIONES Y HCLINICA	var $row = $(this).closest('table').children('tr:first');	
 -- Ojo creo que error en el borrado de una radiologia siempre borra la primnera fila, no la seleccionada Verificar, MIERCOLES: Terpais , No qx etx
    NO PAILANDER PAILAS tiene repetido la funcion borrar . que donde funcina no lo se pero quye esta mal si creo que este mal $('#tablaDiagnosticos tbody').on('click', 'tr', function () {
--- De pronto verificar borrado de Laboratorios, rx, etc .. Ojo Raos x no borra / proced No qx al borrar el tres me borro dos . el doble dos en una / En medicamentos No borra
 -- Ojo en formulacion de historia cloinica controlar escribir dias en numeros no ñletras
 -- ops grabe un poco de informacion le di retornar sin gusrdar pero me grabo dos folios, ops no se que paso me conto u folio que venia de antes del 31-enero y hot estamos a feb-4
 
 
 -- cuando crea un abono no refresca en liquidaciondetalle los totales de abajo
--- Me muestra mas abonos de los que deben ser solo tengo tres y me muestra de cuatro paciuentes.. creo que el del problema es la cuenta triage
 -- Al editar liquidacionDetalle no se puede cambiar de cums a cups y visceversa., Cuando se edita procedimiento inactiva combo suministros y visceversa, cuandpo se edita suministro inactiva procedimiento
 -- Tengo problemas cuando se modifica mas de una vez elk valorEnCurso dentro de una misma factura . Verificar y arreglar
--- cuando edito liquidaciondetalle. No ,me perite cambiar cups o suministros y tan solo debe permitir uno no mas.- deben ser comottexct o algo asi que solo se muestre si no pues que anulen y entrn el corregido
 -- Ojo cuando creo la factura no desaparecio los datos de liquidaciondetalle y no actualizo la pantalla de facturacion
 -- OJO HAY UN PROBLEMA CUANDO UN PACIENTE ES TRIAGE Y quiere realizar un abono
 -- OJO ERROR APOYO TERAPEUTICO
@@ -467,7 +464,6 @@ LINE 1: SELECT med.id id, med.nombre nombre FROM clinico_medicos med...
 
 -- LISTO YA TENGO TRES FACTURAS PARA COMENZAR RIPS
 -- Mañana seguir con detalle de enviorips
--- Ojo en admisiones se debe colocar elk motivo de la salida o sea en salida clinica combo motivo_salida con tabla motivosSalida buscar
--- Ops en admisiones no se esta capturando la empresa_id. Ah pero bueno el convenio si tiene la empresa_id
+-- Ojo en admisiones se debe colocar elk motivo de la salida o sea en salida clinica combo motivo_salida con tabla motivosSalida buscar PROBAR
 -- Ops hay tablas grtandes como facturacion el campo de sede sedesClinica_id donde se hizo error crazo papaberolisismo sedesClinica_id
 

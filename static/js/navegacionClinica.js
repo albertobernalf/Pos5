@@ -1330,6 +1330,9 @@ formHistoriaClinica.addEventListener('submit', e=>{
          var estadoReg = "A"
          var tipoIng = document.getElementById("tipoIng").value;
 
+	 var tiposSalidas  =  document.getElementById("tiposSalidas").value;
+         alert("tiposSalidas =" + tiposSalidas);
+
             var form_valido;
 
      
@@ -1397,7 +1400,8 @@ formHistoriaClinica.addEventListener('submit', e=>{
                         'leucopenia':leucopenia,
                         'manejoQx':manejoQx,
         			'formulacion':formulacion,
-                                'salidaClinica':salidaClinica
+                                'salidaClinica':salidaClinica, 
+				'tiposSalidas':tiposSalidas
 				   },
  	      		success: function (respuesta2) {
  	      		        var data = JSON.parse(respuesta2);

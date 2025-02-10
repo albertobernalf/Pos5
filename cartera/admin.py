@@ -62,10 +62,10 @@ class glosasConceptoEspecificoAdmin(admin.ModelAdmin):
 
 @admin.register(MotivosGlosas)
 class motivosGlosasAdmin(admin.ModelAdmin):
-    list_display = ("id", "nombre","descripcion")
-    search_fields = ("id", "nombre","descripcion")
+    list_display = ("id","conceptoGeneral", "conceptoEspecifico",  "conceptoGlosa", "nombre","descripcion")
+    search_fields = ("id","conceptoGeneral", "conceptoEspecifico","conceptoGlosa", "nombre","descripcion")
     # Filtrar
-    list_filter = ("id", "nombre","descripcion")
+    list_filter = ("id", "conceptoGeneral", "conceptoEspecifico","conceptoGlosa", "nombre","descripcion")
 
 
 

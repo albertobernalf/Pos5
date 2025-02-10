@@ -160,3 +160,196 @@ def GuardaEnviosRips(request):
 
 
     return JsonResponse({'success': True, 'message': 'Envio realizado satisfactoriamente!'})
+
+
+    #  DESDE AQUI EL DETALLE
+
+def load_dataDetalleRips(request, data):
+    print("Entre load_data Detalle Rips")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+    detalleRips = d['detalleRips']
+    print ("Rips seleccionado = ", detalleRips)
+    empresaId = d['empresaId']
+    print("empresaId = ", empresaId)
+
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+
+    detalleRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT id,  "numeroFactura_id", "cuv", "estadoPasoMinisterio","rutaJsonRespuesta", "rutaJsonFactura",  "fechaRegistro", "estadoReg", "ripsEnvios_id",  "usuarioRegistro_id", "rutaPdf", "rutaZip"  FROM public.rips_ripsDetalle WHERE "ripsEnvios_id" =  ' + "'" + str(empresaId) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  numeroFactura_id, cuv, estadoPasoMinisterio,rutaJsonRespuesta,rutaJsonFactura,  fechaRegistro, estadoReg, ripsEnvios_id, usuarioRegistro_id, rutaPdf, rutaZip in curx.fetchall():
+        detalleRips.append(
+            {"model": "rips.detalleRips", "pk": id, "fields":
+                {'id': id, 'numeroFactura_id': numeroFactura_id , 'cuv': cuv, 'estadoPasoMinisterio': estadoPasoMinisterio, 'rutaJsonRespuesta':rutaJsonRespuesta, 'rutaJsonFactura':rutaJsonFactura,
+                   'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg, 'ripsEnvios_id' :ripsEnvios_id, 'usuarioRegistro_id':usuarioRegistro_id, 'rutaPdf':rutaPdf,
+                 'rutaZip': rutaZip}})
+
+    miConexionx.close()
+    print("detalleRips "  , detalleRips)
+    context['DetalleRips'] = detalleRips
+
+    serialized1 = json.dumps(detalleRips, default=serialize_datetime)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def GuardaDetalleRips(request):
+
+    print ("Entre Guarda Detalle Rips" )
+
+    numeroFactura_id = request.POST['numeroFactura_id']
+    print("numeroFactura_id =", numeroFactura_id)
+
+    cuv = request.POST['cuv']
+    print("cuv =", cuv)
+
+    estadoPasoMinisterio = request.POST['estadoPasoMinisterio']
+    print ("estadoPasoMinisterio =", estadoPasoMinisterio)
+
+
+    rutaJsonRespuesta = request.POST['rutaJsonRespuesta']
+    print ("rutaJsonRespuesta =", rutaJsonRespuesta)
+
+    rutaJsonFactura = request.POST['rutaJsonFactura']
+    print ("rutaJsonFactura =", rutaJsonFactura)
+
+    ripsEnvios_id
+
+    ripsEnvios_id = request.POST['ripsEnvios_id']
+    print("ripsEnvios_id =", ripsEnvios_id)
+
+    usuarioRegistro_id = request.POST['usuarioRegistro_id']
+    print ("usuarioRegistro_id =", usuarioRegistro_id)
+
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    ripsEnvios_id = request.POST['ripsEnvios_id']
+    print("ripsEnvios_id =", ripsEnvios_id)
+
+    rutaJsonRespuesta = request.POST['rutaJsonRespuesta']
+    print("rutaJsonRespuesta =", rutaJsonRespuesta)
+
+    rutaJsonFactura = request.POST['rutaJsonFactura']
+    print("rutaJsonFactura =", rutaJsonFactura)
+
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE  rips_detalleRips SET cuv =  ' + "'" + str(estadoPasoMinisterio) + "'" + ' "rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'" + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "'"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+
+    return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
+
+
+def load_dataDetalleRipsAdicionar(request, data):
+    print("Entre load_data Detalle Rips Adicionar")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+    detalleRips = d['detalleRips']
+    print ("Rips seleccionado = ", detalleRips)
+    empresaId = d['empresaId']
+    print("empresaId = ", empresaId)
+
+
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    detalleRipsAdicion = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT f.id,  f.id factura, f."fechaFactura", u.nombre paciente , f."totalFactura", f.estado  FROM public.facturacion_facturacion f, admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c WHERE  i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   i.empresa_id = ' + "'" + str(empresaId) + "'" + ' AND f."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision"'
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  factura, fechaFactura, paciente,totalFactura,estado in curx.fetchall():
+        detalleRipsAdicion.append(
+            {"model": "facturacion_facturacion", "pk": id, "fields":
+                {'id': id, 'factura': factura , 'fechaFactura': fechaFactura, 'paciente': paciente, 'totalFactura':totalFactura, 'estado':estado
+                }})
+
+    miConexionx.close()
+    print("detalleRipsAdicion "  , detalleRipsAdicion)
+    context['DetalleRipsAdicion'] = detalleRipsAdicion
+
+    serialized1 = json.dumps(detalleRipsAdicion, default=str)
+    #serialized1 = json.dumps(detalleRipsAdicion)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def BuscaEmpresaRips(request):
+
+    print ("Entre BuscaEmpresa Rips" )
+
+    envioRips = request.POST['envioRips']
+    print("envioRips =", envioRips)
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    empresa = []
+
+    comando = 'SELECT  id, empresa_id empresa_id FROM rips_ripsenvios WHERE id =  ' + "'" + str(envioRips) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, empresa_id in cur3.fetchall():
+        empresa.append(
+            {"model": "rips_rips_ripsenvios", "pk": id, "fields":
+                {'empresa_id': empresa_id  }})
+
+    miConexion3.commit()
+    miConexion3.close()
+
+    serialized1 = json.dumps(empresa, default=serialize_datetime)
+
+    print ("Envio = ", serialized1)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
+
+    #return JsonResponse({'success': True, 'empresaId':empresa })

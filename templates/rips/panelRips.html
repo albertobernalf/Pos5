@@ -88,7 +88,7 @@ div.dataTables_filter input {
 				</div>
 				 <div class="col-md-2">	
 				
-	                        <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnvioRips"  name="BtnEnvioRips" value="Adicionar" onclick= "EnvioRips()" >				    
+	                        <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarDetalleRips"  name="BtnAdicionarDetalleRips" value="Adicionar" onclick= "DetalleRips()" >				    
                                </div>
                             </div>
                         </div>
@@ -230,11 +230,175 @@ div.dataTables_filter input {
 
 
 <article id="Creacion_Envios_Rips">
-        	    <center><h3>Creacion Envios Rips</h3></center>
-		  <div style="height: 450px;  width:100%; background-color:#EBEBEB;">
-		
-		
-		 </div>
+        	    <center><h3>Detalle Envio Rips</h3></center>
+	  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+
+			     <input type="text" name="empresaId" id="empresaId">  
+
+			 <div class="row" style="width:100%; margin-left: 0;">
+			     <div class="col-md-12" >	
+				<!-- Aqui el table de busqueda de facturas por empresa -->
+
+                                       <div class="alert alert-success success-msg" style="display:none"></div>
+                                        <table  id= "tablaDetalleRipsAdicionar" class="display nowrap table table table-bordered tablaDetalleRipsAdicionar table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
+                                           <thead>
+                                            <tr>    
+						<bold>                                  
+                                                <th>id</th>
+                                                <th>Factura No</th>
+                                                <th>Fecha Factura </th>
+                                                <th>Paciente</th>
+                                                <th>ValorFactura</th>
+                                                <th>Estado</th>
+                                                <th>Action</th>
+						</bold>                                  
+                                            </tr>
+                                            </thead>
+                                            <tbody style="vertical-align:bottom; horizontal-align:left">
+                                            <tr style="height:10%">
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>	
+			   </div>	
+				<!-- hasta aquip -->
+
+
+
+            <!-- INICIO TABLE DE  EL DATATABLE  -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" style="height:45px; margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;">
+                	      <div class="row">
+
+                            </div>
+                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-success success-msg" style="display:none"></div>
+                                        <table  id= "tablaDetalleRips" class="display nowrap table table table-bordered tablaDetalleRips table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
+                                           <thead>
+                                            <tr>    
+						<bold>                                  
+                                                <th>id</th>
+                                                <th>Factura No</th>
+                                                <th>Cuv</th>
+                                                <th>EstadoPasoAlMinisterio</th>
+                                                <th>RutaJsonRespuesta</th>
+                                                <th>RutaJsonFactura</th>
+                                                <th>RutaPdf</th>
+                                                <th>RutaZip</th>
+						<th>UsuarioRegistro</th>
+                                                <th>Action</th>
+						</bold>                                  
+                                            </tr>
+                                            </thead>
+                                            <tbody style="vertical-align:bottom; horizontal-align:left">
+                                            <tr style="height:10%">
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> <!-- cierra body -->
+                    </div> <!-- cierra card -->
+                </div> <!-- cierra col -->
+            </div> <!-- cierra row -->
+
+	   </div> <!-- cierra div -->
+
+
+
+	            <!-- Espacio Modales  RipsDetalle-->
+
+            <div class="modal fade" id="crearModelRipsDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modelHeadingRipsDetalle"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+                            <form id="postFormRipsDetalle" name="postFormRipsDetalle" class="form-horizontal"
+                                  novalidate>
+                                {% csrf_token %}
+                                <input type="hidden" name="post_id" id="post_id">
+                     
+				<div class="row row-cols-12" style="height=1px;">
+
+				<div class="col">
+                                    Factura:
+                                    <input type="text" id="numeroFactura_id" name="numeroFactura_id" value="1" readonly></input>
+                                </div>
+
+				<div class="col">
+                                    Cuv:
+                                    <input type="text" id="cuv" name="cuv" value="3" readonly ></input>
+                                </div>
+                                <div class="col">
+                                    EstadoPasoMinisterio:
+                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="N"></input>
+                                </div>
+                          
+				<div class="col">
+                                   RutaJsonFactura:
+                               
+					 <input type="textl" id="rutaJsonFactura" name="rutaJsonFactura"  >
+                                </div>
+
+				<div class="col">
+                                    RutaJsonRespuesta:
+					 <input type="text" id="rutaJsonFactura" name="rutaJsonFactura">
+                                </div>
+
+           
+                                <div class="col">
+                                   
+                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+                                </div>
+
+
+
+                                <div class="col">
+                                    EstadoRegistro:
+                                    <input type="text" id="estadoReg" name="estadoReg" value="A"  readonly> </input>
+                                </div>
+
+
+                                <div class="col">
+                                    UsuarioRegistro_id:
+                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
+                                </div>
+
+				<div class="col">
+                                    RutaPdf:
+					 <input type="text" id="rutaPdf" name="rutaPdf">
+                                </div>
+
+				<div class="col">
+                                    RutaZip:
+					 <input type="text" id="rutaZip" name="rutaZip">
+                                </div>
+
+
+
+                                <div class="col-sm-offset-2 col-sm-10 mt-2">
+                                    <button type="button" class="btn btn-primary" id="saveBtnCrearDetalleRips"   value="create" onclick="CrearDetalleRips()">Guardar </button>
+                                </div>
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+                        </div> <!-- CIERRA BODY -->
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+     <!-- FIN Espacio Modales  -->
+
 </article>
 
 <article id="GenerarJsonRips">

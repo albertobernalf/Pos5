@@ -36,7 +36,7 @@ class Ingresos(models.Model):
     salidaClinica = models.CharField(max_length=1,default='N')
 
     salidaDefinitiva =  models.CharField(max_length=1,default='N')
-    salidaMotivo = models.ForeignKey('clinico.TiposSalidas', blank=True,null= True, editable=True,  on_delete=models.PROTECT, related_name='EspSal')
+    salidaMotivo = models.ForeignKey('clinico.TiposSalidas', blank=True,null= True, editable=True,  on_delete=models.PROTECT, related_name='salidaMotivo01')
 
     empresa = models.ForeignKey('facturacion.Empresas', blank=True,null= True, editable=True,  on_delete=models.PROTECT)
     remitido =  models.CharField(max_length=1, blank=True,null= True, editable=True,)
