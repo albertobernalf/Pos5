@@ -467,3 +467,9 @@ LINE 1: SELECT med.id id, med.nombre nombre FROM clinico_medicos med...
 -- Ojo en admisiones se debe colocar elk motivo de la salida o sea en salida clinica combo motivo_salida con tabla motivosSalida buscar PROBAR
 -- Ops hay tablas grtandes como facturacion el campo de sede sedesClinica_id donde se hizo error crazo papaberolisismo sedesClinica_id
 
+var table = $('#miTabla').DataTable();  // Inicializa el DataTable
+var primeraFila = table.row(0).node();  // Selecciona la primera fila
+
+// Selecciona el checkbox dentro de la primera fila (suponiendo que está dentro de una celda 'td')
+$(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marca el checkbox
+
