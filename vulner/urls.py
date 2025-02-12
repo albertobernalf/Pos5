@@ -205,7 +205,7 @@ urlpatterns = [
 
     path('load_dataEnviosRips/<str:data>', viewsRips.load_dataEnviosRips, name='loaddataEnviosRips'),
     path('guardaEnviosRips/', viewsRips.GuardaEnviosRips, name='GuardaEnviosRips'),
-    path('buscaEmpresaRips/', viewsRips.BuscaEmpresaRips, name='BuscaEmpresaRips'),
+    path('actualizarEmpresaDetalleRips/', viewsRips.ActualizarEmpresaDetalleRips, name='ActualizarEmpresaDetalleRips'),
     path('load_dataDetalleRips/<str:data>', viewsRips.load_dataDetalleRips, name='loaddataDetalleRips'),
     path('guardaDetalleRips/', viewsRips.GuardaDetalleRips, name='GuardaDetalleRips'),
     path('load_dataDetalleRipsAdicionar/<str:data>', viewsRips.load_dataDetalleRipsAdicionar, name='loaddataDetalleRipsAdicionar'),

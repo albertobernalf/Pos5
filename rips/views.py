@@ -48,8 +48,12 @@ def serialize_datetime(obj):
 def load_dataEnviosRips(request, data):
     print("Entre load_data Envios Rips")
 
+    print("llegue bien01")
+
     context = {}
     d = json.loads(data)
+
+    print("llegue bien02")
 
     username = d['username']
     sede = d['sede']
@@ -170,20 +174,9 @@ def load_dataDetalleRips(request, data):
     context = {}
     d = json.loads(data)
 
-    username = d['username']
-    sede = d['sede']
-    username_id = d['username_id']
-    detalleRips = d['detalleRips']
-    print ("Rips seleccionado = ", detalleRips)
+
     empresaId = d['empresaId']
     print("empresaId = ", empresaId)
-
-
-    nombreSede = d['nombreSede']
-    print("sede:", sede)
-    print("username:", username)
-    print("username_id:", username_id)
-
 
     detalleRips = []
 
@@ -275,20 +268,9 @@ def load_dataDetalleRipsAdicionar(request, data):
     context = {}
     d = json.loads(data)
 
-    username = d['username']
-    sede = d['sede']
-    username_id = d['username_id']
-    detalleRips = d['detalleRips']
-    print ("Rips seleccionado = ", detalleRips)
     empresaId = d['empresaId']
     print("empresaId = ", empresaId)
 
-
-
-    nombreSede = d['nombreSede']
-    print("sede:", sede)
-    print("username:", username)
-    print("username_id:", username_id)
 
     detalleRipsAdicion = []
 
@@ -296,7 +278,7 @@ def load_dataDetalleRipsAdicionar(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT f.id,  f.id factura, f."fechaFactura", u.nombre paciente , f."totalFactura", f.estado  FROM public.facturacion_facturacion f, admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c WHERE  i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   i.empresa_id = ' + "'" + str(empresaId) + "'" + ' AND f."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision"'
+    detalle = 'SELECT f.id,  f.id factura, f."fechaFactura", u.nombre paciente , f."totalFactura", f.estado  FROM public.facturacion_facturacion f, admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c WHERE  i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   c.empresa_id = ' + "'" + str(empresaId) + "'" + ' AND f."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision"'
 
     print(detalle)
 
@@ -318,38 +300,66 @@ def load_dataDetalleRipsAdicionar(request, data):
     return HttpResponse(serialized1, content_type='application/json')
 
 
-def BuscaEmpresaRips(request):
 
-    print ("Entre BuscaEmpresa Rips" )
 
-    envioRips = request.POST['envioRips']
-    print("envioRips =", envioRips)
+def ActualizarEmpresaDetalleRips(request):
+
+    print ("Entre ActualzaEmpresaDetalleRips" )
+
+
+
+    envioRipsId = request.POST['envioRipsId']
+    print("envioRipsId =", envioRipsId)
+
+    empresaId = request.POST['empresaId']
+    print("empresaId =", empresaId)
+
+    username_id = request.POST['username_id']
+    print("username_id =", username_id)
+
+    facturaId = request.POST['facturaId']
+    print("facturaId =", facturaId)
+
+
+
+
+    fechaRegistro = datetime.datetime.now()
+    estadoReg = 'A'
+
+
+    #Primero el UPDATE
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'UPDATE facturacion_facturacion SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(facturaId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    miConexion3.commit()
+    miConexion3.close()
+
+
+    # Segundo eL INSERT A detalleRips
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
     empresa = []
 
-    comando = 'SELECT  id, empresa_id empresa_id FROM rips_ripsenvios WHERE id =  ' + "'" + str(envioRips) + "'"
+    comando = 'INSERT INTO RIPS_RIPSDETALLE ("numeroFactura_id", "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "ripsEnvios_id", "usuarioRegistro_id", estado) VALUES (' +  "'" + str(facturaId) + "','N'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "',"  +  "'" + str(envioRipsId) + "'," +  "'" +str(username_id) + "'," + "'" + str('ELABORADA') + "')"
 
     print(comando)
     cur3.execute(comando)
 
-    for id, empresa_id in cur3.fetchall():
-        empresa.append(
-            {"model": "rips_rips_ripsenvios", "pk": id, "fields":
-                {'empresa_id': empresa_id  }})
-
     miConexion3.commit()
     miConexion3.close()
 
-    serialized1 = json.dumps(empresa, default=serialize_datetime)
-
-    print ("Envio = ", serialized1)
-
-    return HttpResponse(serialized1, content_type='application/json')
+    return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
 
 
 
 
-    #return JsonResponse({'success': True, 'empresaId':empresa })
+

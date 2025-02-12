@@ -471,5 +471,6 @@ var table = $('#miTabla').DataTable();  // Inicializa el DataTable
 var primeraFila = table.row(0).node();  // Selecciona la primera fila
 
 // Selecciona el checkbox dentro de la primera fila (suponiendo que está dentro de una celda 'td')
-$(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marca el checkbox
+$(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marca el checkbox con jquery
 
+-- creo que tengo erorres en empresa_id en contratacion_convenios, facturacion_facturacion, ripsenvios, verificar
