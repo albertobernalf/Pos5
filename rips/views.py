@@ -213,7 +213,11 @@ def GuardaDetalleRips(request):
 
     print ("Entre Guarda Detalle Rips" )
 
-    numeroFactura_id = request.POST['numeroFactura_id']
+    post_id = request.POST['post_id']
+    print("post_id =", post_id)
+
+
+    numeroFactura_id = request.POST['numeroFacturaT']
     print("numeroFactura_id =", numeroFactura_id)
 
     cuv = request.POST['cuv']
@@ -222,16 +226,14 @@ def GuardaDetalleRips(request):
     estadoPasoMinisterio = request.POST['estadoPasoMinisterio']
     print ("estadoPasoMinisterio =", estadoPasoMinisterio)
 
-
     rutaJsonRespuesta = request.POST['rutaJsonRespuesta']
     print ("rutaJsonRespuesta =", rutaJsonRespuesta)
 
     rutaJsonFactura = request.POST['rutaJsonFactura']
     print ("rutaJsonFactura =", rutaJsonFactura)
 
-    ripsEnvios_id
 
-    ripsEnvios_id = request.POST['ripsEnvios_id']
+    ripsEnvios_id = request.POST['ripsEnvios']
     print("ripsEnvios_id =", ripsEnvios_id)
 
     usuarioRegistro_id = request.POST['usuarioRegistro_id']
@@ -241,19 +243,19 @@ def GuardaDetalleRips(request):
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
-    ripsEnvios_id = request.POST['ripsEnvios_id']
+    ripsEnvios_id = request.POST['ripsEnvios']
     print("ripsEnvios_id =", ripsEnvios_id)
 
-    rutaJsonRespuesta = request.POST['rutaJsonRespuesta']
-    print("rutaJsonRespuesta =", rutaJsonRespuesta)
+    rutaPdf = request.POST['rutaPdf']
+    print("rutaPdf =", rutaPdf)
 
-    rutaJsonFactura = request.POST['rutaJsonFactura']
-    print("rutaJsonFactura =", rutaJsonFactura)
+    rutaZip = request.POST['rutaZip']
+    print("rutaZip =", rutaZip)
 
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'UPDATE  rips_detalleRips SET cuv =  ' + "'" + str(estadoPasoMinisterio) + "'" + ' "rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'" + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "'"
+    comando = 'UPDATE  rips_ripsdetalle SET cuv =  ' +  "'" + str(cuv) + "'," +  '"estadoPasoMinisterio" = ' + "'" + str(estadoPasoMinisterio) +  "'," + '"rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + "'" + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'," + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "' WHERE id =" + post_id
 
     print(comando)
     cur3.execute(comando)
@@ -363,9 +365,6 @@ def ActualizarEmpresaDetalleRips(request):
     return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
 
 
-
-
-
 def TraeDetalleRips(request):
     print("Entre a TraerDetalleRips")
 
@@ -380,16 +379,16 @@ def TraeDetalleRips(request):
                                    password="123456")
     curx = miConexionx.cursor()
     
-    detalle = 'SELECT d.id,  d."numeroFactura_id", d."rutaJsonRespuesta", d."rutaJsonFactura" , d."fechaRegistro", d."ripsEnvios_id", d."usuarioRegistro_id", d.estado, d."rutaPdf", d."rutaZip"  FROM public.rips_ripsdetalle d WHERE  id = ' + "'" + str(detalleRipsId) + "'"
+    detalle = 'SELECT d.id, d.cuv, d."numeroFactura_id" numeroFactura, d."rutaJsonRespuesta", d."rutaJsonFactura" , d."fechaRegistro", d."ripsEnvios_id", d."usuarioRegistro_id", d.estado, d."rutaPdf", d."rutaZip"  FROM public.rips_ripsdetalle d WHERE  id = ' + "'" + str(detalleRipsId) + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  numeroFactura_id, rutaJsonRespuesta, rutaJsonFactura,fechaRegistro,ripsEnvios_id, usuarioRegistro_id, estado, rutaPdf, rutaZip in curx.fetchall():
+    for id, cuv, numeroFactura, rutaJsonRespuesta, rutaJsonFactura,fechaRegistro,ripsEnvios_id, usuarioRegistro_id, estado, rutaPdf, rutaZip in curx.fetchall():
         enviarDetalleRips.append(
             {"model": "facturacion_facturacion", "pk": id, "fields":
-                {'id': id, 'factura': numeroFactura_id , 'rutaJsonRespuesta': rutaJsonRespuesta, 'rutaJsonFactura': rutaJsonFactura, 'fechaRegistro':fechaRegistro,
+                {'id': id, 'cuv':cuv ,'numeroFactura': numeroFactura , 'rutaJsonRespuesta': rutaJsonRespuesta, 'rutaJsonFactura': rutaJsonFactura, 'fechaRegistro':fechaRegistro,
                  'ripsEnvios_id':ripsEnvios_id, 'estado':estado, 'rutaPdf':rutaPdf, 'rutaZip':rutaZip
                 }})
 
@@ -400,3 +399,26 @@ def TraeDetalleRips(request):
     serialized1 = json.dumps(enviarDetalleRips, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+def GenerarJsonRips(request):
+    print("Entre a GenerarJsonRips")
+
+    envioRipsId = request.POST['envioRipsId']
+    print("envioRipsId =", envioRipsId)
+
+    #Rutinas subir a tablas de rips todos la INFO MINISTERIO JSON RIPS
+
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'INSERT TABLARIPS"'
+
+    curx.execute(detalle)
+
+
+    miConexionx.close()
+
+    return JsonResponse({'success': True, 'message': 'Rips JSON generados satisfactoriamente!'})

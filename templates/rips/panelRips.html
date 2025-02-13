@@ -9,15 +9,18 @@
 <link rel="stylesheet" type="text/css"  href = {% static 'css/litle.css' %} >
 <script src={% static 'js/panelTabsRips.js' %} defer >         </script>
 <script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
- <script src={% static 'mainRips.js' %} defer > </script>
+<script src={% static 'mainRips.js' %} defer > </script>
+
+
+
 
 <div class="marco">
     <ul class="tabs">
 
         <li><a href="#Rips"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Envios Rips </a></li>
         <li><a href="#Creacion_Envios_Rips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
-        <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Json Rips </a></li>
- 
+        <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Generar Json Rips </a></li>
+        <li><a href="#ConsultaJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Consulta Json Rips </a></li> 
     </ul>
 </div>
 
@@ -111,7 +114,9 @@ div.dataTables_filter input {
                                                 <th>AlMinisterio</th>
 						<th>FechaRegistro</th>
 						<th>UsuarioRegistro</th>
-                                                <th>Action</th>
+                                                <th>Seleccionar</th>
+
+
 						</bold>                                  
 
                                             </tr>
@@ -336,19 +341,29 @@ div.dataTables_filter input {
                             </div>
                             <form id="postFormRipsDetalle" name="postFormRipsDetalle" class="form-horizontal"
                                   novalidate>
-                                {% csrf_token %}
-                                <input type="hidden" name="post_id" id="post_id">
+                               
+                               
                      
-				<div class="row row-cols-12" style="height=1px;">
+				<div class="row row-cols-13" style="height=1px;">
+		<div class="col">
+
+			 Id : <input type="text" name="post_id" id="post_id" readonly>
+
+                                </div>
 
 				<div class="col">
                                     Factura:
-                                    <input type="text" id="numeroFactura_id" name="numeroFactura_id" value="1" readonly></input>
+                                    <input type="text" id="numeroFacturaT" name="numeroFacturaT"  readonly></input>
+                                </div>
+
+				<div class="col">
+                                    Envio:
+                                    <input type="text" id="ripsEnvios" name="ripsEnvios"  readonly></input>
                                 </div>
 
 				<div class="col">
                                     Cuv:
-                                    <input type="text" id="cuv" name="cuv" value="" readonly ></input>
+                                    <input type="text" id="cuv" name="cuv" value=""  ></input>
                                 </div>
                                 <div class="col">
                                     EstadoPasoMinisterio:
@@ -363,7 +378,7 @@ div.dataTables_filter input {
 
 				<div class="col">
                                     RutaJsonRespuesta:
-					 <input type="text" id="rutaJsonFactura" name="rutaJsonFactura">
+					 <input type="text" id="rutaJsonRespuesta" name="rutaJsonRespuesta">
                                 </div>
 
            
@@ -414,6 +429,25 @@ div.dataTables_filter input {
 
 <article id="GenerarJsonRips">
         	    <center><h3>Generar Json Rips</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		   	     Envio No: <input type="text" name="envioRipsId1" id="envioRipsId1">  
+			     Empresa: <input type="text" name="empresaId1" id="empresaId1" >  
+		<div class="row">
+		</div>
+		
+		<div class="row">
+		<div class="col">
+                                    <button type="button" class="btn btn-primary" id="generarJsonRips"   value="Generar" onclick="GenerarJsonRips()">Generar JSON rips </button>
+                 </div>	
+		 </div>
+
+		 </div>
+
+</article>
+
+
+<article id="ConsultaJsonRips">
+        	    <center><h3>Consulta Json Rips</h3></center>
 		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
 		
 		

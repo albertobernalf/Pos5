@@ -43,6 +43,8 @@ function initTableEnviosRips(data) {
                         var btn = '';
                          
                           btn = btn + " <input type='radio' class='miSol form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+		          // btn = btn + " <input type='checkbox' class='generaJson form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
                         return btn;
                     },
        
@@ -148,6 +150,11 @@ window.addEventListener('load', function() {
 	document.getElementById("empresaId").value = id_empresa;
 	document.getElementById("envioRipsId").value = id_rips;
 
+	document.getElementById("empresaId1").value = id_empresa;
+	document.getElementById("envioRipsId1").value = id_rips;
+
+
+
 	// alert("envio a initTableDetalleRipsAdicionar " + data);
 
 // hasta aquip
@@ -194,6 +201,9 @@ window.addEventListener('load', function() {
 
 		document.getElementById("empresaId").value = id_empresa;
 		document.getElementById("envioRipsId").value = post_id;
+
+		document.getElementById("empresaId1").value = id_empresa;
+		document.getElementById("envioRipsId1").value = post_id;
 
 		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();
 
@@ -313,22 +323,29 @@ function initTableDetalleRips(data) {
                 dataType: 'json',
                 success: function (info) {
 
-  			$('#numeroFactura_id').val(info.numeroFactura_id);
-        	       	$('#cuv').val(info.cuv);
-	                $('#estadoPasoMinisterio').val(info.estadoPasoMinisterio);
-	                $('#rutaJsonRespuesta').val(info.rutaJsonRespuesta);
-	                $('#rutaJsonFactura').val(info.rutaJsonFactura);
-	                $('#fechaRegistro').val(info.fechaRegistro);
-	                $('#estadoReg').val(info.estadoReg);
-	                $('#ripsEnvios_id').val(info.ripsEnvios_id);
-	                $('#usuarioRegistro_id').val(info.usuarioRegistro_id);
-	                $('#estado').val(info.estado);
-	                $('#rutaPdf').val(info.rutaPdf);
-	                $('#rutaZip').val(info.rutaZip);
-
-
-            $('#post_id').val('');
             $('#postFormRipsDetalle').trigger("reset");
+
+			alert("Factura" + info[0].fields.numeroFactura);
+			alert("ripsEnvios_id" + info[0].fields.ripsEnvios_id);
+			alert("post_id" + info[0].fields.id);
+
+  	
+ 				$('#post_id2').val(info[0].fields.id);
+				
+  		        	$('#numeroFacturaT').val(info[0].fields.numeroFactura);
+        	       	$('#cuv').val(info[0].fields.cuv);
+	                $('#estadoPasoMinisterio').val(info[0].fields.estadoPasoMinisterio);
+	                $('#rutaJsonRespuesta').val(info[0].fields.rutaJsonRespuesta);
+	                $('#rutaJsonFactura').val(info[0].fields.rutaJsonFactura);
+	                $('#fechaRegistro').val(info[0].fields.fechaRegistro);
+	                $('#estadoReg').val(info[0].fields.estadoReg);
+	                $('#ripsEnvios').val(info[0].fields.ripsEnvios_id);
+	                $('#usuarioRegistro_id').val(info[0].fields.usuarioRegistro_id);
+	                $('#estado').val(info[0].fields.estado);
+	                $('#rutaPdf').val(info[0].fields.rutaPdf);
+	                $('#rutaZip').val(info[0].fields.rutaZip);
+
+
             $('#modelHeadingRipsDetalle').html("Detalle Envios Rips");
             $('#crearModelRipsDetalle').modal('show');
 
@@ -338,19 +355,6 @@ function initTableDetalleRips(data) {
 	   	    	}
             });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 alert ("Ya avri la modal");
         
 
@@ -358,7 +362,71 @@ alert ("Ya avri la modal");
 
 
 
+ $('#tablaEnvioRips tbody').on('click', '.generaJson', function() {
+	alert ("Entre generar JSON");
+
+  });
+
+
+
+
+
+
 });  //// AQUI cierra el document.ready
+
+
+	/*------------------------------------------
+        --------------------------------------------
+        Create GuardarDetalleRips
+        --------------------------------------------
+        --------------------------------------------*/
+
+
+function GuardarDetalleRips()
+{
+
+            $.ajax({
+                data: $('#postFormRipsDetalle').serialize(),
+	        url: "/guardaDetalleRips/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		   $("#mensajes").html(data2.message);
+                  $('#postFormDetalleRips').trigger("reset");
+
+	        var data =  {}   ;
+		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+
+
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+
+		data['empresaId'] = empresaId;
+		data['envioRipsId'] = envioRipsId;
+	        data = JSON.stringify(data);
+
+		  var tableA = $('#tablaDetalleRips').DataTable();
+	          tableA.ajax.reload();
+
+ 		 $('#crearModelRipsDetalle').modal('hide');
+                },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+}
+
+
+
 	
 function CrearEnviosRips()
 {
@@ -416,46 +484,23 @@ function EnvioRips()
 
 
 
-
-	/*------------------------------------------
-        --------------------------------------------
-        Create Post Code Abonos
-        --------------------------------------------
-        --------------------------------------------*/
-
-
-
-function DetalleRipsBorrar()
+function GenerarJsonRips()
 {
-    
-		alert("Entre detallerips");
-	
-            $('#post_id').val('');
-            $('#postFormCrearDetalleRips').trigger("reset");
-            $('#modelHeadingDetalleRips').html("Detalle Envios Rips");
-            $('#crearModelDetalleRips').modal('show');
-        
-}
 
-
-
-function GuardarDetalleRips()
-{
+	alert("Entre Generar json Rips");
+	var envioRipsId = document.getElementById("envioRipsId1").value ;
 
             $.ajax({
-                data: $('#postFormDetalleRips').serialize(),
-	        url: "/guardaDetalleRips/",
+
+	        url: "/generarJsonRips/",
+		data: {'envioRipsId':envioRipsId},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
+			alert("llegue de Gererar los JSON del Rips seleccionado");
+
 		   $("#mensajes").html(data.message);
-                  $('#postFormDetalleRips').trigger("reset");
-
-	  table = $("#tablaDetalleRips").dataTable().fnDestroy();
-		initTableDetalleRips(data);	
-
- 		 $('#crearModelDetalleRips').modal('hide');
-                },
+                         },
                error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
 	   	    	}
@@ -463,4 +508,3 @@ function GuardarDetalleRips()
 
 
 }
-

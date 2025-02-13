@@ -210,6 +210,7 @@ urlpatterns = [
     path('guardaDetalleRips/', viewsRips.GuardaDetalleRips, name='GuardaDetalleRips'),
     path('load_dataDetalleRipsAdicionar/<str:data>', viewsRips.load_dataDetalleRipsAdicionar, name='loaddataDetalleRipsAdicionar'),
     path('traeDetalleRips/', viewsRips.TraeDetalleRips, name='TraeDetalleRips'),
+    path('generarJsonRips/', viewsRips.GenerarJsonRips, name='generarJsonRips'),
 
     # Glosas
 
