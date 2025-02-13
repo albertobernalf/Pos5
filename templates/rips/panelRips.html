@@ -88,7 +88,7 @@ div.dataTables_filter input {
 				</div>
 				 <div class="col-md-2">	
 				
-	                        <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarDetalleRips"  name="BtnAdicionarDetalleRips" value="Adicionar" onclick= "DetalleRips()" >				    
+	                        <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				    
                                </div>
                             </div>
                         </div>
@@ -158,8 +158,17 @@ div.dataTables_filter input {
 
 				<div class="col">
                                     Empresa:
-                                    <input type="text" id="empresa_id" name="empresa_id" value="3" readonly ></input>
+				<select class="select-css"  id="empresa_id"
+                                                                name="empresa_id">
+                                                            {% for empresas in Empresas %}
+                                                            <option value="{{empresas.id}}">
+                                                                {{empresas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
                                 </div>
+
+
                           
 				<div class="col">
                                    Fecha Envio:
@@ -233,8 +242,9 @@ div.dataTables_filter input {
         	    <center><h3>Detalle Envio Rips</h3></center>
 	  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
 
-			     <input type="text" name="empresaId" id="empresaId">  
-			     <input type="text" name="envioRipsId" id="envioRipsId">  
+			     
+			     Envio No: <input type="text" name="envioRipsId" id="envioRipsId">  
+			     Empresa: <input type="text" name="empresaId" id="empresaId" >  
 
 			 <div class="row" style="width:100%; margin-left: 0;">
 			     <div class="col-md-12" >	
@@ -270,7 +280,7 @@ div.dataTables_filter input {
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header" style="height:45px; margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;">
+                        <div class="card-header" style="height:25px; margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;">
                 	      <div class="row">
 
                             </div>
@@ -338,11 +348,11 @@ div.dataTables_filter input {
 
 				<div class="col">
                                     Cuv:
-                                    <input type="text" id="cuv" name="cuv" value="3" readonly ></input>
+                                    <input type="text" id="cuv" name="cuv" value="" readonly ></input>
                                 </div>
                                 <div class="col">
                                     EstadoPasoMinisterio:
-                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="N"></input>
+                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" ></input>
                                 </div>
                           
 				<div class="col">
@@ -366,7 +376,7 @@ div.dataTables_filter input {
 
                                 <div class="col">
                                     EstadoRegistro:
-                                    <input type="text" id="estadoReg" name="estadoReg" value="A"  readonly> </input>
+                                    <input type="text" id="estadoReg" name="estadoReg"  readonly> </input>
                                 </div>
 
 
@@ -388,7 +398,7 @@ div.dataTables_filter input {
 
 
                                 <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="saveBtnCrearDetalleRips"   value="create" onclick="CrearDetalleRips()">Guardar </button>
+                                    <button type="button" class="btn btn-primary" id="saveBtnCrearDetalleRips"   value="create" onclick="GuardarDetalleRips()">Guardar </button>
                                 </div>
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 

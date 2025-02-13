@@ -19,9 +19,9 @@ $(document).ready(function () {
 
 	data = JSON.stringify(data);
 
-
+	alert("Antes de invocar initTableEnviosRips");
 	initTableEnviosRips(data);	
-
+	alert("Despues de invocar initTableEnviosRips");
 
 function initTableEnviosRips(data) {
 
@@ -76,6 +76,7 @@ function initTableEnviosRips(data) {
 function initTableDetalleRipsAdicionar(data) {
 
 
+	
 	return new DataTable('.tablaDetalleRipsAdicionar', {
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
@@ -117,96 +118,11 @@ function initTableDetalleRipsAdicionar(data) {
 }
 
 
- // COMIENZA ONLOAD
 
-window.addEventListener('load', function() {
 
+});  //// AQUI cierra el document.ready
 	
-	$('#tablaEnviosRips tbody tr:eq(0) .miSol').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
-	// alert("Despues de Colocar el checkbox en TablaEnviosRips");	
 
-
-	var table = $('#tablaEnviosRips').DataTable();  // Inicializa el DataTable jquery//
-	//alert("Despues de Referenciar TablaEnviosRips");	
-	var rowindex = table.row(0).node();  // Selecciona la primera fila jquery
-        console.log("rowindex= " , rowindex);
-
-
-	var id_empresa = table.row(0).cell(rowindex, 2).data();  // jquery
-	var id_rips = table.row(0).cell(rowindex, 0).data();  // jquery
-
-	var data =  {}   ;
-        data['username'] = username;
-       data['sedeSeleccionada'] = sedeSeleccionada;
-       data['nombreSede'] = nombreSede;
-      data['sede'] = sede;
-        data['username_id'] = username_id;
-        data['empresaId'] = id_empresa;
-  data['envioRipsId'] = id_rips;
-
-        data = JSON.stringify(data);
-	document.getElementById("empresaId").value = id_empresa;
-	document.getElementById("envioRipsId").value = id_rips;
-
-	// alert("envio a initTableDetalleRipsAdicionar " + data);
-
-// hasta aquip
-
-
-	  table = $("#tablaEnviosRipsAdicionar").dataTable().fnDestroy();
-	initTableDetalleRipsAdicionar(data);
-
-	 initTableDetalleRips(data);         
-
-});
-
- /* FIN ONLOAD */
-
-
-
- $('#tablaEnviosRips tbody').on('click', '.miSol', function() {
-
-        var post_id = $(this).data('pk');
-	var row = $(this).closest('tr'); // Encuentra la fila
-
-             console.log("La fila que selecciono de COMIENZO es : " , row );
-
-	        var data =  {}   ;
-
-		var table = $('#tablaEnviosRips').DataTable();  // Inicializa el DataTable jquery 	      
-
-  	        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
-
-
-	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
-	        dato1 = Object.values(rowindex);
-		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
-	        dato3 = dato1[2];
-		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
-	        console.log ( "dato10 empresa = " , dato3.empresa_id); 
-
-		var id_empresa = dato3.empresa_id;  // jquery
-
-		data['empresaId'] = id_empresa;
-		data['envioRipsId'] = post_id;
-
-	        data = JSON.stringify(data);
-
-		document.getElementById("empresaId").value = id_empresa;
-		document.getElementById("envioRipsId").value = post_id;
-
-		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();
-
-		  initTableDetalleRipsAdicionar(data);
-
-		
-
-		  table = $("#tablaDetalleRips").dataTable().fnDestroy();
-		
-		 initTableDetalleRips(data);         
-
-
-  });
 
 function initTableDetalleRips(data) {
 
@@ -225,7 +141,7 @@ function initTableDetalleRips(data) {
                 {
                     "render": function ( data, type, row ) {
                         var btn = '';
-                          btn = btn + " <input type='radio'  class='miDetalle form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                          btn = btn + " <input type='radio'  class='form-check-input editPostDetalleRips' data-pk='"  + row.pk + "'>" + "</input>";
                         return btn;
                     },
            
@@ -242,9 +158,9 @@ function initTableDetalleRips(data) {
             columns: [
 
 		 { data: "fields.id"},
-                { data: "fields.numeroFactura_id"},
+                { data: "fields.factura_id"},
                 { data: "fields.cuv"},
-                { data: "fields.estadoPasoMinisterio"},
+                { data: "fields.estadoPasoAlMinisterio"},
                 { data: "fields.rutaJsonRespuesta"},
                 { data: "fields.rutaJsonFactura"},
                 { data: "fields.rutaPdf"},
@@ -254,151 +170,182 @@ function initTableDetalleRips(data) {
  });
 }
 
+
+
+ $('#tablaEnviosRips tbody').on('click', '.miSol', function() {
+
+        var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
+
+             console.log("La fila que selecciono de COMIENZO es : " , row );
+
+	        var data =  {}   ;
+		alert("Antes de Referenciar TablaEnviosRips");
+		var table = $('#tablaEnviosRips').DataTable();  // Inicializa el DataTable jquery 	      
+		alert("Despues de Referenciar TablaEnviosRips");
+  	        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato10 empresa = " , dato3.empresa_id); 
+
+		var id_empresa = dato3.empresa_id;  // jquery
+
+		data['empresaId'] = id_empresa;
+		data['detalleRips'] = post_id;
+
+	        data = JSON.stringify(data);
+
+		document.getElementById("empresaId").value = id_empresa;
+		document.getElementById("envioRipsId").value = post_id;
+
+
+		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();
+
+		  initTableDetalleRipsAdicionar(data);
+
+		table = $("#tablaDetalleRips").dataTable().fnDestroy();
+	
+
+		 initTableDetalleRips(data);         
+      
+
+  });
+
+
  $('#tablaDetalleRipsAdicionar tbody').on('click', '.miFactura', function() {
 
         var post_id = $(this).data('pk');
 	var row = $(this).closest('tr'); // Encuentra la fila
+	alert("Entre a la factura fila Nro = " + row);
+        console.log("La fila que selecciono de COMIENZO es : " , row );
+
 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
-	var empresaId = document.getElementById("empresaId").value; 
-	var envioRipsId = document.getElementById("envioRipsId").value ;
-        var facturaId = post_id;
+
+		alert("Antes de Referenciar TablaEnviosRipsAdicionar");	
+	var tableA = $('#tablaEnviosRipsAdicionar').DataTable();  // Inicializa el DataTable jquery 	      
+		alert("Despues de Referenciar TablaEnviosRipsAdicionar");	
+        var rowindex = $('#tablaEnviosRipsAdicionar').DataTable().row(row).data(); // Obtiene los datos de la fila
+        dato1 = Object.values(rowindex);
+	alert(" fila seleccionad dato1 = " +  dato1);
+	console.log(" fila seleccionad dato1 = ",  dato1);
+        dato3 = dato1[2];
+	alert(" fila seleccionad dato3 = " +  dato3);
+	console.log(" fila seleccionada dato3 = ",  dato3);
+        console.log ( "dato empresa = " , dato3.factura_id); 
+	alert("dato empresa = " +  dato3.factura_id);
+
+		var empresaId = document.getElementById("empresaId").value 
+		var facturaId =  dato3.factura_id;  
+		var envioRipsId = document.getElementById("envioRipsId").value 
+
+		alert("facturaId = " + facturaId);
+
+		/* Aqui va el ajax qu actualiza EL ENVIORIPS DE LA FACTURA Y crea el enviodetallerisp fila */
 
 	$.ajax({
 
 	        url: "/actualizarEmpresaDetalleRips/",
-                data: {'facturaId':facturaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id},
+                data: {'facturaId':facturaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id, 	},
                 type: "POST",
                 dataType: 'json',
-                success: function (data2) {
+                success: function (data) {
+
+
 	        var data =  {}   ;
 	        data['username'] = username;
 	        data['sedeSeleccionada'] = sedeSeleccionada;
 	        data['nombreSede'] = nombreSede;
 	        data['sede'] = sede;
 	        data['username_id'] = username_id;
-		data['empresaId'] = empresaId;
-		data['envioRipsId'] = envioRipsId;
+		data['empresaId'] = dato3['empresa_id'];
+		data['detalleRips'] = post_id;
 	        data = JSON.stringify(data);
+		
+		// table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();
+		// initTableDetalleRipsAdicionar(data);
 
-		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();		
-		 initTableDetalleRipsAdicionar(data);		
+		alert("Antes de Referenciar TablaEnviosRipsAdicionar");	
+		var tableA = $('#tablaEnviosRipsAdicionar').DataTable();  // Inicializa el DataTable jquery 	      
+		alert("Despues de Referenciar TablaEnviosRipsAdicionar");
 
 		
 		table = $("#tablaDetalleRips").dataTable().fnDestroy();
 		initTableDetalleRips(data);         
-                },
-                 error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
-            });
-
-  });
-
- $('#tablaDetalleRips tbody').on('click', '.miDetalle', function() {
-	alert ("Entre detalle Rips");
-     var post_id = $(this).data('pk');
-
-	alert("id de detalleRips = " +  post_id);
-
-
-	$.ajax({
-
-	        url: "/traeDetalleRips/",
-                data: {'detalleRipsId':post_id},
-                type: "POST",
-                dataType: 'json',
-                success: function (info) {
-
-  			$('#numeroFactura_id').val(info.numeroFactura_id);
-        	       	$('#cuv').val(info.cuv);
-	                $('#estadoPasoMinisterio').val(info.estadoPasoMinisterio);
-	                $('#rutaJsonRespuesta').val(info.rutaJsonRespuesta);
-	                $('#rutaJsonFactura').val(info.rutaJsonFactura);
-	                $('#fechaRegistro').val(info.fechaRegistro);
-	                $('#estadoReg').val(info.estadoReg);
-	                $('#ripsEnvios_id').val(info.ripsEnvios_id);
-	                $('#usuarioRegistro_id').val(info.usuarioRegistro_id);
-	                $('#estado').val(info.estado);
-	                $('#rutaPdf').val(info.rutaPdf);
-	                $('#rutaZip').val(info.rutaZip);
-
-
-            $('#post_id').val('');
-            $('#postFormRipsDetalle').trigger("reset");
-            $('#modelHeadingRipsDetalle').html("Detalle Envios Rips");
-            $('#crearModelRipsDetalle').modal('show');
 
                 },
-                 error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
+                error: function (data) {
+                        $('.success-msg').css('display','block');
+                        $('.success-msg').text(data.error);
+                }
             });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-alert ("Ya avri la modal");
-        
+		/* Fin AJAX  */
+      
 
   });
 
 
 
-});  //// AQUI cierra el document.ready
-	
-function CrearEnviosRips()
-{
+
+ // COMIENZA ONLOAD
+
+window.addEventListener('load', function() {
+
+	// alert("Antes de Colocar el checkbox en TablaEnviosRips");	
+	$('#tablaEnviosRips tbody tr:eq(0) .miSol').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
+	// alert("Despues de Colocar el checkbox en TablaEnviosRips");	
+
+	//alert("Antes de Referenciar TablaEnviosRips");	
+	var table = $('#tablaEnviosRips').DataTable();  // Inicializa el DataTable jquery//
+	//alert("Despues de Referenciar TablaEnviosRips");	
+	var rowindex = table.row(0).node();  // Selecciona la primera fila jquery
+        console.log("rowindex= " , rowindex);
 
 
-            $.ajax({
-                data: $('#postFormEnviosRips').serialize(),
-	        url: "/guardaEnviosRips/",
-                type: "POST",
-                dataType: 'json',
-                success: function (data2) {
-		   $("#mensajes").html(data2.message);
-                  $('#postFormEnviosRips').trigger("reset");
+	var id_empresa = table.row(0).cell(rowindex, 2).data();  // jquery
+	var id_rips = table.row(0).cell(rowindex, 0).data();  // jquery
 
-		var data =  {}   ;
-	        data['username'] = username;
-	       data['sedeSeleccionada'] = sedeSeleccionada;
-	       data['nombreSede'] = nombreSede;
-	      data['sede'] = sede;
-	        data['username_id'] = username_id;
+	alert("con empresa = " + id_empresa);	
+	alert("con rips = " + id_rips);	
+
+	var data =  {}   ;
+        data['username'] = username;
+       data['sedeSeleccionada'] = sedeSeleccionada;
+       data['nombreSede'] = nombreSede;
+      data['sede'] = sede;
+        data['username_id'] = username_id;
+        data['empresaId'] = id_empresa;
+  data['envioRipsId'] = id_rips;
+
         data = JSON.stringify(data);
-	
-		  var tableA = $('#tablaEnviosRips').DataTable();
-	          tableA.ajax.reload();
+	document.getElementById("empresaId").value = id_empresa;
+	document.getElementById("envioRipsId").value = id_rips;
 
- 		 $('#crearModelEnviosRips').modal('hide');
-                },
-            error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
-            });
+	// alert("envio a initTableDetalleRipsAdicionar " + data);
 
+// hasta aquip
+	alert("Antes de Cargarr TablaEnviosRipsAdicionar");	
 
-}
+	  table = $("#tablaEnviosRipsAdicionar").dataTable().fnDestroy();
+	initTableDetalleRipsAdicionar(data);
+	alert("Despues de Cargarr TablaEnviosRipsAdicionar");	
 
+});
 
+ /* FIN ONLOAD */
 
 /*------------------------------------------
         --------------------------------------------
-        EnvioRips
+        Click to Button
         --------------------------------------------
         --------------------------------------------*/
 
@@ -415,20 +362,43 @@ function EnvioRips()
 }
 
 
-
-
 	/*------------------------------------------
         --------------------------------------------
         Create Post Code Abonos
         --------------------------------------------
         --------------------------------------------*/
 
+function CrearEnviosRips()
+{
+
+            $.ajax({
+                data: $('#postFormEnviosRips').serialize(),
+	        url: "/guardaEnviosRips/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data) {
+
+		   $("#mensajes").html(data.message);
+                  $('#postFormEnviosRips').trigger("reset");
+
+		  table = $("#tablaEnviosRips").dataTable().fnDestroy();
+		initTableEnviosRips(data);	
+
+ 		 $('#crearModelEnviosRips').modal('hide');
+                },
+                error: function (data) {
+                        $('.success-msg').css('display','block');
+                        $('.success-msg').text(data.error);
+                }
+            });
 
 
-function DetalleRipsBorrar()
+}
+
+function DetalleRips()
 {
     
-		alert("Entre detallerips");
+	
 	
             $('#post_id').val('');
             $('#postFormCrearDetalleRips').trigger("reset");
@@ -439,7 +409,7 @@ function DetalleRipsBorrar()
 
 
 
-function GuardarDetalleRips()
+function CrearDetalleRips()
 {
 
             $.ajax({
@@ -447,7 +417,8 @@ function GuardarDetalleRips()
 	        url: "/guardaDetalleRips/",
                 type: "POST",
                 dataType: 'json',
-                success: function (data2) {
+                success: function (data) {
+
 		   $("#mensajes").html(data.message);
                   $('#postFormDetalleRips').trigger("reset");
 
@@ -456,9 +427,10 @@ function GuardarDetalleRips()
 
  		 $('#crearModelDetalleRips').modal('hide');
                 },
-               error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
+                error: function (data) {
+                        $('.success-msg').css('display','block');
+                        $('.success-msg').text(data.error);
+                }
             });
 
 

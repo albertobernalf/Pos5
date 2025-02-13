@@ -174,9 +174,12 @@ def load_dataDetalleRips(request, data):
     context = {}
     d = json.loads(data)
 
-
     empresaId = d['empresaId']
     print("empresaId = ", empresaId)
+
+    envioRipsId = d['envioRipsId']
+    print("envioRipsId = ", envioRipsId)
+
 
     detalleRips = []
 
@@ -184,7 +187,7 @@ def load_dataDetalleRips(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id,  "numeroFactura_id", "cuv", "estadoPasoMinisterio","rutaJsonRespuesta", "rutaJsonFactura",  "fechaRegistro", "estadoReg", "ripsEnvios_id",  "usuarioRegistro_id", "rutaPdf", "rutaZip"  FROM public.rips_ripsDetalle WHERE "ripsEnvios_id" =  ' + "'" + str(empresaId) + "'"
+    detalle = 'SELECT id,  "numeroFactura_id"  numeroFactura_id , "cuv", "estadoPasoMinisterio","rutaJsonRespuesta", "rutaJsonFactura",  "fechaRegistro", "estadoReg", "ripsEnvios_id",  "usuarioRegistro_id", "rutaPdf", "rutaZip"  FROM public.rips_ripsDetalle WHERE "ripsEnvios_id" =  ' + "'" + str(envioRipsId) + "'"
 
     print(detalle)
 
@@ -363,3 +366,37 @@ def ActualizarEmpresaDetalleRips(request):
 
 
 
+def TraeDetalleRips(request):
+    print("Entre a TraerDetalleRips")
+
+    detalleRipsId = request.POST['detalleRipsId']
+    print("detalleRipsId =", detalleRipsId)
+
+    context = {}
+
+    enviarDetalleRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+    
+    detalle = 'SELECT d.id,  d."numeroFactura_id", d."rutaJsonRespuesta", d."rutaJsonFactura" , d."fechaRegistro", d."ripsEnvios_id", d."usuarioRegistro_id", d.estado, d."rutaPdf", d."rutaZip"  FROM public.rips_ripsdetalle d WHERE  id = ' + "'" + str(detalleRipsId) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  numeroFactura_id, rutaJsonRespuesta, rutaJsonFactura,fechaRegistro,ripsEnvios_id, usuarioRegistro_id, estado, rutaPdf, rutaZip in curx.fetchall():
+        enviarDetalleRips.append(
+            {"model": "facturacion_facturacion", "pk": id, "fields":
+                {'id': id, 'factura': numeroFactura_id , 'rutaJsonRespuesta': rutaJsonRespuesta, 'rutaJsonFactura': rutaJsonFactura, 'fechaRegistro':fechaRegistro,
+                 'ripsEnvios_id':ripsEnvios_id, 'estado':estado, 'rutaPdf':rutaPdf, 'rutaZip':rutaZip
+                }})
+
+    miConexionx.close()
+    print("enviarDetalleRips "  , enviarDetalleRips)
+    context['EnviarDetalleRips'] = enviarDetalleRips
+
+    serialized1 = json.dumps(enviarDetalleRips, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')

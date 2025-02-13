@@ -209,6 +209,7 @@ urlpatterns = [
     path('load_dataDetalleRips/<str:data>', viewsRips.load_dataDetalleRips, name='loaddataDetalleRips'),
     path('guardaDetalleRips/', viewsRips.GuardaDetalleRips, name='GuardaDetalleRips'),
     path('load_dataDetalleRipsAdicionar/<str:data>', viewsRips.load_dataDetalleRipsAdicionar, name='loaddataDetalleRipsAdicionar'),
+    path('traeDetalleRips/', viewsRips.TraeDetalleRips, name='TraeDetalleRips'),
 
     # Glosas
 
