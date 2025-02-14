@@ -26,7 +26,7 @@ from facturacion.models import ConveniosPacienteIngresos, Liquidacion, Liquidaci
 from cartera.models import TiposPagos, FormasPagos, Pagos, PagosFacturas
 from triage.models import Triage
 from clinico.models import Servicios
-from rips.models import RipsTransaccion
+from rips.models import RipsTransaccion, RipsUsuarios
 import pickle
 
 
@@ -474,17 +474,17 @@ def Load_tablaRipsTransaccion(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id, "numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id"  FROM public.rips_ripstransaccion WHERE  id = ' + "'" + str(envioRipsId) + "'"
+    detalle = 'SELECT id, "numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id"  FROM public.rips_ripstransaccion WHERE  "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  numDocumentoIdObligado, numNota, fechaRegistro,tipoNota_id,usuarioRegistro_id,  ripsEnvio_id, estadoReg,  sedesClinica_id in curx.fetchall():
+    for id,  numDocumentoIdObligado, numNota, fechaRegistro,tipoNota_id, usuarioRegistro_id,  ripsEnvio_id,  sedesClinica_id in curx.fetchall():
         transaccionRips.append(
             {"model": "rips.RipsTransaccion", "pk": id, "fields":
                 {'id': id, 'numDocumentoIdObligado': numDocumentoIdObligado , 'numNota': numNota, 'fechaRegistro': fechaRegistro, 'tipoNota_id':tipoNota_id, 'usuarioRegistro_id':usuarioRegistro_id,
-                   'ripsEnvio_id': ripsEnvio_id, 'estadoReg': estadoReg, 'sedesClinica_id' :sedesClinica_id}})
+                   'ripsEnvio_id': ripsEnvio_id, 'sedesClinica_id' :sedesClinica_id}})
 
 
 
@@ -493,5 +493,47 @@ def Load_tablaRipsTransaccion(request, data):
     #context['TransaccionRips'] = transaccionRips
 
     serialized1 = json.dumps(transaccionRips, default=serialize_datetime)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_tablaRipsUsuarios(request, data):
+    print("Entre load_data Transaccion Rips")
+
+    context = {}
+    d = json.loads(data)
+
+
+    envioRipsId = d['envioRipsId']
+    print("envioRipsId = ", envioRipsId)
+
+
+    usuariosRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT  ripsu.id, ripsu."tipoDocumentoIdentificacion", ripsu."tipoUsuario", ripsu."fechaNacimiento", ripsu."codSexo", "codZonaTerritorialResidencia", ripsu.incapacidad, ripsu.consecutivo, ripsu."fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", ripsu."usuarioRegistro_id", "numDocumentoIdentificacion", ripsu."ripsDetalle_id", ripsu."ripsTransaccion_id"  FROM public.rips_ripsusuarios ripsu, public.rips_ripstransaccion ripstra  WHERE  ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' AND ripstra.id = ripsu."ripsTransaccion_id" '
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  tipoDocumentoIdentificacion, tipoUsuario, fechaNacimiento,codSexo, codZonaTerritorialResidencia,  incapacidad,  consecutivo, fechaRegistro, codMunicipioResidencia_id , codPaisOrigen_id, codPaisResidencia_id, usuarioRegistro_id , numDocumentoIdentificacion,ripsDetalle_id, ripsTransaccion_id in curx.fetchall():
+        usuariosRips.append(
+            {"model": "rips.RipsTransaccion", "pk": id, "fields":
+                {'id': id, 'tipoDocumentoIdentificacion': tipoDocumentoIdentificacion , 'tipoUsuario': tipoUsuario, 'fechaNacimiento': fechaNacimiento, 'codSexo':codSexo, 'codZonaTerritorialResidencia':codZonaTerritorialResidencia,
+                   'incapacidad': incapacidad, 'consecutivo' :consecutivo ,'fechaRegistro':fechaRegistro, 'codMunicipioResidencia_id':codMunicipioResidencia_id,'codPaisOrigen_id':codPaisOrigen_id,'codPaisResidencia_id':codPaisResidencia_id,'usuarioRegistro_id':usuarioRegistro_id ,'numDocumentoIdentificacion':numDocumentoIdentificacion,
+                    'ripsDetalle_id':ripsDetalle_id,'ripsTransaccion_id':ripsTransaccion_id
+                 }})
+
+
+
+    miConexionx.close()
+    print("usuariosRips "  , usuariosRips)
+    #context['usuariosRips'] = usuariosRips
+
+    serialized1 = json.dumps(usuariosRips, default=serialize_datetime)
 
     return HttpResponse(serialized1, content_type='application/json')

@@ -165,7 +165,9 @@ window.addEventListener('load', function() {
 	  table = $("#tablaEnviosRipsAdicionar").dataTable().fnDestroy();
 	initTableDetalleRipsAdicionar(data);
 
-	 initTableDetalleRips(data);         
+	 initTableDetalleRips(data);    
+	initTableRipsTransaccion(data);	   
+	initTableRipsUsuarios(data);  
 
 });
 
@@ -215,9 +217,14 @@ window.addEventListener('load', function() {
 
 		  table = $("#tablaDetalleRips").dataTable().fnDestroy();
 		
-		 initTableDetalleRips(data);         
+		 initTableDetalleRips(data);
+         
+	  table = $("#tablaRipsTransaccion").dataTable().fnDestroy();
+	initTableRipsTransaccion(data);
+	  table = $("#tablaRipsUsuarios").dataTable().fnDestroy();
+	initTableRipsUsuarios(data);
 
-		initTableRipsTransaccion(data)
+		
 
   });
 
@@ -372,10 +379,13 @@ alert ("Ya avri la modal");
   });
 
 
-
 function initTableRipsTransaccion(data) {
 
+	alert("Entre TableRipsTransaccion");
+	alert ("data = " + JSON.stringify(data));
+
 	return new DataTable('.tablaRipsTransaccion', {
+
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -386,37 +396,99 @@ function initTableRipsTransaccion(data) {
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
+   	   
             columnDefs: [{
-            "render": function ( data, type, row ) {
+
+                    "render": function ( data, type, row ) {
                         var btn = '';
-                        //  btn = btn + " <input type='radio'  class='miDetalle form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                         
+                          btn = btn + " <input type='radio' class='miTransaccion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
                         return btn;
                     },
-                 "targets": 7
+     
+                    "targets": 8
                }
-            ],
+            ],	 
+    
             ajax: {
                  url:"/load_tablaRipsTransaccion/" +  data,
                  type: "POST",
-                dataSrc: ""
+                 dataSrc: ""
             },
-
             lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
             columns: [
-
-		 { data: "fields.id"},
+             	 { data: "fields.id"},
                 { data: "fields.numDocumentoIdObligado"},
                 { data: "fields.numNota"},
                 { data: "fields.fechaRegistro"},
+                { data: "fields.tipoNota_id"},
                 { data: "fields.usuarioRegistro_id"},
                 { data: "fields.ripsEnvio_id"},
                 { data: "fields.sedesClinica_id"},
             ]
+
  });
 }
 
 
+function initTableRipsUsuarios(data) {
 
+	alert("Entre TableRipsUsuarios");
+	alert ("data = " + JSON.stringify(data));
+
+	return new DataTable('.tablaRipsUsuarios', {
+
+	 "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    },
+            processing: true,
+            serverSide: false,
+            scrollY: '300px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+   	   
+            columnDefs: [{
+
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+                         
+                          btn = btn + " <input type='radio' class='miUsuarios form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                        return btn;
+                    },
+     
+                    "targets": 16
+               }
+            ],	 
+    
+            ajax: {
+                 url:"/load_tablaRipsUsuarios/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+            columns: [
+             	 { data: "fields.id"},
+                { data: "fields.tipoDocumentoIdentificacion"},
+                { data: "fields.tipoUsuario"},
+                { data: "fields.fechaNacimiento"},
+                { data: "fields.codSexo"},
+                { data: "fields.codZonaTerritorialResidencia"},
+                { data: "fields.incapacidad"},
+                { data: "fields.consecutivo"},
+                { data: "fields.fechaRegistro"},
+                { data: "fields.codMunicipioResidencia_id"},
+                { data: "fields.codPaisOrigen_id"},
+                { data: "fields.codPaisResidencia_id"},
+                { data: "fields.usuarioRegistro_id"},
+                { data: "fields.numDocumentoIdentificacion"},
+                { data: "fields.ripsDetalle_id"},
+                { data: "fields.ripsTransaccion_id"},
+            ]
+
+ });
+}
 
 
 

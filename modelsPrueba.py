@@ -477,3 +477,4 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 
 -- OJO OJO OJOJJJJ Agregar en las vistas de admsiones ripsTipoUsuario  camos en creacion y adision IMPORTATINSIMO RIPS
 -- ojooooooo OBLIGAR A GUARDAR MUNICIPIO, LOCALIDAD, PAIS DESDE ADMISIONES, TRIAGE
+-- ojo lunes en ripsenvios --> columna estadopasoministerio --> no funciona PENDIENTE, ENVIADFA Y mostrarla en rips, Ver creo en form de admisiones o model de admisiones como se hace eso
