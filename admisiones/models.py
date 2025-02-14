@@ -71,6 +71,7 @@ class Ingresos(models.Model):
     ripsCodServicio =  models.ForeignKey('rips.RipsServicios', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsCausaMotivoAtencion =  models.ForeignKey('rips.RipsCausaExterna', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsCondicionDestinoUsuarioEgreso  = models.ForeignKey('rips.RipsDestinoEgreso', blank=True,null= True, editable=True, on_delete=models.PROTECT ,   related_name='ripssServicios10')
+    ripsTipoUsuario  = models.ForeignKey('rips.RipsTipoUsuario', blank=True,null= True, editable=True, on_delete=models.PROTECT ,   related_name='ripsTipousuario12')
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', default=1, on_delete=models.PROTECT, null=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)

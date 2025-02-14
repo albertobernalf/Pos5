@@ -26,6 +26,7 @@ from facturacion.models import ConveniosPacienteIngresos, Liquidacion, Liquidaci
 from cartera.models import TiposPagos, FormasPagos, Pagos, PagosFacturas
 from triage.models import Triage
 from clinico.models import Servicios
+from rips.models import RipsTransaccion
 import pickle
 
 
@@ -213,8 +214,8 @@ def GuardaDetalleRips(request):
 
     print ("Entre Guarda Detalle Rips" )
 
-    post_id = request.POST['post_id']
-    print("post_id =", post_id)
+    detalleRipsId = request.POST['detalleRipsId']
+    print("detalleRipsId =", detalleRipsId)
 
 
     numeroFactura_id = request.POST['numeroFacturaT']
@@ -255,7 +256,7 @@ def GuardaDetalleRips(request):
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'UPDATE  rips_ripsdetalle SET cuv =  ' +  "'" + str(cuv) + "'," +  '"estadoPasoMinisterio" = ' + "'" + str(estadoPasoMinisterio) +  "'," + '"rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + "'" + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'," + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "' WHERE id =" + post_id
+    comando = 'UPDATE  rips_ripsdetalle SET cuv =  ' +  "'" + str(cuv) + "'," +  '"estadoPasoMinisterio" = ' + "'" + str(estadoPasoMinisterio) +  "'," + '"rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + "'" + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'," + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "' WHERE id =" + detalleRipsId
 
     print(comando)
     cur3.execute(comando)
@@ -407,18 +408,90 @@ def GenerarJsonRips(request):
     envioRipsId = request.POST['envioRipsId']
     print("envioRipsId =", envioRipsId)
 
+    sede = request.POST["sede"]
+    print("sede =", sede)
+
+    username_id = request.POST['username_id']
+    print("username_id =", username_id)
+
+
     #Rutinas subir a tablas de rips todos la INFO MINISTERIO JSON RIPS
+
+    # RIPS TRANSACCION
 
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'INSERT TABLARIPS"'
+    detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, now(), tip.id ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e, cartera_tiposnotas tip  where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id and tip.nombre = ' + "'" + str('Factura') + "'"
 
-    curx.execute(detalle)
+    resultado = curx.execute(detalle)
 
+    print ("resultado = " , resultado)
+
+    miConexionx.commit()
 
     miConexionx.close()
 
+    transaccionIdU = RipsTransaccion.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
+    transaccionId = (transaccionIdU['maximo']) + 0
+
+    # RIPS USUARIOS
+
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'INSERT INTO rips_ripsusuarios("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  select tipdoc.abreviatura, tipousu.codigo, u."fechaNacio", u.genero, local.id, ' + "'" + str('NO') + "'" + ', row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" +str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' and e.id=det."ripsEnvios_id" and det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
+
+    curx.execute(detalle)
+    miConexionx.commit()
+
+    miConexionx.close()
+
+
+
     return JsonResponse({'success': True, 'message': 'Rips JSON generados satisfactoriamente!'})
+
+
+
+def Load_tablaRipsTransaccion(request, data):
+    print("Entre load_data Transaccion Rips")
+
+    context = {}
+    d = json.loads(data)
+
+
+    envioRipsId = d['envioRipsId']
+    print("envioRipsId = ", envioRipsId)
+
+
+    transaccionRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT id, "numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id"  FROM public.rips_ripstransaccion WHERE  id = ' + "'" + str(envioRipsId) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  numDocumentoIdObligado, numNota, fechaRegistro,tipoNota_id,usuarioRegistro_id,  ripsEnvio_id, estadoReg,  sedesClinica_id in curx.fetchall():
+        transaccionRips.append(
+            {"model": "rips.RipsTransaccion", "pk": id, "fields":
+                {'id': id, 'numDocumentoIdObligado': numDocumentoIdObligado , 'numNota': numNota, 'fechaRegistro': fechaRegistro, 'tipoNota_id':tipoNota_id, 'usuarioRegistro_id':usuarioRegistro_id,
+                   'ripsEnvio_id': ripsEnvio_id, 'estadoReg': estadoReg, 'sedesClinica_id' :sedesClinica_id}})
+
+
+
+    miConexionx.close()
+    print("transaccionRips "  , transaccionRips)
+    #context['TransaccionRips'] = transaccionRips
+
+    serialized1 = json.dumps(transaccionRips, default=serialize_datetime)
+
+    return HttpResponse(serialized1, content_type='application/json')

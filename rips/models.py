@@ -60,9 +60,9 @@ class RipsDetalle (models.Model):
 class RipsTransaccion (models.Model):
 
     id = models.AutoField(primary_key=True)
-    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle01')
-    numDocumentoIdObligado =   models.CharField(max_length=9, blank=True,null= True, editable=True)
-    #numFactura  =  models.CharField(max_length=20, blank=True,null= True, editable=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica769')
+    ripsEnvio =  models.ForeignKey('rips.RipsEnvios', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle01')
+    numDocumentoIdObligado =   models.CharField(max_length=50, blank=True,null= True, editable=True)
     tipoNota  =  models.ForeignKey('cartera.TiposNotas', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='TipoNota01')
     numNota =  models.CharField(max_length=20, default='S', editable=False)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -126,6 +126,7 @@ class RipsUsuarios (models.Model):
     codZonaTerritorialResidencia = models.CharField(max_length=6, default='A', editable=False ,choices = TIPO_ZONAS)
     incapacidad = models.CharField(max_length=2, default='A', editable=False ,choices = TIPO_INCAPACIDAD)
     consecutivo = models.CharField(max_length=10, blank=True,null= True, editable=True)
+    ripsTransaccion =  models.ForeignKey('rips.RipsTransaccion', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpipsTransaccion12')
     codPaisOrigen = models.ForeignKey('rips.RipsPaises', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='Usu01')
     fechaRegistro = models.DateTimeField(default=now, blank=True, null=True, editable=True)

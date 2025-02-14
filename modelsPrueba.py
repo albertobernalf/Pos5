@@ -474,3 +474,6 @@ var primeraFila = table.row(0).node();  // Selecciona la primera fila
 $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marca el checkbox con jquery
 
 -- creo que tengo erorres en empresa_id en contratacion_convenios, facturacion_facturacion, ripsenvios, verificar
+
+-- OJO OJO OJOJJJJ Agregar en las vistas de admsiones ripsTipoUsuario  camos en creacion y adision IMPORTATINSIMO RIPS
+-- ojooooooo OBLIGAR A GUARDAR MUNICIPIO, LOCALIDAD, PAIS DESDE ADMISIONES, TRIAGE

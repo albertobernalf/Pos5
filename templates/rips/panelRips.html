@@ -11,14 +11,17 @@
 <script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
 <script src={% static 'mainRips.js' %} defer > </script>
 
-
+<!-- Datatable extension SELECT 
+<link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet" integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" crossorigin="anonymous">
+<script src="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.js" integrity="sha384-2Ul6oqy3mEjM7dBJzKOck1Qb/mzlO+k/0BQv3D3C7u+Ri9+7OBINGa24AeOv5rgu" crossorigin="anonymous"></script>
+-->
 
 
 <div class="marco">
     <ul class="tabs">
 
         <li><a href="#Rips"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Envios Rips </a></li>
-        <li><a href="#Creacion_Envios_Rips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
+        <li><a href="#DetalleEnviosRips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
         <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Generar Json Rips </a></li>
         <li><a href="#ConsultaJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Consulta Json Rips </a></li> 
     </ul>
@@ -243,7 +246,7 @@ div.dataTables_filter input {
         </article>
 
 
-<article id="Creacion_Envios_Rips">
+<article id="DetalleEnviosRips">
         	    <center><h3>Detalle Envio Rips</h3></center>
 	  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
 
@@ -347,7 +350,7 @@ div.dataTables_filter input {
 				<div class="row row-cols-13" style="height=1px;">
 		<div class="col">
 
-			 Id : <input type="text" name="post_id" id="post_id" readonly>
+			 Id : <input type="text" name="detalleRipsId" id="detalleRipsId" readonly>
 
                                 </div>
 
@@ -454,6 +457,119 @@ div.dataTables_filter input {
 		 </div>
 </article>
 
+<article id="RipsTransaccion">
+        	    <center><h3>Rips Transaccion</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+
+            <!-- INICIO TABLE DE  EL DATATABLE  -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" style="height:45px; margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;">
+                            <div class="row">
+				
+                            </div>
+                        </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="alert alert-success success-msg" style="display:none"></div>
+                                        <table  id= "tablaRipsTransaccion" class="display nowrap table table table-bordered tablaRipsTransaccion table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
+                                           <thead>
+                                            <tr id= "">    
+						<bold>                                  
+                                                <th>id</th>
+                                                <th>NumeroDocObligatorio</th>
+                                                <th>NumNota</th>
+                                                <th>FechaRegistro</th>
+                                                <th>UsuarioRegistro</th>
+                                                <th>Envio Rips #</th>
+						   <th>Sedes #</th>
+						</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody style="vertical-align:bottom; horizontal-align:left">
+                                            <tr style="height:10%">
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div> <!-- cierra body -->
+                    </div> <!-- cierra card -->
+                </div> <!-- cierra col -->
+            </div> <!-- cierra row -->
+
+	   </div> <!-- cierra div -->
+
+
+
+</article>
+
+<article id="RipsUsuarios">
+        	    <center><h3>Rips Usuarios</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsConsulta">
+        	    <center><h3>Rips Consulta</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsHospitalizacion">
+        	    <center><h3>Rips Hospitalizacion</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsUrgenciasObs">
+        	    <center><h3>Rips Urgencias Observaciones</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsProcedimientos">
+        	    <center><h3>Rips Procedimientos</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsMedicamentos">
+        	    <center><h3>Rips Medicamentos</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+<article id="RipsRecienNacidos">
+        	    <center><h3>Rips Recien Nacidos</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsOtrosServicios">
+        	    <center><h3>Rips Recien Otros Servicios</h3></center>
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
 
      
     </div>
@@ -472,9 +588,23 @@ div.dataTables_filter input {
 
 {% block footer %}
 
+<div class="marco">
+    <ul class="tabs">
 
+        <li><a href="#RipsTransaccion"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Transaccion </a></li>
+        <li><a href="#RipsUsuarios"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Usuarios </a></li>
+        <li><a href="#RipsConsulta"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Rips Consulta</a></li>
+        <li><a href="#RipsHospitalizacion"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Hospitalizacion </a></li>
+        <li><a href="#RipsUrgenciasObs"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Urgencias y Observacion </a></li> 
+        <li><a href="#RipsProcedimientos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Procedimientos </a></li> 
+        <li><a href="#RipsMedicamentos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Medicamentos </a></li> 
+        <li><a href="#RipsRecienNacidos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Recien nacidos </a></li> 
+        <li><a href="#RipsOtrosServicios"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Otros Servicios </a></li> 
+    </ul>
+</div>
 
 {% endblock %}
+
 
 
 
