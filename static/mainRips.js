@@ -42,14 +42,13 @@ function initTableEnviosRips(data) {
 
                     "render": function ( data, type, row ) {
                         var btn = '';
-                         
-                          btn = btn + " <input type='radio' class='miSol form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                          btn = btn + "<td> <input type='radio' class='miSol form-check-input ' data-pk='"  + row.pk + "'>" + "</input> </td>";
 		         //  btn = btn + " <input type='checkbox' class='generaJson form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
                         return btn;
                     },
        
-                    "targets": 11
+                    "targets": 13
                }
             ],	 
     
@@ -62,7 +61,9 @@ function initTableEnviosRips(data) {
             columns: [
                 { data: "fields.id"},
                 { data: "fields.sedesClinica_id"},
+	
                 { data: "fields.empresa_id"},
+                { data: "fields.nombreEmpresa"},
                 { data: "fields.fechaEnvio"},
                 { data: "fields.fechaRespuesta"},
                 { data: "fields.cantidadFacturas"},
@@ -71,6 +72,7 @@ function initTableEnviosRips(data) {
                 { data: "fields.estadoPasoMinisterio"},
 		 { data: "fields.fechaRegistro"},
 		 { data: "fields.usuarioRegistro_id"},
+	  { data: "fields.nombreClinica"},
             ]
 
  });

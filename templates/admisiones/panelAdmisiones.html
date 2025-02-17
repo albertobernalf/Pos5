@@ -1087,8 +1087,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                             <select class="form-select  h-40 w-10" id="tiposUsuario"
                                                     name="tiposUsuario">
-                                                {% for tiposUsuario in TiposUsuario %}
-                                                <option value="{{tiposUsuario.id}}"> {{tiposUsuario.nombre}}</option>
+                                                {% for ripsTipoUsuario in RipsTipoUsuario %}
+                                                <option value="{{ripsTipoUsuario.id}}"> {{ripsTipoUsuario.nombre}}</option>
                                                 {% endfor %}
                                             </select>
 

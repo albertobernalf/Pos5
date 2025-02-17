@@ -1025,6 +1025,29 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo responsables
 
 
+    # Combo ripstipousuario
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre FROM RIPS_ripstipousuario c"
+
+    curt.execute(comando)
+    print(comando)
+
+    ripstipousuario = []
+
+    for id, nombre in curt.fetchall():
+        ripstipousuario.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(ripstipousuario)
+
+    context['RipsTipoUsuario'] = ripstipousuario
+
+    # Fin combo ripstipousuario
+
     ## fin manada de combis
 
 

@@ -99,18 +99,18 @@ def load_dataEnviosRips(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id,  "fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas", "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id"  FROM public.rips_ripsenvios'
+    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."estadoPasoMinisterio",  case when env."estadoPasoMinisterio" = ' + "'" + str('P') + "'" + ' then ' + "'" + str('Pendiente') + "'" + ' when  env."estadoPasoMinisterio" = ' + "'" + str('E') + "'" + ' then ' + "'" + str('Enviada') + "'" + ' end estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa  FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id'
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id in curx.fetchall():
+    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, estadoMinisterio ,fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id, nombreClinica, nombreEmpresa in curx.fetchall():
         enviosRips.append(
             {"model": "rips.ripsEnvios", "pk": id, "fields":
                 {'id': id, 'fechaEnvio': fechaEnvio, 'fechaRespuesta': fechaRespuesta, 'cantidadFacturas': cantidadFacturas,
                  'cantidadPasaron': cantidadPasaron, 'cantidadRechazadas': cantidadRechazadas,
-                 'estadoPasoMinisterio': estadoPasoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id}})
+                 'estadoPasoMinisterio': estadoPasoMinisterio, 'estadoMinisterio':estadoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id, 'nombreClinica':nombreClinica, 'nombreEmpresa':nombreEmpresa}})
 
     miConexionx.close()
     print("EnviosRips "  , enviosRips)

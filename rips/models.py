@@ -14,14 +14,12 @@ class RipsTipos (models.Model):
 
 
 class RipsEnvios (models.Model):
-
     Enviada = 'E'
     Pendiente = 'P'
-    TIPO_CHOICES = (
+    TIPO_CHOICES = [
         ('Enviada', 'Enviada'),
         ('Pendiente', 'Pendiente'),
-    )
-
+    ]
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica759')
     #numeroEnvio = models.CharField(max_length=10, blank=True,null= True, editable=True)
@@ -33,7 +31,7 @@ class RipsEnvios (models.Model):
     cantidadFacturas = models.CharField(max_length=5, blank=True,null= True, editable=True)
     cantidadPasaron = models.CharField(max_length=5, blank=True,null= True, editable=True)
     cantidadRechazadas = models.CharField(max_length=5, blank=True,null= True, editable=True)
-    estadoPasoMinisterio=  models.CharField(max_length=1, default='S', editable=False , choices = TIPO_CHOICES)
+    estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False , choices = TIPO_CHOICES , default=Pendiente)
     #jsonError = models.CharField(max_length=5000, blank=True,null= True, editable=True)
     #jsonAprobado = models.CharField(max_length=5000, blank=True,null= True, editable=True)
     usuarioEnvia = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='planta145')
@@ -46,12 +44,18 @@ class RipsEnvios (models.Model):
         return self.estadoPasoMinisterio
 
 class RipsDetalle (models.Model):
+    Enviada = 'E'
+    Rechazada = 'R'
+    TIPO_CHOICES1 = (
+        ('Enviada', 'Enviada'),
+        ('Rechazada', 'Rechazada'),
+    )
 
     id = models.AutoField(primary_key=True)
     ripsEnvios =  models.ForeignKey('rips.RipsEnvios', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='Envios01')
     numeroFactura  =  models.ForeignKey('facturacion.Facturacion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     cuv  =  models.CharField(max_length=500, blank=True,null= True, editable=True)
-    estadoPasoMinisterio=  models.CharField(max_length=1, default='S', editable=False)
+    estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False , choices = TIPO_CHOICES1, default=Enviada)
     estado = models.CharField(max_length=20, blank=True,null= True, editable=True)
     rutaJsonFactura = models.CharField(max_length=5000, blank=True,null= True, editable=True)
     rutaJsonRespuesta = models.CharField(max_length=5000, blank=True,null= True, editable=True)

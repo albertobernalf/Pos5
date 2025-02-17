@@ -475,6 +475,7 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 
 -- creo que tengo erorres en empresa_id en contratacion_convenios, facturacion_facturacion, ripsenvios, verificar
 
--- OJO OJO OJOJJJJ Agregar en las vistas de admsiones ripsTipoUsuario  camos en creacion y adision IMPORTATINSIMO RIPS
--- ojooooooo OBLIGAR A GUARDAR MUNICIPIO, LOCALIDAD, PAIS DESDE ADMISIONES, TRIAGE
+-- OJO OJO OJOJJJJ Agregar en las vistas de admsiones ripsTipoUsuario  camos en creacion y adision IMPORTATINSIMO RIPS,, ops la edicion de aDMISIOOES falta todo lo de RIPS 
+-- ojooooooo OBLIGAR A GUARDAR MUNICIPIO, LOCALIDAD, PAIS DESDE ADMISIONES, TRIAGE  (Ops estop lo veo bien PROBAR DE NUEVO)
 -- ojo lunes en ripsenvios --> columna estadopasoministerio --> no funciona PENDIENTE, ENVIADFA Y mostrarla en rips, Ver creo en form de admisiones o model de admisiones como se hace eso
+-- ojo lune las consulñta de rips mejopr dejarlas tal cual van a ir en el JSON, de tal forma que cuando arme los json va a ser mas sencillo
