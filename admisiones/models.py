@@ -69,6 +69,7 @@ class Ingresos(models.Model):
     ripsmodalidadGrupoServicioTecSal = models.ForeignKey('rips.RipsModalidadAtencion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsGrupoServicios =  models.ForeignKey('rips.RipsGrupoServicios', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsCodServicio =  models.ForeignKey('rips.RipsServicios', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    ripsFinalidadConsulta =  models.ForeignKey('rips.RipsFinalidadConsulta', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsCausaMotivoAtencion =  models.ForeignKey('rips.RipsCausaExterna', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsCondicionDestinoUsuarioEgreso  = models.ForeignKey('rips.RipsDestinoEgreso', blank=True,null= True, editable=True, on_delete=models.PROTECT ,   related_name='ripssServicios10')
     ripsTipoUsuario  = models.ForeignKey('rips.RipsTipoUsuario', blank=True,null= True, editable=True, on_delete=models.PROTECT ,   related_name='ripsTipousuario12')

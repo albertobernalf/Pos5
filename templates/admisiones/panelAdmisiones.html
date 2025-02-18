@@ -830,6 +830,20 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                         </div>
                                     </div>
 
+					<div class="col">
+                                                       <label for="ripsFinalidadConsulta_id" class="col-sm-1 col-form-label col-form-label-sm">ModalidadGrupoServ:
+                                            &nbsp;&nbsp;&nbsp;</label>
+                                        <div class="col-sm-1">
+                                            <select class="form-select  h-40 w-20" aria-label="" id="ripsFinalidadConsulta_id" name="ripsFinalidadConsulta_id"
+                                                    required>
+                                                {% for ripsFinalidadConsulta in RipsFinalidadConsulta %}
+                                                <option value="{{ripsFinalidadConsulta.codigo}}"> {{ripsFinalidadConsulta.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+
 
                           
 

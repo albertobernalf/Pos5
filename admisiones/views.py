@@ -1048,6 +1048,29 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Fin combo ripstipousuario
 
+    # Combo ripsFinalidadConsulta
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c"
+
+    curt.execute(comando)
+    print(comando)
+
+    ripsFinalidadConsulta= []
+
+    for id, codigo, nombre in curt.fetchall():
+        ripsFinalidadConsulta.append({'id': id, 'codigo':codigo, 'nombre': nombre})
+
+    miConexiont.close()
+    print(ripsFinalidadConsulta)
+
+    context['RipsFinalidadConsulta'] = ripsFinalidadConsulta
+
+    # Fin combo ripsFinalidadConsulta
+
     ## fin manada de combis
 
 
@@ -3534,6 +3557,7 @@ def crearAdmisionDef(request):
         ripsNumConsultasCPrenatal = request.POST["ripsNumConsultasCPrenatal"]
         ripsEdadGestacional = request.POST["ripsEdadGestacional"]
         ripsDestinoUsuarioEgresoRecienNacido = request.POST['ripsDestinoUsuarioEgresoRecienNacido']
+        ripsFinalidadConsulta = request.POST['ripsFinalidadConsulta']
 
         ripsDestinoUsu1 = RipsDestinoEgreso.objects.get(id= ripsDestinoUsuarioEgresoRecienNacido)
 
@@ -3585,6 +3609,7 @@ def crearAdmisionDef(request):
                          ripsNumConsultasCPrenatal = ripsNumConsultasCPrenatal,
                          ripsEdadGestacional = ripsEdadGestacional,
                          ripsDestinoUsuarioEgresoRecienNacido =ripsDestinoUsu1,
+			 ripsFinalidadConsulta = ripsFinalidadConsulta,
                          fechaRegistro=fechaRegistro,
                          usuarioRegistro_id=usernameId.id,
                          estadoReg=estadoReg,

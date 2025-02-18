@@ -99,18 +99,18 @@ def load_dataEnviosRips(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."estadoPasoMinisterio",  case when env."estadoPasoMinisterio" = ' + "'" + str('P') + "'" + ' then ' + "'" + str('Pendiente') + "'" + ' when  env."estadoPasoMinisterio" = ' + "'" + str('E') + "'" + ' then ' + "'" + str('Enviada') + "'" + ' end estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa  FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id'
+    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."estadoPasoMinisterio",  case when env."estadoPasoMinisterio" = ' + "'" + str('P') + "'" + ' then ' + "'" + str('Pendiente') + "'" + ' when  env."estadoPasoMinisterio" = ' + "'" + str('E') + "'" + ' then ' + "'" + str('Enviada') + "'" + ' end estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa , usu.nombre nombreRegistra FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, usuarios_usuarios usu where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id AND usu.id = env."usuarioRegistro_id"'
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, estadoMinisterio ,fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id, nombreClinica, nombreEmpresa in curx.fetchall():
+    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, estadoMinisterio ,fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id, nombreClinica, nombreEmpresa, nombreRegistra in curx.fetchall():
         enviosRips.append(
             {"model": "rips.ripsEnvios", "pk": id, "fields":
                 {'id': id, 'fechaEnvio': fechaEnvio, 'fechaRespuesta': fechaRespuesta, 'cantidadFacturas': cantidadFacturas,
                  'cantidadPasaron': cantidadPasaron, 'cantidadRechazadas': cantidadRechazadas,
-                 'estadoPasoMinisterio': estadoPasoMinisterio, 'estadoMinisterio':estadoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id, 'nombreClinica':nombreClinica, 'nombreEmpresa':nombreEmpresa}})
+                 'estadoPasoMinisterio': estadoPasoMinisterio, 'estadoMinisterio':estadoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id, 'nombreClinica':nombreClinica, 'nombreEmpresa':nombreEmpresa,'nombreRegistra':nombreRegistra}})
 
     miConexionx.close()
     print("EnviosRips "  , enviosRips)
@@ -415,6 +415,9 @@ def GenerarJsonRips(request):
     print("username_id =", username_id)
 
 
+    sedeClinica_id = request.POST['sedeClinica_id']
+    print("sedeClinica_id =", sedeClinica_id)
+
     #Rutinas subir a tablas de rips todos la INFO MINISTERIO JSON RIPS
 
     # RIPS TRANSACCION
@@ -424,7 +427,7 @@ def GenerarJsonRips(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, now(), tip.id ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e, cartera_tiposnotas tip  where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id and tip.nombre = ' + "'" + str('Factura') + "'"
+    detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e  where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id '
 
     resultado = curx.execute(detalle)
 
@@ -444,12 +447,33 @@ def GenerarJsonRips(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'INSERT INTO rips_ripsusuarios("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  select tipdoc.abreviatura, tipousu.codigo, u."fechaNacio", u.genero, local.id, ' + "'" + str('NO') + "'" + ', row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" +str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' and e.id=det."ripsEnvios_id" and det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
+    detalle = 'INSERT INTO rips_ripsusuarios("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  select tipdoc.abreviatura, tipousu.codigo, substring(cast (u."fechaNacio" as text ),1, 19), u.genero, local.id, ' + "'" + str('NO') + "'" + ', row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" +str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' and e.id=det."ripsEnvios_id" and det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
 
     curx.execute(detalle)
     miConexionx.commit()
 
     miConexionx.close()
+
+    # RIPS PROCEDIMIENTOS
+
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'INSERT INTO rips_ripsprocedimientos ( "codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", "tipoDocumentoIdentificacion_id", "tipoDocumentoIdentificacion_id" , "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id") SELECT sed."codigoHabilitacion", facdet."fecha", null,null,usu.documento, facdet."valorTotal", (select pagos.valor from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where i."tipoDoc_id" = pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)), fac.id, row_number() OVER(ORDER BY facdet.id) AS consecutivo, now(), null, (select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = histdiag.historia_id and histdiag1."tiposDiagnostico_id" = 2), (select diag3.id from clinico_historialdiagnosticos histdiag3, clinico_diagnosticos diag3 where histdiag3.historia_id = histdiag.historia_id and histdiag3."tiposDiagnostico_id" = 3), exa.id, serv.id, null, final.id, gru.id, mod.id, tipdocrips.id, ' + "'" + str(username_id) + "'" + ', ingreso.id, detrips.id, facdet."consecutivoFactura", ' + "'" + str('4') + "'" + ' , (select ripsmoderadora.id from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora    where  i."tipoDoc_id" =  pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)) FROM sitios_sedesclinica sed, facturacion_facturacion fac, facturacion_facturaciondetalle facdet, clinico_examenes exa, admisiones_ingresos i, rips_ripsviasingresosalud ingreso, rips_ripsenvios e, rips_ripsdetalle detrips, rips_ripsmodalidadatencion mod, rips_ripsgruposervicios gru, rips_ripsServicios serv, rips_ripsfinalidadconsulta final, rips_ripstiposdocumento tipdocrips, usuarios_tiposdocumento tipdoc, usuarios_usuarios usu, clinico_historia his, clinico_historialdiagnosticos histdiag, clinico_diagnosticos diag where sed.id = ' + "'" + str(sedeClinica_id) + "'" + ' and e.id = ' + "'" + str(envioRipsId) + "'" + ' and sed.id = e."sedesClinica_id" and e.id = detrips."ripsEnvios_id" and detrips."numeroFactura_id" = fac.id and facdet.facturacion_id = fac.id and i.factura = fac.id and i."ripsViaIngresoServicioSalud_id" = ingreso.id and facdet."codigoCups_id" is not null and exa.id = facdet."codigoCups_id" and i."ripsmodalidadGrupoServicioTecSal_id" = mod.id and i."ripsGrupoServicios_id" = gru.id and serv.id = i."ripsGrupoServicios_id" and final.id = i."ripsFinalidadConsulta_id" and tipdoc.id = fac."tipoDoc_id" and fac."tipoDoc_id" = usu."tipoDoc_id" and fac.documento_id = usu.id and tipdoc."tipoDocRips_id" = tipdocrips.id and i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id and i.consec = fac."consecAdmision" and i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id and i.consec = his."consecAdmision" and histdiag.historia_id = his.id and histdiag."tiposDiagnostico_id" = 1 and diag.id = histdiag.diagnosticos_id '
+
+    curx.execute(detalle)
+    miConexionx.commit()
+
+    miConexionx.close()
+
+    # Aqui actualizar cosas de la tabla rips_ripsenvios
+
+    # Aqui CURSOR que actualize ruta archivos JSON en rips_ripsdetalle
+    ## cree los archivos JSON y los guarde en las carpetas de archivos JSON
+
+
 
 
 

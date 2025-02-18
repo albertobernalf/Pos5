@@ -13,6 +13,7 @@ class TiposDocumento(models.Model):
     abreviatura= models.CharField(max_length=2)
     nombre = models.CharField(max_length=50)
     tiposDocCodigoDian = models.CharField(max_length=15, default='')
+    tipoDocRips= models.ForeignKey('rips.ripstiposdocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     fechaRegistro = models.DateTimeField(default=now, editable=False)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 

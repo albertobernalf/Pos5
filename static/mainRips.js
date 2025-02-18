@@ -48,7 +48,7 @@ function initTableEnviosRips(data) {
                         return btn;
                     },
        
-                    "targets": 13
+                    "targets": 14
                }
             ],	 
     
@@ -72,6 +72,8 @@ function initTableEnviosRips(data) {
                 { data: "fields.estadoPasoMinisterio"},
 		 { data: "fields.fechaRegistro"},
 		 { data: "fields.usuarioRegistro_id"},
+		 { data: "fields.nombreRegistra"},
+
 	  { data: "fields.nombreClinica"},
             ]
 

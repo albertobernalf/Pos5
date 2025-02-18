@@ -44,6 +44,8 @@ class SedesClinica(models.Model):
     telefono = models.CharField(max_length=20)
     contacto = models.CharField(max_length=50)
     nit      = models.CharField(max_length=50  , blank=False,null= False, editable=True, default='0')
+    codigoHabilitacion      = models.CharField(max_length=20  , blank=False,null= False, editable=True, default='0')
+
     fechaRegistro = models.DateTimeField(default=now, editable=False)
     estadoReg = models.CharField(max_length=1,default='A', editable=False)
 
