@@ -14,15 +14,18 @@ class RipsTipos (models.Model):
 
 
 class RipsEnvios (models.Model):
-    Enviada = 'E'  
-    Pendiente = 'P'  
-    TIPO_CHOICES = [
-        ('Enviada', 'Enviada'),
-        ('Pendiente', 'Pendiente'),
-    ]
+    TIPO_CHOICES = (
+    ('E' , 'ENVIADA'),
+    ('P' , 'PENDIENTE'),
+    ),
+    TIPO_CHOICES1 = (
+    ('F' ,'FACTURA' ),
+    ('N' , 'NOTA')  ,
+    )
+
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica759')
-    #numeroEnvio = models.CharField(max_length=10, blank=True,null= True, editable=True)
+    tipoRips = models.CharField(max_length=10,  editable=False , default='FACTURA')
     empresa =  models.ForeignKey('facturacion.Empresas', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = "empre12")
     fechaCreacion  =  models.DateTimeField(default=now, blank=True, null=True, editable=True)	
     fechaEnvio  =  models.DateTimeField(default=now, blank=True, null=True, editable=True)
@@ -31,7 +34,7 @@ class RipsEnvios (models.Model):
     cantidadFacturas = models.CharField(max_length=5, blank=True,null= True, editable=True)
     cantidadPasaron = models.CharField(max_length=5, blank=True,null= True, editable=True)
     cantidadRechazadas = models.CharField(max_length=5, blank=True,null= True, editable=True)
-    estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False , choices = TIPO_CHOICES , default=Pendiente)
+    estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False ,  default='PENDIENTE')
     usuarioEnvia = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='planta145')
     usuarioGeneraJson = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='planta146')
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -74,6 +77,7 @@ class RipsTransaccion (models.Model):
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica769')
     ripsEnvio =  models.ForeignKey('rips.RipsEnvios', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle01')
     numDocumentoIdObligado =   models.CharField(max_length=50, blank=True,null= True, editable=True)
+    numFactura =  models.CharField(max_length=20, default='S', editable=False)
     tipoNota  =  models.ForeignKey('rips.RipsTiposNotas', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='TipoNota01')
     numNota =  models.CharField(max_length=20, default='S', editable=False)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)

@@ -48,7 +48,7 @@ function initTableEnviosRips(data) {
                         return btn;
                     },
        
-                    "targets": 14
+                    "targets": 15
                }
             ],	 
     
@@ -61,9 +61,9 @@ function initTableEnviosRips(data) {
             columns: [
                 { data: "fields.id"},
                 { data: "fields.sedesClinica_id"},
-	
                 { data: "fields.empresa_id"},
                 { data: "fields.nombreEmpresa"},
+                { data: "fields.tipo"},
                 { data: "fields.fechaEnvio"},
                 { data: "fields.fechaRespuesta"},
                 { data: "fields.cantidadFacturas"},
@@ -73,8 +73,7 @@ function initTableEnviosRips(data) {
 		 { data: "fields.fechaRegistro"},
 		 { data: "fields.usuarioRegistro_id"},
 		 { data: "fields.nombreRegistra"},
-
-	  { data: "fields.nombreClinica"},
+		  { data: "fields.nombreClinica"},
             ]
 
  });
@@ -142,6 +141,9 @@ window.addEventListener('load', function() {
 
 	var id_empresa = table.row(0).cell(rowindex, 2).data();  // jquery
 	var id_rips = table.row(0).cell(rowindex, 0).data();  // jquery
+	var tipoRips = table.row(0).cell(rowindex, 4).data();  // jquery
+	alert("tipoRips " + tipoRips);
+
 
 	var data =  {}   ;
         data['username'] = username;
@@ -151,13 +153,21 @@ window.addEventListener('load', function() {
         data['username_id'] = username_id;
         data['empresaId'] = id_empresa;
   data['envioRipsId'] = id_rips;
+  data['tipoRips'] = tipoRips;
 
         data = JSON.stringify(data);
+
 	document.getElementById("empresaId").value = id_empresa;
 	document.getElementById("envioRipsId").value = id_rips;
+	document.getElementById("tipoRips2").value = tipoRips;
 
 	document.getElementById("empresaId1").value = id_empresa;
 	document.getElementById("envioRipsId1").value = id_rips;
+	document.getElementById("tipoRips1").value = tipoRips;
+
+	document.getElementById("empresaId3").value = id_empresa;
+	document.getElementById("envioRipsId3").value = id_rips;
+	document.getElementById("tipoRips3").value = tipoRips;
 
 
 
@@ -172,6 +182,7 @@ window.addEventListener('load', function() {
 	 initTableDetalleRips(data);    
 	initTableRipsTransaccion(data);	   
 	initTableRipsUsuarios(data);  
+	initTableRipsProcedimientos(data); 
 
 });
 
@@ -201,32 +212,44 @@ window.addEventListener('load', function() {
 	        console.log ( "dato10 empresa = " , dato3.empresa_id); 
 
 		var id_empresa = dato3.empresa_id;  // jquery
+		var tipoRips = dato3.tipo;  // jquery
 
 		data['empresaId'] = id_empresa;
 		data['envioRipsId'] = post_id;
+		data['tipoRips'] = tipoRips;
+
 
 	        data = JSON.stringify(data);
 
 		document.getElementById("empresaId").value = id_empresa;
 		document.getElementById("envioRipsId").value = post_id;
+		document.getElementById("tipoRips2").value = tipoRips;	
 
 		document.getElementById("empresaId1").value = id_empresa;
 		document.getElementById("envioRipsId1").value = post_id;
+		document.getElementById("tipoRips1").value = tipoRips;
+
+	document.getElementById("empresaId3").value = id_empresa;
+	document.getElementById("envioRipsId3").value =post_id;
+	document.getElementById("tipoRips3").value = tipoRips;
+
 
 		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();
 
 		  initTableDetalleRipsAdicionar(data);
-
-		
+	
 
 		  table = $("#tablaDetalleRips").dataTable().fnDestroy();
-		
 		 initTableDetalleRips(data);
          
 	  table = $("#tablaRipsTransaccion").dataTable().fnDestroy();
-	initTableRipsTransaccion(data);
+		initTableRipsTransaccion(data);
+
 	  table = $("#tablaRipsUsuarios").dataTable().fnDestroy();
-	initTableRipsUsuarios(data);
+		initTableRipsUsuarios(data);
+
+	  table = $("#tablaRipsProcedimientos").dataTable().fnDestroy();
+		initTableRipsProcedimientos(data);
 
 		
 
@@ -289,12 +312,14 @@ function initTableDetalleRips(data) {
         var username_id = document.getElementById("username_id").value;
 	var empresaId = document.getElementById("empresaId").value; 
 	var envioRipsId = document.getElementById("envioRipsId").value ;
+	var tipoRips = document.getElementById("tipoRips2").value ;
+
         var facturaId = post_id;
 
 	$.ajax({
 
 	        url: "/actualizarEmpresaDetalleRips/",
-                data: {'facturaId':facturaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id},
+                data: {'facturaId':facturaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id, 'tipoRips':tipoRips},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -306,6 +331,8 @@ function initTableDetalleRips(data) {
 	        data['username_id'] = username_id;
 		data['empresaId'] = empresaId;
 		data['envioRipsId'] = envioRipsId;
+		data['tipoRips'] = tipoRips;
+
 	        data = JSON.stringify(data);
 
 		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();		
@@ -313,7 +340,9 @@ function initTableDetalleRips(data) {
 
 		
 		table = $("#tablaDetalleRips").dataTable().fnDestroy();
-		initTableDetalleRips(data);         
+		initTableDetalleRips(data);        
+
+
                 },
                  error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
@@ -496,6 +525,78 @@ function initTableRipsUsuarios(data) {
 
 
 
+function initTableRipsProcedimientos(data) {
+
+	alert("Entre TableRipsProcedimientos");
+	alert ("data = " + JSON.stringify(data));
+
+	return new DataTable('.tablaRipsProcedimientos', {
+
+	 "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    },
+            processing: true,
+            serverSide: false,
+            scrollY: '300px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+   	   
+            columnDefs: [{
+
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+                         
+                          btn = btn + " <input type='radio' class='miProcedimientos form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                        return btn;
+                    },
+     
+                    "targets": 24
+               }
+            ],	 
+    
+            ajax: {
+                 url:"/load_tablaRipsProcedimientos/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+            columns: [
+             	 { data: "fields.id"},
+                { data: "fields.codPrestador"},
+                { data: "fields.fechaInicioAtencion"},
+                { data: "fields.idMIPRES"},
+                { data: "fields.numAutorizacion"},
+                { data: "fields.numDocumentoIdentificacion"},
+                { data: "fields.vrServicio"},
+                { data: "fields.valorPagoModerador"},
+                { data: "fields.numFEVPagoModerador"},
+                { data: "fields.consecutivo"},
+                { data: "fields.codComplicacion_id"},
+                { data: "fields.codDiagnosticoPrincipal_id"},
+                { data: "fields.codDiagnosticoRelacionado_id"},
+                { data: "fields.codProcedimiento_id"},
+                { data: "fields.codServicio_id"},
+                { data: "fields.conceptoRecaudo_id"},
+
+                { data: "fields.finalidadTecnologiaSalud_id"},
+                { data: "fields.grupoServicios_id"},
+                { data: "fields.modalidadGrupoServicioTecSal_id"},
+                { data: "fields.tipoDocumentoIdentificacion_id"},
+                { data: "fields.usuarioRegistro_id"},
+                { data: "fields.viaIngresoServicioSalud_id"},
+                { data: "fields.ripsDetalle_id"},
+                { data: "fields.tipoPagoModerador_id"},
+
+
+
+
+            ]
+ });
+}
+
+
 });  //// AQUI cierra el document.ready
 
 
@@ -618,6 +719,7 @@ function GenerarJsonRips()
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
+	var tipoRips = document.getElementById("tipoRips").value;
 	alert("sede = " + sede);
 
         var username_id = document.getElementById("username_id").value;
@@ -625,11 +727,72 @@ function GenerarJsonRips()
             $.ajax({
 
 	        url: "/generarJsonRips/",
-		data: {'envioRipsId':envioRipsId, 'sede':sede, 'username_id':username_id},
+		data: {'envioRipsId':envioRipsId, 'sede':sede, 'username_id':username_id,'tipoRips':tipoRips},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
-			alert("llegue de Gererar los JSON del Rips seleccionado");
+
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data = JSON.stringify(data);
+	
+		  var tableA = $('#tablaEnviosRips').DataTable();
+	          tableA.ajax.reload();
+
+
+
+
+		   $("#mensajes").html(data2.message);
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+}
+
+
+function EnviarJsonRips()
+{
+
+	alert("Entre Enviar json Rips");
+	var envioRipsId = document.getElementById("envioRipsId3").value ;
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+	var tipoRips = document.getElementById("tipoRips3").value;
+	alert("sede = " + sede);
+
+        var username_id = document.getElementById("username_id").value;
+
+            $.ajax({
+
+	        url: "/enviarJsonRips/",
+		data: {'envioRipsId':envioRipsId, 'sede':sede, 'username_id':username_id,'tipoRips':tipoRips},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data = JSON.stringify(data);
+	
+		  var tableA = $('#tablaEnviosRips').DataTable();
+	          tableA.ajax.reload();
+
+
 
 		   $("#mensajes").html(data2.message);
                          },

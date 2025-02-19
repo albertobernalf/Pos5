@@ -211,8 +211,10 @@ urlpatterns = [
     path('load_dataDetalleRipsAdicionar/<str:data>', viewsRips.load_dataDetalleRipsAdicionar, name='loaddataDetalleRipsAdicionar'),
     path('traeDetalleRips/', viewsRips.TraeDetalleRips, name='TraeDetalleRips'),
     path('generarJsonRips/', viewsRips.GenerarJsonRips, name='generarJsonRips'),
+    path('enviarJsonRips/', viewsRips.EnviarJsonRips, name='enviarJsonRips'),
     path('load_tablaRipsTransaccion/<str:data>', viewsRips.Load_tablaRipsTransaccion, name='load_tablaRipsTransaccion'),
     path('load_tablaRipsUsuarios/<str:data>', viewsRips.Load_tablaRipsUsuarios, name='load_tablaRipsUsuarios'),
+    path('load_tablaRipsProcedimientos/<str:data>', viewsRips.Load_tablaRipsProcedimientos, name='load_tablaRipsProcedimientos'),
 
     # Glosas
 

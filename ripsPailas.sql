@@ -2,7 +2,7 @@ SELECT * FROM RIPS_RIPSENVIOS;
 SELECT * FROM RIPS_RIPSdetalle;
 SELECT * FROM USUARIOS_USUARIOS;
 select * from facturacion_facturaciondetalle;
-
+ 
 select * from sitios_sedesclinica;
 
 SELECT * FROM CARTERA_PAGOS;
