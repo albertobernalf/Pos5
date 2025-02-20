@@ -5,7 +5,7 @@ update RIPS_ripsenvios set "estadoPasoMinisterio" = 'PENDIENTE'
 SELECT * from facturacion_facturacion;
 SELECT * from rips_ripstransaccion;
 SELECT * from rips_ripsusuarios;
-SELECT * from rips_ripsprocedimientos;
+SELECT "idMIPRES" , COALESCE ("idMIPRES", null) ,  * from rips_ripsprocedimientos;
 
 --delete from rips_ripstransaccion
 delete from rips_ripsusuarios;
@@ -39,46 +39,54 @@ update rips_ripsprocedimientos set "ripsTransaccion_id" = 44
 select * from rips_ripsprocedimientos;
 --  Query genera JSON
 
-set lines 50000
+SELECT * from rips_ripstransaccion;
+SELECT * from rips_ripsusuarios;
+
 	
 SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
-		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'
-		||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
-		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'
-		||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
-		||'"codSexo": '|| '"' || u."codSexo" || '",'
-		||'"codPaisResidencia": '|| '"' || pais.codigo || '",'
-		||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
-		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'
-		||'"incapacidad": '|| '"' || u."incapacidad" || '",'
-		||'"consecutivo": '|| '"' || u."consecutivo" || '",'
-	||'"codPaisOrigen": '|| '"' || pais.codigo || '",'
-	||  '"servicios": {"procedimientos": [{'
-	||'"codPrestador": '|| '"' || proc."codPrestador" || '",'	
-	||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'	
-	/*
-	||'"idMIPRES": '|| '"' || proc."idMIPRES" || '",'	
-		
-	||'"numAutorizacion": '|| '"' || proc."numAutorizacion" || '",'	
-	||'"codProcedimiento": '|| '"' || proc."codProcedimiento_id" || '",'	
-		||'"viaIngresoServicioSalud": '|| '"' || proc."viaIngresoServicioSalud_id" || '",'	
-		||'"modalidadGrupoServicioTecSal": '|| '"' || proc."modalidadGrupoServicioTecSal_id" || '",'	
-		||'"finalidadTecnologiaSalud": '|| '"' || proc."finalidadTecnologiaSalud_id" || '",'	
-		||'"tipoDocumentoIdentificacion": '|| '"' || proc."tipoDocumentoIdentificacion_id" || '",'	
-		||'"numDocumentoIdentificacion": '|| '"' || proc."numDocumentoIdentificacion" || '",'	
-		||'"codDiagnosticoPrincipal": '|| '"' || proc."codDiagnosticoPrincipal_id" || '",'	
-	||'"codDiagnosticoRelacionado": '|| '"' || proc."codDiagnosticoRelacionado_id" || '",'	
-	||'"codComplicacion": '|| '"' || proc."codComplicacion_id" || '",'	
-	||'"vrProcedimiento": '|| '"' || proc."vrServicio" || '",'	
-	||'"tipoPagoModerador": '|| '"' || proc."tipoPagoModerador_id" || '",'	
-	||'"valorPagoModerador": '|| '"' || proc."valorPagoModerador" || '",'	
-	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'	
+		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
+		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
+		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
+		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
+		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
+from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni --, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" = 16 and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and muni.id = u."codMunicipioResidencia_id" 
+	-- and    proc."ripsTransaccion_id" = rips_ripstransaccion.id
+
+--	SELECT * FROM rips_ripsprocedimientos;
+union
+SELECT '"servicios": {"procedimientos": [{"codPrestador": '|| '"' || proc."codPrestador" || '",'  ||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'
+
+	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
+
+	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
 	||'"consecutivo": '|| '"' || proc."consecutivo" || '",'	
 	||'	},],'
+	||'"idMIPRES": '|| '"' ||  CASE WHEN trim(proc."idMIPRES") is null THEN 'null' ELSE proc."idMIPRES"  END || '",'  	
+	 ||'"numAutorizacion": '|| '"' || CASE WHEN trim(proc."numAutorizacion") is null THEN 'null' ELSE proc."numAutorizacion"  END || '",'	
+
+	||'"codProcedimiento": '|| '"' || proc."codProcedimiento_id" || '",'	
+		||'"viaIngresoServicioSalud": '|| '"' ||proc."viaIngresoServicioSalud_id"  || '",'	
+		||'"modalidadGrupoServicioTecSal": '|| '"' || proc."modalidadGrupoServicioTecSal_id"  || '",'	
+		||'"finalidadTecnologiaSalud": '|| '"' ||proc."finalidadTecnologiaSalud_id"  || '",'	
+	||'"tipoDocumentoIdentificacion": '|| '"' || proc."tipoDocumentoIdentificacion_id"  || '",'	
+
+	||'"numDocumentoIdentificacion": '|| '"' || CASE WHEN trim(proc."numDocumentoIdentificacion") is null THEN 'null' ELSE proc."numDocumentoIdentificacion"  END  || '",'	
+
+	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
+
+	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
+/*
+	||'"codComplicacion": '|| '"' || proc."codComplicacion_id"    || '",'	
+	||'"vrProcedimiento": '|| '"' || proc."vrServicio"  || '",'	
+	||'"tipoPagoModerador": '|| '"' || proc."tipoPagoModerador_id" || '",'	
+	||'"consecutivo": '|| '"' || proc."consecutivo"  || '",'	
+	||'	},],'
 */
-from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni , rips_ripsprocedimientos proc
-where  rips_ripstransaccion."ripsEnvio_id" = 16 and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and muni.id = u."codMunicipioResidencia_id" and
-     proc."ripsTransaccion_id" = rips_ripstransaccion.id
+dato1
+from rips_ripstransaccion, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" = 16 and proc."ripsTransaccion_id" = rips_ripstransaccion.id 
+
 
 drop function generaJSON;
 

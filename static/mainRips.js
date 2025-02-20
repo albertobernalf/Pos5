@@ -183,6 +183,8 @@ window.addEventListener('load', function() {
 	initTableRipsTransaccion(data);	   
 	initTableRipsUsuarios(data);  
 	initTableRipsProcedimientos(data); 
+	initTableRipsHospitalizacion(data); 
+
 
 });
 
@@ -251,6 +253,8 @@ window.addEventListener('load', function() {
 	  table = $("#tablaRipsProcedimientos").dataTable().fnDestroy();
 		initTableRipsProcedimientos(data);
 
+	  table = $("#tablaRipsHospitalizacion").dataTable().fnDestroy();
+		initTableRipsHospitalizacion(data);
 		
 
   });
@@ -595,6 +599,73 @@ function initTableRipsProcedimientos(data) {
             ]
  });
 }
+
+
+
+function initTableRipsHospitalizacion(data) {
+
+	alert("Entre TableRipsHospitalizacions");
+	alert ("data = " + JSON.stringify(data));
+
+	return new DataTable('.tablaRipsHospitalizacion', {
+
+	 "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    },
+            processing: true,
+            serverSide: false,
+            scrollY: '300px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+   	   
+            columnDefs: [{
+
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+                         
+                          btn = btn + " <input type='radio' class='miHospitalizacion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                        return btn;
+                    },
+     
+                    "targets": 20
+               }
+            ],	 
+    
+            ajax: {
+                 url:"/load_tablaRipsHospitalizacion/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+            columns: [
+             	 { data: "fields.id"},
+                { data: "fields.codPrestador"},
+                { data: "fields.fechaInicioAtencion"},
+                { data: "fields.numAutorizacion"},
+                { data: "fields.fechaEgreso"},
+                { data: "fields.consecutivo"},
+                { data: "fields.fechaRegistro"},
+                { data: "fields.causaMotivoAtencion_id"},
+                { data: "fields.codComplicacion_id"},
+                { data: "fields.codDiagnosticoCausaMuerte_id"},
+                { data: "fields.codDiagnosticoPrincipal_id"},
+                { data: "fields.codDiagnosticoPrincipalE_id"},
+                { data: "fields.codDiagnosticoRelacionadoE1_id"},
+                { data: "fields.codDiagnosticoRelacionadoE2_id"},
+                { data: "fields.codDiagnosticoRelacionadoE3_id"},
+                { data: "fields.condicionDestinoUsuarioEgreso_id"},
+                { data: "fields.usuarioRegistro_id"},
+                { data: "fields.viaIngresoServicioSalud_id"},
+                { data: "fields.ripsDetalle_id_id"},
+                { data: "fields.ripsTipos_id"},
+
+            ]
+ });
+}
+
+
 
 
 });  //// AQUI cierra el document.ready
