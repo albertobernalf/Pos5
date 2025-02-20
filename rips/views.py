@@ -499,6 +499,24 @@ def GenerarJsonRips(request):
 
     miConexionx.close()
 
+    # RIPS HOSPITALIZACION
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = '	INSERT INTO rips_ripshospitalizacion (  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","codComplicacion_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id",	"ripsDetalle_id", "tipoRips", "ripsTransaccion_id",  "fechaRegistro")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),' + "'" + str('autorizacion') + "'" + ' , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id), null,  i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."tipoRips",ripstra.id,now()  FROM sitios_sedesclinica sed, admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and env.id = ' + "'" + str(envioRipsId) + "'" + ' AND i.factura = det."numeroFactura_id" AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision" AND i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision" and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)'
+
+    print("detalle = ", detalle)
+
+    curx.execute(detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
+    # HASTA AQUI RIPS HOSPITALZIACION
+
+
     ### Aqui actualizar cosas de la tabla rips_ripsenvios
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",

@@ -482,3 +482,5 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 
 -- OJO CREAR CONTROL que borre si el rips esta creado y volverlo a crear
 -- ojo crear control si ya esta ENVIADO EL RIPS , no dejarlos enviar nuevamente
+
+-- ojo para ripshospital , falta coddx complicacion y coddxMuerte

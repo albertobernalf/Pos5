@@ -1,5 +1,6 @@
 select * from rips_ripsenvios;
 select * from rips_RIPSDETALLE;
+delete from rips_RIPSDETALLE where id=46;
 update RIPS_ripsenvios set "estadoPasoMinisterio" = 'PENDIENTE'
 
 SELECT * from facturacion_facturacion;
@@ -7,10 +8,19 @@ SELECT * from rips_ripstransaccion;
 SELECT * from rips_ripsusuarios;
 SELECT "idMIPRES" , COALESCE ("idMIPRES", null) ,  * from rips_ripsprocedimientos;
 
---delete from rips_ripstransaccion
+select * from facturacion_facturacion;
+select * from rips_ripsprocedimientos;
+select * from rips_ripshospitalizacion
+
+delete from rips_ripstransaccion
 delete from rips_ripsusuarios;
 delete from rips_ripsprocedimientos;
+delete  from rips_ripshospitalizacion;
 
+
+delete from rips_RIPSDETALLE;
+delete from rips_RIPSenvios;
+update facturacion_facturacion set "ripsEnvio_id" = null;
 
 
 update facturacion_facturacion set "ripsEnvio_id" = null
@@ -114,9 +124,10 @@ SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"n
 		||'"consecutivo": '|| '"' || u."consecutivo" || '",'
 	||'"codPaisOrigen": '|| '"' || pais.codigo || '",'
 	||  '"servicios": {"procedimientos": [{'
+/*	
 	||'"codPrestador": '|| '"' || proc."codPrestador" || '",'	
 	||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'	
-/*	
+
 	||'"idMIPRES": '|| '"' || proc."idMIPRES" || '",'	
 		
 	||'"numAutorizacion": '|| '"' || proc."numAutorizacion" || '",'	
@@ -138,7 +149,7 @@ SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"n
 */
 	INTO valorJson
 from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni , rips_ripsprocedimientos proc
-where  rips_ripstransaccion."ripsEnvio_id" = 16 and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and muni.id = u."codMunicipioResidencia_id" and
+where  rips_ripstransaccion."ripsEnvio_id" = 31 and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and muni.id = u."codMunicipioResidencia_id" and
      proc."ripsTransaccion_id" = rips_ripstransaccion.id;
 
    
@@ -149,4 +160,59 @@ END $BODY$
 ALTER FUNCTION generaJSON
   OWNER TO postgres;
 
-select generaJSON(16)
+select generaJSON(31)
+
+	select * from facturacion_facturacion;
+select * from rips_ripsenvios;
+select * from rips_RIPSDETALLE;
+select * from admisiones_ingresos;
+SELECT * from rips_ripstransaccion;
+SELECT * from rips_ripsusuarios;
+SELECT * from rips_ripshospitalizacion;
+delete  from rips_ripshospitalizacion;
+select * from clinico_historia where documento_id=25;
+select * from clinico_historialdiagnosticos where historia_id=554
+	select * from clinico_diagnosticos where id=18
+
+-- Rips de Hospitalizacion 
+-- INSERT INTO rips_ripshospitalizacion (  "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id")
+	
+	INSERT INTO rips_ripshospitalizacion (  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id",
+	"codComplicacion_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id",
+	"ripsDetalle_id", "tipoRips", "ripsTransaccion_id",  "fechaRegistro")
+
+	SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),'autorizacion', i."ripsCausaMotivoAtencion_id",
+		(select diag1.id from  clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"),
+		(select diag1.id from  clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),
+	    (select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1
+		where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1
+		where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1
+		where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),
+	null,i."ripsCondicionDestinoUsuarioEgreso_id",null,cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo,
+   '1',det.id,env."tipoRips",ripstra.id,now()
+	FROM sitios_sedesclinica sed ,admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his
+where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and
+	env.id = 31 and -- 	i.factura = 41 AND
+	i.factura = det."numeroFactura_id" 
+		AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision"
+		AND  i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision"
+	and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)
+    
+
+
+	
+detalle ='SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),'autorizacion', i."ripsCausaMotivoAtencion_id",
+		(select diag1.id from  clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"),(select diag1.id from  clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),
+	    (select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),
+	'complicacion',i."ripsCondicionDestinoUsuarioEgreso_id",'CoddxMuerte',cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo
+	FROM sitios_sedesclinica sed ,admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his
+where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and env.id = ' + "'" +str(envioRipsId) + "'' + ' AND i.factura = det."numeroFactura_id" AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision"
+		AND  i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision" and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)   
+	'
+
+
+INSERT INTO rips_ripshospitalizacion (  "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),'autorizacion' , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),'complicacion' , i."ripsCondicionDestinoUsuarioEgreso_id", 'CoddxMuerte' , cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo FROM sitios_sedesclinica sed, admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and env.id = '31' AND i.factura = det."numeroFactura_id" AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision" AND i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision" and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)
