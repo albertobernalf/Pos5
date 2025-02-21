@@ -60,8 +60,8 @@ SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"n
 		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
 		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
 from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni --, rips_ripsprocedimientos proc
-where  rips_ripstransaccion."ripsEnvio_id" = 16 and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and muni.id = u."codMunicipioResidencia_id" 
-	-- and    proc."ripsTransaccion_id" = rips_ripstransaccion.id
+where  rips_ripstransaccion."ripsEnvio_id" = 31 and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and muni.id = u."codMunicipioResidencia_id" 
+	
 
 --	SELECT * FROM rips_ripsprocedimientos;
 union
@@ -202,17 +202,172 @@ where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica
     
 
 
+
+-- Funcion para leer
+
+select generaJSON(31);	
+
+drop function generaJSON;
+
+CREATE OR REPLACE FUNCTION generaJSON(envioRipsId numeric)
+  RETURNS character varying  AS
+$BODY$ 
+DECLARE valorJson character(50000);
+	    valorTransaccion character(50000);
+	    valorProcedimientos character(50000);
+
+		valorHospitalizacion character(50000);
+		
+
+
+BEGIN
+
+	valorJson= '';
 	
-detalle ='SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),'autorizacion', i."ripsCausaMotivoAtencion_id",
-		(select diag1.id from  clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"),(select diag1.id from  clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),
-	    (select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),
-	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),
-	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and  histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),
-	'complicacion',i."ripsCondicionDestinoUsuarioEgreso_id",'CoddxMuerte',cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo
-	FROM sitios_sedesclinica sed ,admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his
-where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and env.id = ' + "'" +str(envioRipsId) + "'' + ' AND i.factura = det."numeroFactura_id" AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision"
-		AND  i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision" and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)   
-	'
+SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
+		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
+		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
+		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
+		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
+		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
+INTO valorTransaccion
+	from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni --, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and 
+	muni.id = u."codMunicipioResidencia_id" ;
+
+valorJson = valorJson ||' ' || valorTransaccion;
+
+-- Procedimientos
+
+SELECT '"servicios": {"procedimientos": [{"codPrestador": '|| '"' || proc."codPrestador" || '",'  ||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'
+/*
+	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
+
+	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
+	||'"consecutivo": '|| '"' || proc."consecutivo" || '",'	
+	||'	},],'
+	||'"idMIPRES": '|| '"' ||  CASE WHEN trim(proc."idMIPRES") is null THEN 'null' ELSE proc."idMIPRES"  END || '",'  	
+	 ||'"numAutorizacion": '|| '"' || CASE WHEN trim(proc."numAutorizacion") is null THEN 'null' ELSE proc."numAutorizacion"  END || '",'	
+
+	||'"codProcedimiento": '|| '"' || proc."codProcedimiento_id" || '",'	
+		||'"viaIngresoServicioSalud": '|| '"' ||proc."viaIngresoServicioSalud_id"  || '",'	
+		||'"modalidadGrupoServicioTecSal": '|| '"' || proc."modalidadGrupoServicioTecSal_id"  || '",'	
+		||'"finalidadTecnologiaSalud": '|| '"' ||proc."finalidadTecnologiaSalud_id"  || '",'	
+	||'"tipoDocumentoIdentificacion": '|| '"' || proc."tipoDocumentoIdentificacion_id"  || '",'	
+
+	||'"numDocumentoIdentificacion": '|| '"' || CASE WHEN trim(proc."numDocumentoIdentificacion") is null THEN 'null' ELSE proc."numDocumentoIdentificacion"  END  || '",'	
+
+	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
+
+	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
+
+	||'"codComplicacion": '|| '"' || proc."codComplicacion_id"    || '",'	
+	||'"vrProcedimiento": '|| '"' || proc."vrServicio"  || '",'	
+	||'"tipoPagoModerador": '|| '"' || proc."tipoPagoModerador_id" || '",'	
+	||'"consecutivo": '|| '"' || proc."consecutivo"  || '",'	
+	||'	},],'
+*/
+INTO valorProcedimientos
+from rips_ripstransaccion, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and proc."ripsTransaccion_id" = rips_ripstransaccion.id ;
+	
+valorJson = valorJson ||' ' ||  valorProcedimientos;
+
+   RETURN valorJson ;
+END $BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION generaJSON
+  OWNER TO postgres;
 
 
-INSERT INTO rips_ripshospitalizacion (  "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),'autorizacion' , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),'complicacion' , i."ripsCondicionDestinoUsuarioEgreso_id", 'CoddxMuerte' , cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo FROM sitios_sedesclinica sed, admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and env.id = '31' AND i.factura = det."numeroFactura_id" AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision" AND i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision" and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)
+-- facturajson
+
+select * from rips_ripstransaccion;
+select * from rips_ripsusuarios;
+
+
+drop function generaFacturaJSON;
+
+CREATE OR REPLACE FUNCTION generaFacturaJSON(envioRipsId numeric, facturaId numeric)
+  RETURNS character varying  AS
+$BODY$ 
+DECLARE valorJson character(50000);
+	    valorTransaccion character(50000);
+	    valorProcedimientos character(50000);
+
+		valorHospitalizacion character(50000);
+		
+
+
+BEGIN
+
+	valorJson= '';
+	
+SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
+		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
+		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
+		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
+		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
+		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
+INTO valorTransaccion
+	from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni --, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and rips_ripstransaccion."numFactura" = cast(facturaId as text)  and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and 
+	muni.id = u."codMunicipioResidencia_id" ;
+
+valorJson = valorJson ||' ' || valorTransaccion;
+
+-- Procedimientos
+
+SELECT '"servicios": {"procedimientos": [{"codPrestador": '|| '"' || proc."codPrestador" || '",'  ||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'
+/*
+	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
+
+	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
+	||'"consecutivo": '|| '"' || proc."consecutivo" || '",'	
+	||'	},],'
+	||'"idMIPRES": '|| '"' ||  CASE WHEN trim(proc."idMIPRES") is null THEN 'null' ELSE proc."idMIPRES"  END || '",'  	
+	 ||'"numAutorizacion": '|| '"' || CASE WHEN trim(proc."numAutorizacion") is null THEN 'null' ELSE proc."numAutorizacion"  END || '",'	
+
+	||'"codProcedimiento": '|| '"' || proc."codProcedimiento_id" || '",'	
+		||'"viaIngresoServicioSalud": '|| '"' ||proc."viaIngresoServicioSalud_id"  || '",'	
+		||'"modalidadGrupoServicioTecSal": '|| '"' || proc."modalidadGrupoServicioTecSal_id"  || '",'	
+		||'"finalidadTecnologiaSalud": '|| '"' ||proc."finalidadTecnologiaSalud_id"  || '",'	
+	||'"tipoDocumentoIdentificacion": '|| '"' || proc."tipoDocumentoIdentificacion_id"  || '",'	
+
+	||'"numDocumentoIdentificacion": '|| '"' || CASE WHEN trim(proc."numDocumentoIdentificacion") is null THEN 'null' ELSE proc."numDocumentoIdentificacion"  END  || '",'	
+
+	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
+
+	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
+
+	||'"codComplicacion": '|| '"' || proc."codComplicacion_id"    || '",'	
+	||'"vrProcedimiento": '|| '"' || proc."vrServicio"  || '",'	
+	||'"tipoPagoModerador": '|| '"' || proc."tipoPagoModerador_id" || '",'	
+	||'"consecutivo": '|| '"' || proc."consecutivo"  || '",'	
+	||'	},],'
+*/
+INTO valorProcedimientos
+from rips_ripstransaccion, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and proc."ripsTransaccion_id" = rips_ripstransaccion.id ;
+	
+valorJson = valorJson ||' ' ||  valorProcedimientos;
+
+   RETURN valorJson ;
+END $BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION generaJSON
+  OWNER TO postgres;
+
+	
+SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
+		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
+		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
+		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
+		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
+		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
+--INTO valorTransaccion
+	from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni --, rips_ripsprocedimientos proc
+where  rips_ripstransaccion."ripsEnvio_id" =31 and rips_ripstransaccion."numFactura" = cast('41' as text)  and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and 
+	muni.id = u."codMunicipioResidencia_id" ;

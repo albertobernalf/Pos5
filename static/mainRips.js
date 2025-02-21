@@ -142,7 +142,7 @@ window.addEventListener('load', function() {
 	var id_empresa = table.row(0).cell(rowindex, 2).data();  // jquery
 	var id_rips = table.row(0).cell(rowindex, 0).data();  // jquery
 	var tipoRips = table.row(0).cell(rowindex, 4).data();  // jquery
-	alert("tipoRips " + tipoRips);
+
 
 
 	var data =  {}   ;
@@ -169,6 +169,7 @@ window.addEventListener('load', function() {
 	document.getElementById("envioRipsId3").value = id_rips;
 	document.getElementById("tipoRips3").value = tipoRips;
 
+	// document.getElementById("envioRipsIdJ").value = id_rips;
 
 
 	// alert("envio a initTableDetalleRipsAdicionar " + data);
@@ -235,6 +236,8 @@ window.addEventListener('load', function() {
 	document.getElementById("envioRipsId3").value =post_id;
 	document.getElementById("tipoRips3").value = tipoRips;
 
+		 document.getElementById("envioRipsIdJ").value = post_id;
+
 
 		  table = $("#tablaDetalleRipsAdicionar").dataTable().fnDestroy();
 
@@ -276,7 +279,11 @@ function initTableDetalleRips(data) {
                 {
                     "render": function ( data, type, row ) {
                         var btn = '';
-                          btn = btn + " <input type='radio'  class='miDetalle form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+			      btn = btn + " <button class='miDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                 	      btn = btn + " <button class='miJson btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+
+
+                        
                         return btn;
                     },
            
@@ -356,10 +363,10 @@ function initTableDetalleRips(data) {
   });
 
  $('#tablaDetalleRips tbody').on('click', '.miDetalle', function() {
-	alert ("Entre detalle Rips");
+
      var post_id = $(this).data('pk');
 
-	alert("id de detalleRips = " +  post_id);
+
        var detalleRipsId = post_id;
 
 
@@ -373,9 +380,9 @@ function initTableDetalleRips(data) {
 
             $('#postFormRipsDetalle').trigger("reset");
 
-			alert("Factura" + info[0].fields.numeroFactura);
-			alert("ripsEnvios_id" + info[0].fields.ripsEnvios_id);
-			alert("post_id" + info[0].fields.id);
+
+
+
 
   	
  				$('#detalleRipsId').val(detalleRipsId);
@@ -403,23 +410,66 @@ function initTableDetalleRips(data) {
 	   	    	}
             });
 
-alert ("Ya avri la modal");
-        
+
 
   });
 
 
+ $('#tablaDetalleRips tbody').on('click', '.miJson', function() {
+
+	     var post_id = $(this).data('pk');
+	var envioRipsId = document.getElementById("envioRipsId").value ;
+
+	var table = $('#tablaDetalleRips').DataTable();  // Inicializa el DataTable jquery//
+	
+	var rowindex = table.row(0).node();  // Selecciona la primera fila jquery
+       console.log("rowindex= " , rowindex);
+
+	
+	var facturaId = table.row(0).cell(rowindex, 1).data();  // jquery
+       console.log("facturaId = " , facturaId );
+       console.log("otra1 = " , table.row(0).cell(rowindex, 0).data() );
+       console.log("otra2 = " , table.row(0).cell(rowindex, 2).data() );
+
+      
+	$.ajax({
+
+	        url: "/traerJsonRips/",
+                data: {'envioRipsId':envioRipsId,'facturaId':facturaId},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+            $('#postFormRipsJson').trigger("reset");
+
+  	
+ 				$('#valorJson').val(info[0].fields.valorJson);
+				
+
+            $('#modelHeadingRipsJson').html("Detalle Envios Rips");
+            $('#crearModelRipsJson').modal('show');
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+      
+  });
+
+
+
 
  $('#tablaEnvioRips tbody').on('click', '.generaJson', function() {
-	alert ("Entre generar JSON");
+
 
   });
 
 
 function initTableRipsTransaccion(data) {
 
-	alert("Entre TableRipsTransaccion");
-	alert ("data = " + JSON.stringify(data));
+
+
 
 	return new DataTable('.tablaRipsTransaccion', {
 
@@ -470,8 +520,8 @@ function initTableRipsTransaccion(data) {
 
 function initTableRipsUsuarios(data) {
 
-	alert("Entre TableRipsUsuarios");
-	alert ("data = " + JSON.stringify(data));
+
+
 
 	return new DataTable('.tablaRipsUsuarios', {
 
@@ -531,8 +581,8 @@ function initTableRipsUsuarios(data) {
 
 function initTableRipsProcedimientos(data) {
 
-	alert("Entre TableRipsProcedimientos");
-	alert ("data = " + JSON.stringify(data));
+
+
 
 	return new DataTable('.tablaRipsProcedimientos', {
 
@@ -604,8 +654,8 @@ function initTableRipsProcedimientos(data) {
 
 function initTableRipsHospitalizacion(data) {
 
-	alert("Entre TableRipsHospitalizacions");
-	alert ("data = " + JSON.stringify(data));
+
+
 
 	return new DataTable('.tablaRipsHospitalizacion', {
 
@@ -783,7 +833,7 @@ function EnvioRips()
 function GenerarJsonRips()
 {
 
-	alert("Entre Generar json Rips");
+
 	var envioRipsId = document.getElementById("envioRipsId1").value ;
 
 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
@@ -791,7 +841,7 @@ function GenerarJsonRips()
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
 	var tipoRips = document.getElementById("tipoRips").value;
-	alert("sede = " + sede);
+
 
         var username_id = document.getElementById("username_id").value;
 
@@ -832,7 +882,7 @@ function GenerarJsonRips()
 function EnviarJsonRips()
 {
 
-	alert("Entre Enviar json Rips");
+
 	var envioRipsId = document.getElementById("envioRipsId3").value ;
 
 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
@@ -840,7 +890,7 @@ function EnviarJsonRips()
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
 	var tipoRips = document.getElementById("tipoRips3").value;
-	alert("sede = " + sede);
+
 
         var username_id = document.getElementById("username_id").value;
 
@@ -873,4 +923,10 @@ function EnviarJsonRips()
             });
 
 
+}
+
+function CerrarModalJson()
+{
+
+            $('#crearModelRipsJson').modal('hide');
 }

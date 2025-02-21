@@ -443,8 +443,58 @@ def GenerarJsonRips(request):
 
     #Rutinas subir a tablas de rips todos la INFO MINISTERIO JSON RIPS
 
-    # RIPS TRANSACCION
 
+
+    # Primero Borra RIPS USUARIOS
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+    detalle =  'DELETE from rips_ripsusuarios u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) +"');"
+    resultado = curx.execute(detalle)
+    print ("BORRO USUARIOS ", detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
+    # Primero Borra RIPS procedimientos
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+    detalle = 'DELETE from rips_ripsprocedimientos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
+        envioRipsId) + "')"
+    resultado = curx.execute(detalle)
+    print("BORRO USUARIOS ", detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+    # Primero Borra RIPS HOSPITALIZACION
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+    detalle = 'DELETE from rips_ripshospitalizacion u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
+        envioRipsId) + "')"
+    resultado = curx.execute(detalle)
+    print("BORRO HOSPITALIZACION ", detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+    # Primero Borra RIPS TRANSACCION
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+    detalle = 'DELETE from rips_ripstransaccion u where u."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'"
+    resultado = curx.execute(detalle)
+    print("BORRO tx ", detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
+
+    # RIPS TRANSACCION
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
@@ -514,7 +564,7 @@ def GenerarJsonRips(request):
     miConexionx.close()
 
 
-    # HASTA AQUI RIPS HOSPITALZIACION
+    # HASTA AQUI RIPS HOSPITALIZACION
 
 
     ### Aqui actualizar cosas de la tabla rips_ripsenvios
@@ -774,7 +824,7 @@ def Load_tablaRipsHospitalizacion(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id", "ripsTipos_id", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripshosp."ripsDetalle_id" AND ENV.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripshosp."ripsTransaccion_id" '
+    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id", env."tipoRips", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripshosp."ripsDetalle_id" AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripshosp."ripsTransaccion_id" '
 
     print(detalle)
 
@@ -795,5 +845,42 @@ def Load_tablaRipsHospitalizacion(request, data):
     #context['usuariosRips'] = usuariosRips
 
     serialized1 = json.dumps(hospitalizacionRips,  default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def TraerJsonRips(request):
+    print("Entre a TraerJsonRips")
+
+    envioRipsId = request.POST['envioRipsId']
+    print("envioRipsId =", envioRipsId)
+
+    facturaId = request.POST['facturaId']
+    print("facturaId =", facturaId)
+
+    context = {}
+
+    jsonRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(facturaId)  + "') valorJson"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for valorJson in curx.fetchall():
+        jsonRips.append(
+            {"model": "rips_ripsdetalle", "pk": id, "fields":
+                {'valorJson':valorJson }})
+
+    miConexionx.close()
+    print("jsonRips ", jsonRips)
+    context['JsonRips'] = jsonRips
+
+    serialized1 = json.dumps(jsonRips, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')

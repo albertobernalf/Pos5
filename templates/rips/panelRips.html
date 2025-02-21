@@ -444,7 +444,50 @@ div.dataTables_filter input {
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
 
+
+
+	<!-- Otra Modal -->
+
+
+            <div class="modal fade" id="crearModelRipsJson" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modelHeadingRipsJson"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+                            <form id="postFormRipsJson" name="postFormRipsJsone" class="form-horizontal"
+                                  novalidate>
+							 Id :     <input type="text" name="envioRipsIdJ" id="envioRipsIdJ" readonly>
+        				                 Factura: <input type="text" id="facturaIdJ" name="facturaIdJ"  readonly></input>           
+
+
+				<div class="row row-cols-1" style="height=30px;">
+
+				<div class="col">
+                                    JSON:
+					<textarea id="valorJson" name="valorJson"   cols="80" rows="10"></textarea>
+                                 
+                                </div>
+
+                                <div class="col-sm-offset-2 col-sm-10 mt-2">
+                                    <button type="button" class="btn btn-primary" id="cerrarJson" name="cerrarJson"  value="Cerrar" onclick="CerrarModalJson()">Cerrar </button>
+                                </div>
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+                        </div> <!-- CIERRA BODY -->
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- Fin otra Modal -->
      <!-- FIN Espacio Modales  -->
+
 
 </article>
 
