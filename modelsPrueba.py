@@ -484,3 +484,7 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 -- ojo crear control si ya esta ENVIADO EL RIPS , no dejarlos enviar nuevamente
 
 -- ojo para ripshospital , falta coddx complicacion y coddxMuerte
+--- ojo ellies que pasa en la funcion generafacturarios, con ripsurgenciasobservacion error null y engo el IF crear una urgenciua rips
+   en python crear elinsert a ripsurgenciasoibservacion
+-- ojo crear proceso rips reciennacido 
+-- ojo crear proceso rips medicamentos
