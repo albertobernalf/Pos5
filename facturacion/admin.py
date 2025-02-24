@@ -65,10 +65,10 @@ class tiposSuministroAdmin(admin.ModelAdmin):
 @admin.register(Suministros)
 class suministroAdmin(admin.ModelAdmin):
 
-   list_display = ("id", "nombre","tipoSuministro","nombreGenerico","descripcionComercial","formasFarmaceutica")
-   search_fields =("id", "nombre","tipoSuministro","nombreGenerico","descripcionComercial","formasFarmaceutica")
+   list_display = ("id", "nombre","tipoSuministro","nombreGenerico","descripcionComercial","ripsFormaFarmaceutica")
+   search_fields =("id", "nombre","tipoSuministro","nombreGenerico","descripcionComercial","ripsFormaFarmaceutica")
    # Filtrar
-   list_filter = ("id", "nombre","tipoSuministro","nombreGenerico","descripcionComercial","formasFarmaceutica")
+   list_filter = ("id", "nombre","tipoSuministro","nombreGenerico","descripcionComercial","ripsFormaFarmaceutica")
 
 
 

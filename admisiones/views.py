@@ -1806,6 +1806,35 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print("ENTRE PERMSISO RIPS")
         ## Aqui contexto para solo Rips
 
+        # Combo RipsTiposNotas
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsTiposNotas  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsTiposNotas = []
+
+        for id, nombre in curt.fetchall():
+            ripsTiposNotas .append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsTiposNotas ", ripsTiposNotas )
+
+        context['RipsTiposNotas'] = ripsTiposNotas 
+
+        # Fin combo ripsTiposNotas 
+
+
+
+
+
+
         ## FIN CONTEXTO
         return render(request, "rips/PanelRips.html", context)
 

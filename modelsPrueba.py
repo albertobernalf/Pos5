@@ -488,3 +488,4 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
    en python crear elinsert a ripsurgenciasoibservacion
 -- ojo crear proceso rips reciennacido 
 -- ojo crear proceso rips medicamentos
+-- ojo arreglar query inserta en ripsprocedimeintos dejarlo como el de hospitalizacion sobre tofo en dx

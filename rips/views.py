@@ -100,18 +100,18 @@ def load_dataEnviosRips(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."estadoPasoMinisterio",  case when env."estadoPasoMinisterio" = ' + "'" + str('P') + "'" + ' then ' + "'" + str('Pendiente') + "'" + ' when  env."estadoPasoMinisterio" = ' + "'" + str('E') + "'" + ' then ' + "'" + str('Enviada') + "'" + ' end estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa , usu.nombre nombreRegistra , env."tipoRips" tipo FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, usuarios_usuarios usu where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id AND usu.id = env."usuarioRegistro_id"'
+    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."estadoPasoMinisterio",  case when env."estadoPasoMinisterio" = ' + "'" + str('P') + "'" + ' then ' + "'" + str('Pendiente') + "'" + ' when  env."estadoPasoMinisterio" = ' + "'" + str('E') + "'" + ' then ' + "'" + str('Enviada') + "'" + ' end estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa , usu.nombre nombreRegistra , tiposNotas.nombre tipoNota FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, usuarios_usuarios usu , rips_ripstiposnotas tiposNotas where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id AND usu.id = env."usuarioRegistro_id" AND env."ripsTiposNotas_id" = tiposNotas.id'
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, estadoMinisterio ,fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id, nombreClinica, nombreEmpresa, nombreRegistra, tipo in curx.fetchall():
+    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, estadoMinisterio ,fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id, nombreClinica, nombreEmpresa, nombreRegistra, tipoNota in curx.fetchall():
         enviosRips.append(
             {"model": "rips.ripsEnvios", "pk": id, "fields":
                 {'id': id, 'fechaEnvio': fechaEnvio, 'fechaRespuesta': fechaRespuesta, 'cantidadFacturas': cantidadFacturas,
                  'cantidadPasaron': cantidadPasaron, 'cantidadRechazadas': cantidadRechazadas,
-                 'estadoPasoMinisterio': estadoPasoMinisterio, 'estadoMinisterio':estadoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id, 'nombreClinica':nombreClinica, 'nombreEmpresa':nombreEmpresa,'nombreRegistra':nombreRegistra, 'tipo':tipo}})
+                 'estadoPasoMinisterio': estadoPasoMinisterio, 'estadoMinisterio':estadoMinisterio,  'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id, 'nombreClinica':nombreClinica, 'nombreEmpresa':nombreEmpresa,'nombreRegistra':nombreRegistra, 'tipoNota':tipoNota}})
 
     miConexionx.close()
     print("EnviosRips "  , enviosRips)
@@ -132,8 +132,10 @@ def GuardaEnviosRips(request):
     sedesClinica_id = request.POST['sedesClinica_id']
     print("sedesClinica_id =", sedesClinica_id)
 
-    tipoRips = request.POST['tipoRips']
-    print("tipoRips =", tipoRips)
+    tipoRips = request.POST['ripsTiposNotas']
+    print("ripsTiposNotas =", tipoRips)
+
+
 
     fechaEnvio = 'null'
     print ("fechaEnvio =", fechaEnvio)
@@ -160,7 +162,7 @@ def GuardaEnviosRips(request):
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "tipoRips", "fechaCreacion") values ('  + str(fechaEnvio) + "," + str(fechaRespuesta) + "," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
+    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion") values ('  + str(fechaEnvio) + "," + str(fechaRespuesta) + "," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
@@ -289,13 +291,22 @@ def load_dataDetalleRipsAdicionar(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    if (tipoRips == 'FACTURA'):
+    if (tipoRips == 'Factura'):
 
         detalle = 'SELECT f.id,  f.id factura, f."fechaFactura", u.nombre paciente , f."totalFactura", f.estado  FROM public.facturacion_facturacion f, admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c WHERE  i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   c.empresa_id = ' + "'" + str(empresaId) + "'" + ' AND f."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision"'
 
-    else:
+    if (tipoRips == 'Nota Credito'):
 
         detalle = 'SELECT g.id,  g.id factura, g."fechaRecepcion" fechaFactura, u.nombre paciente , g."valorGlosa" totalFactura, g."estadoRecepcion_id" estado  FROM public.cartera_glosas g, facturacion_facturacion f , admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c WHERE  g.factura_id  =  f.id and i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   c.empresa_id = ' + "'" + str(empresaId) + "'" + ' AND g."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision"'
+
+    if (tipoRips == 'Nota Debito'):
+
+        pass
+
+    if (tipoRips == 'Glosas'):
+
+        pass
+
 
     print(detalle)
 
@@ -340,8 +351,6 @@ def ActualizarEmpresaDetalleRips(request):
     tipoRips = request.POST['tipoRips']
     print("tipoRips =", tipoRips)
 
-
-
     fechaRegistro = datetime.datetime.now()
     estadoReg = 'A'
 
@@ -352,10 +361,18 @@ def ActualizarEmpresaDetalleRips(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    if (tipoRips == 'FACTURA'):
+    if (tipoRips == 'Factura'):
 
         comando = 'UPDATE facturacion_facturacion SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(facturaId) + "'"
-    else:
+
+    if (tipoRips == 'Nota Credito'):
+        pass
+
+    if (tipoRips == 'Nota Debito'):
+        pass
+
+    if (tipoRips == 'Glosas'):
+
         comando = 'UPDATE cartera_glosas SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(facturaId) + "'"
 
     print(comando)
@@ -462,12 +479,25 @@ def GenerarJsonRips(request):
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripsprocedimientos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
-        envioRipsId) + "')"
+    detalle = 'DELETE from rips_ripsprocedimientos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "')"
     resultado = curx.execute(detalle)
     print("BORRO USUARIOS ", detalle)
     miConexionx.commit()
     miConexionx.close()
+
+
+    # Primero Borra RIPS Medicamentos
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+    detalle = 'DELETE from rips_ripsmedicamentos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "')"
+    resultado = curx.execute(detalle)
+    print("BORRO USUARIOS ", detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
 
     # Primero Borra RIPS HOSPITALIZACION
 
@@ -565,6 +595,25 @@ def GenerarJsonRips(request):
 
 
     # HASTA AQUI RIPS HOSPITALIZACION
+
+    # RIPS MEDICAMENTOS
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = '	INSERT INTO rips_ripshospitalizacion (  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","codComplicacion_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id",	"ripsDetalle_id", "tipoRips", "ripsTransaccion_id",  "fechaRegistro")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),' + "'" + str('autorizacion') + "'" + ' , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id), null,  i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."tipoRips",ripstra.id,now()  FROM sitios_sedesclinica sed, admisiones_ingresos i, rips_ripsenvios env, rips_ripsdetalle det, facturacion_facturacion fac, rips_ripstransaccion ripstra, clinico_historia his where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica_id" and env.id = ' + "'" + str(envioRipsId) + "'" + ' AND i.factura = det."numeroFactura_id" AND  i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec = fac."consecAdmision" AND i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision" and env.id = det."ripsEnvios_id" and ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)'
+
+    print("detalle = ", detalle)
+
+    curx.execute(detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
+    # HASTA AQUI RIPS HOSPITALIZACION
+
+
 
 
     ### Aqui actualizar cosas de la tabla rips_ripsenvios
@@ -824,18 +873,18 @@ def Load_tablaRipsHospitalizacion(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id", env."tipoRips", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripshosp."ripsDetalle_id" AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripshosp."ripsTransaccion_id" '
+    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id", env."ripsTiposNotas_id", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripshosp."ripsDetalle_id" AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripshosp."ripsTransaccion_id" '
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  codPrestador, fechaInicioAtencion, numAutorizacion, fechaEgreso, consecutivo, fechaRegistro,  causaMotivoAtencion_id,  codComplicacion_id, codDiagnosticoCausaMuerte_id, codDiagnosticoPrincipal_id , codDiagnosticoPrincipalE_id,  codDiagnosticoRelacionadoE1_id, codDiagnosticoRelacionadoE2_id,        codDiagnosticoRelacionadoE3_id, condicionDestinoUsuarioEgreso_id, usuarioRegistro_id,  viaIngresoServicioSalud_id, ripsDetalle_id, ripsTipos_id, ripsTransaccion_id in curx.fetchall():
+    for id,  codPrestador, fechaInicioAtencion, numAutorizacion, fechaEgreso, consecutivo, fechaRegistro,  causaMotivoAtencion_id,  codComplicacion_id, codDiagnosticoCausaMuerte_id, codDiagnosticoPrincipal_id , codDiagnosticoPrincipalE_id,  codDiagnosticoRelacionadoE1_id, codDiagnosticoRelacionadoE2_id,        codDiagnosticoRelacionadoE3_id, condicionDestinoUsuarioEgreso_id, usuarioRegistro_id,  viaIngresoServicioSalud_id, ripsDetalle_id, ripsTiposNotas_id, ripsTransaccion_id in curx.fetchall():
         hospitalizacionRips.append(
             {"model": "rips.RipsHopsitalizacion", "pk": id, "fields":
                 {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion,  'numAutorizacion':numAutorizacion, 'fechaEgreso':fechaEgreso,'consecutivo':consecutivo,'fechaRegistro':fechaRegistro,'causaMotivoAtencion_id':causaMotivoAtencion_id,
 		'codComplicacion_id':codComplicacion_id, 'codDiagnosticoCausaMuerte_id':codDiagnosticoCausaMuerte_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id, 'codDiagnosticoPrincipalE_id':codDiagnosticoPrincipalE_id,'codDiagnosticoRelacionadoE1_id':codDiagnosticoRelacionadoE1_id,'codDiagnosticoRelacionadoE2_id':codDiagnosticoRelacionadoE2_id,'codDiagnosticoRelacionadoE3_id':codDiagnosticoRelacionadoE3_id,
-                 'condicionDestinoUsuarioEgreso_id':condicionDestinoUsuarioEgreso_id, 'usuarioRegistro_id':usuarioRegistro_id, 'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id, 'ripsDetalle_id':ripsDetalle_id, 'ripsTipos_id':ripsTipos_id,'ripsTransaccion_id':ripsTransaccion_id
+                 'condicionDestinoUsuarioEgreso_id':condicionDestinoUsuarioEgreso_id, 'usuarioRegistro_id':usuarioRegistro_id, 'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id, 'ripsDetalle_id':ripsDetalle_id, 'ripsTiposNotas_id':ripsTiposNotas_id,'ripsTransaccion_id':ripsTransaccion_id
                  }})
 
 

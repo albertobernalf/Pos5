@@ -114,7 +114,7 @@ div.dataTables_filter input {
                                        
                                                  <th>Emp</th> 
                                                 <th>Empresa</th>
-                                                <th>Tipo</th>
+                                    
                                                 <th>FechaEnvio</th>
                                                 <th>FechaRespuesta</th>
                                                 <th>Facturas</th>
@@ -126,6 +126,7 @@ div.dataTables_filter input {
 						<th>Registra</th>
 
 				        <th>NombreClinica</th> 
+				            <th>TipoNota</th>
                                                  <th>Seleccionar</th> 
 
 
@@ -187,10 +188,13 @@ div.dataTables_filter input {
 
 
 				<div class="col">
-                                    TipoRips:
-				<select class="select-css"  id="tipoRips"  name="tipoRips">
-                                                           <option value="FACTURA" selected>FACTURA</option>
-							  <option value="NOTA" >NOTA</option>
+                                    RipsTiposNotas:
+				<select class="select-css"  id="ripsTiposNotas"  name="ripsTiposNotas">
+                                                           {% for ripsTiposNotas in RipsTiposNotas %}
+                                                            <option value="{{ripsTiposNotas.id}}">
+                                                                {{ripsTiposNotas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
                                                           
                                                         </select>
                                 </div>
@@ -673,7 +677,7 @@ div.dataTables_filter input {
                                                 <th>UsuReg </th>
                                                 <th>ViaIngreso </th>
                                                 <th>RipsDetalle_id </th>
-                                                <th>TipoRips </th>
+                                                <th>ripsTiposNotas_id </th>
 						<th>Accion </th>
 						</bold>                                  
 

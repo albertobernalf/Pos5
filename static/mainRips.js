@@ -63,7 +63,6 @@ function initTableEnviosRips(data) {
                 { data: "fields.sedesClinica_id"},
                 { data: "fields.empresa_id"},
                 { data: "fields.nombreEmpresa"},
-                { data: "fields.tipo"},
                 { data: "fields.fechaEnvio"},
                 { data: "fields.fechaRespuesta"},
                 { data: "fields.cantidadFacturas"},
@@ -74,6 +73,7 @@ function initTableEnviosRips(data) {
 		 { data: "fields.usuarioRegistro_id"},
 		 { data: "fields.nombreRegistra"},
 		  { data: "fields.nombreClinica"},
+                { data: "fields.tipoNota"},
             ]
 
  });
@@ -141,7 +141,7 @@ window.addEventListener('load', function() {
 
 	var id_empresa = table.row(0).cell(rowindex, 2).data();  // jquery
 	var id_rips = table.row(0).cell(rowindex, 0).data();  // jquery
-	var tipoRips = table.row(0).cell(rowindex, 4).data();  // jquery
+	var tipoRips = table.row(0).cell(rowindex, 14).data();  // jquery
 
 
 
@@ -215,7 +215,7 @@ window.addEventListener('load', function() {
 	        console.log ( "dato10 empresa = " , dato3.empresa_id); 
 
 		var id_empresa = dato3.empresa_id;  // jquery
-		var tipoRips = dato3.tipo;  // jquery
+		var tipoRips = dato3.tipoNota;  // jquery
 
 		data['empresaId'] = id_empresa;
 		data['envioRipsId'] = post_id;
@@ -709,7 +709,7 @@ function initTableRipsHospitalizacion(data) {
                 { data: "fields.usuarioRegistro_id"},
                 { data: "fields.viaIngresoServicioSalud_id"},
                 { data: "fields.ripsDetalle_id_id"},
-                { data: "fields.ripsTipos_id"},
+                { data: "fields.ripsTiposNotas_id"},
 
             ]
  });

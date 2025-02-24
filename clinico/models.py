@@ -251,6 +251,7 @@ class HistorialInterconsultas(models.Model):
 
                 id  = models.AutoField(primary_key=True)
                 historia =  models.ForeignKey('clinico.Historia',  blank=True, null=True, editable=True, on_delete=models.PROTECT,   related_name='DocumentoHistoriaDiag11')
+                ordenMedica = models.CharField(max_length=80, blank=True, null=True)
                 tipoInterconsulta = models.ForeignKey('clinico.TiposInterconsulta',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
                 descripcionConsulta = models.CharField(max_length=200)
                 especialidadConsulta = models.ForeignKey('clinico.Especialidades', default=1, on_delete=models.PROTECT, null=False)
@@ -358,10 +359,12 @@ class HistoriaExamenes(models.Model):
     tiposExamen = models.ForeignKey('clinico.TiposExamen', default=1, on_delete=models.PROTECT, null=False)
     codigoCups = models.CharField(max_length=20, null=False, blank=True)
     dependenciasRealizado = models.ForeignKey('sitios.Dependencias', blank=True, null=True, editable=True,            on_delete=models.PROTECT)
-    mipres = models.CharField(max_length=15, null=True, blank=True)
+    ordenMedica = models.CharField(max_length=80, blank=True, null=True)
+    mipres = models.CharField(max_length=30, null=True, blank=True)
     consecutivo = models.IntegerField(blank=True, null=True)
     cantidad = models.IntegerField()
     observaciones = models.CharField(max_length=200, editable=True,blank=True, null=True)
+    autorizacion = models.ForeignKey('autorizaciones.Autorizaciones', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='aut01') 
     fechaToma = models.DateTimeField(blank=True, null=True)
     usuarioToma = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,  on_delete=models.PROTECT, related_name='usuarioToma1')
     #preliminar1 = models.CharField(max_length=300, editable=True,blank=True, null=True)
@@ -458,7 +461,7 @@ class EstadosSalida(models.Model):
 class HistorialIncapacidades(models.Model):
     id = models.AutoField(primary_key=True)
     historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='DocumentoHistoriaDiag10')
-
+    ordenMedica = models.CharField(max_length=80, blank=True, null=True)
     tiposIncapacidad =  models.ForeignKey('clinico.TiposIncapacidad',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
     desdeFecha = models.DateTimeField(default=now ,blank=True, null=True)
     hastaFecha = models.DateTimeField(default=now ,blank=True, null=True)
@@ -885,6 +888,7 @@ class HistoriaRevisionSistemas(models.Model):
 class Trasfusiones(models.Model):
     id = models.AutoField(primary_key=True)
     historia = models.ForeignKey('clinico.Historia',  blank=True, null=True, editable=True, on_delete=models.PROTECT,   related_name='DocumentoHistoriaDiag25')
+    ordenMedica = models.CharField(max_length=80, blank=True, null=True)
     fecha = models.DateTimeField()
     selloCalidad = models.CharField(max_length=5000, blank=True)
     grupoBolsa = models.CharField(max_length=50, blank=True)
@@ -922,6 +926,7 @@ class Trasfusiones(models.Model):
 class HistoriaOxigeno(models.Model):
     id = models.AutoField(primary_key=True)
     historia = models.ForeignKey('clinico.Historia',  blank=True, null=True, editable=True, on_delete=models.PROTECT,   related_name='DocumentoHistoriaDiag29')
+    ordenMedica = models.CharField(max_length=80, blank=True, null=True)
     fechaInicio = models.DateTimeField()
     fechaFinal = models.DateTimeField()
     tipoOxigenacion = models.ForeignKey('clinico.TipoOxigenacion',  blank=True, null=True, editable=True, on_delete=models.PROTECT,   related_name='tipoOxigenacion02')
@@ -1016,13 +1021,15 @@ class Medicamentos(models.Model):
 class HistoriaMedicamentos(models.Model):
     id = models.AutoField(primary_key=True)
     historia = models.ForeignKey('clinico.Historia', default=1, on_delete=models.PROTECT, null=False, related_name='DocumentoHistoriaDiag12')
-    orden = models.IntegerField(default=0)
+    ordenMedica = models.CharField(max_length=80, blank=True, null=True)
     suministro = models.ForeignKey('facturacion.Suministros', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     dosisCantidad = models.DecimalField(max_digits=20, decimal_places=3)
     dosisUnidad = models.ForeignKey('clinico.UnidadesDeMedidaDosis', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     frecuencia = models.ForeignKey('clinico.FrecuenciasAplicacion', blank=True, null=True, editable=True,               on_delete=models.PROTECT)
     viaAdministracion = models.ForeignKey('clinico.ViasAdministracion', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    concentracionMedicamento = 	models.CharField(max_length=100, blank=True, null=True)
     nota = models.CharField(max_length=5000, blank=True)
+    autorizacion = models.ForeignKey('autorizaciones.Autorizaciones', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='aut02') 
     cantidadOrdenada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
     diasTratamiento =  models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
     cantidadSolicitada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)

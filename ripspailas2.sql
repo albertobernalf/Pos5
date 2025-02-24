@@ -423,6 +423,13 @@ if totalUrgencias > 0 then
 valorJson = valorJson ||' ' || valorUrgencias;
 */
 
+totalMedicamentos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsmedicamentos ripsmed where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsmed."ripsTransaccion_id" = ripstra.id);
+
+
+ END IF;
+
+valorJson = valorJson ||' ' || totalMedicamentos;
+
 	SELECT REPLACE (valorJson, '""', '')
 	into valorJson;
 
@@ -433,4 +440,6 @@ END $BODY$
 ALTER FUNCTION generaJSON
   OWNER TO postgres;
 
-	
+
+-- Medicamentos
+
