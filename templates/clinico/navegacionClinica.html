@@ -181,7 +181,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
         <center><h3>Evoluciones</h3></center>
 
 
-        <div class="row row-cols-8 mt-3">
+        <div class="row row-cols-9 mt-3">
             <div class="col">
                 </div>
 
@@ -214,6 +214,12 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                 {{ historiaForm.tratamiento.label }}
                 {{ historiaForm.tratamiento }}
             </div>
+
+	   <div class="col">
+                {{ historiaForm.mipres.label }}
+                {{ historiaForm.mipres }}
+            </div>
+
 
             <div class="col">
                 </div>
@@ -1696,6 +1702,18 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                                             {% for tiposSalidas in TiposSalidas %}
                                                             <option value="{{tiposSalidas.id}}">
                                                                 {{tiposSalidas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+
+					<div class="col-sm-2">
+
+                                                        <select class="select-css"  id="dxComplicacion"
+                                                                name="dxComplicacion">
+                                                            {% for dxComplicacion in DxComplicacion %}
+                                                            <option value="{{dxComplicacion.id}}">
+                                                                {{dxComplicacion.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>

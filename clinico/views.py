@@ -210,6 +210,8 @@ def crearHistoriaClinica(request):
 
             print("Entre Ajax POST")
 
+            sede = request.POST["sede"]
+            print("sede = ", sede)
 
             tipoDoc = request.POST["tipoDocPaciente"]
             print("tipoDoc = ", tipoDoc)
@@ -220,6 +222,13 @@ def crearHistoriaClinica(request):
 
 
             tiposFolio = request.POST["tiposFolioEscogido"]
+            mipres = request.POST["mipres"]
+            print ("mipres = " , mipres)
+
+            dxComplicacion = request.POST["dxComplicacion"]
+            print ("dxComplicacion = " , dxComplicacion)
+
+
 
             print ("tiposfolios Seleccionado = " , tiposFolio)
             dependenciasRealizado = request.POST["dependenciasRealizado"]
@@ -415,7 +424,7 @@ def crearHistoriaClinica(request):
 
                 ## aqui tentativo insert
 
-                comando = 'INSERT INTO clinico_Historia ("tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" )  VALUES('  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "');"
+                comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres)  VALUES(' + "'" + str(sede) + "'"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "'" + str(mipres) + "'"  +  ");"
 
                 ## fin tentativo insert
 
@@ -610,6 +619,36 @@ def crearHistoriaClinica(request):
                             convenioValor.append({'convenio': convenio, 'cups':cups, 'valor':tarifaValor})
 
                         miConexiont.close()
+
+
+			            # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
+
+                        autorizacion = Examenes.objects.get(codigoCups=cups)
+                        print("el cups :", cups)
+                        print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
+
+                        if (autorizacion.requiereAutorizacion == 'S'):
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str('P') + "'" + ', now(), now() ' + "'" + str('A') + "'" + ', conv.empresa_id, plantaId, sede, usuarioRegistro FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
+
+
+                            curt.execute(comando)
+                            convenioValor = []
+
+                            for id, cups, tarifaValor in curt.fetchall():
+                                convenioValor.append({'convenio': convenio, 'cups': cups, 'valor': tarifaValor})
+
+                            miConexiont.close()
+			
+
+			            # Fin tema Autorizaciones
+
+
+
 
                         if convenioValor != []:
 

@@ -1494,6 +1494,34 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # FIN Combo TipopsSalidas
 
+
+
+        # Combo Dx Complicacion
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        curt = miConexiont.cursor()
+        comando = 'SELECT e.id ,e.nombre FROM clinico_Diagnosticos e'
+        curt.execute(comando)
+        print(comando)
+
+        dxComplicacion = []
+        dxComplicacion.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+             dxComplicacion.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+
+        print(dxComplicacion)
+
+        context['DxComplicacion'] = dxComplicacion
+
+        print ("dxComplicacion =", dxComplicacion)
+
+        # FIN Combo Dx Complicacion
+
+
         ## FIN CONTEXTO
         return render(request, "clinico/panelClinico.html", context)
 

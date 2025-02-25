@@ -149,6 +149,7 @@ class Suministros (models.Model):
     AnatoPos = models.CharField(max_length=1, blank=True,null= True, editable=True)
     magistralControl  = models.CharField(max_length=1, blank=True,null= True, editable=True)
     genericoPos = models.CharField(max_length=1, blank=True,null= True, editable=True)
+    requiereAutorizacion = models.CharField(max_length=1,  blank=True, null=True, editable=True)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
@@ -258,6 +259,7 @@ class LiquidacionCirugias(models.Model):
 
 class Facturacion(models.Model):
     id  = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica398')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TiposDoc101')
     #documento = models.CharField(max_length=30, blank=True,null= True, editable=True,)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoFac2')
@@ -334,9 +336,10 @@ class FacturacionDetalle(models.Model):
     fecha = models.DateTimeField(editable=True, null=True, blank=True)
     #autorizacion = models.ForeignKey('autorizaciones.Autorizaciones', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='aut03') 
     historiaMedicamento = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='histmed01') 
-    mipres  = models.CharField(max_length=30,  blank=True, null=True, editable=True)
+    #mipres  = models.CharField(max_length=30,  blank=True, null=True, editable=True)
     codigoCups = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TablaCups121')
-    cums = models.ForeignKey('rips.RipsCums', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Cums101')
+    #cums = models.ForeignKey('rips.RipsCums', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Cums101')
+    cums = models.ForeignKey('facturacion.Suministros', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Sum102')
     cantidad =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)
     valorUnitario =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)
     valorTotal =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)
@@ -381,6 +384,7 @@ class FacturacionDetalle(models.Model):
 
 class Liquidacion(models.Model):
     id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica789')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TiposDoc120')
     #documento = models.CharField(max_length=30, blank=True,null= True, editable=True,)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoFac3')
@@ -422,12 +426,13 @@ class LiquidacionDetalle(models.Model):
     id = models.AutoField(primary_key=True)
     liquidacion = models.ForeignKey('facturacion.Liquidacion', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Liquid01')
     consecutivo = models.IntegerField(editable=True, null=True, blank=True)
-    mipres  = models.CharField(max_length=30,  blank=True, null=True, editable=True)
+    #mipres  = models.CharField(max_length=30,  blank=True, null=True, editable=True)
     fecha = models.DateTimeField(editable=True, null=True, blank=True)
     #autorizacion = models.ForeignKey('autorizaciones.Autorizaciones', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='aut05') 
     historiaMedicamento = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='histmed02') 
     codigoCups = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TablaCups101')
-    cums = models.ForeignKey('rips.RipsCums', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TablaCums101')
+    #cums = models.ForeignKey('rips.RipsCums', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TablaCums101')
+    cums = models.ForeignKey('facturacion.Suministros', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Suministros05')
     cantidad =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)
     valorUnitario =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)
     valorTotal = models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)
@@ -449,6 +454,7 @@ class LiquidacionDetalle(models.Model):
 
 class Refacturacion(models.Model):
     id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica667')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TiposDoc145')
     #documento = models.CharField(max_length=30, blank=True,null= True, editable=True,)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoFac4')

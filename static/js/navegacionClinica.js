@@ -1333,6 +1333,9 @@ formHistoriaClinica.addEventListener('submit', e=>{
 	 var tiposSalidas  =  document.getElementById("tiposSalidas").value;
          alert("tiposSalidas =" + tiposSalidas);
 
+	var dxComplicacion =  document.getElementById("dxComplicacion").value;
+	var mipres =  document.getElementById("mipres").value;
+
             var form_valido;
 
      
@@ -1401,7 +1404,9 @@ formHistoriaClinica.addEventListener('submit', e=>{
                         'manejoQx':manejoQx,
         			'formulacion':formulacion,
                                 'salidaClinica':salidaClinica, 
-				'tiposSalidas':tiposSalidas
+				'tiposSalidas':tiposSalidas,
+				'dxComplicacion':dxComplicacion,
+				'mipres':mipres	
 				   },
  	      		success: function (respuesta2) {
  	      		        var data = JSON.parse(respuesta2);

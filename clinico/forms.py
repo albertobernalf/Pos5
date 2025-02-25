@@ -148,6 +148,7 @@ class historiaForm(forms.ModelForm):
         justificacion = forms.CharField(max_length=5000)
         leucopenia = forms.CharField(max_length=50)
         manejoQx = forms.CharField(max_length=20000)
+        mipres = forms.CharField(max_length=30)
 
         fechaRegistro =  forms.DateTimeField()
         usuarioRegistro = forms.ModelChoiceField(queryset=Usuarios.objects.all())

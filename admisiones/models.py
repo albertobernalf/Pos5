@@ -55,6 +55,8 @@ class Ingresos(models.Model):
     ViasEgreso = models.ForeignKey('clinico.ViasEgreso', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     muerte =  models.CharField(max_length=1,default='N')
     fechaMuerte = models.DateTimeField(editable=True, null=True, blank=True)
+    #dxMuerte = models.ForeignKey('clinico.Diagnosticos', blank=True,null= True, editable=True, on_delete=models.PROTECT,   related_name='id74')
+    dxComplicacion = models.ForeignKey('clinico.Diagnosticos', blank=True,null= True, editable=True, on_delete=models.PROTECT,   related_name='id75')
     ActaDefuncion =  models.CharField(max_length=30,default='')
     medicoDefuncion = models.ForeignKey('clinico.Medicos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsServiciosIng = models.ForeignKey('rips.RipsServicios', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='ripssServicios01')
