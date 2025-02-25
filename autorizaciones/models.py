@@ -24,7 +24,7 @@ class Autorizaciones(models.Model):
     observaciones =  models.CharField(max_length=1000,blank=True,null= True, editable=True,)
     estadoAutorizacion =  models.CharField(max_length=1,blank=True,null= True, editable=True,)
     fechaModifica = models.DateTimeField( editable=True, null=True, blank=True)
-    numeroSolicitud = models.DecimalField(max_digits=6, decimal_places=2)
+    numeroSolicitud = models.DecimalField(max_digits=6, decimal_places=2 , null=True, blank=True)
     fechaVigencia = models.DateTimeField( editable=True, null=True, blank=True)
     #medicoAutoriza = models.ForeignKey('clinico.Medicos',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     #dxPrinc = models.ForeignKey('clinico.Diagnosticos',blank=True,null= True, editable=True, on_delete=models.PROTECT ,  related_name='dx21' )

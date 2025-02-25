@@ -3615,6 +3615,7 @@ def crearAdmisionDef(request):
         ripsEdadGestacional = request.POST["ripsEdadGestacional"]
         ripsDestinoUsuarioEgresoRecienNacido = request.POST['ripsDestinoUsuarioEgresoRecienNacido']
         ripsFinalidadConsulta = request.POST['ripsFinalidadConsulta']
+        print("ripsFinalidadConsulta", ripsFinalidadConsulta)
 
         ripsDestinoUsu1 = RipsDestinoEgreso.objects.get(id= ripsDestinoUsuarioEgresoRecienNacido)
 
@@ -3666,11 +3667,10 @@ def crearAdmisionDef(request):
                          ripsNumConsultasCPrenatal = ripsNumConsultasCPrenatal,
                          ripsEdadGestacional = ripsEdadGestacional,
                          ripsDestinoUsuarioEgresoRecienNacido =ripsDestinoUsu1,
-			 ripsFinalidadConsulta = ripsFinalidadConsulta,
+                         ripsFinalidadConsulta_id = ripsFinalidadConsulta,
                          fechaRegistro=fechaRegistro,
                          usuarioRegistro_id=usernameId.id,
                          estadoReg=estadoReg,
-
         )
         print("Voy a guardar la INFO")
 

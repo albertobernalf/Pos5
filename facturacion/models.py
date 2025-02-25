@@ -430,7 +430,7 @@ class LiquidacionDetalle(models.Model):
     fecha = models.DateTimeField(editable=True, null=True, blank=True)
     #autorizacion = models.ForeignKey('autorizaciones.Autorizaciones', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='aut05') 
     historiaMedicamento = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='histmed02') 
-    codigoCups = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TablaCups101')
+    examen = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TablaCups101')
     #cums = models.ForeignKey('rips.RipsCums', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TablaCums101')
     cums = models.ForeignKey('facturacion.Suministros', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Suministros05')
     cantidad =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)

@@ -270,24 +270,26 @@ SELECT
 	  '"codDiagnosticoPrincipal": ' || '"'  ||CASE WHEN trim(diag1.cie10) is null THEN 'null' ELSE diag1.cie10  END|| '",'  || 	
 	'"codDiagnosticoRelacionado": ' || '"'  ||CASE WHEN trim(diag2.cie10) is null THEN 'null' ELSE diag2.cie10  END|| '",' 	  || 	
 	 
-	'"tipoMedicamento": ' || '"'  ||CASE WHEN trim(tipmed.codigo) is null THEN 'null' ELSE tipmed.codigo  END|| '",' /*   || 	
+	'"tipoMedicamento": ' || '"'  ||CASE WHEN trim(tipmed.codigo) is null THEN 'null' ELSE tipmed.codigo  END|| '",'   || 	
 
-	'"codTecnologiaSalud": ' || '"'  ||ripscums.cum|| '",'  || 	
-	'"nomTecnologiaSalud": ' || '"'  ||med."nomTecnologiaSalud"|| '",'  || 	
-	'"concentracionMedicamento": ' || '"'  ||med."concentracionMedicamento"|| '",'  || 	
-	'"unidadMedida": ' || '"'  ||ripsumm.codigo|| '",'  || 	
-	'"formaFarmaceutica": ' || '"'  ||ripsfarma.codigo|| '",'  || 	
-'"unidadMinDispensa": ' || '"'  ||ripsupr.codigo|| '",'  || 	
-	'"cantidadMedicamento": ' || '"'  ||med."cantidadMedicamento"|| '",'  || 	
-	'"diasTratamiento": ' || '"'  ||med."diasTratamiento"|| '",'  || 	
-	'"tipoDocumentoldentificacion": ' || '"'  ||ripstipdoc.codigo|| '",'  || 	
-	'"numDocumentoIdentificacion": ' || '"'  ||med."numDocumentoIdentificacion"|| '",'  || 	
-		'"vrUnitMedicamento": ' || '"'  ||med."vrUnitMedicamento"|| '",'  || 	
-		'"vrServicio": ' || '"'  ||med."vrServicio"|| '",'  || 	
-		'"tipoPagoModerador": ' || '"'  ||ripstipopago.codigo|| '",'  || 	
-		'"valorPagoModerador": ' || '"'  ||med."valorPagoModerador"|| '",'*/  || 	
-	'"numFEVPagoModerador": ' || '"'  ||med."numFEVPagoModerador"|| '",'   || 	
+	'"codTecnologiaSalud": ' || '"'  ||  CASE WHEN trim(ripscums.cum) is null THEN 'null' ELSE ripscums.cum  END           || '",'  || 	
+	'"nomTecnologiaSalud": ' || '"'  ||   CASE WHEN trim(med."nomTecnologiaSalud") is null THEN 'null' ELSE med."nomTecnologiaSalud"  END               || '",'  || 	
+	'"concentracionMedicamento": ' || '"'  || CASE WHEN trim(med."concentracionMedicamento") is null THEN 'null' ELSE med."concentracionMedicamento"  END  || '",'    || 	
 	
+	'"unidadMedida": ' || '"'  ||CASE WHEN trim(ripsumm.codigo) is null THEN 'null' ELSE ripsumm.codigo  END           || '",'  || 	
+	'"formaFarmaceutica": ' || '"'  ||  CASE WHEN trim(ripsfarma.codigo) is null THEN 'null' ELSE ripsfarma.codigo  END  || '",'  || 	
+'"unidadMinDispensa": ' || '"'  ||  CASE WHEN trim(ripsupr.codigo) is null THEN 'null' ELSE ripsupr.codigo  END           || '",'  || 	
+	'"cantidadMedicamento": ' || '"'  || CASE WHEN trim(cast( med."cantidadMedicamento"  as text)) is null THEN 0 ELSE  med."cantidadMedicamento"   END      || '",'   /* || 	
+	'"diasTratamiento": ' || '"'  ||   CASE WHEN trim(cast( med."diasTratamiento"  as text)) is null THEN 0 ELSE med."diasTratamiento"  END  || '",'  */ || 	
+	
+	'"tipoDocumentoldentificacion": ' || '"'  || CASE WHEN trim(ripstipdoc.codigo) is null THEN 'null' ELSE ripstipdoc.codigo  END   || '",'  || 	
+	'"numDocumentoIdentificacion": ' || '"'  || CASE WHEN trim(med."numDocumentoIdentificacion") is null THEN 'null' ELSE med."numDocumentoIdentificacion"  END     || '",'  || 	
+		'"vrUnitMedicamento": ' || '"'  ||  med."vrUnitMedicamento" || '",'  || 	
+		'"vrServicio": ' || '"'  ||med."vrServicio"|| '",'  || 	
+		'"tipoPagoModerador": ' || '"'  ||  CASE WHEN trim( ripstipopago.codigo) is null THEN 'null' ELSE  ripstipopago.codigo  END || '",'  || 	
+		'"valorPagoModerador": ' || '"'  ||  med."valorPagoModerador"|| '",'  || 	
+	
+	'"numFEVPagoModerador": ' || '"'  ||med."numFEVPagoModerador"|| '",'   || 	
 	'"consecutivo": ' || '"'  ||med.consecutivo|| '",'   || 
 '}]}' 
 from rips_ripstransaccion

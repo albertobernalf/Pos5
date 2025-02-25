@@ -1268,6 +1268,8 @@ formHistoriaClinica.addEventListener('submit', e=>{
 	 var salidaClinicax    =  document.getElementById("salClinica").value
 	 alert ("salidaClinicax = " + salidaClinicax);
       
+
+	 var sede    =  document.getElementById("sede").value
          var tipoDocPaciente    =  document.getElementById("tipoDocPaciente1").value
          var documentoPaciente  =  document.getElementById("documentoPaciente1").value;
          var folio      = "0";
@@ -1334,7 +1336,7 @@ formHistoriaClinica.addEventListener('submit', e=>{
          alert("tiposSalidas =" + tiposSalidas);
 
 	var dxComplicacion =  document.getElementById("dxComplicacion").value;
-	var mipres =  document.getElementById("mipres").value;
+	var mipres =  document.getElementById("id_mipres").value;
 
             var form_valido;
 
@@ -1406,7 +1408,8 @@ formHistoriaClinica.addEventListener('submit', e=>{
                                 'salidaClinica':salidaClinica, 
 				'tiposSalidas':tiposSalidas,
 				'dxComplicacion':dxComplicacion,
-				'mipres':mipres	
+				'mipres':mipres	,
+                                'sede':sede
 				   },
  	      		success: function (respuesta2) {
  	      		        var data = JSON.parse(respuesta2);
