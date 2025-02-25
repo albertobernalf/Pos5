@@ -15,11 +15,11 @@ class autorizacionesAdmin(admin.ModelAdmin):
 
 
 @admin.register(AutorizacionesDetalle)
-class autorizacionesCupsAdmin(admin.ModelAdmin):
-    list_display = ("id", "sedesClinica", "tipoDoc","documento","hClinica","consec","autorizacionesId", "autorizado","cantidadSolicitada","cantidadAutorizada")
-    search_fields = ("id", "sedesClinica", "tipoDoc","documento","hClinica","consec", "autorizacionesId", "autorizado","cantidadSolicitada","cantidadAutorizada")
+class autorizacionesDetalleAdmin(admin.ModelAdmin):
+    list_display = ("id",  "autorizaciones", "autorizado","cantidadSolicitada","cantidadAutorizada")
+    search_fields = ("id", "autorizaciones", "autorizado","cantidadSolicitada","cantidadAutorizada")
     # Filtrar
-    # list_filter =("id", "sedesClinica", "tipoDoc","documento","hClinica","consec","autorizacionesId","autorizado","cantidadSolicitada","cantidadAutorizada")
+    # list_filter =("id",  "autorizaciones","autorizado","cantidadSolicitada","cantidadAutorizada")
 
 
 

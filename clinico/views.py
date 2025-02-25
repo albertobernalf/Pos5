@@ -516,7 +516,7 @@ def crearHistoriaClinica(request):
                     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
                                                    user="postgres", password="123456")
                     curt = miConexiont.cursor()
-                    comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(
+                    comando = 'INSERT INTO facturacion_liquidacion ("sedesClinica_id", "tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(sede) + "'" +  "'" + str(
                         tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(
                         fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(
                         estadoReg) + "'," + str(convenioId) + ',' + "'" + str(usuarioRegistro) + "',0)"
@@ -623,7 +623,6 @@ def crearHistoriaClinica(request):
 
 			            # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
 
-                        autorizacion = Examenes.objects.get(codigoCups=cups)
                         print("el cups :", cups)
                         print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
 
@@ -633,21 +632,52 @@ def crearHistoriaClinica(request):
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
-                            comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str('P') + "'" + ', now(), now() ' + "'" + str('A') + "'" + ', conv.empresa_id, plantaId, sede, usuarioRegistro FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
+                            comando = 'SELECT id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'"
 
 
                             curt.execute(comando)
-                            convenioValor = []
+                            hayAut = []
 
-                            for id, cups, tarifaValor in curt.fetchall():
-                                convenioValor.append({'convenio': convenio, 'cups': cups, 'valor': tarifaValor})
+                            for id in curt.fetchall():
+                                hayAut.append({'id': id})
 
                             miConexiont.close()
+
+                            if (hayAut[0]) != '':
+
+
+                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                                curt = miConexiont.cursor()
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str('P') + "'" + ', now(), now() ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
+
+
+                                curt.execute(comando)
+
+                                miConexiont.close()
+
+                                autorizacionIdU = Autorizaciones.objects.all().filter(historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                autorizacionId = (autorizacionIdU['maximo']) + 0
 			
+                            else:
 
-			            # Fin tema Autorizaciones
+                                autorizacionId = hayAut[0]['id']
+
+                            print ("Autorizacion Final = ", autorizacionId)
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",   user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'INSERT INTO autorizaciones_autorizacionesdetalle (autorizado, "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "clinicoExamenes_id", cums_id)  VALUES ' + "'" + str('P') + "'" + ',cantidad ,0, now(),' + "'" + str('A') + "','"  + str(autorizacionId) + "','" + str(usuarioRegistra)  + "'," +   codigoCupsId[0].id
+
+                            curt.execute(comando)
+
+                            miConexiont.close()
 
 
+
+                            # Fin tema Autorizaciones
 
 
                         if convenioValor != []:
@@ -744,6 +774,74 @@ def crearHistoriaClinica(request):
 
                         miConexiont.close()
 
+                        # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
+
+                        print("el cups :", cups)
+                        print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
+
+                        if (autorizacion.requiereAutorizacion == 'S'):
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'SELECT id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
+                                tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
+                                documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
+                                ingresoPaciente) + "'"
+
+                            curt.execute(comando)
+                            hayAut = []
+
+                            for id in curt.fetchall():
+                                hayAut.append({'id': id})
+
+                            miConexiont.close()
+
+                            if (hayAut[0]) != '':
+
+                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                               user="postgres", password="123456")
+
+                                curt = miConexiont.cursor()
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(
+                                    'P') + "'" + ', now(), now() ' + "'" + str(
+                                    'A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId) + "','" + str(
+                                    sede) + "','" + str(
+                                    usuarioRegistro) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" + str(
+                                    tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(
+                                    documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(
+                                    ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" + str(
+                                    codigoCupsId[0].id) + "'"
+
+                                curt.execute(comando)
+
+                                miConexiont.close()
+
+                                autorizacionIdU = Autorizaciones.objects.all().filter(
+                                    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                autorizacionId = (autorizacionIdU['maximo']) + 0
+
+                            else:
+
+                                autorizacionId = hayAut[0]['id']
+
+                            print("Autorizacion Final = ", autorizacionId)
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'INSERT INTO autorizaciones_autorizacionesdetalle (autorizado, "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "clinicoExamenes_id", cums_id)  VALUES ' + "'" + str(
+                                'P') + "'" + ',cantidad ,0, now(),' + "'" + str('A') + "','" + str(
+                                autorizacionId) + "','" + str(usuarioRegistra) + "'," + codigoCupsId[0].id
+
+                            curt.execute(comando)
+
+                            miConexiont.close()
+
+                            # Fin tema Autorizaciones
+
                         if convenioValor != []:
 
                             print ("Cups = "  , convenioValor[0]['cups'])
@@ -765,6 +863,7 @@ def crearHistoriaClinica(request):
 
                         else:
                             tarifaValor=0
+
                         TotalTarifa = float(tarifaValor) * float(cantidad)
 
                     # Aqui Rutina FACTURACION crea en liquidaciondetalle el registro con la tarifa, con campo cups y convenio
@@ -840,6 +939,74 @@ def crearHistoriaClinica(request):
                             convenioValor.append({'convenio': convenio, 'cups':cups, 'valor':tarifaValor})
 
                         miConexiont.close()
+
+                        # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
+
+                        print("el cups :", cups)
+                        print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
+
+                        if (autorizacion.requiereAutorizacion == 'S'):
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'SELECT id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
+                                tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
+                                documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
+                                ingresoPaciente) + "'"
+
+                            curt.execute(comando)
+                            hayAut = []
+
+                            for id in curt.fetchall():
+                                hayAut.append({'id': id})
+
+                            miConexiont.close()
+
+                            if (hayAut[0]) != '':
+
+                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                               user="postgres", password="123456")
+
+                                curt = miConexiont.cursor()
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(
+                                    'P') + "'" + ', now(), now() ' + "'" + str(
+                                    'A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId) + "','" + str(
+                                    sede) + "','" + str(
+                                    usuarioRegistro) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" + str(
+                                    tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(
+                                    documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(
+                                    ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" + str(
+                                    codigoCupsId[0].id) + "'"
+
+                                curt.execute(comando)
+
+                                miConexiont.close()
+
+                                autorizacionIdU = Autorizaciones.objects.all().filter(
+                                    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                autorizacionId = (autorizacionIdU['maximo']) + 0
+
+                            else:
+
+                                autorizacionId = hayAut[0]['id']
+
+                            print("Autorizacion Final = ", autorizacionId)
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'INSERT INTO autorizaciones_autorizacionesdetalle (autorizado, "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "clinicoExamenes_id", cums_id)  VALUES ' + "'" + str(
+                                'P') + "'" + ',cantidad ,0, now(),' + "'" + str('A') + "','" + str(
+                                autorizacionId) + "','" + str(usuarioRegistra) + "'," + codigoCupsId[0].id
+
+                            curt.execute(comando)
+
+                            miConexiont.close()
+
+                            # Fin tema Autorizaciones
 
                         if convenioValor != []:
 
@@ -954,7 +1121,75 @@ def crearHistoriaClinica(request):
 
                           TotalTarifa = float(tarifaValor) * float(cantidad)
 
-                      # Aqui Rutina FACTURACION crea en liquidaciondetalle el registro con la tarifa, con campo cups y convenio
+                          # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
+
+                          print("el cups :", cups)
+                          print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
+
+                          if (autorizacion.requiereAutorizacion == 'S'):
+
+                              miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                             user="postgres", password="123456")
+
+                              curt = miConexiont.cursor()
+                              comando = 'SELECT id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
+                                  tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
+                                  documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
+                                  ingresoPaciente) + "'"
+
+                              curt.execute(comando)
+                              hayAut = []
+
+                              for id in curt.fetchall():
+                                  hayAut.append({'id': id})
+
+                              miConexiont.close()
+
+                              if (hayAut[0]) != '':
+
+                                  miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                                 user="postgres", password="123456")
+
+                                  curt = miConexiont.cursor()
+                                  comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(
+                                      'P') + "'" + ', now(), now() ' + "'" + str(
+                                      'A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId) + "','" + str(
+                                      sede) + "','" + str(
+                                      usuarioRegistro) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" + str(
+                                      tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(
+                                      documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(
+                                      ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" + str(
+                                      codigoCupsId[0].id) + "'"
+
+                                  curt.execute(comando)
+
+                                  miConexiont.close()
+
+                                  autorizacionIdU = Autorizaciones.objects.all().filter(
+                                      historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                  autorizacionId = (autorizacionIdU['maximo']) + 0
+
+                              else:
+
+                                  autorizacionId = hayAut[0]['id']
+
+                              print("Autorizacion Final = ", autorizacionId)
+
+                              miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                             user="postgres", password="123456")
+
+                              curt = miConexiont.cursor()
+                              comando = 'INSERT INTO autorizaciones_autorizacionesdetalle (autorizado, "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "clinicoExamenes_id", cums_id)  VALUES ' + "'" + str(
+                                  'P') + "'" + ',cantidad ,0, now(),' + "'" + str('A') + "','" + str(
+                                  autorizacionId) + "','" + str(usuarioRegistra) + "'," + codigoCupsId[0].id
+
+                              curt.execute(comando)
+
+                              miConexiont.close()
+
+                              # Fin tema Autorizaciones
+
+                          # Aqui Rutina FACTURACION crea en liquidaciondetalle el registro con la tarifa, con campo cups y convenio
                       #
                           miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                           curt = miConexiont.cursor()
@@ -1286,6 +1521,73 @@ def crearHistoriaClinica(request):
 
                         miConexiont.close()
 
+                        # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
+
+                        print("el cups :", cups)
+                        print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
+
+                        if (autorizacion.requiereAutorizacion == 'S'):
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'SELECT id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
+                                tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
+                                documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
+                                ingresoPaciente) + "'"
+
+                            curt.execute(comando)
+                            hayAut = []
+
+                            for id in curt.fetchall():
+                                hayAut.append({'id': id})
+
+                            miConexiont.close()
+
+                            if (hayAut[0]) != '':
+
+                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                               user="postgres", password="123456")
+
+                                curt = miConexiont.cursor()
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(
+                                    'P') + "'" + ', now(), now() ' + "'" + str(
+                                    'A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId) + "','" + str(
+                                    sede) + "','" + str(
+                                    usuarioRegistro) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND conv."tipoDoc_id" = ' + "'" + str(
+                                    tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(
+                                    documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(
+                                    ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" + str(medicamentos) + "'"
+
+                                curt.execute(comando)
+
+                                miConexiont.close()
+
+                                autorizacionIdU = Autorizaciones.objects.all().filter(
+                                    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                autorizacionId = (autorizacionIdU['maximo']) + 0
+
+                            else:
+
+                                autorizacionId = hayAut[0]['id']
+
+                            print("Autorizacion Final = ", autorizacionId)
+
+                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                                           user="postgres", password="123456")
+
+                            curt = miConexiont.cursor()
+                            comando = 'INSERT INTO autorizaciones_autorizacionesdetalle (autorizado, "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "clinicoExamenes_id", cums_id)  VALUES ' + "'" + str(
+                                'P') + "'" + ',cantidad ,0, now(),' + "'" + str('A') + "','" + str(
+                                autorizacionId) + "','" + str(usuarioRegistra) + "','" + str(medicamentos) + "'"
+
+                            curt.execute(comando)
+
+                            miConexiont.close()
+
+                            # Fin tema Autorizaciones
+
                         if convenioValor != []:
 
                             print ("Sum = "  , convenioValor[0]['sum'])
@@ -1313,6 +1615,15 @@ def crearHistoriaClinica(request):
                         miConexiont.close()
 
                         consecLiquidacion = int(consecLiquidacion) + 1
+
+
+
+
+
+
+
+
+
 
 
 	            # Fin rutina Facturacion

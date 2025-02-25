@@ -40,12 +40,12 @@ class Autorizaciones(models.Model):
 class AutorizacionesDetalle(models.Model):
 
     id           = models.AutoField(primary_key=True)
-    sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica14')
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento8')
-    hClinica = models.CharField(max_length=20,blank=True,null= True, editable=True,)
-    consec    = models.IntegerField()
-    autorizacionesId = models.ForeignKey('autorizaciones.Autorizaciones',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento88')
+    #sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica14')
+    #tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    #documento = models.ForeignKey('usuarios.Usuarios',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento8')
+    #hClinica = models.CharField(max_length=20,blank=True,null= True, editable=True,)
+    #consec    = models.IntegerField()
+    autorizaciones = models.ForeignKey('autorizaciones.Autorizaciones',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento88')
     #codigoCups =  models.ForeignKey('clinico.TiposExamen',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento888')
     clinicoExamenes =  models.ForeignKey('clinico.Examenes',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Examen809')
     cums =  models.ForeignKey('facturacion.Suministros',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Suminist304')
