@@ -534,7 +534,7 @@ $(document).ready(function () {
  	      		      });
 
 
-		 $('#ldcups').val(data.codigoCups_id);
+		 $('#ldcups').val(data.examen_id);
 		 $('#ldsuministros').val(data.cums_id);
 
             $('#modelHeadingLiquidacionDetalle').html("Edicion Liquidacion");

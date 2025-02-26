@@ -224,9 +224,51 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
             <div class="col">
                 </div>
 
+        </div>
+
+<!-- segunda fila -->
+
+
+        <div class="row row-cols-8 mt-3">
+            <div class="col">
+                </div>
+
+            <div class="col">
+                {{ historiaForm.ordenMedicaLab.label }} Consulta
+                {{ historiaForm.ordenMedicaLab }}
+            </div>
+
+            <div class="col">
+                {{ historiaForm.ordenMedicaRad.label }}
+                {{ historiaForm.ordenMedicaRad }}
+            </div>
+
+            <div class="col">
+                {{ historiaForm.ordenMedicaTer.label }}
+                {{ historiaForm.ordenMedicaTer }}
+            </div>
+
+            <div class="col">
+                {{ historiaForm.ordenMedicaMed.label }}
+                {{ historiaForm.ordenMedicaMed }}
+            </div>
+
+            <div class="col">
+                {{ historiaForm.ordenMedicaOxi.label }}
+                {{ historiaForm.ordenMedicaOxi }}
+            </div>
+      
+            <div class="col">
+                {{ historiaForm.ordenMedicaInt.label }}
+                {{ historiaForm.ordenMedicaInt }}
+            </div>
+
+            <div class="col">
+                </div>
 
         </div>
 
+<!--  fin segunda fila -->
 
     </article>
 
@@ -512,6 +554,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                                            id="BtnAdicionarLaboratorio"> <i
                                                                 class="fa fa-battery-half"></i></a>
                                                     </div>
+						    
                                                 </div>
                                             </center>
                                         </div>
@@ -1691,14 +1734,11 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
             <h3>SalidaClinica</h3></center>
 		
 	   <div class="row">
-                <div class="col-sm-5">
-                 </div>
-
-
-                                                    <div class="col-sm-2">
-
-                                                        <select class="select-css"  id="tiposSalidas"
-                                                                name="tiposSalidas">
+			                <div class="col">
+			                 </div>
+                                                   <div class="col">
+							Tipo salida:
+                                                        <select class="select-css"  id="tiposSalidas"  name="tiposSalidas">
                                                             {% for tiposSalidas in TiposSalidas %}
                                                             <option value="{{tiposSalidas.id}}">
                                                                 {{tiposSalidas.nombre}}
@@ -1706,11 +1746,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                                             {% endfor %}
                                                         </select>
                                                     </div>
-
-					<div class="col-sm-2">
-
-                                                        <select class="select-css"  id="dxComplicacion"
-                                                                name="dxComplicacion">
+						<div class="col">
+								Dx de complicacion:
+                                                        <select class="select-css"  id="dxComplicacion"  name="dxComplicacion">
                                                             {% for dxComplicacion in DxComplicacion %}
                                                             <option value="{{dxComplicacion.id}}">
                                                                 {{dxComplicacion.nombre}}
@@ -1718,17 +1756,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                                             {% endfor %}
                                                         </select>
                                                     </div>
-
-
-                <div class="col-sm-5">
-			<input type="checkbox" id="salClinica" name="salClinica"/>
-                 </div>
-
-
-
-
-
-
+			                <div class="col">
+						<input type="checkbox" id="salClinica" name="salClinica"/>
+			                 </div>
 
 	</div>
 

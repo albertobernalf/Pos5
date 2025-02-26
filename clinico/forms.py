@@ -149,7 +149,12 @@ class historiaForm(forms.ModelForm):
         leucopenia = forms.CharField(max_length=50)
         manejoQx = forms.CharField(max_length=20000)
         mipres = forms.CharField(max_length=30)
-
+        ordenMedicaLab = forms.CharField(max_length=30)
+        ordenMedicaRad = forms.CharField(max_length=30)
+        ordenMedicaTer = forms.CharField(max_length=30)
+        ordenMedicaMed = forms.CharField(max_length=30)
+        ordenMedicaOxi = forms.CharField(max_length=30)
+        ordenMedicaInt = forms.CharField(max_length=30)
         fechaRegistro =  forms.DateTimeField()
         usuarioRegistro = forms.ModelChoiceField(queryset=Usuarios.objects.all())
 

@@ -149,7 +149,7 @@ class Suministros (models.Model):
     AnatoPos = models.CharField(max_length=1, blank=True,null= True, editable=True)
     magistralControl  = models.CharField(max_length=1, blank=True,null= True, editable=True)
     genericoPos = models.CharField(max_length=1, blank=True,null= True, editable=True)
-    requiereAutorizacion = models.CharField(max_length=1,  blank=True, null=True, editable=True)
+    requiereAutorizacion = models.CharField(max_length=1,  blank=True, null=True, editable=True, default='N')
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
@@ -337,7 +337,7 @@ class FacturacionDetalle(models.Model):
     #autorizacion = models.ForeignKey('autorizaciones.Autorizaciones', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='aut03') 
     historiaMedicamento = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='histmed01') 
     #mipres  = models.CharField(max_length=30,  blank=True, null=True, editable=True)
-    codigoCups = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TablaCups121')
+    examen = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TablaCups121')
     #cums = models.ForeignKey('rips.RipsCums', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Cums101')
     cums = models.ForeignKey('facturacion.Suministros', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='Sum102')
     cantidad =  models.DecimalField( max_digits=15, decimal_places=2 , blank=True,null= True, editable=True)

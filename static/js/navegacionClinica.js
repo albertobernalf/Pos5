@@ -1338,6 +1338,14 @@ formHistoriaClinica.addEventListener('submit', e=>{
 	var dxComplicacion =  document.getElementById("dxComplicacion").value;
 	var mipres =  document.getElementById("id_mipres").value;
 
+	var ordenMedicaLab =  document.getElementById("id_ordenMedicaLab").value;
+	var ordenMedicaRad =  document.getElementById("id_ordenMedicaRad").value;
+	var ordenMedicaTer =  document.getElementById("id_ordenMedicaTer").value;
+	var ordenMedicaMed =  document.getElementById("id_ordenMedicaMed").value;
+	var ordenMedicaOxi =  document.getElementById("id_ordenMedicaOxi").value;
+	var ordenMedicaInt =  document.getElementById("id_ordenMedicaInt").value;
+
+
             var form_valido;
 
      
@@ -1409,7 +1417,14 @@ formHistoriaClinica.addEventListener('submit', e=>{
 				'tiposSalidas':tiposSalidas,
 				'dxComplicacion':dxComplicacion,
 				'mipres':mipres	,
-                                'sede':sede
+                                'sede':sede,
+                                'ordenMedicaLab':ordenMedicaLab,
+                                'ordenMedicaRad':ordenMedicaRad,
+                                'ordenMedicaTer':ordenMedicaTer,
+                                'ordenMedicaMed':ordenMedicaMed,
+                                'ordenMedicaOxi':ordenMedicaOxi,
+                                'ordenMedicaInt':ordenMedicaInt
+
 				   },
  	      		success: function (respuesta2) {
  	      		        var data = JSON.parse(respuesta2);
