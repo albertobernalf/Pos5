@@ -1682,7 +1682,7 @@ def crearHistoriaClinica(request):
 
                     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",    password="123456")
                     cur3 = miConexion3.cursor()
-                    comando = 'UPDATE admisiones_ingresos SET "salidaClinica" = ' + "'" + str(salidaClinica) + "'" + ', "dxSalida_id" = ' + "'" + str(diagnosticoIdSalida) + "'" + ', "medicoSalida_id" = ' + "'" + str(plantaId.id) + "'" + ', "especialidadesMedicosSalida_id" = ' + "'" + str(espMedico) + "'" +  ',"serviciosSalida_id" = "serviciosActual_id"  ' + ', "salidaMotivo_id" = ' + "'" + str(tiposSalida) + "' " + ' WHERE "tipoDoc_id" =  ' + "'" + str(tipoDocId.id) + "' and documento_id = " + "'" + str(documentoId.id) + "' AND consec = " + "'" + str(ingresoPaciente) + "'"
+                    comando = 'UPDATE admisiones_ingresos SET "salidaClinica" = ' + "'" + str(salidaClinica) + "'" + ', "dxSalida_id" = ' + "'" + str(diagnosticoIdSalida) + "'" + ', "medicoSalida_id" = ' + "'" + str(plantaId.id) + "'" + ', "especialidadesMedicosSalida_id" = ' + "'" + str(espMedico) + "'" +  ',"serviciosSalida_id" = "serviciosActual_id"  ' + ', "salidaMotivo_id" = ' + "'" + str(tiposSalidas) + "'," + 'dxComplicacion_id" = ' + "'" + str(dxComplicacion) + "'" +  ' WHERE "tipoDoc_id" =  ' + "'" + str(tipoDocId.id) + "' and documento_id = " + "'" + str(documentoId.id) + "' AND consec = " + "'" + str(ingresoPaciente) + "'"
                     print(comando)
                     cur3.execute(comando)
                     miConexion3.commit()
@@ -2301,6 +2301,59 @@ def crearHistoriaClinica(request):
         context['ViasAdministracion'] = viasAdministracion
 
         # Fin combo Vias Administracion
+
+        # Combo TiposSalidas
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        curt = miConexiont.cursor()
+        comando = 'SELECT e.id ,e.nombre FROM clinico_TiposSalidas e'
+        curt.execute(comando)
+        print(comando)
+
+        tiposSalidas = []
+        tiposSalidas.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+             tiposSalidas.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+
+        print(tiposSalidas)
+
+        context['TiposSalidas'] = tiposSalidas
+
+        print ("tiposSalidas =", tiposSalidas)
+
+        # FIN Combo TipopsSalidas
+
+
+
+        # Combo Dx Complicacion
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        curt = miConexiont.cursor()
+        comando = 'SELECT e.id ,e.nombre FROM clinico_Diagnosticos e'
+        curt.execute(comando)
+        print(comando)
+
+        dxComplicacion = []
+        dxComplicacion.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+             dxComplicacion.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+
+        print(dxComplicacion)
+
+        context['DxComplicacion'] = dxComplicacion
+
+        print ("dxComplicacion =", dxComplicacion)
+
+        # FIN Combo Dx Complicacion
+
 
 
         print ("tiposFolio = " ,TiposFolio)

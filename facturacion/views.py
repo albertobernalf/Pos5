@@ -1148,7 +1148,6 @@ def FacturarCuenta(request):
        miConexion3.commit()
        miConexion3.close()
 
-
        ## FIN HISTORICO CAMAA-DEPENDENCIA
 
 
@@ -1213,7 +1212,7 @@ def FacturarCuenta(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO cartera_pagosFacturas ("valorAplicado", "fechaRegistro","estadoReg", "facturaAplicada_id",pago_id) SELECT "valorEnCurso", ' + "'" + str(fechaRegistro) + "','A'," + str(facturacionId.id) + ', "formaPago_id" FROM cartera_pagos WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecutivo) + "'"
+    comando = 'INSERT INTO cartera_pagosFacturas ("valorAplicado", "fechaRegistro","estadoReg", "facturaAplicada_id",pago_id) SELECT "valorEnCurso", ' + "'" + str(fechaRegistro) + "','A'," + str(facturacionId.id) + ', "formaPago_id" FROM cartera_pagos WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id" = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecAdmision) + "'"
 
     print(comando)
     cur3.execute(comando)
@@ -1225,7 +1224,7 @@ def FacturarCuenta(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE cartera_pagos SET "totalAplicado" =  "totalAplicado" + "valorEncurso", saldo  = saldo + "valorEnCurso", "valorEnCurso" = 0 '
+    comando = 'UPDATE cartera_pagos SET "totalAplicado" =  "totalAplicado" + "valorEnCurso", saldo  = saldo + "valorEnCurso", "valorEnCurso" = 0 ' + ' WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id" = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecAdmision) + "'"
 
     print(comando)
     cur3.execute(comando)
