@@ -50,7 +50,7 @@ delete from facturacion_facturacion where id =45
 	select * from facturacion_liquidacion;
 select * from facturacion_liquidaciondetalle;
 select * from sitios_dependencias;
-	
+	 
 
 
 SELECT convIngreso.convenio_id convenio ,sum.suministro_id sum, sum.valor tarifaValor

@@ -495,3 +495,6 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 --       --> ojo en facturacion_facturacion Nomuestra nda ver que pasa --- y seguir hasta facturar la malosa con muchos medicamentos y lab, rad, tera, noqx a ver que pasa conrips
 --> ojo hay que volver a revizar elk modulo de cargue  de tarifas a liquidaciondetalle
 --> ojo verificar d enuevo no me gusta ver la empresa por elos conveios de contratacion, deberia ser por admisiones_ingresos en lel campp empresa_id , cambiar esto VERIFICAR
+
+-- ojo mañana no me libero la cama
+
