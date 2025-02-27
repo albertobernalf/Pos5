@@ -50,8 +50,9 @@ delete from facturacion_facturacion where id =45
 	select * from facturacion_liquidacion;
 select * from facturacion_liquidaciondetalle;
 select * from sitios_dependencias;
+update sitios_dependencias set consec=0,documento_id=null,"tipoDoc_id" =  null, "fechaLiberacion"= null where id =10;
 	 
-
+select * from sitios_historialdependencioas
 
 SELECT convIngreso.convenio_id convenio ,sum.suministro_id sum, sum.valor tarifaValor
 	FROM contratacion_convenios conv ,facturacion_conveniospacienteingresos convIngreso, contratacion_conveniossuministros sum

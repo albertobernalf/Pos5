@@ -36,6 +36,7 @@ from facturacion import views as viewsFacturacion
 from contratacion import views as viewsConvenios
 from rips import views as viewsRips
 from cartera import views as viewsCartera
+from autorizaciones import views as viewsAutorizaciones
 #from mecanicosPacientes import views as viewsmecanicosPacientes
 
 
@@ -218,6 +219,11 @@ urlpatterns = [
     path('load_tablaRipsUsuarios/<str:data>', viewsRips.Load_tablaRipsUsuarios, name='load_tablaRipsUsuarios'),
     path('load_tablaRipsProcedimientos/<str:data>', viewsRips.Load_tablaRipsProcedimientos, name='load_tablaRipsProcedimientos'),
     path('load_tablaRipsHospitalizacion/<str:data>', viewsRips.Load_tablaRipsHospitalizacion, name='load_tablaRipsHospitalizacion'),
+
+
+    # Autorizaciones
+
+    path('load_dataAutorizaciones/<str:data>', viewsAutorizaciones.load_dataAutorizaciones, name='loaddataAutorizaciones'),
 
     # Glosas
 

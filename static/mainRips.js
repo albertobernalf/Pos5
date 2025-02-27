@@ -26,7 +26,7 @@ $(document).ready(function () {
 function initTableEnviosRips(data) {
 
 	return new DataTable('.tablaEnviosRips', {
-
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -84,6 +84,7 @@ function initTableDetalleRipsAdicionar(data) {
 
 
 	return new DataTable('.tablaDetalleRipsAdicionar', {
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -265,6 +266,7 @@ window.addEventListener('load', function() {
 function initTableDetalleRips(data) {
 
 	return new DataTable('.tablaDetalleRips', {
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -472,7 +474,7 @@ function initTableRipsTransaccion(data) {
 
 
 	return new DataTable('.tablaRipsTransaccion', {
-
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -524,7 +526,7 @@ function initTableRipsUsuarios(data) {
 
 
 	return new DataTable('.tablaRipsUsuarios', {
-
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -585,7 +587,7 @@ function initTableRipsProcedimientos(data) {
 
 
 	return new DataTable('.tablaRipsProcedimientos', {
-
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
@@ -658,7 +660,7 @@ function initTableRipsHospitalizacion(data) {
 
 
 	return new DataTable('.tablaRipsHospitalizacion', {
-
+	destroy: true,
 	 "language": {
                   "lengthMenu": "Display _MENU_ registros",
                    "search": "Filtrar registros:",
