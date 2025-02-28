@@ -224,6 +224,9 @@ urlpatterns = [
     # Autorizaciones
 
     path('load_dataAutorizaciones/<str:data>', viewsAutorizaciones.load_dataAutorizaciones, name='loaddataAutorizaciones'),
+    path('load_dataAutorizacionesDetalle/<str:data>', viewsAutorizaciones.load_dataAutorizacionesDetalle, name='loaddataAutorizacionesDetalle'),
+    path('actualizarAutorizacionDetalle/', viewsAutorizaciones.ActualizarAutorizacionDetalle, name='actualizarAutorizacionDetalle'),
+    path('leerDetalleAutorizacion/', viewsAutorizaciones.LeerDetalleAutorizacion,  name='LeerDetalleAutorizacion'),
 
     # Glosas
 

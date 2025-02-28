@@ -256,6 +256,10 @@ div.dataTables_filter input {
         	    <center><h3>Autorizaciones Detalle</h3></center>
 	  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
 
+                                   
+                              
+
+
 
             <!-- INICIO TABLE DE  EL DATATABLE  -->
             <div class="row">
@@ -275,15 +279,13 @@ div.dataTables_filter input {
                                             <tr>    
 						<bold>                                  
                                                 <th>id</th>
-                                                <th>Examen</th>
-                                                <th>Cum </th>
-                                                <th>Autorizacion</th>
-                                                <th>Estado</th>
+                                                <th>TipoExamen</th>
+                                                <th>Examen </th>
                                                 <th>Cantidad Solicitada</th>
                                                 <th>Cantidad Autorizada</th>
                                                 <th>Valor Solicitado</th>
                                                 <th>Valor Autorizado</th>
-                                                <th>UsuarioRegistro</th>
+                                                <th>Autorizado</th>
                                                 <th>Action</th>
 
 						</bold>                                  
@@ -301,7 +303,7 @@ div.dataTables_filter input {
                 </div> <!-- cierra col -->
             </div> <!-- cierra row -->
 
-	   </div> <!-- cierra div -->
+
 
 
 
@@ -319,78 +321,55 @@ div.dataTables_filter input {
                             </div>
                             <form id="postFormAutorizacionesDetalle" name="postFormAutorizacionesDetalle" class="form-horizontal"
                                   novalidate>
-                               
-                               
-                     
-				<div class="row row-cols-13" style="height=1px;">
-		<div class="col">
-
-
+                                                                             
+				<div class="row row-cols-9" style="height=1px;">
+				<div class="col">
+   			   <input type="text" id="autorizacionDetalleId" name="autorizacionDetalleId" value=""  readonly> </input>
                                 </div>
 
 				<div class="col">
-                                    Factura:
-                                    <input type="text" id="numeroFacturaT" name="numeroFacturaT"  readonly></input>
+                                    EstadoAut:
+                                    <input type="text" id="estadoAutorizacion" name="estadoAutorizacion"  ></input>
+                                </div>
+
+
+				<div class="col">
+                                    Autorizacion:
+                                    <input type="text" id="numeroAutorizacion" name="numeroAutorizacion"  ></input>
                                 </div>
 
 				<div class="col">
-                                    Envio:
-                                    <input type="text" id="ripsEnvios" name="ripsEnvios"  readonly></input>
+                                    Examen:
+                                    <input type="text" id="nombreExamen" name="nombreExamen"  readonly></input>
                                 </div>
 
 				<div class="col">
-                                    Cuv:
-                                    <input type="text" id="cuv" name="cuv" value=""  ></input>
+                                    CantidadSolicitada:
+                                    <input type="text" id="cantidadSolicitada" name="cantidadSoclicitada" value=""  readonly></input>
                                 </div>
-                                <div class="col">
-                                    EstadoPasoMinisterio:
-                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" ></input>
-                                </div>
-                          
 				<div class="col">
-                                   RutaJsonFactura:
-                               
-					 <input type="textl" id="rutaJsonFactura" name="rutaJsonFactura"  >
+                                    CantidadAutorizada:
+                                    <input type="text" id="cantidadAutorizada" name="cantidadAutorizada" value=""  ></input>
                                 </div>
 
 				<div class="col">
-                                    RutaJsonRespuesta:
-					 <input type="text" id="rutaJsonRespuesta" name="rutaJsonRespuesta">
+                                    ValorSolicitado:
+                                    <input type="text" id="valorSolicitado" name="valorSolicitado" value="" readonly ></input>
+                                </div>
+				<div class="col">
+                                    valorAutorizado:
+                                    <input type="text" id="valorAutorizado" name="valorAutorizado" value=""  ></input>
                                 </div>
 
            
                                 <div class="col">
                                    
-                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value=""  > </input>
                                 </div>
-
-
-
-                                <div class="col">
-                                    EstadoRegistro:
-                                    <input type="text" id="estadoReg" name="estadoReg"  readonly> </input>
-                                </div>
-
-
-                                <div class="col">
-                                    UsuarioRegistro_id:
-                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
-                                </div>
-
-				<div class="col">
-                                    RutaPdf:
-					 <input type="text" id="rutaPdf" name="rutaPdf">
-                                </div>
-
-				<div class="col">
-                                    RutaZip:
-					 <input type="text" id="rutaZip" name="rutaZip">
-                                </div>
-
 
 
                                 <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="saveBtnCrearDetalleRips"   value="create" onclick="GuardarDetalleRips()">Guardar </button>
+                                    <button type="button" class="btn btn-primary" id="saveBtnActualizarAut"   value="create" onclick="ActualizarAut()">Guardar </button>
                                 </div>
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
@@ -405,7 +384,7 @@ div.dataTables_filter input {
 	<!-- Otra Modal -->
      <!-- FIN Espacio Modales  -->
 
-
+	   </div> <!-- cierra div -->
 </article>
 
 

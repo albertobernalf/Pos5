@@ -3,7 +3,7 @@ select * from autorizaciones_autorizacionesdetalle;
 select * from facturacion_empresas;
 select * from usuarios_usuarios;
 select  * from planta_planta
-
+ 
 select 
  id,"sedesClinica_id","fechaSolicitud",historia_id,justificacion,"numeroAutorizacion","fechaAutorizacion",
 observaciones,"estadoAutorizacion","numeroSolicitud","fechaVigencia",empresa_id,emp.nombre,
@@ -39,3 +39,51 @@ select aut.id,aut."sedesClinica_id",sed.nombre sede,aut2."cantidadSolicitada", a
 FROM autorizaciones_autorizaciones aut, sitios_sedesClinica sed, autorizaciones_autorizacionesdetalle aut2
 where aut.id = aut2.autorizaciones_id    and sed.id = aut."sedesClinica_id" 
         
+-- Autorizaciones detalle
+
+select * from autorizaciones_autorizaciones;
+update autorizaciones_autorizaciones set "estadoAutorizacion" = null;
+update autorizaciones_autorizacionesdetalle set autorizado = null;
+select * from autorizaciones_autorizacionesdetalle;
+select * from facturacion_liquidacion;
+select * from facturacion_liquidaciondetalle;
+select * from facturacion_facturaciondetalle;
+select * from facturacion_tipossuministro;
+select * from facturacion_suministros;
+
+select * from autorizaciones_estadosAutorizacion;
+update autorizaciones_autorizaciones set "estadoAutorizacion_id" = 1;
+update autorizaciones_autorizacionesdetalle set "estadoAutorizacion_id" = 1;
+
+
+select autdet.id id ,tipoexa.nombre tipoExamen,exa.nombre examen,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado", autdet."valorAutorizado",
+	estado.nombre
+from autorizaciones_autorizacionesdetalle autdet,clinico_tiposexamen tipoexa,  clinico_examenes exa, autorizaciones_estadosAutorizacion estado
+where autdet.autorizaciones_id  = 13 and autdet."tiposExamen_id" = tipoexa.id and autdet.examenes_id = exa.id and autdet.examenes_id is not null and estado.id=autdet."estadoAutorizacion_id"    
+union
+select autdet.id id ,tiposum.nombre tiposum,sum.nombre suministro,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado",
+	autdet."valorAutorizado",	estado.nombre
+from autorizaciones_autorizacionesdetalle autdet,facturacion_tipossuministro tiposum,  facturacion_suministros sum , autorizaciones_estadosAutorizacion estado
+where autdet.autorizaciones_id  = 13 and autdet."tipoSuministro_id" = tiposum.id and  autdet.cums_id = sum.id and autdet.cums_id is not null and estado.id=autdet."estadoAutorizacion_id"    ;
+
+
+
+detalle = 'select autdet.id id ,tipoexa.nombre tipoExamen,exa.nombre examen,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado", autdet."valorAutorizado",
+	autdet.autorizado from autorizaciones_autorizacionesdetalle autdet,clinico_tiposexamen tipoexa,  clinico_examenes exa
+where autdet.autorizaciones_id  = 13 and autdet."tiposExamen_id" = tipoexa.id and autdet.examenes_id = exa.id and autdet.examenes_id is not null
+union select autdet.id id ,tiposum.nombre tiposum,sum.nombre suministro,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado", autdet."valorAutorizado",
+	autdet.autorizado from autorizaciones_autorizacionesdetalle autdet,facturacion_tipossuministro tiposum,  facturacion_suministros sum
+where autdet.autorizaciones_id  = 13 and autdet."tipoSuministro_id" = tiposum.id and  autdet.cums_id = sum.id and autdet.cums_id is not null'
+
+
+
+select autdet.id id ,tipoexa.nombre tipoExamen,exa.nombre examen,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado",
+	autdet."valorAutorizado", estado.nombre
+	from autorizaciones_autorizacionesdetalle autdet, clinico_tiposexamen tipoexa, clinico_examenes exa , autorizaciones_estadosAutorizacion estado 
+	where autdet.autorizaciones_id = '8' and autdet."tiposExamen_id" = tipoexa.id and autdet.examenes_id = exa.id and autdet.examenes_id is not null 
+	and estado.id=autdet."estadoAutorizacion_id" union 
+	select autdet.id id, tiposum.nombre tiposum, sum.nombre suministro, autdet."cantidadSolicitada", autdet."cantidadAutorizada", autdet."valorSolicitado",
+	autdet."valorAutorizado" , estado.nombre  
+	from autorizaciones_autorizacionesdetalle autdet, facturacion_tipossuministro tiposum, facturacion_suministros sum , autorizaciones_estadosAutorizacion estado 
+	where autdet.autorizaciones_id = '8' and autdet."tipoSuministro_id" = tiposum.id and autdet.cums_id = sum.id and autdet.cums_id is not null and 
+	estado.id=autdet."estadoAutorizacion_id"

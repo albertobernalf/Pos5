@@ -143,7 +143,7 @@ class Suministros (models.Model):
     sispro = models.CharField(max_length=1, blank=True,null= True, editable=True)
     oncologico = models.CharField(max_length=1, blank=True,null= True, editable=True)
     ortesis = models.CharField(max_length=1, blank=True,null= True, editable=True)
-    mipres = models.CharField(max_length=15, blank=True,null= True, editable=True)
+    #mipres = models.CharField(max_length=15, blank=True,null= True, editable=True)
     epiHigiene = models.CharField(max_length=1, blank=True,null= True, editable=True)
     controlStock = models.CharField(max_length=1, blank=True,null= True, editable=True)
     AnatoPos = models.CharField(max_length=1, blank=True,null= True, editable=True)

@@ -22,7 +22,8 @@ class Autorizaciones(models.Model):
     fechaAutorizacion = models.DateTimeField( editable=True, null=True, blank=True)
     #plantaAutoriza = models.ForeignKey('planta.Planta',blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name ='Planta1')
     observaciones =  models.CharField(max_length=1000,blank=True,null= True, editable=True,)
-    estadoAutorizacion =  models.CharField(max_length=1,blank=True,null= True, editable=True,)
+    #estadoAutorizacion =  models.CharField(max_length=1,blank=True,null= True, editable=True,)
+    estadoAutorizacion = models.ForeignKey('autorizaciones.EstadosAutorizacion',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='estadoAut01')
     fechaModifica = models.DateTimeField( editable=True, null=True, blank=True)
     numeroSolicitud = models.DecimalField(max_digits=6, decimal_places=2 , null=True, blank=True)
     fechaVigencia = models.DateTimeField( editable=True, null=True, blank=True)
@@ -47,9 +48,13 @@ class AutorizacionesDetalle(models.Model):
     #consec    = models.IntegerField()
     autorizaciones = models.ForeignKey('autorizaciones.Autorizaciones',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento88')
     #codigoCups =  models.ForeignKey('clinico.TiposExamen',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento888')
+    numeroAutorizacion=  models.CharField(max_length=5000,blank=True,null= True, editable=True,)
+    tiposExamen = models.ForeignKey('clinico.TiposExamen', default=1, on_delete=models.PROTECT, null=False)
+    tipoSuministro =   models.ForeignKey('facturacion.TiposSuministro', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     examenes =  models.ForeignKey('clinico.Examenes',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Examen809')
     cums =  models.ForeignKey('facturacion.Suministros',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Suminist304')
-    autorizado = models.CharField(max_length=1,blank=True,null= True, editable=True,)
+    #autorizado = models.CharField(max_length=1,blank=True,null= True, editable=True,)
+    estadoAutorizacion = models.ForeignKey('autorizaciones.EstadosAutorizacion',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='estAut02')
     cantidadSolicitada = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     cantidadAutorizada =  models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     valorSolicitado = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
@@ -78,3 +83,13 @@ class AutorizacionesCirugias(models.Model):
 
     def __integer__(self):
         return self.nombre
+
+class EstadosAutorizacion(models.Model):
+      id = models.AutoField(primary_key=True)
+      nombre = models.CharField(max_length=30, null=False)
+      estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+      def __str__(self):
+          return self.nombre
+
+
