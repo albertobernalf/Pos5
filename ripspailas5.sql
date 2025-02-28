@@ -10,7 +10,7 @@ observaciones,"estadoAutorizacion","numeroSolicitud","fechaVigencia",empresa_id,
 "plantaOrdena_id","usuarioRegistro_id"
 FROM autorizaciones_autorizaciones;
 
--- primer
+-- primer 
 
 select aut.id id ,aut."sedesClinica_id" ,sed.nombre sede ,
  usu.nombre paciente,historia_id folio,"fechaSolicitud",aut.justificacion,"numeroAutorizacion","fechaAutorizacion", pla.nombre medico,

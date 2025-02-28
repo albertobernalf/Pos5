@@ -497,4 +497,20 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 --> ojo verificar d enuevo no me gusta ver la empresa por elos conveios de contratacion, deberia ser por admisiones_ingresos en lel campp empresa_id , cambiar esto VERIFICAR
 
 -- ojo mañana no me libero la cama
+-- ojo lunes marzop --> hacer rutina desde autorizacion enviar el detalle de la liquidacion
+       -- verificar comletar con combos ventana modal detalleautorizacon
+
+-- ojo lunes marzo, seguir verificar todop el proceso con RIPS envio ,factura, JSON con datos de paciente de prueba astrid bernal 
+   validaciones, autorizacio, medicamentos, mipres, (6) rips
+
+-- Tiene que entender y maejar los mensajes d eerror d elos datatable dificultan navegacion PAILAS 
+- Comenzar glosas el 10 de marzo
+
+-- OJAZO CUANDO GUARDFE UNA HOSPIATLZIACION y vuine a crear urgencias no me mostro muchos combos
+-- ojazo cuando formula en hisotira clinica debe resetaear los controles de la dosis tiodos toditos
+-- ojazo graves cuando crea dos cabezotes de facturacion_factuarciondetalle
+-- ojazo creo no ayeron las terapias desde hc a la facturacion_liquidaciondetalle
+-- ojazo lunes no se que paso con folio de papa, con fluconazol y terapia. Problema con autorizaiones de medicamento con una terapia junta
+-- ops NO ME MUESTRA NI POR EL CHIRA EN RIPS LA FACTURA QUE ACABO DE HACER DE ASTRID , DE QUE EMPRESA ES ???
+-- OJO YA CREE EL ENVIO DE SURA y borre el duplicadpode la abla rips_ripsdetalle;
 

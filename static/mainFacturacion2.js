@@ -898,75 +898,6 @@ function initTableFacturacion(data) {
 
 	//	}
 
-});  //// AQUI cierra el document.ready
-
-
-function AdicionarLiquidacion()
-{
-
-        var cups = document.getElementById("lcups").value;
-        var suministros = document.getElementById("lsuministros").value;
-        var cantidad = document.getElementById("cantidad").value;
-        var valorUnitario = document.getElementById("valorUnitario").value;
-        var valorTotal = document.getElementById("valorTotal").value;
-        var observaciones = document.getElementById("lobservaciones").value;
-        var username_id = document.getElementById("username_id").value;
-        var tipoRegistro = document.getElementById("tipoRegistro").value;
- 	var liquidacionId = document.getElementById("liquidacionId").value;
-
-
-		$.ajax({
-	           url: '/guardarLiquidacionDetalle/',
-	            data :
-	            {'cups':cups, 'suministros':suministros,'cantidad':cantidad,  'valorUnitario':valorUnitario,
-			'valorTotal':valorTotal,'observaciones':observaciones,
-			    'username_id':username_id, 'liquidacionId':liquidacionId, 'tipoRegistro':tipoRegistro},
-	           type: 'POST',
-	           dataType : 'json',
-	  		success: function (data) {
-
-
-            	        var data2 =  {}   ;
-        		data2['username'] = username;
-    		        data2['sedeSeleccionada'] = sedeSeleccionada;
-	    	        data2['nombreSede'] = nombreSede;
-		        data2['sede'] = sede;
-
-	                var username_id = document.getElementById("username_id").value;
-  	                data2['username_id'] = username_id;
-                //        alert("numero de la liquidacionId = " + liquidacionId);
-
-		        data2['valor'] = liquidacionId;
-			data2['liquidacionId'] = liquidacionId;
-		        data2 = JSON.stringify(data2);
-
-		   // tableF= $("#tablaLiquidacionDetalle").dataTable().fnDestroy();
-		//	alert ("ya la destrui");
-
-         	  var tableL = $('#tablaLiquidacionDetalle').DataTable();
-	          tableL.ajax.reload();
-
-			LeerTotales();
-
-		 document.getElementById("lcups").value = '';
-	         document.getElementById("lsuministros").value = '';
-	         document.getElementById("cantidad").value = '';
-	         document.getElementById("valorUnitario").value = '';
-	         document.getElementById("valorTotal").value = '';
-	         document.getElementById("lobservaciones").value = '';
-
-
-
-			$("#mensajes").html(data.message);
-
-                  },
-	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
-	     });
-}
-
-
 function AFacturar()
 {
 
@@ -1037,6 +968,79 @@ function AFacturar()
 
 			    location.reload();
 			}
+
+
+			$("#mensajes").html(data.message);
+
+                  },
+	   		    error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+	     });
+}
+
+
+
+
+
+
+});  //// AQUI cierra el document.ready
+
+
+function AdicionarLiquidacion()
+{
+
+        var cups = document.getElementById("lcups").value;
+        var suministros = document.getElementById("lsuministros").value;
+        var cantidad = document.getElementById("cantidad").value;
+        var valorUnitario = document.getElementById("valorUnitario").value;
+        var valorTotal = document.getElementById("valorTotal").value;
+        var observaciones = document.getElementById("lobservaciones").value;
+        var username_id = document.getElementById("username_id").value;
+        var tipoRegistro = document.getElementById("tipoRegistro").value;
+ 	var liquidacionId = document.getElementById("liquidacionId").value;
+
+
+		$.ajax({
+	           url: '/guardarLiquidacionDetalle/',
+	            data :
+	            {'cups':cups, 'suministros':suministros,'cantidad':cantidad,  'valorUnitario':valorUnitario,
+			'valorTotal':valorTotal,'observaciones':observaciones,
+			    'username_id':username_id, 'liquidacionId':liquidacionId, 'tipoRegistro':tipoRegistro},
+	           type: 'POST',
+	           dataType : 'json',
+	  		success: function (data) {
+
+
+            	        var data2 =  {}   ;
+        		data2['username'] = username;
+    		        data2['sedeSeleccionada'] = sedeSeleccionada;
+	    	        data2['nombreSede'] = nombreSede;
+		        data2['sede'] = sede;
+
+	                var username_id = document.getElementById("username_id").value;
+  	                data2['username_id'] = username_id;
+                //        alert("numero de la liquidacionId = " + liquidacionId);
+
+		        data2['valor'] = liquidacionId;
+			data2['liquidacionId'] = liquidacionId;
+		        data2 = JSON.stringify(data2);
+
+		   // tableF= $("#tablaLiquidacionDetalle").dataTable().fnDestroy();
+		//	alert ("ya la destrui");
+
+         	  var tableL = $('#tablaLiquidacionDetalle').DataTable();
+	          tableL.ajax.reload();
+
+			LeerTotales();
+
+		 document.getElementById("lcups").value = '';
+	         document.getElementById("lsuministros").value = '';
+	         document.getElementById("cantidad").value = '';
+	         document.getElementById("valorUnitario").value = '';
+	         document.getElementById("valorTotal").value = '';
+	         document.getElementById("lobservaciones").value = '';
+
 
 
 			$("#mensajes").html(data.message);
