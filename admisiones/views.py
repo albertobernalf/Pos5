@@ -1859,12 +1859,8 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         # Fin combo ripsTiposNotas 
 
 
-
-
-
-
         ## FIN CONTEXTO
-        return render(request, "rips/PanelRips.html", context)
+        return render(request, "rips/PanelRipsF.html", context)
 
 
     if (escogeModulo == 'GLOSAS'):

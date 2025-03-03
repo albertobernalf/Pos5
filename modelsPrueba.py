@@ -463,22 +463,17 @@ LINE 1: SELECT med.id id, med.nombre nombre FROM clinico_medicos med...
 
 
 -- LISTO YA TENGO TRES FACTURAS PARA COMENZAR RIPS
--- Mañana seguir con detalle de enviorips
--- Ojo en admisiones se debe colocar elk motivo de la salida o sea en salida clinica combo motivo_salida con tabla motivosSalida buscar PROBAR
--- Ops hay tablas grtandes como facturacion el campo de sede sedesClinica_id donde se hizo error crazo papaberolisismo sedesClinica_id
 
-var table = $('#miTabla').DataTable();  // Inicializa el DataTable
-var primeraFila = table.row(0).node();  // Selecciona la primera fila
 
 // Selecciona el checkbox dentro de la primera fila (suponiendo que está dentro de una celda 'td')
 $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marca el checkbox con jquery
 
 -- creo que tengo erorres en empresa_id en contratacion_convenios, facturacion_facturacion, ripsenvios, verificar
 
--- OJO OJO OJOJJJJ Agregar en las vistas de admsiones ripsTipoUsuario  camos en creacion y adision IMPORTATINSIMO RIPS,, ops la edicion de aDMISIOOES falta todo lo de RIPS 
+
 -- ojooooooo OBLIGAR A GUARDAR MUNICIPIO, LOCALIDAD, PAIS DESDE ADMISIONES, TRIAGE  (Ops estop lo veo bien PROBAR DE NUEVO)
 -- ojo lunes en ripsenvios --> columna estadopasoministerio --> no funciona PENDIENTE, ENVIADFA Y mostrarla en rips, Ver creo en form de admisiones o model de admisiones como se hace eso
--- ojo lune las consulñta de rips mejopr dejarlas tal cual van a ir en el JSON, de tal forma que cuando arme los json va a ser mas sencillo
+
 
 -- OJO CREAR CONTROL que borre si el rips esta creado y volverlo a crear
 -- ojo crear control si ya esta ENVIADO EL RIPS , no dejarlos enviar nuevamente
@@ -490,27 +485,25 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 -- ojo crear proceso rips medicamentos
 -- ojo arreglar query inserta en ripsprocedimeintos dejarlo como el de hospitalizacion sobre tofo en dx
 
-
-
 --       --> ojo en facturacion_facturacion Nomuestra nda ver que pasa --- y seguir hasta facturar la malosa con muchos medicamentos y lab, rad, tera, noqx a ver que pasa conrips
---> ojo hay que volver a revizar elk modulo de cargue  de tarifas a liquidaciondetalle
---> ojo verificar d enuevo no me gusta ver la empresa por elos conveios de contratacion, deberia ser por admisiones_ingresos en lel campp empresa_id , cambiar esto VERIFICAR
+--> ojo hay que volver a revizar eL modulo de cargue  de tarifas a liquidaciondetalle
+--> ojo verificar de nuevo no me gusta ver la empresa por elos conveios de contratacion, deberia ser por admisiones_ingresos en lel campp empresa_id , cambiar esto VERIFICAR
 
 -- ojo mañana no me libero la cama
 -- ojo lunes marzop --> hacer rutina desde autorizacion enviar el detalle de la liquidacion
        -- verificar comletar con combos ventana modal detalleautorizacon
 
 -- ojo lunes marzo, seguir verificar todop el proceso con RIPS envio ,factura, JSON con datos de paciente de prueba astrid bernal 
-   validaciones, autorizacio, medicamentos, mipres, (6) rips
+   validaciones, autorizaciomes, medicamentos, mipres, (6) rips  , HISTORIA CLINICA
 
--- Tiene que entender y maejar los mensajes d eerror d elos datatable dificultan navegacion PAILAS 
-- Comenzar glosas el 10 de marzo
-
--- OJAZO CUANDO GUARDFE UNA HOSPIATLZIACION y vuine a crear urgencias no me mostro muchos combos
+-- OJAZO CUANDO GUARDFE UNA HOSPIATIZACION y vuine a crear urgencias no me mostro muchos combos
 -- ojazo cuando formula en hisotira clinica debe resetaear los controles de la dosis tiodos toditos
 -- ojazo graves cuando crea dos cabezotes de facturacion_factuarciondetalle
--- ojazo creo no ayeron las terapias desde hc a la facturacion_liquidaciondetalle
+-- ojazo creo no cayeron las terapias desde hc a la facturacion_liquidaciondetalle
 -- ojazo lunes no se que paso con folio de papa, con fluconazol y terapia. Problema con autorizaiones de medicamento con una terapia junta
--- ops NO ME MUESTRA NI POR EL CHIRA EN RIPS LA FACTURA QUE ACABO DE HACER DE ASTRID , DE QUE EMPRESA ES ???
--- OJO YA CREE EL ENVIO DE SURA y borre el duplicadpode la abla rips_ripsdetalle;
+-- ops NO ME MUESTRA NI POR EL CHIRAS EN RIPS LA FACTURA QUE ACABO DE HACER DE ASTRID , DE QUE EMPRESA ES ???
 
+-- Marzo 03
+	-- Ojo crear del delete de ripsdetalle
+        --  En facturacion_facturacion no funciona los fiultro de busqueda por fecha o por nro de factyra
+	-- Crear boton modificar envio / Borrar envio
