@@ -80,8 +80,8 @@ select * from autorizaciones_autorizaciones;
 select * from autorizaciones_autorizacionesdetalle;
 DELETE FROM autorizaciones_autorizacionesdetalle where autorizaciones_id >= 16;
 DELETE FROM autorizaciones_autorizaciones where id >= 16;
-delete from clinico_historiaexamenes where historia_id >=619
-	delete from clinico_historia where id >=619
+delete from clinico_historiaexamenes where historia_id >=626
+	delete from clinico_historia where id >=626
 
 
 
@@ -118,6 +118,45 @@ select * from clinico_historia; -- id  622 folio  35 / orden medicaRad 678/ orde
 select * from clinico_historiaexamenes where historia_id = 622; cups : 903402 // M19275
 
 select * from autorizaciones_autorizaciones;  -- creo la aut 19
-select * from autorizaciones_autorizacionesdetalle; --  cums 681
-select * from facturacion_suministros where id = 681; -- sipalprazolam
-select * from clinico_historiamedicamentos  -- 622 hay (2)
+select * from autorizaciones_autorizacionesdetalle; --  cums 681 , NOI DEBERIA IR A LIQUIDACIONDETALLE
+select * from facturacion_suministros where id in ( 681,12945) ; -- -- sipalprazolam
+select * from clinico_historiamedicamentos  -- 622 hay (2) 681 y el 12945
+
+SELECT * from facturacion_liquidacion; -- 118
+SELECT * from facturacion_liquidaciondetalle where liquidacion_id = 120;
+SELECT * from facturacion_liquidaciondetalle where liquidacion_id = 119;
+update facturacion_liquidaciondetalle set liquidacion_id= 119 where liquidacion_id = 118;
+select EMPRESA_ID,* from admisiones_ingresos;
+select * from facturacion_conveniospacienteingresos;
+select * from clinico_historia;
+select * from clinico_historiaexamenes;
+select * from clinico_tiposexamen;
+
+	order by consecutivo
+SELECT * from facturacion_liquidaciondetalle where liquidacion_id = 119;
+
+select * from facturacion_facturacion;
+select * from facturacion_facturaciondetalle where facturacion_id = 47;
+SELECT * from facturacion_liquidaciondetalle where liquidacion_id = 119;
+SELECT * from facturacion_liquidacion where id = 119;
+
+select * from contratacion_conveniossuministros
+	select * from contratacion_convenios
+	select * from facturacion_empresas;
+	
+
+SELECT convIngreso.convenio_id convenio ,sum.suministro_id sum, sum.valor tarifaValor
+	FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniossuministros sum 
+	WHERE convIngreso."tipoDoc_id" = '3' AND convIngreso.documento_id = '24' AND convIngreso."consecAdmision" = '1' AND 
+	convIngreso.convenio_id = sum.convenio_id AND sum.suministro_id = '680'
+
+insert into 	contratacion_conveniossuministros ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, suministro_id, "tipoTarifa_id", 
+	"usuarioRegistro_id", concepto_id) 
+	values ('xxxxx-44',89000,now(),'A',10,680,5,1,6)	
+
+insert into 	contratacion_conveniossuministros ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) values
+('11492-44',85600,now(),'A',10,679,5,1,6)	
+
+select * from rips_ripsenvios;;
+select * from rips_ripsdetalle;
+delete from rips_ripsdetalle where id =50

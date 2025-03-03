@@ -1795,7 +1795,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         ## Aqui contexto para solo Triage
 
         ## FIN CONTEXTO
-        return render(request, "autorizaciones/panelAutorizaciones.html", context)
+        return render(request, "autorizaciones/panelAutorizacionesF.html", context)
 
     if (escogeModulo == 'FACTURACION'):
         print("ENTRE PERMSISO FACTURACION")

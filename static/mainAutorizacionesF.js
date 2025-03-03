@@ -1,0 +1,380 @@
+console.log('Hola Alberto Hi!')
+
+
+let dataTable;
+let dataTableB;
+let dataTableAutorizacionesInitialized = false;
+let dataTableAutorizacionesDetalleInitialized = false;
+
+
+function arrancaAutorizaciones(valorTabla,valorData)
+{
+    data = {}
+    data = valorData;
+
+    if (valorTabla == 1)
+    {
+        let dataTableOptions  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+	    { width: '10%', targets: [2,3] },
+	    { width: '10%', targets: [9,15] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+             btn = btn + " <input type='radio' name='miAutorizacion' class='miAutorizacion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+
+                       return btn;
+                    },
+
+                    "targets": 16
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+
+           ajax: {
+                 url:"/load_dataAutorizaciones/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+                { data: "fields.id"},
+                { data: "fields.sedesClinica_id"},
+
+                { data: "fields.paciente"},
+                { data: "fields.folio"},
+                { data: "fields.fechaSolicitud"},
+
+                { data: "fields.numeroAutorizacion"},
+                { data: "fields.fechaAutorizacion"},
+                { data: "fields.medico"},
+                { data: "fields.observaciones"},
+                { data: "fields.estadoAutorizacion"},
+                { data: "fields.numeroSolicitud"},
+                { data: "fields.fechaVigencia"},
+                { data: "fields.empresa_id"},
+                { data: "fields.empresaNombre"},
+                { data: "fields.plantaOrdena_id"},
+                { data: "fields.usuarioRegistro_id"},
+            ]
+            }
+	        dataTable = $('#tablaAutorizaciones').DataTable(dataTableOptions);
+
+       // 	$('#tablaAutorizaciones tbody tr:eq(0) .miAutorizacion').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
+
+
+
+  }
+
+    if (valorTabla == 2)
+    {
+
+        let dataTableOptionsDetalle  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                      btn = btn + " <button class='miAutorizacionDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                       return btn;
+                    },
+                    "targets": 8
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataAutorizacionesDetalle/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+                { data: "fields.id"},
+                { data: "fields.tipoExamen"},
+                { data: "fields.examen"},
+                { data: "fields.cantidadSolicitada"},
+                { data: "fields.cantidadAutorizada"},
+                { data: "fields.valorSolicitado"},
+                { data: "fields.valorAutorizado"},
+                { data: "fields.autorizado"},
+                     ]
+            }
+
+            if  (dataTableAutorizacionesDetalleInitialized)  {
+
+		            dataTableB = $("#tablaAutorizacionesDetalle").dataTable().fnDestroy();
+
+                    }
+
+                dataTableB = $('#tablaAutorizacionesDetalle').DataTable(dataTableOptionsDetalle);
+
+	            dataTableAutorizacionesDetalleInitialized  = true;
+      }
+
+}
+	
+const initDataTableAutorizaciones = async () => {
+	if  (dataTableAutorizacionesInitialized)  {
+		dataTable.destroy();
+
+}
+
+
+
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+ 	    data = JSON.stringify(data);
+
+    //dataTable = $('#tablaAutorizaciones').DataTable(dataTableOptions);
+        arrancaAutorizaciones(1,data);
+	    dataTableAutorizacionesInitialized = true;
+}
+
+
+ // COMIENZA ONLOAD
+
+window.addEventListener('load', async () => {
+    await  initDataTableAutorizaciones();
+	 $('#tablaAutorizaciones tbody tr:eq(0) .miAutorizacion').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
+
+
+});
+
+
+ /* FIN ONLOAD */
+
+
+
+ $('#tablaAutorizaciones tbody').on('click', '.miAutorizacion', function() {
+
+        var post_id = $(this).data('pk');
+        var autorizacionId = post_id;
+	    var row = $(this).closest('tr'); // Encuentra la fila
+
+	    var data =  {}   ;
+	    var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+        var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+        data['autorizacionId'] = autorizacionId;
+    	data = JSON.stringify(data);
+
+        arrancaAutorizaciones(2,data);
+
+
+  });
+
+
+ $('#tablaAutorizacionesDetalle tbody').on('click', '.miAutorizacionDetalle', function() {
+
+        var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
+
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+
+	 document.getElementById("autorizacionDetalleId").value = post_id;
+
+
+	var autorizacionDetalleId = post_id; 
+
+	$.ajax({
+
+	        url: "/leerDetalleAutorizacion/",
+                data: {'autorizacionDetalleId':autorizacionDetalleId},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+
+
+ 				$('#estadoAutorizacion').val(info[0].fields.estadoAutorizacion_id);
+				
+  		        	$('#numeroAutorizacion').val(info[0].fields.numeroAutorizacion);
+        	       	$('#nombreExamen').val(info[0].fields.examenes_id);
+	                $('#cantidadSolicitada').val(info[0].fields.cantidadSolicitada);
+	                $('#cantidadAutorizada').val(info[0].fields.cantidadAutorizada);
+	                $('#valorSolicitado').val(info[0].fields.valorSolicitado);
+	                $('#valorAutorizado').val(info[0].fields.valorAutorizado);
+	                $('#fechaRegistro').val(info[0].fields.fechaRegistro);
+
+
+
+	        var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+
+	        data = JSON.stringify(data);
+
+
+         	   $('#modelHeadingAutorizacionesDetalle').html("Detalle Autorizaciones");
+ 		 $('#crearModelAutorizacionesDetalle').modal('show');
+
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+  });
+
+
+
+function ActualizarAut()
+{
+
+
+
+            $.ajax({
+                data: $('#postFormAutorizacionesDetalle').serialize(),
+	        url: "/actualizarAutorizacionDetalle/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		   $("#mensajes").html(data2.message);
+                  $('#postFormAutorizacionesDetalle').trigger("reset");
+
+		var data =  {}   ;
+	        data['username'] = username;
+	       	data['sedeSeleccionada'] = sedeSeleccionada;
+	       	data['nombreSede'] = nombreSede;
+	      	data['sede'] = sede;
+	        data['username_id'] = username_id;
+       		data = JSON.stringify(data);
+	
+		  var tableA = $('#tablaAutorizacionesDetalle').DataTable();
+	          tableA.ajax.reload();
+
+ 		 $('#crearModelAutorizacionesDetalle').modal('hide');
+                },
+            error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+}
+
+
+
+
+function CerrarModalJson()
+{
+
+            $('#crearModelRipsJson').modal('hide');
+}

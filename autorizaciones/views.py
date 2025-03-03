@@ -230,7 +230,7 @@ def ActualizarAutorizacionDetalle(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'UPDATE autorizaciones_autorizacionesdetalle SET  "estadoAutorizacion_id" =   ' + "'" + str(estadoAutorizacion) + "'," + ' "numeroAutorizacion" = '   + "'" + str(numeroAutorizacion) + "'," + ' "valorAutorizado" = ' + "'" + str(valorAutorizado) + "'," +   ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"  + ' "cantidadAutorizada" = ' + "'" + str(catidadAutorizada) +  ' WHERE id = ' + "'" + str(autorizacionDetalleId) + "'"
+    detalle = 'UPDATE autorizaciones_autorizacionesdetalle SET  "estadoAutorizacion_id" =   ' + "'" + str(estadoAutorizacion) + "'," + ' "numeroAutorizacion" = '   + "'" + str(numeroAutorizacion) + "'," + ' "valorAutorizado" = ' + "'" + str(valorAutorizado) + "'," +   ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"  + ' "cantidadAutorizada" = ' + "'" + str(cantidadAutorizada) +  "'" +  ' WHERE id = ' + "'" + str(autorizacionDetalleId) + "'"
 
     print("detalle = ", detalle)
 
