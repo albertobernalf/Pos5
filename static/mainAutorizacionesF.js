@@ -152,7 +152,7 @@ function arrancaAutorizaciones(valorTabla,valorData)
                       btn = btn + " <button class='miAutorizacionDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
                        return btn;
                     },
-                    "targets": 8
+                    "targets": 9
                }
             ],
 	 pageLength: 3,
@@ -182,6 +182,7 @@ function arrancaAutorizaciones(valorTabla,valorData)
             columns: [
                 { data: "fields.id"},
                 { data: "fields.tipoExamen"},
+                { data: "fields.examenId"},
                 { data: "fields.examen"},
                 { data: "fields.cantidadSolicitada"},
                 { data: "fields.cantidadAutorizada"},
@@ -225,7 +226,6 @@ const initDataTableAutorizaciones = async () => {
         data['username_id'] = username_id;
  	    data = JSON.stringify(data);
 
-    //dataTable = $('#tablaAutorizaciones').DataTable(dataTableOptions);
         arrancaAutorizaciones(1,data);
 	    dataTableAutorizacionesInitialized = true;
 }
@@ -357,8 +357,11 @@ function ActualizarAut()
 	        data['username_id'] = username_id;
        		data = JSON.stringify(data);
 	
-		  var tableA = $('#tablaAutorizacionesDetalle').DataTable();
-	          tableA.ajax.reload();
+
+        arrancaAutorizaciones(1,data);
+	    dataTableAutorizacionesInitialized = true;
+
+
 
  		 $('#crearModelAutorizacionesDetalle').modal('hide');
                 },

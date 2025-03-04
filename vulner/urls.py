@@ -212,6 +212,7 @@ urlpatterns = [
     path('load_dataDetalleRipsAdicionar/<str:data>', viewsRips.load_dataDetalleRipsAdicionar, name='loaddataDetalleRipsAdicionar'),
     path('traeDetalleRips/', viewsRips.TraeDetalleRips, name='TraeDetalleRips'),
     path('traerJsonRips/', viewsRips.TraerJsonRips, name='TraerJsonRips'),
+    path('borrarDetalleRips/', viewsRips.BorrarDetalleRips, name='borrarDetalleRips'),
 
     path('generarJsonRips/', viewsRips.GenerarJsonRips, name='generarJsonRips'),
     path('enviarJsonRips/', viewsRips.EnviarJsonRips, name='enviarJsonRips'),

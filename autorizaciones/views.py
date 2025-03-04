@@ -138,6 +138,9 @@ def load_dataAutorizacionesDetalle(request, data):
     autorizacionId = d['autorizacionId']
     print("autorizacionId:", autorizacionId)
 
+
+
+
     # Combo Indicadores
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -173,16 +176,16 @@ def load_dataAutorizacionesDetalle(request, data):
     curx = miConexionx.cursor()
 
 
-    detalle = 'select autdet.id id ,tipoexa.nombre tipoExamen,exa.nombre examen,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado", autdet."valorAutorizado", estado.nombre autorizado from autorizaciones_autorizacionesdetalle autdet, clinico_tiposexamen tipoexa, clinico_examenes exa , autorizaciones_estadosAutorizacion estado where autdet.autorizaciones_id = ' + "'" + str(autorizacionId) + "'" + ' and autdet."tiposExamen_id" = tipoexa.id and autdet.examenes_id = exa.id and autdet.examenes_id is not null and estado.id=autdet."estadoAutorizacion_id" union select autdet.id id, tiposum.nombre tiposum, sum.nombre suministro, autdet."cantidadSolicitada", autdet."cantidadAutorizada", autdet."valorSolicitado", autdet."valorAutorizado" , estado.nombre  from autorizaciones_autorizacionesdetalle autdet, facturacion_tipossuministro tiposum, facturacion_suministros sum , autorizaciones_estadosAutorizacion estado where autdet.autorizaciones_id = ' + "'" + str(autorizacionId) + "'" + ' and autdet."tipoSuministro_id" = tiposum.id and autdet.cums_id = sum.id and autdet.cums_id is not null and estado.id=autdet."estadoAutorizacion_id" '
+    detalle = 'select autdet.id id ,tipoexa.nombre tipoExamen,autdet.examenes_id examenId, exa.nombre examen,autdet."cantidadSolicitada", autdet."cantidadAutorizada",autdet."valorSolicitado", autdet."valorAutorizado", estado.nombre autorizado from autorizaciones_autorizacionesdetalle autdet, clinico_tiposexamen tipoexa, clinico_examenes exa , autorizaciones_estadosAutorizacion estado where autdet.autorizaciones_id = ' + "'" + str(autorizacionId) + "'" + ' and autdet."tiposExamen_id" = tipoexa.id and autdet.examenes_id = exa.id and autdet.examenes_id is not null and estado.id=autdet."estadoAutorizacion_id" union select autdet.id id, tiposum.nombre tiposum, autdet.cums_id examenId, sum.nombre suministro, autdet."cantidadSolicitada", autdet."cantidadAutorizada", autdet."valorSolicitado", autdet."valorAutorizado" , estado.nombre  from autorizaciones_autorizacionesdetalle autdet, facturacion_tipossuministro tiposum, facturacion_suministros sum , autorizaciones_estadosAutorizacion estado where autdet.autorizaciones_id = ' + "'" + str(autorizacionId) + "'" + ' and autdet."tipoSuministro_id" = tiposum.id and autdet.cums_id = sum.id and autdet.cums_id is not null and estado.id=autdet."estadoAutorizacion_id" '
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id , tipoExamen, examen,cantidadSolicitada, cantidadAutorizada, valorSolicitado,valorAutorizado,autorizado in curx.fetchall():
+    for id , tipoExamen, examenId, examen,cantidadSolicitada, cantidadAutorizada, valorSolicitado,valorAutorizado,autorizado in curx.fetchall():
         autorizacionesDetalle.append(
             {"model": "autorizaciones_autorizacionesDetalle", "pk": id, "fields":
-                {'id': id, 'tipoExamen': tipoExamen, 'examen': examen,'cantidadSolicitada': cantidadSolicitada,'cantidadAutorizada': cantidadAutorizada,'valorSolicitado': valorSolicitado,'valorAutorizado':valorAutorizado,
+                {'id': id, 'tipoExamen': tipoExamen, 'examenId':examenId,'examen': examen,'cantidadSolicitada': cantidadSolicitada,'cantidadAutorizada': cantidadAutorizada,'valorSolicitado': valorSolicitado,'valorAutorizado':valorAutorizado,
                  'autorizado':autorizado}})
     miConexionx.close()
     print("autorizacionesDetalle "  , autorizacionesDetalle)
@@ -196,8 +199,6 @@ def ActualizarAutorizacionDetalle(request):
 
     print ("Entre ActualizarAutorizacionDetalle" )
 
-
-
     autorizacionDetalleId = request.POST['autorizacionDetalleId']
     print("autorizacionDetalleId =", autorizacionDetalleId)
 
@@ -207,6 +208,11 @@ def ActualizarAutorizacionDetalle(request):
     numeroAutorizacion = request.POST['numeroAutorizacion']
     print("numeroAutorizacion =", numeroAutorizacion)
 
+    examenId =request.POST['examenId']
+    print("examenId:", examenId)
+
+    tipoExamen = request.POST['tipoExamen']
+    print("tipoExamen:", tipoExamen)
 
 
     cantidadAutorizada = request.POST['cantidadAutorizada']
@@ -221,7 +227,6 @@ def ActualizarAutorizacionDetalle(request):
 
     fechaRegistro = dnow
     print("fechaRegistro = ", fechaRegistro)
-
 
 
     # ACTUALIZA DETALLE AUTORIZACION
@@ -240,51 +245,80 @@ def ActualizarAutorizacionDetalle(request):
 
     # RUTINA SI ESTA AUTORIZADO DEBE CREAR EN FACTURACONDETALLE, OPS CON TARIFA ?????? o el valor lo trae de la autoprizacion mejor
 
+    datosAut = Autorizaciones.objects.get(id=numeroAutorizacion)
+    print ("Historia = ", datosAut.historia_id)		
 
-    # Aqui crear rutina consigue CABEZOTE DE facturacion_liquidacion, para colocar el valor
+    datosHc = Historia.objects.get(id=datosAut.historia_id)
+    print ("Paciente = ", datosHc.tipoDoc.id)		
+    print ("Paciente Cedula= ", datosHc.documento_id)
+    print ("Paciente Ingreso= ", datosHc.consecAdmision)
 
-    # Aqui RUTINA busca consecutivo de liquidacion
-
-    #miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-    #                               password="123456")
-    #curt = miConexiont.cursor()
-
-    #comando = 'SELECT (max(p.consecutivo) + 1) cons FROM facturacion_liquidaciondetalle p WHERE liquidacion_id = ' + liquidacionId
-
-    #curt.execute(comando)
-
-    #print(comando)
-
-    #consecLiquidacion = []
-
-    #for cons in curt.fetchall():
-    #    consecLiquidacion.append({'cons': cons})
-
-    #miConexiont.close()
-    #print("consecLiquidacion = ", consecLiquidacion[0])
-
-    #consecLiquidacion = consecLiquidacion[0]['cons']
-    #consecLiquidacion = str(consecLiquidacion)
-    #print("consecLiquidacion = ", consecLiquidacion)
-
-    #consecLiquidacion = consecLiquidacion.replace("(", ' ')
-    #consecLiquidacion = consecLiquidacion.replace(")", ' ')
-    #consecLiquidacion = consecLiquidacion.replace(",", ' ')
+    datosliq = Liquidacion.objects.get(tipoDoc_id =datosHc.tipoDoc.id, documento_id = datosHc.documento_id, consecAdmision= datosHc.consecAdmision)
 
 
 
 
-    #miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-     #                              password="123456")
-    #curt = miConexiont.cursor()
-    ##comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro") VALUES (' + "'" + str(
-    #    consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str(cantidad) + "','" + str(
-    #    tarifaValor) + "','" + str(TotalTarifa) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(
-    #    fechaRegistro) + "','" + str(estadoReg) + "','" + str(codigoCupsId[0].id) + "','" + str(
-    #    usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA')"
-    #curt.execute(comando)
-    #miConexiont.commit()
-    #miConexiont.close()
+  
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = 'SELECT (max(p.consecutivo) + 1) cons FROM facturacion_liquidaciondetalle p WHERE liquidacion_id = ' + datosliq.id
+
+    curt.execute(comando)
+
+    print(comando)
+
+    consecLiquidacion = []
+
+    for cons in curt.fetchall():
+        consecLiquidacion.append({'cons': cons})
+
+    miConexiont.close()
+    print("consecLiquidacion = ", consecLiquidacion[0])
+
+    consecLiquidacion = consecLiquidacion[0]['cons']
+    consecLiquidacion = str(consecLiquidacion)
+    print("consecLiquidacion = ", consecLiquidacion)
+
+    consecLiquidacion = consecLiquidacion.replace("(", ' ')
+    consecLiquidacion = consecLiquidacion.replace(")", ' ')
+    consecLiquidacion = consecLiquidacion.replace(",", ' ')
+
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                  password="123456")
+    curt = miConexiont.cursor()
+
+    if (tipoExamen != ''):
+    
+    ## Crear rutina para conseguir el id de historiaMedicamentosId
+
+	    datosMed = HistoriaMedicamentos.objects.get(historia_id=datosAut.historia_id)
+	    print ("El id de Medicamento es = ", datosMed.id)	
+
+
+    if (tipoExamen != ''):
+	
+	    comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro") VALUES (' + "'" + str(
+	        consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str(cantidadAutorizada) + "','" + str(
+        	valorAutorizado) + "','" + str(valorAutorizado) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(
+	        fechaRegistro) + "','" + str(estadoReg) + "','" + str(examenId) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA')"
+    else:
+
+
+
+
+	    comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "cums_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro","historiaMedicamento_id") VALUES (' + "'" + str(
+	        consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str(cantidadAutorizada) + "','" + str(
+        	valorAutorizado) + "','" + str(valorAutorizado) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(
+	        fechaRegistro) + "','" + str(estadoReg) + "','" + str(examenId) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(datosMed.id) + "')"
+
+
+    curt.execute(comando)
+    miConexiont.commit()
+    miConexiont.close()
 
     # FIN FACTURACIONDETALLE
 
@@ -296,6 +330,7 @@ def LeerDetalleAutorizacion(request):
 
     autorizacionDetalleId = request.POST['autorizacionDetalleId']
     print("autorizacionDetalleId =", autorizacionDetalleId)
+
 
 
     #Lee detalle Autorizacion

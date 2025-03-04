@@ -248,7 +248,7 @@ function arrancaEnviosRips(valorTabla,valorData)
                         var btn = '';
 			      btn = btn + " <button class='miDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
                  	      btn = btn + " <button class='miJson btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
-
+                 	      btn = btn + " <button class='miBorrar btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
 
                        return btn;
                     },
@@ -906,10 +906,6 @@ window.addEventListener('load', async () => {
 
             $('#postFormRipsDetalle').trigger("reset");
 
-
-
-
-
   	
  				$('#detalleRipsId').val(detalleRipsId);
 				
@@ -939,6 +935,71 @@ window.addEventListener('load', async () => {
 
 
   });
+
+
+/* ---------------------------------
+Para borrar detalle rips
+------------------------------------*/
+
+
+$('#tablaDetalleRips tbody').on('click', '.miBorrar', function() {
+
+	     var post_id = $(this).data('pk');
+
+        var envioDetalleRipsId = post_id;
+	var envioRipsId = document.getElementById("envioRipsId").value ;
+	var empresaId = document.getElementById("empresaId").value ;
+
+
+      
+	$.ajax({
+
+	        url: "/borrarDetalleRips/",
+                data: {'envioDetalleRipsId':envioDetalleRipsId},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+		    $("#mensajes").html(info");
+
+		  var data =  {}   ;
+		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+
+
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+		data['envioRipsId'] = envioRipsId;
+		data['envioDetalleRipsId'] = envioDetalleRipsId;
+	        data = JSON.stringify(data);
+
+  	
+	 		  arrancaEnviosRips(2,data);
+  			dataTableDetalleRipsAdicionarInitialized  = true;
+			   arrancaEnviosRips(3,data);
+  			dataTableDetalleRipsInitialized  = true;
+			   arrancaEnviosRips(4,data);
+				
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+      
+  });
+
+
+
+
+/*----------------------------------------
+--------------------------------------------/
 
 
  $('#tablaDetalleRips tbody').on('click', '.miJson', function() {

@@ -34,7 +34,8 @@ class RipsEnvios (models.Model):
     cantidadFacturas = models.CharField(max_length=5, blank=True,null= True, editable=True)
     cantidadPasaron = models.CharField(max_length=5, blank=True,null= True, editable=True)
     cantidadRechazadas = models.CharField(max_length=5, blank=True,null= True, editable=True)
-    estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False ,  default='PENDIENTE')
+    #estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False ,  default='PENDIENTE')
+    ripsEstados = models.ForeignKey('rips.RipsEstados', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'RipsEstados02')
     usuarioEnvia = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='planta145')
     usuarioGeneraJson = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='planta146')
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -59,6 +60,7 @@ class RipsDetalle (models.Model):
     numeroFactura  =  models.ForeignKey('facturacion.Facturacion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     cuv  =  models.CharField(max_length=500, blank=True,null= True, editable=True)
     estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False , choices = TIPO_CHOICES1, default=Enviada)
+    ripsEstados = models.ForeignKey('rips.RipsEstados', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'RipsEtados01')
     estado = models.CharField(max_length=20, blank=True,null= True, editable=True)
     rutaJsonFactura = models.CharField(max_length=5000, blank=True,null= True, editable=True)
     rutaJsonRespuesta = models.CharField(max_length=5000, blank=True,null= True, editable=True)
@@ -94,6 +96,16 @@ class RipsTipoUsuario (models.Model):
 
    def __str__(self):
         return self.nombre
+
+
+class RipsEstados (models.Model):
+
+   id = models.AutoField(primary_key=True)
+   nombre =   models.CharField(max_length=80, blank=True,null= True, editable=True)
+
+   def __str__(self):
+        return self.nombre
+
 
 class RipsPaises (models.Model):
 

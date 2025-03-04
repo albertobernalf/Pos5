@@ -460,6 +460,16 @@ def GenerarJsonRips(request):
 
     #Rutinas subir a tablas de rips todos la INFO MINISTERIO JSON RIPS
 
+    # Verificar si esta enviada con lo cual no generaria nuevos rips
+
+    enviadoRips = RipsEnvios.objects.get(id=envioRipsId)
+    print ("enviadoRips = ", enviadoRips.ripsEstados)	
+
+
+    if (ripsEstados=='1'):
+
+	    return JsonResponse({'success': True, 'message': 'No es posible generar RIPS enviados!'})
+
 
 
     # Primero Borra RIPS USUARIOS
@@ -530,13 +540,14 @@ def GenerarJsonRips(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    if (tipoRips == 'FACTURA'):
+    if (tipoRips == 'Factura'):
 
-        detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado","numFactura",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, 0, now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e  where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id '
+        detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado","numFactura",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, 0, now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e  , cartera_tiposnotas tipnot where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id  AND tipnot.nombre = ' + "'" + str('Factura') + "'"
 
-    else:
+    if (tipoRips == 'Nota Credito'):
 
-        detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado","numFactura",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, 0, glo.id,  now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, cartera_glosas glo fac, rips_ripsEnvios e  where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id '
+        #detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado","numFactura",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, 0, 'numero de glosa', now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e  , cartera_tiposnotas tipnot where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id  AND tipnot.nombre = ' + "'" + str('Nota Credito') + "'"
+        pass
 
     resultado = curx.execute(detalle)
 
@@ -551,6 +562,8 @@ def GenerarJsonRips(request):
 
     # RIPS USUARIOS
 
+    ## OJO FALTA CREAR LA RUTINA SI TIENE O NO INCAPACIDAD
+    ## HACER UN QUERY POR APARTE
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
@@ -936,3 +949,23 @@ def TraerJsonRips(request):
     serialized1 = json.dumps(jsonRips, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+def BorrarDetalleRips(request):
+
+    print ("Entre BorrarDetalleRips" )
+
+    envioDetalleRipsId = request.POST["envioDetalleRipsId"]
+    print ("el envioDetalleRipsId es = ", envioDetalleRipsId)
+
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'DELETE FROM rips_ripsdetalle WHERE id = '  + "'" + str(envioDetalleRipsId) + "'"
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Detalle de Rips eliminado !'})

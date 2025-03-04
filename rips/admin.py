@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from rips.models import RipsEnvios, RipsDetalle, RipsTransaccion, RipsTipoUsuario, RipsPaises, RipsUsuarios, RipsGrupoServicios, RipsModalidadAtencion, RipsServicios, RipsCausaExterna, RipsConceptoRecaudo, RipsTiposDocumento, RipsConsultas, RipsViasIngresoSalud, RipsProcedimientos, RipsDestinoEgreso, RipsUrgenciasObservacion
-from rips.models import RipsTipoOtrosServicios,  RipsHospitalizacion, RipsRecienNacido, RipsTipoMedicamento, RipsCums, RipsUmm, RipsFormaFarmaceutica, RipsUnidadUpr, RipsMedicamentos, RipsOtrosServicios, RipsFinalidadConsulta, RipsDci, RipsTipos, RipsTiposNotas, RipsTiposPagoModerador
+from rips.models import RipsTipoOtrosServicios,  RipsHospitalizacion, RipsRecienNacido, RipsTipoMedicamento, RipsCums, RipsUmm, RipsFormaFarmaceutica, RipsUnidadUpr, RipsMedicamentos, RipsOtrosServicios, RipsFinalidadConsulta, RipsDci, RipsTipos, RipsTiposNotas, RipsTiposPagoModerador, RipsEstados
 
 
 @admin.register(RipsTipos)
@@ -246,4 +246,9 @@ class ripsTiposPagoModeradorAdmin(admin.ModelAdmin):
    # Filtrar
    list_filter = ("id",  "codigo", "nombre","codigoAplicativo")
 
-
+@admin.register(RipsEstados)
+class ripsEstadosAdmin(admin.ModelAdmin):
+   list_display = ("id", "nombre")
+   search_fields =   ("id", "nombre")
+   # Filtrar
+   list_filter = ("id",  "nombre")
