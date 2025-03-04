@@ -6,6 +6,7 @@ let dataTableC;
 let dataTableD;
 let dataTableF;
 let dataTableG;
+let dataTableH;
 
 let dataTableEnviosRipsInitialized = false;
 let dataTableEnviosRipsDetalleInitialized = false;
@@ -15,6 +16,7 @@ let dataTableRipsTransaccionInitialized = false;
 let dataTableRipsUsuariosInitialized = false;
 let dataTableRipsProcedimientosInitialized = false;
 let dataTableRipsHospitalizacionInitialized = false;
+let dataTableRipsMediamentosInitialized = false;
 
 //
 
@@ -709,10 +711,6 @@ function arrancaEnviosRips(valorTabla,valorData)
                 { data: "fields.ripsDetalle_id_id"},
                 { data: "fields.ripsTiposNotas_id"},
 
-
-
-
-
                      ]
             }
 
@@ -727,6 +725,120 @@ function arrancaEnviosRips(valorTabla,valorData)
 	            dataTableRipsHospitalizacionInitialized  = true;
       }
 
+
+
+// la ocho
+
+    if (valorTabla == 8)
+    {
+
+        let dataTableOptionsMedicamentos  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                          btn = btn + " <input type='radio' class='miMedicamentos form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+                       return btn;
+                    },
+                    "targets": 30
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_tablaRipsMedicamentos/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	 	  { data: "fields.codPrestador"},
+	  { data: "fields.numAutorizacion"},
+	  { data: "fields.idMIPRES"},
+	  { data: "fields.fechaDispensAdmon"},
+	  { data: "fields.nomTecnologiaSalud"},
+	  { data: "fields.concentracionMedicamento"},
+	  { data: "fields.cantidadMedicamento"},
+	  { data: "fields.diasTratamiento"},
+	  { data: "fields.numDocumentoIdentificacion"},
+	{ data: "fields.vrUnitMedicamento"},
+	  { data: "fields.vrServicio"},
+	  { data: "fields.valorPagoModerador"},
+	  { data: "fields.numFEVPagoModerador"},
+	  { data: "fields.consecutivo"},
+	  { data: "fields.fechaRegistro"},
+	  { data: "fields.codDiagnosticoPrincipal_id"},
+	  { data: "fields.codDiagnosticoRelacionado_id"},
+	  { data: "fields.codTecnologiaSalud_id"},
+	  { data: "fields.conceptoRecaudo_id"},
+	  { data: "fields.formaFarmaceutica_id"},
+	  { data: "fields.tipoDocumentoIdentificacion_id"},
+	  { data: "fields.tipoMedicamento_id"},
+	  { data: "fields.unidadMedida_id"},
+	  { data: "fields.unidadMinDispensa_id"},
+	  { data: "fields.usuarioRegistro_id"},
+	  { data: "fields.ripsDetalle_id"},
+	  { data: "fields.itemFactura"},
+	  { data: "fields.ripsTipos_id"},
+	  { data: "fields.ripsTransaccion_id"},
+                     ]
+            }
+
+            if  (dataTableRipsMedicamentosInitialized)  {
+
+		            dataTableH = $("#tablaRipsMedicamentos").dataTable().fnDestroy();
+
+                    }
+
+                dataTableH = $('#tablaRipsMedicamentos').DataTable(dataTableOptionsRipsMedicamentos);
+
+	            dataTableRipsMedicamentosInitialized  = true;
+      }
 
 }
 
@@ -829,7 +941,8 @@ window.addEventListener('load', async () => {
 		   arrancaEnviosRips(7,data);
  			 dataTableRipsHospitalizacionInitialized= true;
 
-
+		   arrancaEnviosRips(8,data);
+ 			 dataTableRipsMedicamentosInitialized= true;
 
   });
 

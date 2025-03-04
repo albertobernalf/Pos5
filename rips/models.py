@@ -397,7 +397,7 @@ class RipsHospitalizacion (models.Model):
    id = models.AutoField(primary_key=True)
    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle09')
    #ripsTipos =  models.ForeignKey('rips.RipsTipos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsTipos04')   
-   tipoRips = models.CharField(max_length=10,  editable=False , default='FACTURA')
+   tipoRips = models.CharField(max_length=10,  blank=True, null=True, editable=False , default='FACTURA')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    viaIngresoServicioSalud = models.ForeignKey('rips.RipsViasIngresoSalud', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='IngresoSal11')
    fechaInicioAtencion = models.DateTimeField(default=now, blank=True, null=True, editable=True)

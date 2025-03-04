@@ -54,18 +54,18 @@ INSERT INTO rips_ripsprocedimientos ( "codPrestador", "fechaInicioAtencion", "id
 	"usuarioRegistro_id",  "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id", "ripsTransaccion_id") 
 	
 	SELECT sed."codigoHabilitacion", facdet."fecha", his.mipres,autdet."numeroAutorizacion" ,usu.documento, facdet."valorTotal",
---	(select pagos.valor from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora 
---	where i."tipoDoc_id" = pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and 
---	ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)),
+	(select pagos.valor from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora 
+	where i."tipoDoc_id" = pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and 
+	ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)),
 	fac.id, row_number() OVER(ORDER BY facdet.id) AS consecutivo, now(), 
-	(select diag4.id from  clinico_diagnosticos diag4 where diag4.id = i."dxComplicacion_id"), -- Aqui cambio
+	(select diag4.id from  clinico_diagnosticos diag4 where diag4.id = i."dxComplicacion_id"), 
 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = histdiag.historia_id and histdiag1."tiposDiagnostico_id" = 2),
 	(select diag3.id from clinico_historialdiagnosticos histdiag3, clinico_diagnosticos diag3 where histdiag3.historia_id = histdiag.historia_id and histdiag3."tiposDiagnostico_id" = 3), 
 	exa.id, serv.id, null, final.id, gru.id, mod.id, tipdocrips.id, '1', ingreso.id, detrips.id,
 	facdet."consecutivoFactura", '4' ,
---	(select ripsmoderadora.id from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where  i."tipoDoc_id" =  pagos."tipoDoc_id" and 
---	i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text))  ,
-	 'xxxxxx' 
+	(select ripsmoderadora.id from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where  i."tipoDoc_id" =  pagos."tipoDoc_id" and 
+	i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text))  ,
+	 65
 	FROM sitios_sedesclinica sed
 	inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id)
 	inner join  facturacion_facturaciondetalle facdet ON (facdet.facturacion_id = fac.id and facdet."examen_id" is not null  )
@@ -83,19 +83,87 @@ INSERT INTO rips_ripsprocedimientos ( "codPrestador", "fechaInicioAtencion", "id
 	left join usuarios_usuarios usu ON (usu."tipoDoc_id" = fac."tipoDoc_id" and usu.id  =  fac.documento_id )
 	inner join clinico_historia his ON (his."tipoDoc_id" =  i."tipoDoc_id" and  his.documento_id = i.documento_id and his."consecAdmision" = i.consec )
    left join clinico_historialdiagnosticos histdiag on (histdiag.historia_id = his.id  and histdiag."tiposDiagnostico_id" = 1 )
---	left join clinico_diagnosticos diag on (diag.id = histdiag.diagnosticos_id )
 	left join autorizaciones_autorizaciones aut  on (aut.historia_id =his.id)
 	inner join autorizaciones_autorizacionesdetalle autdet on (autdet.autorizaciones_id = aut.id and autdet.examenes_id = facdet.examen_id)
 	where sed.id = 1 and e.id >= 25
 
-	
 
 
 	
 select * from admisiones_ingresos;	
 	- 1er cambio codigocupa_id a examen
 
+		select 
+
 -- tipopagomoderador_id ??
 -- conceptorecaudo_id ??
 -- vlr pago moderado
+select * from rips_ripsenvios;
 
+select * from rips_ripshospitalizacion;
+
+INSERT INTO rips_ripshospitalizacion (  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id",
+	"codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id",
+	"ripsDetalle_id", "tipoRips", "ripsTransaccion_id",  "fechaRegistro")
+	SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", 
+    (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"),
+	(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), 
+	(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id),
+	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id), 
+ i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,'1' ,det.id,env."ripsEstados_id",
+	ripstra.id,now()  
+	FROM sitios_sedesclinica sed
+	inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id)
+	inner join clinico_historia his ON (his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision")
+	inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision")
+	inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id)
+	inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id )
+	inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))
+	left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id)
+	where sed.id = 1 AND env.id =31 AND i.factura = det."numeroFactura_id" 
+
+
+detalle = 'INSERT INTO rips_ripshospitalizacion (  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id",	"codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id",	"ripsDetalle_id", "tipoRips", "ripsTransaccion_id",  "fechaRegistro") SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id), 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id), 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),  i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str('1') + "'" + ' ,det.id,env."ripsEstados_id", 	ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) 	inner join clinico_historia his ON (his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") 	inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id ) 	inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))	left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id) where sed.id = ' + "'" + str('1') + "'" + ' AND env.id = ' + "'" + str(envioRips) + "'" + ' AND i.factura = det."numeroFactura_id" '
+select * from rips_ripsmedicamentos;
+
+
+INSERT INTO rips_ripsmedicamentos ("codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", 
+	"cantidadMedicamento", 	"diasTratamiento",	"numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador",
+	consecutivo, "fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", 
+	"tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", "usuarioRegistro_id", "ripsDetalle_id", "itemFactura",
+	"ripsTipos_id", "ripsTransaccion_id")
+	SELECT sed."codigoHabilitacion", aut."numeroAutorizacion", historia.mipres, cast(facdet.fecha as timestamp),
+	ripscums.cum, histmed."concentracionMedicamento", histmed."cantidadAplicada", histmed."diasTratamiento",planta.documento, facdet."valorUnitario",
+	facdet."valorTotal", pagos."totalAplicado", fac.id, row_number() OVER(ORDER BY histmed.id), now(), diag1.id, diag2.id, null, null, ripsfarma.id, ripstipdoc.id,
+	tipmed.id, ripsumm.id, ripsupr.id, '1' , det.id, facdet."consecutivoFactura",'8', rips_ripstransaccion.id 
+	from rips_ripstransaccion left join rips_ripsenvios env on(env."sedesClinica_id" = rips_ripstransaccion."sedesClinica_id" and 
+	env.id = rips_ripstransaccion."ripsEnvio_id" ) left join sitios_sedesclinica sed on(sed.id = env."sedesClinica_id" ) 
+	left join rips_ripsdetalle det on (det."ripsEnvios_id" = env.id and det."numeroFactura_id" = cast(rips_ripstransaccion."numFactura" as numeric)) 
+	left join facturacion_facturacion fac on (fac.id = det."numeroFactura_id" ) 
+	inner join facturacion_facturaciondetalle facdet on (facdet."facturacion_id" = fac.id and facdet."cums_id" is not null ) 
+	left join clinico_historiamedicamentos histmed on (histmed.id = facdet."historiaMedicamento_id")  
+	left join autorizaciones_autorizaciones aut on (aut.id = histmed.autorizacion_id)
+	left join facturacion_suministros sum on (sum.id = facdet.cums_id) 
+	left join rips_ripstipomedicamento tipmed on (tipmed.id = sum."ripsTipoMedicamento_id" ) 
+	left join rips_ripscums ripscums  on (ripscums.id = facdet."cums_id") 
+	left join rips_ripsumm ripsumm on (ripsumm.id = sum."ripsUnidadMedida_id") 
+	left join rips_RipsFormaFarmaceutica ripsfarma on (ripsfarma.id = sum."ripsFormaFarmaceutica_id") 
+	left join rips_ripsunidadupr ripsupr on (ripsupr.id = sum."ripsUnidadUpr_id")
+	left join clinico_historia historia on (historia.id = histmed.historia_id)
+	left join planta_planta planta on (planta.id = historia.planta_id) 
+	left join usuarios_tiposdocumento usutipdoc on (usutipdoc.id = planta."tipoDoc_id") 
+	left join rips_ripstiposdocumento ripstipdoc on (ripstipdoc.id = usutipdoc."tipoDocRips_id")
+	left join cartera_pagos pagos on (pagos."tipoDoc_id" = fac."tipoDoc_id" and pagos.documento_id = fac.documento_id and pagos.consec = fac."consecAdmision") 
+	left join cartera_formaspagos formaspagos on (formaspagos.id = pagos."formaPago_id") 
+	left join rips_ripstipospagomoderador ripstipopago  on(cast(ripstipopago."codigoAplicativo" as numeric) = formaspagos.id and
+	cast(ripstipopago."codigoAplicativo" as numeric) in ('3','4') ) 
+	left join clinico_historialdiagnosticos histdiag1 on (histdiag1.historia_id = historia.id and histdiag1."tiposDiagnostico_id" = '1' )
+	left join clinico_historialdiagnosticos histdiag2 on (histdiag2.historia_id = historia.id and histdiag2."tiposDiagnostico_id" = '2') 
+	left join clinico_diagnosticos diag1 on (diag1.id = histdiag1.diagnosticos_id) left join clinico_diagnosticos diag2 on (diag2.id = histdiag2.diagnosticos_id) 
+	where env.id =31 and rips_ripstransaccion."ripsEnvio_id" = env.id  and
+	cast(rips_ripstransaccion."numFactura" as numeric) = fac.id	
+
+
+select * from facturacion_facturaciondetalle;
