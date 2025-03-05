@@ -2,10 +2,16 @@ console.log('Hola Alberto Hi!')
 
 let dataTable;
 let dataTableB;
+let dataTableC;
+let dataTableD;
+let dataTableE;
 
 
 let dataTableLiquidacionInitialized = false;
 let dataTableLiquidacionDetalleInitialized = false;
+let dataTableFacturacionInitialized = false;
+let dataTableFacAbonosInitialized = false;
+
 
 
 function arrancaLiquidacion(valorTabla,valorData)
@@ -13,10 +19,14 @@ function arrancaLiquidacion(valorTabla,valorData)
     data = {}
     data = valorData;
 
+// la primera tabla
+
     if (valorTabla == 1)
     {
         let dataTableOptionsLiquidacion  ={
-  dom: 'Bfrtilp',
+  dom: "<'row'<'col-md-2'B><'col-md-12'f>>" + 
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row'<'col-md-6'i><'col-md-6'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -96,7 +106,311 @@ function arrancaLiquidacion(valorTabla,valorData)
   }
      dataTable = $('#tablaLiquidacion').DataTable(dataTableOptionsLiquidacion);
  }
+
+// La segunda Tabla
+
+    if (valorTabla == 2)
+    {
+
+        let dataTableOptionsLiquidacionDetalle  ={
+   dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		  { width: '15%', targets: 0 },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                         btn = btn + " <button   class='btn btn-primary editPostLiquidacionDetalle' data-pk='" + row.pk + "'>" + "</button>";
+                         btn = btn + " <button   class='btn btn-primary borrarLiquidacionDetalle' data-pk='" + row.pk + "'>" + "</button>";
+                       return btn;
+                    },
+                    "targets": 9
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataLiquidacionDetalle/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+        { data: "fields.consecutivo"},
+                { data: "fields.fecha"},
+                { data: "fields.nombreExamen"},
+                { data: "fields.cantidad"},
+                { data: "fields.valorUnitario"},
+                { data: "fields.valorTotal"},
+                { data: "fields.observaciones"},
+                { data: "fields.tipoRegistro"},
+		{ data: "fields.estadoReg"},
+                     ]
+            }
+
+            if  (dataTableLiquidacionDetalleInitialized)  {
+
+		            dataTableC = $("#tablaLiquidacionDetalle").dataTable().fnDestroy();
+
+                    }
+
+                dataTableC = $('#tablaLiquidacionDetalle').DataTable(dataTableOptionsLiquidacionDetalle);
+
+	            dataTableLiquidacionDetalleInitialized  = true;
+      }
+
+
+// La tercera Tabla
+
+    if (valorTabla == 3)
+    {
+
+        let dataTableOptionsFacturacion  ={
+  dom: "<'row'<'col-md-2'B><'col-md-12'f>>" + 
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row'<'col-md-6'i><'col-md-6'p>>",
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                          btn = btn + " <input type='radio' name='miFacturacion' class='form-check-input editPostFacturacion' data-pk='"  + row.pk + "'>" + "</input>";                       return btn;
+                        return btn;
+			},
+                    "targets": 14
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataFacturacion/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+                  { data: "fields.id"},
+                { data: "fields.fechaFactura"},
+                { data: "fields.tipoDoc"},
+                { data: "fields.documento"},
+                { data: "fields.nombre"},
+                { data: "fields.consec"},
+                { data: "fields.fechaIngreso"},
+                { data: "fields.fechaSalida"},
+  		{ data: "fields.servicioNombreSalida"},
+                { data: "fields.camaNombreSalida"},
+		 { data: "fields.dxSalida"},
+		 { data: "fields.convenio"},
+		 { data: "fields.salidaClinica"},
+		 { data: "fields.estadoReg"},
+                     ]
+            }
+
+            if  (dataTableFacturacionInitialized)  {
+
+		            dataTableD = $("#tablaFacturacion").dataTable().fnDestroy();
+
+                    }
+
+                dataTableD = $('#tablaFacturacion').DataTable(dataTableOptionsFacturacion);
+
+	            dataTableFacturacionInitialized  = true;
+      }
+
+
+// La cuarta Tabla
+
+    if (valorTabla == 4)
+    {
+
+        let dataTableOptionsFacAbonos  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+			  btn = btn + " <button class='btn btn-primary createAplicarAbono' data-pk='" + row.pk + "'>" + "</button>";
+			  btn = btn + " <button class='btn btn-danger deletePostAbonosFacturacion' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+			    return btn;
+                    },
+                    "targets": 8
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataAbonosFacturacion/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+       { data: "fields.tipoPagoNombre"},
+		{ data: "fields.formaPagoNombre"},
+                { data: "fields.valor"},
+                { data: "fields.descripcion"},
+               { data: "fields.totalAplicado"},
+               { data: "fields.saldo"},
+               { data: "fields.valorEnCurso"},
+		 { data: "fields.estadoReg"},
+
+                     ]
+            }
+
+            if  (dataTableFacAbonosInitialized)  {
+
+
+
+		            dataTableE = $("#tablaAbonosFacturacion").dataTable().fnDestroy();
+
+                    }
+
+                dataTableE = $('#tablaAbonosFacturacion').DataTable(dataTableOptionsFacAbonos);
+
+	            dataTableFacAbonosInitialized  = true;
+      }
+
+
+
+
+
+
 } // Cierra la function arranca
+
+ $('.dt-button').css({
+        'font-size': '12px',
+        'padding': '5px 10px',
+        'height': 'auto',
+	'line-height': 1.2,
+    });
+
+
 
 const initDataTableLiquidacion = async () => {
 	if  (dataTableLiquidacionInitialized)  {
@@ -126,14 +440,21 @@ const initDataTableLiquidacion = async () => {
 	let fecha = new Date();
 
 	ano = fecha.getFullYear();
-	mes = fecha.getMonth() + 1;
+	mes = fecha.getMonth() ;
+        mes = '0' + mes;
+
+   mesAnterior = mes +1 ;
+
 	dia = fecha.getDate();
         diaDesde = '01'
+	dia='0' + dia;
 
-        desdeFecha = ano + '-' + mes + '-' + diaDesde + ' 00:00:00'
+       // desdeFecha = ano + '-' + mes + '-' + diaDesde + ' 00:00:00'
+       // hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
+
+        desdeFecha = ano + '-01-' + diaDesde + ' 00:00:00'
         hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
-	//alert("desdefecha1 = "+ desdeFecha);
-	// alert("hastafecha1 = "+ hastaFecha);
+
         desdeFactura=0;
         hastaFactura=0;
 
@@ -148,17 +469,26 @@ const initDataTableLiquidacion = async () => {
         arrancaLiquidacion(1,data);
 	    dataTableLiquidacionInitialized = true;
 
+        arrancaLiquidacion(2,data);
+	    dataTableLiquidacionDetalleInitialized = true;
 
-//	 initTableLiquidacionDetalle(data);
-  //     	 initTableFacAbonos(data);
-    //     initTableFacturacion(data);
+
+        arrancaLiquidacion(3,data);
+	    dataTableFacturacionInitialized = true;
+
+        arrancaLiquidacion(4,data);
+	    dataTableFacAbonosInitialized = true;
+
+	 $('#tablaLiquidacion tbody tr:eq(0) .miLiquidacion').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
+	alert("se supone ya seleeciode liquidacion");
+
 }
 
  // COMIENZA ONLOAD
 
 window.addEventListener('load', async () => {
     await  initDataTableLiquidacion();
-	 $('#tablaLiquidacion tbody tr:eq(0) .miSol').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
+	
 });
 
 
@@ -176,9 +506,6 @@ window.addEventListener('load', async () => {
         $('body').on('click', '.editPostLiquidacion', function () {
 
 	          var post_id = $(this).data('pk');
-          alert("pk1 = " + $(this).data('pk'));
-	
-
 
         var username_id = document.getElementById("username_id").value;
 
@@ -192,8 +519,6 @@ window.addEventListener('load', async () => {
 	           type: 'POST',
 	           dataType : 'json',
 	  		success: function (data) {
-                //        alert("Regrese");
-                 //      alert("data="  + data);
 
 			// Colocar Encabezadao
 	  		// aqui debe activar un dataTale para liquidacionDetalle
@@ -266,7 +591,6 @@ window.addEventListener('load', async () => {
                                     $id425.appendChild(option);
  	      		      });
 
-                    alert ("Voy a poner tipoPago ");
 
                      const $id477 = document.querySelector("#tipoPago");
 
@@ -280,7 +604,6 @@ window.addEventListener('load', async () => {
                                     $id477.appendChild(option);
  	      		      });
 
- 	      		      alert ("Ya páse tipoPago ");
 
                      const $id437 = document.querySelector("#formaPago");
 
@@ -318,45 +641,42 @@ window.addEventListener('load', async () => {
 		        data2['username_id'] = username_id;
 
 			 var valor = document.getElementById("liquidacionId").value;
-			// var liquidacionId = document.getElementById("liquidacionId").value;
 			 var ingresoId = document.getElementById("ingresoId").value;
 
-			// alert("Esta es la liquidacion  que traigo para el loaddata_liquidacionDetalle " + data.id);
+
 
 		        data2['valor'] = valor;
 		        data2['liquidacionId'] = data.id;
+
+			document.getElementById("tipoIngreso").value = data.tipo;
 
 			if (data.tipo == 'INGRESO')
 			{
 
 		        data2['ingresoId'] = ingresoId;
 			data2['tipoIngreso'] = 'INGRESO'
- 			alert("Este es el ingreso que traigo para la tabla aBONOS " + data.ingresoId1);
+
 
 			}
 			else
 			{
 		        data2['triageId'] = data.triageId1;
 			data2['tipoIngreso'] = 'TRIAGE'
-		     alert("Este es el ingreso triage  para la tabla aBONOS " + data.triageId);
+
 
 			}
 
 		        data2 = JSON.stringify(data2);
+
 			   $("#mensajes").html(data.message);
 
-		 // var tableA = $('#tablaAbonosFacturacion').DataTable();
-	         // tableA.ajax.reload();
-	 	 // var tableL = $('#tablaLiquidacionDetalle').DataTable();
-	         // tableL.ajax.reload();
+		            arrancaLiquidacion(2,data2);
+	  	            dataTableLiquidacionDetalleInitialized = true;
 
-		    tableF= $("#tablaLiquidacionDetalle").dataTable().fnDestroy();
-	            initTableLiquidacionDetalle(data2);
+	       		    arrancaLiquidacion(4,data2);
+			    dataTableFacAbonosInitialized = true;
 
-		     tableA= $("#tablaAbonosFacturacion").dataTable().fnDestroy();
-	             initTableFacAbonos(data2);
-
-			LeerTotales();
+			    LeerTotales();
 
                   },
 	   		    error: function (request, status, error) {
@@ -415,7 +735,7 @@ window.addEventListener('load', async () => {
 
 			var valor = document.getElementById("liquidacionId").value;
 			var ingresoId = document.getElementById("ingresoId").value;
-
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
 		        data2['valor'] = valor;
 		        data2['ingresoId'] = ingresoId;
 
@@ -508,10 +828,28 @@ window.addEventListener('load', async () => {
 		  $("#mensajes").html(data.message);
                   $('#postFormModalApliqueParcial').trigger("reset");
     		  $('#crearAplique').modal('hide');
-	 	  var tableA = $('#tablaAbonosFacturacion').DataTable();
-	          tableA.ajax.reload();
-	 	  var tableL = $('#tablaLiquidacionDetalle').DataTable();
-	          tableL.ajax.reload();
+
+
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
+		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
+
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
+
+		        data2 = JSON.stringify(data2);
+
+		  arrancaLiquidacion(4,data2);
+		    dataTableFacAbonosInitialized = true;
+		  arrancaLiquidacion(2,data2);
+		    dataTableLiquidacionDetalleInitialized = true;
 
                 },
                 error: function (data) {
@@ -556,10 +894,30 @@ window.addEventListener('load', async () => {
 		   $("#mensajes").html(data.message);
                   $('#postFormCrearAbonosFacturacion').trigger("reset");
 
-	 	  var tableA = $('#tablaAbonosFacturacion').DataTable();
-	          tableA.ajax.reload();
-	 	  var tableL = $('#tablaLiquidacionDetalle').DataTable();
-	          tableL.ajax.reload();
+
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
+		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
+
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
+
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+
+		        data2 = JSON.stringify(data2);
+
+
+		  arrancaLiquidacion(4,data2);
+		    dataTableFacAbonosInitialized = true;
+		  arrancaLiquidacion(2,data2);
+		    dataTableLiquidacionDetalleInitialized = true;
+
+
  		 $('#crearAbonosModelFacturacion').modal('hide');
                 },
                 error: function (data) {
@@ -672,10 +1030,28 @@ window.addEventListener('load', async () => {
                         printErrorMsg(data.error)
                     }
                     $('#postFormLiquidacionDetalle').trigger("reset");
-	 	  // var tableA = $('#tablaAbonosFacturacion').DataTable();
-		  // tableA.ajax.reload();
-	 	  var tableL = $('#tablaLiquidacionDetalle').DataTable();
-	          tableL.ajax.reload();
+	 	
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
+		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
+
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
+
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+                        data2['liquidacionId'] = document.getElementById("liquidacionId").value;
+
+		        data2 = JSON.stringify(data2);
+
+
+			  arrancaLiquidacion(2,data2);
+			    dataTableLiquidacionDetalleInitialized = true;
+
 			LeerTotales();
 
 		   $("#mensajes").html(data.message);
@@ -687,8 +1063,6 @@ window.addEventListener('load', async () => {
                         $('.success-msg').css('display','block');
                         $('.success-msg').text(data.error);
 
-		  var tableA = $('#tablaAbonosFacturacion').DataTable(); // accede de nuevo a la DataTable.
-	          tableA.ajax.reload();
                 }
             });
 	LeerTotales();
@@ -712,12 +1086,31 @@ window.addEventListener('load', async () => {
 	           dataType : 'json',
 	  		success: function (data) {
 
-			 var tableA = $('#tablaAbonosFacturacion').DataTable(); // accede de nuevo a la DataTable.
-		          tableA.ajax.reload();
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
+		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
+
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
+
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+                        data2['liquidacionId'] = document.getElementById("liquidacionId").value;
+		        data2 = JSON.stringify(data2);
+
+
+		  arrancaLiquidacion(4,data2);
+		    dataTableFacAbonosInitialized = true;
 		   			
 			   $("#mensajes").html(data.message);
                     },
 	   		    error: function (request, status, error) {
+			alert("Tengo ERROR");
+
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
 	   	    	}
 	           });
@@ -745,8 +1138,28 @@ window.addEventListener('load', async () => {
 
 		        	  $('.success-msg').css('display','block');
                         $('.success-msg').text(data.message);
-			            var table = $('#tablaLiquidacionDetalle').DataTable(); // accede de nuevo a la DataTable.
-		                table.ajax.reload();
+
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
+		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
+
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
+
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+                        data2['liquidacionId'] = document.getElementById("liquidacionId").value;
+
+		        data2 = JSON.stringify(data2);
+
+		  arrancaLiquidacion(2,data);
+		    dataTableLiquidacionDetalleInitialized = true;
+
+
 			LeerTotales();
 			   $("#mensajes").html(data.message);
                     },
@@ -772,203 +1185,6 @@ window.addEventListener('load', async () => {
 
 
         }
-
-function initTableLiquidacion(data) {
-
-	return new DataTable('.tablaLiquidacion', {
-	 "language": {
-                  "lengthMenu": "Display _MENU_ registros",
-                   "search": "Filtrar registros:",
-                    },
-            processing: true,
-            serverSide: false,
-            scrollY: '300px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-                {
-                    "render": function ( data, type, row ) {
-                        var btn = '';
-                          btn = btn + " <input type='radio'  class='form-check-input editPostLiquidacion' data-pk='"  + row.pk + "'>" + "</input>";
-                        return btn;
-                    },
-                   /* width: '80%',target:[3], */
-                    "targets": 9
-               }
-            ],
-            ajax: {
-                 url:"/load_dataLiquidacion/" +  data,
-                 type: "POST",
-                dataSrc: ""
-            },
-
-            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
-            columns: [
-
-                { data: "fields.id"},
-                { data: "fields.tipoDoc"},
-                { data: "fields.documento"},
-                { data: "fields.nombre"},
-                { data: "fields.consec"},
-                { data: "fields.fechaIngreso"},
-
-		{ data: "fields.servicioNombreIng"},
-                { data: "fields.camaNombreIng"},
-		 { data: "fields.convenio"},
-
-
-            ]
-
- });
-}
-
-function initTableLiquidacionDetalle(data) {
-
-	return new DataTable('.tablaLiquidacionDetalle', {
-	 "language": {
-                  "lengthMenu": "Display _MENU_ registros",
-                   "search": "Filtrar registros:",
-                    },
-            processing: true,
-            serverSide: false,
-            scrollY: '200px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-                {
-                    "render": function ( data, type, row ) {
-                        var btn = '';
-                         btn = btn + " <button   class='btn btn-primary editPostLiquidacionDetalle' data-pk='" + row.pk + "'>" + "</button>";
-                         btn = btn + " <button   class='btn btn-primary borrarLiquidacionDetalle' data-pk='" + row.pk + "'>" + "</button>";
-                        return btn;
-                    },
-                    "targets": 9
-               }
-            ],
-            ajax: {
-                 url:"/load_dataLiquidacionDetalle/" +  data,
-                 type: "POST",
-                dataSrc: ""
-            },
-
-            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
-            columns: [
-                { data: "fields.consecutivo"},
-                { data: "fields.fecha"},
-                { data: "fields.nombreExamen"},
-                { data: "fields.cantidad"},
-                { data: "fields.valorUnitario"},
-                { data: "fields.valorTotal"},
-                { data: "fields.observaciones"},
-                { data: "fields.tipoRegistro"},
-		{ data: "fields.estadoReg"},
-
-            ]
-
- });
-}
-
-function initTableFacAbonos(data) {
-
-    return new DataTable('.tablaAbonosFacturacion', {
-          "language": {
-                  "lengthMenu": "Display _MENU_ registros",
-                   "search": "Filtrar registros:",
-                    },
-            processing: true,
-            serverSide: false,
-            scrollY: '250px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-                {
-                    "render": function ( data, type, row ) {
-                        var btn = '';
-			  btn = btn + " <button class='btn btn-primary createAplicarAbono' data-pk='" + row.pk + "'>" + "</button>";
-			  btn = btn + " <button class='btn btn-danger deletePostAbonosFacturacion' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
-                        return btn;
-                    },
-                    "targets": 8
-               }
-            ],
-            ajax: {
-                 url:"/load_dataAbonosFacturacion/" + data,
-                 type: "POST",
-                dataSrc: ""
-            },
-
-            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
-            columns: [
-
-                { data: "fields.tipoPagoNombre"},
-		{ data: "fields.formaPagoNombre"},
-                { data: "fields.valor"},
-                { data: "fields.descripcion"},
-               { data: "fields.totalAplicado"},
-               { data: "fields.saldo"},
-               { data: "fields.valorEnCurso"},
-		 { data: "fields.estadoReg"},
-
-            ]
-    });
-
-}
-
-function initTableFacturacion(data) {
-
-	return new DataTable('.tablaFacturacion', {
-	 "language": {
-                  "lengthMenu": "Display _MENU_ registros",
-                   "search": "Filtrar registros:",
-                    },
-            processing: true,
-            serverSide: false,
-            scrollY: '300px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-                {
-                    "render": function ( data, type, row ) {
-                        var btn = '';
-                          btn = btn + " <input type='radio'  class='form-check-input editPostFacturacion' data-pk='"  + row.pk + "'>" + "</input>";
-                        return btn;
-                    },
-                    "targets": 14
-               }
-            ],
-            ajax: {
-                 url:"/load_dataFacturacion/" +  data,
-                 type: "POST",
-                dataSrc: ""
-            },
-
-            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
-            columns: [
-                { data: "fields.id"},
-                { data: "fields.fechaFactura"},
-                { data: "fields.tipoDoc"},
-                { data: "fields.documento"},
-                { data: "fields.nombre"},
-                { data: "fields.consec"},
-                { data: "fields.fechaIngreso"},
-                { data: "fields.fechaSalida"},
-  		{ data: "fields.servicioNombreSalida"},
-                { data: "fields.camaNombreSalida"},
-		 { data: "fields.dxSalida"},
-		 { data: "fields.convenio"},
-		 { data: "fields.salidaClinica"},
-		 { data: "fields.estadoReg"},
-               ]
-
- });
-}
-
-	// Supongamos aqui fin de Varque inicial
-
 
 
 
@@ -999,7 +1215,7 @@ function AFacturar()
 
 	                var username_id = document.getElementById("username_id").value;
   	                data2['username_id'] = username_id;
-                    //    alert("numero de la liquidacionId = " + liquidacionId);
+
 
 		        data2['valor'] = liquidacionId;
 			data2['liquidacionId'] = liquidacionId;
@@ -1015,8 +1231,6 @@ function AFacturar()
 
 		        desdeFecha = ano + '-' + mes + '-' + diaDesde + ' 00:00:00'
 		        hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
-		//	alert("desdefecha = "+ desdeFecha);
-		//	alert("hastafecha = "+ hastaFecha);
 		        desdeFactura=0;
 		        hastaFactura=0;
 
@@ -1027,20 +1241,19 @@ function AFacturar()
 			data2['hastaFactura'] = hastaFactura;
 			data2['bandera'] = 'Por Fecha';
 
-			alert("Este es el mensaje de regreso COINCIDE ??" + data.message);
+
+		        data2 = JSON.stringify(data2);
 
 
                      if (data.message != 'Paciente NO tiene Salida Clinica. Consultar medico tratante !')
 			{
 
-			    tableL= $("#tablaLiquidacion").dataTable().fnDestroy();
-	        	    initTableLiquidacion(data2);
+			    arrancaLiquidacion(2,data2);
+			    dataTableFacturacionInitialized = true;
 
-
-			    tableL= $("#tablaFacturacion").dataTable().fnDestroy();
-	        	    initTableFacturacion(data2);
-
-			    location.reload();
+			        arrancaLiquidacion(3,data2);
+			    dataTableFacturacionInitialized = true;
+		
 			}
 
 
@@ -1078,25 +1291,25 @@ function AdicionarLiquidacion()
 	  		success: function (data) {
 
 
-            	        var data2 =  {}   ;
-        		data2['username'] = username;
-    		        data2['sedeSeleccionada'] = sedeSeleccionada;
-	    	        data2['nombreSede'] = nombreSede;
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
 		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
 
-	                var username_id = document.getElementById("username_id").value;
-  	                data2['username_id'] = username_id;
-                //        alert("numero de la liquidacionId = " + liquidacionId);
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
 
-		        data2['valor'] = liquidacionId;
-			data2['liquidacionId'] = liquidacionId;
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+                        data2['liquidacionId'] = document.getElementById("liquidacionId").value;
+
 		        data2 = JSON.stringify(data2);
 
-		   // tableF= $("#tablaLiquidacionDetalle").dataTable().fnDestroy();
-		//	alert ("ya la destrui");
-
-         	  var tableL = $('#tablaLiquidacionDetalle').DataTable();
-	          tableL.ajax.reload();
+		        arrancaLiquidacion(2,data2);
+		    dataTableLiquidacionDetalleInitialized = true;
 
 			LeerTotales();
 
@@ -1167,14 +1380,20 @@ function AnularFactura()
 	           dataType : 'json',
 	  		success: function (data) {
 				
-            	        var data2 =  {}   ;
-        		data2['username'] = username;
-    		        data2['sedeSeleccionada'] = sedeSeleccionada;
-	    	        data2['nombreSede'] = nombreSede;
+			 var data2 =  {}   ;
+			data2['username'] = username;
+		        data2['sedeSeleccionada'] = sedeSeleccionada;
+		        data2['nombreSede'] = nombreSede;
 		        data2['sede'] = sede;
+		        data2['username_id'] = username_id;
+			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
 
-	                var username_id = document.getElementById("username_id").value;
-  	                data2['username_id'] = username_id;
+			var valor = document.getElementById("liquidacionId").value;
+			var ingresoId = document.getElementById("ingresoId").value;
+
+		        data2['valor'] = valor;
+		        data2['ingresoId'] = ingresoId;
+                        data2['liquidacionId'] = document.getElementById("liquidacionId").value;
 
 			let fecha = new Date();
 
@@ -1191,26 +1410,16 @@ function AnularFactura()
 		        hastaFactura=0;
 
 
-			data['desdeFecha'] = desdeFecha;
-			data['hastaFecha'] = hastaFecha;
-			data['desdeFactura'] = desdeFactura;
-			data['hastaFactura'] = hastaFactura;
-			data['bandera'] = 'Por Fecha';
+			data2['desdeFecha'] = desdeFecha;
+			data2['hastaFecha'] = hastaFecha;
+			data2['desdeFactura'] = desdeFactura;
+			data2['hastaFactura'] = hastaFactura;
+			data2['bandera'] = 'Por Fecha';
 	
-		        data = JSON.stringify(data);
+		        data2 = JSON.stringify(data2);
 
-
-		        data2 = JSON.stringify(data);
-
-			
-	 if ( $.fn.dataTable.isDataTable( '#tablaFacturacion' ) ) {
-		    table = $('#tablaFacturacion').DataTable();
-	    	table.ajax.reload();
-		}
-		else {
-		          initTableFacturacion(data);
-		}
-
+        arrancaLiquidacion(3,data);
+	    dataTableFacturacionInitialized = true;
  
 			$("#mensajes").html(data.message);
 
@@ -1255,8 +1464,8 @@ function ReFacturar()
 
 			$("#mensajes").html(data.message);
 
-		    tableL= $("#tablaFacturacion").dataTable().fnDestroy();
-	            initTableFacturacion(data2);
+        arrancaLiquidacion(3,data2);
+	    dataTableFacturacionInitialized = true;
 
                   },
 	   		    error: function (request, status, error) {
@@ -1280,9 +1489,8 @@ function RefrescarLiquidacionDetalle()
 		        data2['liquidacionId'] = valor;
 
 		        data2 = JSON.stringify(data2);
-
-		    tableF= $("#tablaLiquidacionDetalle").dataTable().fnDestroy();
-	           initTableLiquidacionDetalle(data2);
+	      arrancaLiquidacion(2,data);
+	    dataTableLiquidacionDetalleInitialized = true;
 
 }
 
@@ -1290,6 +1498,12 @@ function RefrescarLiquidacionDetalle()
 function ConsultarFacturas()
 {
 	alert("Entre Consultar Facturas");
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
 
 
   	var desdeFactura = document.getElementById("fdesdeFactura").value;
@@ -1301,6 +1515,12 @@ function ConsultarFacturas()
     var fFechaHasta = document.getElementById("fFechaHasta").value;
 
     var data =  {}   ;
+        		data['username'] = username;
+    		        data['sedeSeleccionada'] = sedeSeleccionada;
+	    	        data['nombreSede'] = nombreSede;
+		        data['sede'] = sede;
+  	                data['username_id'] = username_id;
+		        data['valor'] = liquidacionId;
 
 	data['desdeFecha'] = desdeFecha;
 	data['hastaFecha'] = hastaFecha;
@@ -1322,19 +1542,8 @@ function ConsultarFacturas()
 
         data = JSON.stringify(data);
 
-		    tableF= $("#tablaFacturacion").dataTable().fnDestroy();
-	           initTableFacturacion(data2);
-
-    if ( $.fn.dataTable.isDataTable( '#tablaFacturacion' ) ) {
-		    table = $('#tablaFacturacion').DataTable();
-		table.ajax.reload();
-
-		}
-		else {
-	          initTableFacturacion(data);
-
-		}
-
+        arrancaLiquidacion(3,data);
+	    dataTableFacturacionInitialized = true;
 
 }
 
@@ -1385,8 +1594,6 @@ function TrasladoConvenio()
 
 function RefrescarPantalla() {
 
-	
-
         var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
@@ -1412,12 +1619,19 @@ function RefrescarPantalla() {
 	ano = fecha.getFullYear();
 	mes = fecha.getMonth() + 1;
 	dia = fecha.getDate();
-        diaDesde = '01'
+        mes = '0' + mes;
+        diaDesde = '01';
+	dia='0' + dia;
+        mesAnterior = mes +1 ;
+
 
         desdeFecha = ano + '-' + mes + '-' + diaDesde + ' 00:00:00'
         hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
-	//alert("desdefecha1 = "+ desdeFecha);
-	// alert("hastafecha1 = "+ hastaFecha);
+
+	 desdeFecha = ano + '-01-' + diaDesde + ' 00:00:00'
+        hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
+
+
         desdeFactura=0;
         hastaFactura=0;
 
@@ -1433,3 +1647,54 @@ function RefrescarPantalla() {
 	    dataTableLiquidacionInitialized = true;
 
 }
+
+function RefrescarFacturas() {
+
+        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+        var data =  {}   ;
+
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+        valor=1
+        data['valor'] = valor;
+        data['liquidacionId'] = liquidacionId;
+	data['ingresoId'] = valor;
+
+
+	let fecha = new Date();
+
+	ano = fecha.getFullYear();
+	mes = fecha.getMonth() + 1;
+	dia = fecha.getDate();
+        mes = '0' + mes;
+        diaDesde = '01';
+	dia='0' + dia;
+        mesAnterior = mes +1 ;
+
+        desdeFecha = ano + '-' + mes + '-' + diaDesde + ' 00:00:00'
+        hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
+	 desdeFecha = ano + '-01-' + diaDesde + ' 00:00:00'
+        hastaFecha = ano + '-' + mes + '-' + dia + ' 23:59:59'
+
+        desdeFactura=0;
+        hastaFactura=0;
+
+	data['desdeFecha'] = desdeFecha;
+	data['hastaFecha'] = hastaFecha;
+	data['desdeFactura'] = desdeFactura;
+	data['hastaFactura'] = hastaFactura;
+	data['bandera'] = 'Por Fecha';
+
+        data = JSON.stringify(data);
+        arrancaLiquidacion(3,data);
+	    dataTableFacturacionInitialized = true;
+
+}
+
