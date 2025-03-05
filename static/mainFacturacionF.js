@@ -105,6 +105,12 @@ function arrancaLiquidacion(valorTabla,valorData)
     ]
   }
      dataTable = $('#tablaLiquidacion').DataTable(dataTableOptionsLiquidacion);
+	// Aplicamos el filtro para cada columna
+
+    $('#tablaLiquidacion thead input').on('keyup change', function () {
+        var columnIndex = $(this).parent().index(); // Índice de la columna
+        table.column(columnIndex).search(this.value).draw();
+    });
  }
 
 // La segunda Tabla

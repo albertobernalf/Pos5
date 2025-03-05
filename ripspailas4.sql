@@ -1,10 +1,14 @@
-select "requiereAutorizacion" , * from clinico_examenes where "TiposExamen_id" = 1; ;
+select "requiereAutorizacion" , * from clinico_examenes where "TiposExamen_id" = 1 order by "requiereAutorizacion" desc;
+select "requiereAutorizacion" , * from clinico_examenes where "TiposExamen_id" = 2 order by "requiereAutorizacion" desc;
+select "requiereAutorizacion" , * from clinico_examenes where "TiposExamen_id" = 3 order by "requiereAutorizacion" desc;
 
 update facturacion_suministros set "requiereAutorizacion" = 'N'
 select * from clinico_historiaexamenes;
 select * from usuarios_usuarios;
 
-update clinico_examenes set "requiereAutorizacion" = 'S' WHERE ID =487 -- ALDOLASA / 114 GLUCOMETRIA
+update clinico_examenes set "requiereAutorizacion" = 'S' WHERE ID =114 -- ALDOLASA / 114 GLUCOMETRIA
+	update clinico_examenes set "requiereAutorizacion" = 'S' WHERE ID = 2692 -- terapia de fgiltros sod
+	update clinico_examenes set "requiereAutorizacion" = 'S' WHERE ID = 2487 --fotofersis
 
 select * from clinico_historia; -- id  585 folio  5 / orden medica 7502, mipres = 55555
 select * from clinico_historiaexamenes where historia_id = 585; cups : 903402 // M19275
@@ -12,7 +16,7 @@ delete from autorizaciones_autorizaciones where id>=11;
 	select * from autorizaciones_autorizaciones;  -- creo la aut 9
 select * from autorizaciones_autorizacionesdetalle; -- en estado pendiente el examenes_id = 487 PERFECTOPOLIS
 select * from facturacion_liquidacion; -- ops hay dos cabezotes para elusernbame_id = 26 astrid, la que sirve es el id = 117
-select * from facturacion_liquidaciondetalle; -- creo un examen_id = 114 ops
+select * from facturacion_liquidaciondetalle where liquidacion_id = 121; -- creo un examen_id = 114 ops  /7 ojo ME CREO UN CABEZOPTE MAS
 select * from facturacion_suministros where id=679;
 update facturacion_suministros set "requiereAutorizacion" = 'S' where id=681;
 
@@ -160,3 +164,44 @@ insert into 	contratacion_conveniossuministros ("codigoHomologado", valor, "fech
 select * from rips_ripsenvios;;
 select * from rips_ripsdetalle;
 delete from rips_ripsdetalle where id =50
+
+SELECT '1', now(), now(), 'A', conv.empresa_id,  '1','1','1','635' 
+	FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv 
+	WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = '1' AND convIngreso.documento_id = '17' AND
+	convIngreso."consecAdmision" = '1' AND conv.id = proc.convenio_id AND proc.cups_id = '487'
+
+select * from usuarios_usuarios;
+	select * from  admisiones_ingresos;
+	select * from contratacion_conveniosprocedimientos;
+select * from clinico_historia;
+select * from clinico_historiaexamenes where historia_id = 635
+select * from autorizaciones_autorizaciones;
+delete from  clinico_historiaexamenes where historia_id = 635
+delete from  clinico_historia where id = 635
+
+INSERT INTO facturacion_conveniospacienteingresos ("consecAdmision","fechaRegistro","estadoReg", convenio_id,documento_id,"tipoDoc_id","usuarioRegistro_id") values (1,now(),'A',10,17,1,1)
+
+-- Vampos a validar :
+
+select * from clinico_historia;
+select * from clinico_historiaexamenes where historia_id = 636;
+-- cups : "901219","903402", "M19275"
+select * from clinico_examenes where "codigoCups" in ('901219','903402','M19275') ids = 251,114,487 --  se suonse el 251 sin autorizaion
+select * from clinico_historiaexamenes where historia_id = 636
+select * from facturacion_liquidacion;
+select * from facturacion_liquidaciondetalle;
+select * from autorizaciones_autorizaciones;  -- aut = 20
+select * from autorizaciones_autorizacionesdetalle where autorizaciones_id = 20;
+
+select * from autorizaciones_estadosautorizacion;
+
+select * from rips_ripsestados;
+select * from rips_ripsenvios;
+UPDATE rips_ripsenvios set "ripsEstados_id" = 1;
+
+SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."ripsEstados_id",
+	estrips.nombre estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" ,
+	sed.nombre nombreClinica, emp.nombre nombreEmpresa , usu.nombre nombreRegistra , tiposNotas.nombre tipoNota 
+	FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, usuarios_usuarios usu , rips_ripstiposnotas tiposNotas ,
+	rips_ripsestados estrips where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id 
+	AND usu.id = env."usuarioRegistro_id" AND env."ripsTiposNotas_id" = tiposNotas.id AND estrips.id = env."ripsEstados_id"

@@ -261,7 +261,8 @@ div.dataTables_filter input {
                                         <table  id= "tablaAutorizacionesDetalle" class="display table table-striped" style="width: 100%">
                                            <thead>
                                             <tr>    
-						<bold>                                  
+						<bold>   
+						<th>TipoTipoExamen</th>                               
                                                 <th>id</th>
                                                 <th>TipoExamen</th>
                                                 <th>ExamenId</th>
@@ -279,7 +280,8 @@ div.dataTables_filter input {
                                             </tbody>
 					 <tfoot>
                                             <tr>    
-						<bold>                                  
+						<bold>   
+						<th>TipoTipoExamen</th>                                   
                                                 <th>id</th>
                                                 <th>TipoExamen</th>
                                                 <th>ExamenId</th>
@@ -318,6 +320,18 @@ div.dataTables_filter input {
    			   <input type="text" id="autorizacionDetalleId" name="autorizacionDetalleId" value=""  readonly> </input>
                                 </div>
 
+		           Estado Aut:
+				<select class="select-css"  id="estadoNombre"
+                                                                name="estadoNombre">
+                                                            {% for estadosAutorizacion in EstadosAutorizacion %}
+                                                            <option value="{{estadosAutorizacion.id}}">
+                                                                {{estadosAutorizacion.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+
 				<div class="col">
                                     EstadoAut:
                                     <input type="text" id="estadoAutorizacion" name="estadoAutorizacion"  ></input>
@@ -328,6 +342,13 @@ div.dataTables_filter input {
                                     Autorizacion:
                                     <input type="text" id="numeroAutorizacion" name="numeroAutorizacion"  ></input>
                                 </div>
+
+
+				<div class="col">
+                                    TipoExamen:
+                                    <input type="text" id="tipoTipoExamen" name="tipoTipoExamen"  ></input>
+                                </div>
+
 
 
 				<div class="col">

@@ -107,7 +107,7 @@ function arrancaEnviosRips(valorTabla,valorData)
                 { data: "fields.cantidadFacturas"},
                 { data: "fields.cantidadPasaron"},
 		{ data: "fields.cantidadRechazadas"},
-                { data: "fields.estadoPasoMinisterio"},
+                { data: "fields.estadoMinisterio"},
 		 { data: "fields.fechaRegistro"},
 		 { data: "fields.usuarioRegistro_id"},
 		 { data: "fields.nombreRegistra"},
@@ -1073,7 +1073,7 @@ $('#tablaDetalleRips tbody').on('click', '.miBorrar', function() {
                 dataType: 'json',
                 success: function (info) {
 
-		    $("#mensajes").html(info");
+		    $("#mensajes").html(info);
 
 		  var data =  {}   ;
 		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;

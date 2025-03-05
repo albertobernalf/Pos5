@@ -1794,6 +1794,31 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print ("ENTRE PERMSISO AUTORIZACIONES")
         ## Aqui contexto para solo Triage
 
+   	# Combo estadosautorizacion
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM  autorizaciones_estadosautorizacion  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        estadosAutorizacion = []
+
+
+        for id, nombre in curt.fetchall():
+            estadosAutorizacion.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("EstadosAutorizacion", estadosAutorizacion)
+
+        context['EstadosAutorizacion'] = estadosAutorizacion
+
+        # Fin combo estadosAutorizacion
+
+
         ## FIN CONTEXTO
         return render(request, "autorizaciones/panelAutorizacionesF.html", context)
 

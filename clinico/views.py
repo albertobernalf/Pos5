@@ -649,6 +649,32 @@ def crearHistoriaClinica(request):
 
                         print ("autorizacion para el CUPS es ", codigoCupsId[0].requiereAutorizacion)
 
+                        # Aqui saca valores pata tarifas
+
+                        if convenioValor != []:
+
+                            print ("Cups = "  , convenioValor[0]['cups'])
+                            tarifaValor = convenioValor[0]['valor']
+                            tarifaValor = str(tarifaValor)
+                            print("tarifaValor = ", tarifaValor)
+                            tarifaValor = tarifaValor.replace("(", ' ')
+                            tarifaValor = tarifaValor.replace(")", ' ')
+                            tarifaValor = tarifaValor.replace(",", ' ')
+                            print ("tarifaValor = ", tarifaValor)
+                            #cupsId = convenioValor[0]['cups']
+                            #cupsId = str(cupsId)
+                            #print("cupsId = ", cupsId)
+                            #cupsId = cupsId.replace("(", ' ')
+                            #cupsId = cupsId.replace(")", ' ')
+                            #cupsId = cupsId.replace(",", ' ')
+                            #print("cupsId = ", cupsId)
+                            #
+                        else:
+                            tarifaValor=0
+
+                        TotalTarifa = float(tarifaValor) * float(cantidad)
+
+
 
                         if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
@@ -697,7 +723,7 @@ def crearHistoriaClinica(request):
                             miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",   user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
-                            comando = 'INSERT INTO autorizaciones_autorizacionesdetalle ("estadoAutorizacion_id", "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "examenes_id", cums_id, "tiposExamen_id", "valorSolicitado", "valorAutorizado")  VALUES (' + "'" + str(estadoAutorizacionId.id) + "'," + "'" + str(cantidad) + "'" + ' ,0, now(),' + "'" + str('A') + "','"  + str(autorizacionId) + "','" + str(usuarioRegistro)  + "'," +  "'"  + str(codigoCupsId[0].id) + "',null, " + "'" + str(tiposExamen_Id) + "',null,null)"
+                            comando = 'INSERT INTO autorizaciones_autorizacionesdetalle ("estadoAutorizacion_id", "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "examenes_id", cums_id, "tiposExamen_id", "valorSolicitado", "valorAutorizado")  VALUES (' + "'" + str(estadoAutorizacionId.id) + "'," + "'" + str(cantidad) + "'" + ' ,0, now(),' + "'" + str('A') + "','"  + str(autorizacionId) + "','" + str(usuarioRegistro)  + "'," +  "'"  + str(codigoCupsId[0].id) + "',null, " + "'" + str(tiposExamen_Id) + "'," + "'" + str(TotalTarifa)  + "'" +  ',null)'
 
                             print ("comando=", comando)
 
@@ -711,28 +737,6 @@ def crearHistoriaClinica(request):
                             # Fin tema Autorizaciones
 
 
-                        if convenioValor != []:
-
-                            print ("Cups = "  , convenioValor[0]['cups'])
-                            tarifaValor = convenioValor[0]['valor']
-                            tarifaValor = str(tarifaValor)
-                            print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("(", ' ')
-                            tarifaValor = tarifaValor.replace(")", ' ')
-                            tarifaValor = tarifaValor.replace(",", ' ')
-                            print ("tarifaValor = ", tarifaValor)
-                            #cupsId = convenioValor[0]['cups']
-                            #cupsId = str(cupsId)
-                            #print("cupsId = ", cupsId)
-                            #cupsId = cupsId.replace("(", ' ')
-                            #cupsId = cupsId.replace(")", ' ')
-                            #cupsId = cupsId.replace(",", ' ')
-                            #print("cupsId = ", cupsId)
-                            #
-                        else:
-                            tarifaValor=0
-
-                        TotalTarifa = float(tarifaValor) * float(cantidad)
 
                     # Aqui Rutina FACTURACION crea en liquidaciondetalle el registro con la tarifa, con campo cups y convenio
                     #
