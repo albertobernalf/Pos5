@@ -303,6 +303,10 @@ def PostConsultaLiquidacion(request):
     fechaRegistro = now
     usuarioRegistro = ''
 
+    # Primero colocamos el convenio en la tabla facturacion_facturacionliquidacion
+
+    Liquidacion.objects.filter(tipoDoc_id=str(ingresoId.tipoDoc_id),documento_id=str(ingresoId.documento_id),consecAdmision = str(ingresoId.consec)).update(convenio_id=convenioId)
+
     # Validacion si existe o No existe CABEZOTE
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -311,12 +315,14 @@ def PostConsultaLiquidacion(request):
     curt = miConexiont.cursor()
 
     if llave[0] == 'INGRESO':
-        if (convenioId == '0'):
+        if (convenioId == '0' or  convenioId == ''):
+
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(ingresoId.tipoDoc_id) + ' AND documento_id = ' + str(ingresoId.documento_id) + ' AND "consecAdmision" = ' + str(ingresoId.consec) + ' and convenio_id is null'
         else:
+
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(ingresoId.tipoDoc_id) + ' AND documento_id = ' + str(ingresoId.documento_id) + ' AND "consecAdmision" = ' + str(ingresoId.consec) + ' and convenio_id = ' + "'" + str(convenioId) + "'"
     else:
-        if (convenioId == '0'):
+        if (convenioId == '0' or  convenioId == ''):
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(triageId.tipoDoc_id) + ' AND documento_id = ' + str(triageId.documento_id) + ' AND "consecAdmision" = ' + str(triageId.consec) + ' and convenio_id is null'
         else:
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(triageId.tipoDoc_id) + ' AND documento_id = ' + str(triageId.documento_id) + ' AND "consecAdmision" = ' + str(triageId.consec) + ' and convenio_id = ' + "'" + str(convenioId) + "'"
@@ -330,7 +336,10 @@ def PostConsultaLiquidacion(request):
 
     miConexiont.close()
 
-    if (cabezoteLiquidacion == []):
+    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion)
+
+    if (cabezoteLiquidacion == ''):
+        print ("OJOOOOOO ENTRE AL CABEZOTE LIQUIDACION")
         # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",       user="postgres", password="123456")
         curt = miConexiont.cursor()
@@ -353,9 +362,9 @@ def PostConsultaLiquidacion(request):
         #Se debe mejorar esta linea para que saque el maximo delpaciente observando tipo de ingreso: TRIAGE, INGRESO
         #
         if llave[0] == 'INGRESO':
-            liquidacionU = Liquidacion.objects.all().filter(tipoDoc_id=ingresoId.tipoDoc_id).filter(documento_id=ingresoId.documento_id).filter(consec=ingresoId.consec).aggregate(maximo=Coalesce(Max('id'), 0))
+            liquidacionU = Liquidacion.objects.all().filter(tipoDoc_id=ingresoId.tipoDoc_id).filter(documento_id=ingresoId.documento_id).filter(consecAdmision=ingresoId.consec).aggregate(maximo=Coalesce(Max('id'), 0))
         else:
-            liquidacionU = Liquidacion.objects.all().filter(tipoDoc_id=triageId.tipoDoc_id).filter(documento_id=triageId.documento_id).filter(consec=triageId.consec).aggregate(maximo=Coalesce(Max('id'), 0))
+            liquidacionU = Liquidacion.objects.all().filter(tipoDoc_id=triageId.tipoDoc_id).filter(documento_id=triageId.documento_id).filter(consecAdmision=triageId.consec).aggregate(maximo=Coalesce(Max('id'), 0))
             liquidacionId = (liquidacionU['maximo']) + 0
     else:
         liquidacionId = cabezoteLiquidacion[0]['id']
@@ -915,8 +924,9 @@ def PostDeleteLiquidacionDetalle(request):
     print("totalProcedimientos", totalProcedimientos)
 
     # Si en otra pantalla estan actualizando abonos pues se veri reflejadop
-
-    registroPago = Liquidacion.objects.get(id=liquidacionId)
+    antesDe = LiquidacionDetalle.objects.get(id=liquidacionId)
+    luegoLiquidacionId = antesDe.liquidacion_id
+    registroPago = Liquidacion.objects.get(id=luegoLiquidacionId)
     totalCopagos = registroPago.totalCopagos
     totalCuotaModeradora = registroPago.totalCuotaModeradora
     totalAnticipos = registroPago.anticipos
@@ -925,6 +935,13 @@ def PostDeleteLiquidacionDetalle(request):
     totalRecibido = registroPago.totalRecibido
     totalAnticipos = registroPago.anticipos
     totalLiquidacion = totalSuministros + totalProcedimientos
+
+    if totalRecibido == None:
+        totalRecibido=0
+
+    print ("totalRecibido = ",totalRecibido )
+    print("totalLiquidacion = ",totalLiquidacion )
+
     valorApagar = totalLiquidacion -  totalRecibido
     
 

@@ -152,7 +152,7 @@ function arrancaAutorizaciones(valorTabla,valorData)
                       btn = btn + " <button class='miAutorizacionDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
                        return btn;
                     },
-                    "targets":10
+                    "targets":11
                }
             ],
 	 pageLength: 3,
@@ -190,6 +190,7 @@ function arrancaAutorizaciones(valorTabla,valorData)
                 { data: "fields.valorSolicitado"},
                 { data: "fields.valorAutorizado"},
                 { data: "fields.autorizado"},
+                { data: "fields.usuarioRegistro_id"},
                      ]
             }
 
@@ -297,22 +298,26 @@ window.addEventListener('load', async () => {
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
+				
+	
+			alert("tipoTipoExamen = " +   info[0].fields.tipoTipoExamen);
 
 				$('#tipoTipoExamen').val(info[0].fields.tipoTipoExamen);
  				$('#estadoAutorizacion').val(info[0].fields.estadoAutorizacion_id);
-				$('#estadoNombre').val(info[0].fields.estadoNombre);
+
+				 $('#tipNombre').val(info[0].fields.tipNombre);
+				 $('#exaNombre').val(info[0].fields.exaNombre);
  			
 				
   		        	$('#numeroAutorizacion').val(info[0].fields.numeroAutorizacion);
-        	       	$('#examenId').val(info[0].fields.examenes_id);
-        	       	$('#nombreExamen').val(info[0].fields.examenes_id);
-			$('#estadoNombre').val(info[0].fields.estadoNombre);
+        	       	$('#examenes_id').val(info[0].fields.examenes_id);
 	                $('#cantidadSolicitada').val(info[0].fields.cantidadSolicitada);
 	                $('#cantidadAutorizada').val(info[0].fields.cantidadAutorizada);
 	                $('#valorSolicitado').val(info[0].fields.valorSolicitado);
 	                $('#valorAutorizado').val(info[0].fields.valorAutorizado);
 	                $('#fechaRegistro').val(info[0].fields.fechaRegistro);
 	                $('#tipoExamen').val(info[0].fields.tipoExamen);
+	                $('#usuarioRegistro_id').val(info[0].fields.usuarioRegistro_id);
 
 
 

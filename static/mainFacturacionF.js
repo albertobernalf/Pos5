@@ -513,6 +513,9 @@ window.addEventListener('load', async () => {
 
 	          var post_id = $(this).data('pk');
 
+		alert("pk = " + post_id);
+
+
         var username_id = document.getElementById("username_id").value;
 
 	document.getElementById("liquidacionId").value = '';
@@ -942,7 +945,7 @@ window.addEventListener('load', async () => {
         $('body').on('click', '.editPostLiquidacionDetalle', function () {
 
           var post_id = $(this).data('pk');
-       alert("edito por aqui la liquid Una VEZ pk1 = " + $(this).data('pk'));
+
 
 	$.ajax({
 	           url: '/postConsultaLiquidacionDetalle/',
@@ -1162,8 +1165,8 @@ window.addEventListener('load', async () => {
 
 		        data2 = JSON.stringify(data2);
 
-		  arrancaLiquidacion(2,data);
-		    dataTableLiquidacionDetalleInitialized = true;
+			  arrancaLiquidacion(2,data2);
+			    dataTableLiquidacionDetalleInitialized = true;
 
 
 			LeerTotales();

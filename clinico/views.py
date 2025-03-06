@@ -444,23 +444,23 @@ def crearHistoriaClinica(request):
 
                 ## aqui tentativo insert
 
-                comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'"   +  ");"
+                comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'"   +  ") RETURNING id ;"
 
                 ## fin tentativo insert
 
                 print(comando)
                 resultado = curt.execute(comando)
-                print("resultado =", resultado)
-                #print("y aqui si trael el historiaId = " , curt.fetchall()[0])
 
-                n = curt.rowcount
-                print ("Registros commit = " , n)
+                historiaId = curt.fetchone()[0]
+                print("resultado = " , resultado)
+
+                print ("historiaId Final = ", historiaId)
 
                 miConexiont.commit()
 
                 #print("historiaid = ", historiaId)
-                historiaIdU = Historia.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
-                historiaId = (historiaIdU['maximo']) + 0
+                #historiaIdU = Historia.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
+                #historiaId = (historiaIdU['maximo']) + 0
                 print("1 record inserted, ID:", historiaId)
 
                 miConexiont.close()
@@ -530,8 +530,11 @@ def crearHistoriaClinica(request):
                 for id in curt.fetchall():
                     cabezoteLiquidacion.append({'id': id})
 
+                print ("CABEZOTE DE LIQUIDACION = ", cabezoteLiquidacion);
+
+
                 miConexiont.close()
-                if (cabezoteLiquidacion == []):
+                if (cabezoteLiquidacion == ''):
                     # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
                     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
                                                    user="postgres", password="123456")
@@ -812,10 +815,34 @@ def crearHistoriaClinica(request):
 
                         miConexiont.close()
 
+
+                        if convenioValor != []:
+
+                            print ("Cups = "  , convenioValor[0]['cups'])
+                            tarifaValor = convenioValor[0]['valor']
+                            tarifaValor = str(tarifaValor)
+                            print("tarifaValor = ", tarifaValor)
+                            tarifaValor = tarifaValor.replace("(", ' ')
+                            tarifaValor = tarifaValor.replace(")", ' ')
+                            tarifaValor = tarifaValor.replace(",", ' ')
+                            print ("tarifaValor = ", tarifaValor)
+                            #cupsId = convenioValor[0]['cups']
+                            #cupsId = str(cupsId)
+                            #print("cupsId = ", cupsId)
+                            #cupsId = cupsId.replace("(", ' ')
+                            #cupsId = cupsId.replace(")", ' ')
+                            #cupsId = cupsId.replace(",", ' ')
+                            #print("cupsId = ", cupsId)
+                            #
+
+                        else:
+                            tarifaValor=0
+
+                        TotalTarifa = float(tarifaValor) * float(cantidad)
+
                         # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
 
                         print("el cups :", cups)
-
 
                         if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
@@ -870,32 +897,9 @@ def crearHistoriaClinica(request):
 
                             # Fin tema Autorizaciones
 
-                        if convenioValor != []:
-
-                            print ("Cups = "  , convenioValor[0]['cups'])
-                            tarifaValor = convenioValor[0]['valor']
-                            tarifaValor = str(tarifaValor)
-                            print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("(", ' ')
-                            tarifaValor = tarifaValor.replace(")", ' ')
-                            tarifaValor = tarifaValor.replace(",", ' ')
-                            print ("tarifaValor = ", tarifaValor)
-                            #cupsId = convenioValor[0]['cups']
-                            #cupsId = str(cupsId)
-                            #print("cupsId = ", cupsId)
-                            #cupsId = cupsId.replace("(", ' ')
-                            #cupsId = cupsId.replace(")", ' ')
-                            #cupsId = cupsId.replace(",", ' ')
-                            #print("cupsId = ", cupsId)
-                            #
-
-                        else:
-                            tarifaValor=0
-
-                        TotalTarifa = float(tarifaValor) * float(cantidad)
 
                     # Aqui Rutina FACTURACION crea en liquidaciondetalle el registro con la tarifa, con campo cups y convenio
-                    #
+                    
                         if (codigoCupsId[0].requiereAutorizacion == 'N'):
 
                             miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
@@ -970,6 +974,30 @@ def crearHistoriaClinica(request):
 
                         miConexiont.close()
 
+                        if convenioValor != []:
+
+                            print ("Cups = "  , convenioValor[0]['cups'])
+                            tarifaValor = convenioValor[0]['valor']
+                            tarifaValor = str(tarifaValor)
+                            print("tarifaValor = ", tarifaValor)
+                            tarifaValor = tarifaValor.replace("(", ' ')
+                            tarifaValor = tarifaValor.replace(")", ' ')
+                            tarifaValor = tarifaValor.replace(",", ' ')
+                            print ("tarifaValor = ", tarifaValor)
+
+
+                            #cupsId = convenioValor[0]['cups']
+                            #cupsId = str(cupsId)
+                            #print("cupsId = ", cupsId)
+                            #cupsId = cupsId.replace("(", ' ')
+                            #cupsId = cupsId.replace(")", ' ')
+                            #cupsId = cupsId.replace(",", ' ')
+                            #print("cupsId = ", cupsId)
+                        else:
+                            tarifaValor=0
+
+                        TotalTarifa = float(tarifaValor) * float(cantidad)
+
                         # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
 
                         print("el cups :", cups)
@@ -1028,29 +1056,8 @@ def crearHistoriaClinica(request):
 
                             # Fin tema Autorizaciones
 
-                        if convenioValor != []:
-
-                            print ("Cups = "  , convenioValor[0]['cups'])
-                            tarifaValor = convenioValor[0]['valor']
-                            tarifaValor = str(tarifaValor)
-                            print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("(", ' ')
-                            tarifaValor = tarifaValor.replace(")", ' ')
-                            tarifaValor = tarifaValor.replace(",", ' ')
-                            print ("tarifaValor = ", tarifaValor)
 
 
-                            #cupsId = convenioValor[0]['cups']
-                            #cupsId = str(cupsId)
-                            #print("cupsId = ", cupsId)
-                            #cupsId = cupsId.replace("(", ' ')
-                            #cupsId = cupsId.replace(")", ' ')
-                            #cupsId = cupsId.replace(",", ' ')
-                            #print("cupsId = ", cupsId)
-                        else:
-                            tarifaValor=0
-
-                        TotalTarifa = float(tarifaValor) * float(cantidad)
 
                     # Aqui Rutina FACTURACION crea en liquidaciondetalle el registro con la tarifa, con campo cups y convenio
                     #

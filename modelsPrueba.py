@@ -507,3 +507,5 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 	-- Ojo crear del delete de ripsdetalle
         --  En facturacion_facturacion no funciona los fiultro de busqueda por fecha o por nro de factyra
 	-- Crear boton modificar envio / Borrar envio
+
+--OJOP en desde clinico.views al enviar Autorizacioines esta rutina revisarla por que creo pailas mete das las autorizacxiones en una sola no se siesta bien

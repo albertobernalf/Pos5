@@ -195,6 +195,8 @@ select * from autorizaciones_autorizacionesdetalle where autorizaciones_id = 20;
 
 select * from autorizaciones_estadosautorizacion;
 
+select * from admisiones_ingresos;
+
 select * from rips_ripsestados;
 select * from rips_ripsenvios;
 UPDATE rips_ripsenvios set "ripsEstados_id" = 1;
@@ -205,3 +207,15 @@ SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", 
 	FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, usuarios_usuarios usu , rips_ripstiposnotas tiposNotas ,
 	rips_ripsestados estrips where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id 
 	AND usu.id = env."usuarioRegistro_id" AND env."ripsTiposNotas_id" = tiposNotas.id AND estrips.id = env."ripsEstados_id"
+
+select convenio_id,* from facturacion_liquidacion where id=121;
+select * from facturacion_liquidaciondetalle where liquidacion_id in (121,122);
+
+select * from clinico_historia;
+select * from clinico_historiaexamenes where historia_id = 664;
+
+delete from facturacion_liquidacion where id =124;
+
+
+select * from autorizaciones_autorizaciones; 
+select * from autorizaciones_autorizacionesdetalle; 
