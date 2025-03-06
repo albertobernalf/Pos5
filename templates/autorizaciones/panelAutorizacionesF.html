@@ -80,6 +80,7 @@ div.dataTables_filter input {
                 <input type="hidden" id="consec" name="consec" value="">
                 <input type="hidden" id="tipoIng" name="tipoIng" value="{{tipoIng}}">
 		<input type="hidden" id="convenioId" name="convenioId" value="{{convenioId}}">
+ 			<input type="text" id="autorizacionId" name="autorizacionId" value="" readonly> </input>
 	
             </form>
 
@@ -317,7 +318,7 @@ div.dataTables_filter input {
                             <form id="postFormAutorizacionesDetalle" name="postFormAutorizacionesDetalle" class="form-horizontal"
                                   novalidate>
                                                                              
-				<div class="row row-cols-9" style="height=1px;">
+				<div class="row row-cols-14" style="height=1px;">
 				<div class="col">
    			   <input type="text" id="autorizacionDetalleId" name="autorizacionDetalleId" value=""  readonly> </input>
                                 </div>
@@ -327,8 +328,8 @@ div.dataTables_filter input {
                                     <input type="text" id="tipoTipoExamen" name="tipoTipoExamen"  ></input>
                                 </div>
 	
-
-		           Estado Aut:
+				<div class="col">
+		          
 				<select class="select-css"  id="estadoAutorizacion"
                                                                 name="estadoAutorizacion">
                                                             {% for estadosAutorizacion in EstadosAutorizacion %}
@@ -386,15 +387,16 @@ div.dataTables_filter input {
                                 </div>
 
 				   <div class="col">
-                                   
-                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value=""  readonly> </input>
+                                   usuarioRegistro
+                                    <input type="text" id="usuarioRegistro2_id" name="usuarioRegistro2_id" value="{{Username_id}}" readonly> </input>
                                 </div>
 
 
                                 <div class="col-sm-offset-2 col-sm-10 mt-2">
                                     <button type="button" class="btn btn-primary" id="saveBtnActualizarAut"   value="create" onclick="ActualizarAut()">Guardar </button>
                                 </div>
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+                                </div> 
+			<!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
                         </div> <!-- CIERRA BODY -->

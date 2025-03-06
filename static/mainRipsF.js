@@ -16,7 +16,7 @@ let dataTableRipsTransaccionInitialized = false;
 let dataTableRipsUsuariosInitialized = false;
 let dataTableRipsProcedimientosInitialized = false;
 let dataTableRipsHospitalizacionInitialized = false;
-let dataTableRipsMediamentosInitialized = false;
+let dataTableRipsMedicamentosInitialized = false;
 
 //
 
@@ -732,7 +732,7 @@ function arrancaEnviosRips(valorTabla,valorData)
     if (valorTabla == 8)
     {
 
-        let dataTableOptionsMedicamentos  ={
+        let dataTableOptionsRipsMedicamentos  ={
   dom: 'Bfrtilp',
   buttons: [
     {
@@ -1274,7 +1274,7 @@ function GenerarJsonRips()
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
-	var tipoRips = document.getElementById("tipoRips").value;
+	var tipoRips = document.getElementById("tipoRips1").value;
 
 
         var username_id = document.getElementById("username_id").value;

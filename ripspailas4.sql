@@ -216,6 +216,75 @@ select * from clinico_historiaexamenes where historia_id = 664;
 
 delete from facturacion_liquidacion where id =124;
 
+select 'SUMINISTROS' tipoTipoExamen, det.id, "cantidadSolicitada", "cantidadAutorizada", det."fechaRegistro", det."estadoReg", autorizaciones_id, 
+	det."usuarioRegistro_id",  tipsum.nombre tipNombre, exa.nombre exaNombre,  cums_id, "valorAutorizado", "valorSolicitado", "tiposExamen_id", 
+	det."tipoSuministro_id", "estadoAutorizacion_id", "numeroAutorizacion" , est.nombre estadoNombre FROM autorizaciones_autorizacionesdetalle det, 
+	autorizaciones_estadosautorizacion est, facturacion_tipossuministro tipsum, facturacion_suministros exa  
+	WHERE det.id ='19'AND 	tipsum.id = det."tipoSuministro_id"  AND exa.id = det.cums_id AND  est.id = det."estadoAutorizacion_id"
 
 select * from autorizaciones_autorizaciones; 
 select * from autorizaciones_autorizacionesdetalle; 
+select * from clinico_examenes;
+select * from clinico_tiposexamen;;
+select * from facturacion_tipossuministro;
+
+select documento_id,folio, * from clinico_historia;
+
+select * from facturacion_liquidaciondetalle where liquidacion_id in (121,122);
+
+select * from usuarios_usuarios;
+
+select * from facturacion_facturacion where id=41;
+select * from facturacion_liquidacion where documento_id=25 and "consecAdmision" = 1
+select * from facturacion_liquidaciondetalle where liquidacion_id=122;
+update admisiones_ingresos set "salidaDefinitiva"='R' where id =50100
+
+SELECT 'INGRESO'||'-'|| i.id||'-'||case when conv.id != 0 then conv.id else '00' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec ,
+	i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual,conv.nombre convenio, conv.id convenioId 
+	FROM admisiones_ingresos i
+	INNER JOIN clinico_servicios ser ON (ser.id = i."serviciosActual_id" )
+	INNER JOIN sitios_serviciosSedes sd ON (i."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id) 
+	INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  i."sedesClinica_id" and dep.id = i."dependenciasActual_id"  AND  (dep.disponibilidad= 'O' OR (dep.disponibilidad = 'L' AND ser.id=3)) AND dep."serviciosSedes_id" = sd.id ) 
+	INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id")
+	INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" )
+	INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id")
+	INNER JOIN clinico_Diagnosticos diag ON (diag.id = i."dxActual_id") 
+	LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = i."tipoDoc_id" and fac.documento_id = i.documento_id and  fac."consecAdmision" = i.consec )  
+	LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id)
+	WHERE i."sedesClinica_id" =  '1' AND ((i."salidaDefinitiva" = 'N' and i."fechaSalida" is null)  or  (i."fechaSalida" is not null and i."salidaDefinitiva"='R'))
+	UNION 
+	SELECT 'TRIAGE'||'-'|| t.id||'-'||case when conv.id != 0 then conv.id else '00' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre, t.consec consec ,
+	t."fechaSolicita" , cast('0001-01-01 00:00:00' as timestamp) fechaSalida,ser.nombre servicioNombreIng, dep.nombre camaNombreIng , ' ' dxActual , conv.nombre convenio,
+	conv.id convenioId FROM triage_triage t INNER JOIN clinico_servicios ser ON ( ser.nombre = 'TRIAGE')
+	INNER JOIN sitios_serviciosSedes sd ON (t."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id and sd.id = t."serviciosSedes_id" ) 
+	INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  t."sedesClinica_id" and dep.id = t.dependencias_id  AND dep.disponibilidad = 'O' AND dep."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and t."consecAdmision" = 0 and dep."documento_id" = t."documento_id") 
+	INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = t."tipoDoc_id" and u.id = t."documento_id" ) 
+	INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") 
+	LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = t."tipoDoc_id" and fac.documento_id = t.documento_id and  fac."consecAdmision" = t.consec ) 
+	LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id)
+	WHERE  t."sedesClinica_id" = '1'
+
+select * from facturacion_facturacion;
+select * from facturacion_facturaciondetalle where facturacion_id = 48;;
+
+select * from contratacion_convenios; -- empresa id =2
+select * from facturacion_empresas; -- suraeps
+
+select * from rips_ripsenvios;
+select * from rips_ripsestados;
+
+INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")
+	select tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id,
+		(select case when inca.id is not null  then 'SI' else 'NO' end incap
+	 from clinico_historia hist, clinico_historialincapacidades inca
+	 where hist."tipoDoc_id" = fac."tipoDoc_id"  and hist.documento_id = fac.documento_id  and hist."consecAdmision" = fac."consecAdmision"  and 
+      hist.id = inca.historia_id) 	, row_number() OVER(ORDER BY det.id) AS consecutivo,
+	now(), muni.id,	pais.id, pais.id, '1', u.documento, det.id, '68' 
+	from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, 
+	sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = '38' 
+	and e.id=det."ripsEnvios_id" and det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and 
+	fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id 
+	and tipousu.id = i."ripsTipoUsuario_id"
+
+
+select * from rips_ripsdetalle;

@@ -29,7 +29,7 @@ from clinico.models import Servicios
 from rips.models import RipsTransaccion, RipsUsuarios
 import pickle
 import io
-
+from rips.models import RipsEstados, RipsEnvios
 
 def decimal_serializer(obj):
     if isinstance(obj, Decimal):
@@ -151,18 +151,20 @@ def GuardaEnviosRips(request):
     print ("cantidadRechazadas =", cantidadRechazadas)
 
 
-    estadoPasoMinisterio = request.POST['estadoPasoMinisterio']
-    print ("estadoPasoMinisterio =", estadoPasoMinisterio)
+    estadoMinisterio = request.POST['estadoMinisterio']
+    print ("estadoMinisterio =", estadoMinisterio)
     usuarioRegistro_id = request.POST['usuarioRegistro_id']
     print ("usuarioRegistro_id =", usuarioRegistro_id)
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
+    estadoRips = RipsEstados.objects.get(nombre='PENDIENTE')
+
 
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion") values ('  + str(fechaEnvio) + "," + str(fechaRespuesta) + "," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
+    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","ripsEstados_id", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion") values ('  + str(fechaEnvio) + "," + str(fechaRespuesta) + "," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoRips.id) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
@@ -466,7 +468,7 @@ def GenerarJsonRips(request):
     print ("enviadoRips = ", enviadoRips.ripsEstados)	
 
 
-    if (ripsEstados=='1'):
+    if (enviadoRips.ripsEstados =='1'):
 
 	    return JsonResponse({'success': True, 'message': 'No es posible generar RIPS enviados!'})
 
@@ -569,7 +571,11 @@ def GenerarJsonRips(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'INSERT INTO rips_ripsusuarios("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  select tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id,  (select case when inca.id is not null  then ' +  "'" + str('SI') + "'" +  ' else ' + "'" + str('NO') + "'" + ' end incap  ' +  ' , row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' and e.id=det."ripsEnvios_id" and det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
+    #detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  select tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id,  (select case when inca.id is not null  then ' +  "'" + str('SI') + "'" +  ' else ' + "'" + str('NO') + "'" + ' end incap  ' +  ' , row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' and e.id=det."ripsEnvios_id" and det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
+
+    detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  SELECT tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id, 	' + "'" + str('NO') + "'" + ' , row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' AND e.id = det."ripsEnvios_id"  AND det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
+
+    print ("detalle = ", detalle)
 
     curx.execute(detalle)
     miConexionx.commit()

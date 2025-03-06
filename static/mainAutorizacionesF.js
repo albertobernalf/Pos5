@@ -259,6 +259,8 @@ window.addEventListener('load', async () => {
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
+	document.getElementById("autorizacionId").value = autorizacionId ;
+
         var data =  {}   ;
         data['username'] = username;
         data['sedeSeleccionada'] = sedeSeleccionada;
@@ -299,8 +301,7 @@ window.addEventListener('load', async () => {
                 dataType: 'json',
                 success: function (info) {
 				
-	
-			alert("tipoTipoExamen = " +   info[0].fields.tipoTipoExamen);
+				
 
 				$('#tipoTipoExamen').val(info[0].fields.tipoTipoExamen);
  				$('#estadoAutorizacion').val(info[0].fields.estadoAutorizacion_id);
@@ -317,20 +318,8 @@ window.addEventListener('load', async () => {
 	                $('#valorAutorizado').val(info[0].fields.valorAutorizado);
 	                $('#fechaRegistro').val(info[0].fields.fechaRegistro);
 	                $('#tipoExamen').val(info[0].fields.tipoExamen);
-	                $('#usuarioRegistro_id').val(info[0].fields.usuarioRegistro_id);
+	                $('#usuarioRegistro2_id').val(info[0].fields.usuarioRegistro_id);
 
-
-
-
-
-	        var data =  {}   ;
-	        data['username'] = username;
-	        data['sedeSeleccionada'] = sedeSeleccionada;
-	        data['nombreSede'] = nombreSede;
-	        data['sede'] = sede;
-	        data['username_id'] = username_id;
-
-	        data = JSON.stringify(data);
 
 
          	   $('#modelHeadingAutorizacionesDetalle').html("Detalle Autorizaciones");
@@ -361,21 +350,28 @@ function ActualizarAut()
 		   $("#mensajes").html(data2.message);
                   $('#postFormAutorizacionesDetalle').trigger("reset");
 
+	    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        	var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+		var autorizacionId = document.getElementById("autorizacionId").value;
+
+
 		var data =  {}   ;
 	        data['username'] = username;
 	       	data['sedeSeleccionada'] = sedeSeleccionada;
 	       	data['nombreSede'] = nombreSede;
 	      	data['sede'] = sede;
 	        data['username_id'] = username_id;
+		   data['autorizacionId'] = autorizacionId;	
        		data = JSON.stringify(data);
+	        arrancaAutorizaciones(2,data);
+	    dataTableAutorizacionesDetalleInitialized = true;
 	
 
-        arrancaAutorizaciones(1,data);
-	    dataTableAutorizacionesInitialized = true;
-
-
-
  		 $('#crearModelAutorizacionesDetalle').modal('hide');
+
                 },
             error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");

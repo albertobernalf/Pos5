@@ -509,3 +509,6 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 	-- Crear boton modificar envio / Borrar envio
 
 --OJOP en desde clinico.views al enviar Autorizacioines esta rutina revisarla por que creo pailas mete das las autorizacxiones en una sola no se siesta bien
+-- OJOPOJOPOJOPOJOP  que paso habia una intruccion para ordenar por todas las columnas que paso =? filtros en tossa QUE LO HIZO M buscalo
+--ojo cuando factura debe hacer un refres h a facturacon_facturacion y facturacion_liquidacuioib y quedar en la pantalla facturacion_liquidacion NO CREE ?
+-- ojo hay que programar con estadoReg = 'A' solo tome estas en el modulo d efacturtacion y para rips etc. de cuidado ...

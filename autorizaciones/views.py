@@ -233,7 +233,7 @@ def ActualizarAutorizacionDetalle(request):
     print("fechaRegistro = ", fechaRegistro)
 
     estadoReg = 'A'
-    usuarioRegistro_id = request.POST['usuarioRegistro_id']
+    usuarioRegistro_id = request.POST['usuarioRegistro2_id']
 
     print ("usuarioRegistro_id", usuarioRegistro_id)
     # ACTUALIZA DETALLE AUTORIZACION
@@ -307,7 +307,7 @@ def ActualizarAutorizacionDetalle(request):
 	    comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "cums_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro","historiaMedicamento_id") VALUES (' + "'" + str(
 	        consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str(cantidadAutorizada) + "','" + str(
         	valorAutorizado) + "','" + str(valorAutorizado) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(
-	        fechaRegistro) + "','" + str(estadoReg) + "','" + str(examenId) + "','" + str(usuarioRegistro_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(datosMed.id) + "')"
+	        fechaRegistro) + "','" + str(estadoReg) + "','" + str(examenId) + "','" + str(usuarioRegistro_id) + "','" + str(liquidacionId) + "'"  + ",'SISTEMA'," + "'" + str(datosMed.id) + "')"
 
     print ("comando = " , comando)
 

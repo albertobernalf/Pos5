@@ -1377,7 +1377,6 @@ function LeerTotales()
 function AnularFactura()
 {
 
-	alert ("Entre Anular factura ");
 
  	var facturacionId = document.getElementById("Afactura").value;
 
@@ -1427,7 +1426,7 @@ function AnularFactura()
 	
 		        data2 = JSON.stringify(data2);
 
-        arrancaLiquidacion(3,data);
+        arrancaLiquidacion(3,data2);
 	    dataTableFacturacionInitialized = true;
  
 			$("#mensajes").html(data.message);
