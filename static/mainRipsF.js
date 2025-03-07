@@ -769,7 +769,7 @@ function arrancaEnviosRips(valorTabla,valorData)
 
                        return btn;
                     },
-                    "targets": 30
+                    "targets": 15
                }
             ],
 	 pageLength: 3,
@@ -797,6 +797,7 @@ function arrancaEnviosRips(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+		 { data: "fields.id"},
 	 	  { data: "fields.codPrestador"},
 	  { data: "fields.numAutorizacion"},
 	  { data: "fields.idMIPRES"},
@@ -811,21 +812,9 @@ function arrancaEnviosRips(valorTabla,valorData)
 	  { data: "fields.valorPagoModerador"},
 	  { data: "fields.numFEVPagoModerador"},
 	  { data: "fields.consecutivo"},
-	  { data: "fields.fechaRegistro"},
-	  { data: "fields.codDiagnosticoPrincipal_id"},
-	  { data: "fields.codDiagnosticoRelacionado_id"},
-	  { data: "fields.codTecnologiaSalud_id"},
-	  { data: "fields.conceptoRecaudo_id"},
-	  { data: "fields.formaFarmaceutica_id"},
-	  { data: "fields.tipoDocumentoIdentificacion_id"},
-	  { data: "fields.tipoMedicamento_id"},
-	  { data: "fields.unidadMedida_id"},
-	  { data: "fields.unidadMinDispensa_id"},
-	  { data: "fields.usuarioRegistro_id"},
-	  { data: "fields.ripsDetalle_id"},
-	  { data: "fields.itemFactura"},
-	  { data: "fields.ripsTipos_id"},
-	  { data: "fields.ripsTransaccion_id"},
+	
+
+
                      ]
             }
 

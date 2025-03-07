@@ -1191,9 +1191,10 @@ def FacturarCuenta(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO facturacion_facturacion (documento_id, "consecAdmision", "fechaFactura", "totalCopagos", "totalCuotaModeradora","totalProcedimientos",   "totalSuministros", "totalFactura", "valorApagar", anulado, anticipos, "fechaRegistro", "estadoReg", "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id","usuarioRegistro_id") SELECT documento_id, "consecAdmision", ' + "'" + str(fechaRegistro) + "'" + ' , "totalCopagos", "totalCuotaModeradora", "totalProcedimientos",  "totalSuministros", "totalLiquidacion", "valorApagar", anulado, anticipos, ' + "'" + str(fechaRegistro) + "'" + ' ,  ' + "'" + str('A') + "'" + ' , "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id", ' + "'" + str(username_id) + "'" + ' FROM facturacion_liquidacion WHERE id =  ' + liquidacionId
+    comando = 'INSERT INTO facturacion_facturacion ("sedesClinica_id", documento_id, "consecAdmision", "fechaFactura", "totalCopagos", "totalCuotaModeradora","totalProcedimientos",   "totalSuministros", "totalFactura", "valorApagar", anulado, anticipos, "fechaRegistro", "estadoReg", "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id","usuarioRegistro_id") SELECT ' "'" + str(sede) + "'" + ', documento_id, "consecAdmision", ' + "'" + str(fechaRegistro) + "'" + ' , "totalCopagos", "totalCuotaModeradora", "totalProcedimientos",  "totalSuministros", "totalLiquidacion", "valorApagar", anulado, anticipos, ' + "'" + str(fechaRegistro) + "'" + ' ,  ' + "'" + str('A') + "'" + ' , "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id", ' + "'" + str(username_id) + "'" + ' FROM facturacion_liquidacion WHERE id =  ' + liquidacionId
     print(comando)
     cur3.execute(comando)
+    facturacionId = curt.fetchone()[0]
     miConexion3.commit()
     miConexion3.close()
 
@@ -1201,7 +1202,7 @@ def FacturarCuenta(request):
     # LO MEJOR ES conseguir el id en el mismo insert
 
     #facturacionId = Facturacion.objects.all().filter(tipoDoc_id=usuarioId.documento_id).filter(documento_id=usuarioId.tipoDoc_id).filter(consecAdmision=usuarioId.consecAdmision)
-    facturacionId = Facturacion.objects.get(tipoDoc_id=usuarioId.tipoDoc_id , documento_id=usuarioId.documento_id, consecAdmision=usuarioId.consecAdmision, convenio_id=usuarioId.convenio_id)
+    #facturacionId = Facturacion.objects.get(tipoDoc_id=usuarioId.tipoDoc_id , documento_id=usuarioId.documento_id, consecAdmision=usuarioId.consecAdmision, convenio_id=usuarioId.convenio_id)
 
     print ("facturacionId = ", facturacionId.id)
 
@@ -1211,6 +1212,7 @@ def FacturarCuenta(request):
     curt = miConexiont.cursor()
     comando = 'UPDATE admisiones_ingresos SET "fechaSalida" = ' + "'" +  str(fechaRegistro) + "'" + ', factura = ' + str(facturacionId.id)  +  ', "dependenciasSalida_id" = "dependenciasActual_id" ' +  ' WHERE id =' + str(ingresoId.id)
     curt.execute(comando)
+
     miConexiont.commit()
     miConexiont.close()
 

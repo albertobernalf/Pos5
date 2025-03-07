@@ -685,10 +685,11 @@ def crearHistoriaClinica(request):
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
-                            comando = 'SELECT aut.id id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'"
+                            comando = 'SELECT aut.id id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND aut.historia_id = " + "'" + str(historiaId) + "'"
 
 
                             curt.execute(comando)
+			    
                             hayAut = []
 
                             for id in curt.fetchall():
@@ -705,17 +706,18 @@ def crearHistoriaClinica(request):
                                                            user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
 
                                 print ("comando ", comando)
 
                                 curt.execute(comando)
+                                autorizacionId = curt.fetchone()[0]
                                 miConexiont.commit()
 
                                 miConexiont.close()
 
-                                autorizacionIdU = Autorizaciones.objects.all().filter(historia_id=historiaId).aggregate(maximo=Coalesce(Max('id'), 0))
-                                autorizacionId = (autorizacionIdU['maximo']) + 0
+                                #autorizacionIdU = Autorizaciones.objects.all().filter(historia_id=historiaId).aggregate(maximo=Coalesce(Max('id'), 0))
+                                #autorizacionId = (autorizacionIdU['maximo']) + 0
 			
                             else:
 
@@ -853,7 +855,7 @@ def crearHistoriaClinica(request):
                             comando = 'SELECT aut.id id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
                                 tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
                                 documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
-                                ingresoPaciente) + "'"
+                                ingresoPaciente) + "' AND aut.historia_id = " + "'" + str(historiaId) + "'"
 
                             curt.execute(comando)
                             hayAut = []
@@ -871,14 +873,14 @@ def crearHistoriaClinica(request):
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
                                 curt.execute(comando)
-
+                                autorizacionId = curt.fetchone()[0]
                                 miConexiont.close()
 
-                                autorizacionIdU = Autorizaciones.objects.all().filter(
-                                    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
-                                autorizacionId = (autorizacionIdU['maximo']) + 0
+                                #autorizacionIdU = Autorizaciones.objects.all().filter(
+                                #    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                #autorizacionId = (autorizacionIdU['maximo']) + 0
 
                             else:
 
@@ -1012,7 +1014,7 @@ def crearHistoriaClinica(request):
                             comando = 'SELECT aut.id id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
                                 tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
                                 documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
-                                ingresoPaciente) + "'"
+                                ingresoPaciente) + "' AND aut.historia_id = " + "'" + str(historiaId) + "'"
 
                             curt.execute(comando)
                             hayAut = []
@@ -1030,14 +1032,14 @@ def crearHistoriaClinica(request):
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
                                 curt.execute(comando)
-
+                                autorizacionId = curt.fetchone()[0]
                                 miConexiont.close()
 
-                                autorizacionIdU = Autorizaciones.objects.all().filter(
-                                    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
-                                autorizacionId = (autorizacionIdU['maximo']) + 0
+                                #autorizacionIdU = Autorizaciones.objects.all().filter(
+                                #    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                #autorizacionId = (autorizacionIdU['maximo']) + 0
 
                             else:
 
@@ -1165,7 +1167,7 @@ def crearHistoriaClinica(request):
                               comando = 'SELECT aut.id id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
                                   tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
                                   documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
-                                  ingresoPaciente) + "'"
+                                  ingresoPaciente) + "' AND aut.historia_id = " + "'" + str(historiaId) + "'"
 
                               curt.execute(comando)
                               hayAut = []
@@ -1190,14 +1192,14 @@ def crearHistoriaClinica(request):
                                       tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(
                                       documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(
                                       ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" + str(
-                                      codigoCupsId[0].id) + "'"
+                                      codigoCupsId[0].id) + "' RETURNING id"
                                   curt.execute(comando)
-
+                                  autorizacionId = curt.fetchone()[0]
                                   miConexiont.close()
 
-                                  autorizacionIdU = Autorizaciones.objects.all().filter(
-                                      historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
-                                  autorizacionId = (autorizacionIdU['maximo']) + 0
+                                  #autorizacionIdU = Autorizaciones.objects.all().filter(
+                                  #    historia_id=historia.id).aggregate(maximo=Coalesce(Max('id'), 0))
+                                  #autorizacionId = (autorizacionIdU['maximo']) + 0
 
                               else:
 
@@ -1580,7 +1582,7 @@ def crearHistoriaClinica(request):
                             comando = 'SELECT aut.id id FROM autorizaciones_autorizaciones  aut, clinico_historia historia WHERE  aut.historia_id = historia.id AND historia."tipoDoc_id" = ' + "'" + str(
                                 tipoDocId.id) + "' AND historia.documento_id = " + "'" + str(
                                 documentoId.id) + "'" + ' AND historia."consecAdmision" = ' + "'" + str(
-                                ingresoPaciente) + "'"
+                                ingresoPaciente) + "' AND aut.historia_id = " + "'" + str(historiaId) + "'"
 
                             curt.execute(comando)
                             hayAut = []
@@ -1598,13 +1600,14 @@ def crearHistoriaClinica(request):
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(medicamentos) + "'"
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(medicamentos) + "' RETURNING id"
                                 curt.execute(comando)
+                                autorizacionId = curt.fetchone()[0]
                                 miConexiont.commit()
                                 miConexiont.close()
 
-                                autorizacionIdU = Autorizaciones.objects.all().filter(historia_id=historiaId).aggregate(maximo=Coalesce(Max('id'), 0))
-                                autorizacionId = (autorizacionIdU['maximo']) + 0
+                                #autorizacionIdU = Autorizaciones.objects.all().filter(historia_id=historiaId).aggregate(maximo=Coalesce(Max('id'), 0))
+                                #autorizacionId = (autorizacionIdU['maximo']) + 0
 
                             else:
 

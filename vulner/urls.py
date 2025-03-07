@@ -220,6 +220,7 @@ urlpatterns = [
     path('load_tablaRipsUsuarios/<str:data>', viewsRips.Load_tablaRipsUsuarios, name='load_tablaRipsUsuarios'),
     path('load_tablaRipsProcedimientos/<str:data>', viewsRips.Load_tablaRipsProcedimientos, name='load_tablaRipsProcedimientos'),
     path('load_tablaRipsHospitalizacion/<str:data>', viewsRips.Load_tablaRipsHospitalizacion, name='load_tablaRipsHospitalizacion'),
+    path('load_tablaRipsMedicamentos/<str:data>', viewsRips.Load_tablaRipsMedicamentos,name='load_tablaRipsMedicamentos'),
 
 
     # Autorizaciones

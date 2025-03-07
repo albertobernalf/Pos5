@@ -290,9 +290,14 @@ ALTER FUNCTION generaJSON
 --------------------------------------------------------------------------------
 
 
+
+
+
+select * from rips_ripsenvios;
 select * from rips_ripstransaccion;
 select * from rips_ripsusuarios;
 select * from generaFacturaJSON(31,41)
+	select * from generaFacturaJSON(38,40)
 
 drop function generaFacturaJSON;
 
@@ -330,7 +335,7 @@ where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and rips_ripstransaccio
 valorJson = valorJson ||' ' || valorTransaccionYusuarios;
 
 -- Procedimientos
-
+/*
 totalProcedimientos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id);
 
 SELECT '"servicios": {"procedimientos": [{"codPrestador": '|| '"' || proc."codPrestador" || '",'  ||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'
@@ -358,9 +363,9 @@ from rips_ripstransaccion, rips_ripsprocedimientos proc
 where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and proc."ripsTransaccion_id" = rips_ripstransaccion.id AND rips_ripstransaccion."ripsEnvio_id" = envioRipsId and rips_ripstransaccion."numFactura" = cast(facturaId as text);
 	
 valorJson = valorJson ||' ' ||  valorProcedimientos;
-
+*/
 -- Hospitalizacion
-
+/*
 totalHospitalizacion  = (select count(*) from rips_ripstransaccion ripstra, rips_ripshospitalizacion hosp where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and hosp."ripsTransaccion_id" = ripstra.id);
 
 SELECT '{"hospitalizacion": [{"codPrestador": ' ||'"'  ||   hosp."codPrestador"|| '",'  ||
@@ -394,7 +399,7 @@ from rips_ripstransaccion
 where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and   rips_ripstransaccion."numFactura" =cast(facturaId as text) ;
 
 valorJson = valorJson ||' ' ||  valorHospitalizacion;
-
+*/
 -- Urgencias
 
 totalUrgencias  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsurgenciasobservacion urg where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and urg."ripsTransaccion_id" = ripstra.id);
@@ -430,7 +435,7 @@ if totalUrgencias > 0 then
 
 valorJson = valorJson ||' ' || valorUrgencias;
 */
-
+/*
 totalMedicamentos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsmedicamentos ripsmed where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsmed."ripsTransaccion_id" = ripstra.id);
 
 if totalMedicamentos > 0 then
@@ -500,7 +505,7 @@ if totalMedicamentos > 0 then
  END IF;
 
 valorJson = valorJson ||' ' || totalMedicamentos;
-
+*/
 	SELECT REPLACE (valorJson, '""', '')
 	into valorJson;
 
@@ -514,4 +519,17 @@ ALTER FUNCTION generaJSON
 
 -- Medicamentos
 
+SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
+		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
+		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
+		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
+		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
+		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
 
+	from rips_ripstransaccion ripstra
+	inner join  rips_ripsusuarios u on (u."ripsTransaccion_id" = ripstra.id)
+	left join  rips_ripspaises pais on (pais.id =  u."codPaisResidencia_id")
+	left join  sitios_municipios muni on ( muni.id = u."codMunicipioResidencia_id")
+where  ripstra."ripsEnvio_id" = 38 and ripstra."numFactura" = cast(40 as text)  
+
+select * from rips_ripstransaccion;
