@@ -1523,7 +1523,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
 
         ## FIN CONTEXTO
-        return render(request, "clinico/panelClinico.html", context)
+        return render(request, "clinico/panelClinicoF.html", context)
 
     if (escogeModulo == 'TRIAGE'):
         print ("WENTRE PERMSISO TRIAGE")
