@@ -512,3 +512,46 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 -- OJOPOJOPOJOPOJOP  que paso habia una intruccion para ordenar por todas las columnas que paso =? filtros en tossa QUE LO HIZO M buscalo
 --ojo cuando factura debe hacer un refres h a facturacon_facturacion y facturacion_liquidacuioib y quedar en la pantalla facturacion_liquidacion NO CREE ?
 -- ojo hay que programar con estadoReg = 'A' solo tome estas en el modulo d efacturtacion y para rips etc. de cuidado ...
+
+PARON 1 SEMANA PENDIENTE
+ 1. BUSQUEDA POR COLUMNAS JQUERY DATATABLE
+
+$(document).ready(function() {
+    var table = $('#example').DataTable();
+    
+    // Buscar en múltiples columnas
+    $('#search').on('keyup', function() {
+        table.columns([0, 1, 2])  // Especificar las columnas que quieres filtrar
+            .search(this.value)    // Realizar la búsqueda con el valor de input
+            .draw();               // Actualizar la tabla
+    });
+});
+
+// mas avanzado
+
+$(document).ready(function() {
+    var table = $('#example').DataTable();
+    
+    $('#search').on('keyup', function() {
+        var searchValue = this.value.split(' '); // Supongamos que los términos de búsqueda están separados por espacios
+        
+        // Aplica la búsqueda en diferentes columnas
+        table
+            .columns([0]) // Filtra en la primera columna
+            .search(searchValue[0]) // Primer término de búsqueda
+            .draw();
+        
+        table
+            .columns([1]) // Filtra en la segunda columna
+            .search(searchValue[1]) // Segundo término de búsqueda
+            .draw();
+    });
+});
+
+
+
+
+ 2. VENTANAS BOOSTRAP MODAL ELEGANTES
+  3. SEGUIR CLINICO.HTML  NUEVOS DATATABLES
+ 4. FUNCION GENERARJSON VERIFICAR
+  5. SIRVE PROBAR CON LA DATA ACTUAL AUNQUE PRONTO HAY QUE CAMBAIRAL

@@ -18,7 +18,33 @@ let dataTableRipsProcedimientosInitialized = false;
 let dataTableRipsHospitalizacionInitialized = false;
 let dataTableRipsMedicamentosInitialized = false;
 
-//
+
+$(document).ready(function() {
+    var table = $('#tablaEnviosRips').DataTable();
+    
+       $('#search').on('keyup', function() {
+        var searchValue = this.value.split(' '); // Supongamos que los términos de búsqueda están separados por espacios
+        
+        // Aplica la búsqueda en diferentes columnas
+        table
+            .columns([3]) // Filtra en la primera columna
+            .search(searchValue[0]) // Primer término de búsqueda
+            .draw();
+
+	  table
+            .columns([9]) // Filtra en la segunda columna
+            .search(searchValue[1]) // Segundo término de búsqueda
+            .draw();
+
+
+        
+        table
+            .columns([14]) // Filtra en la segunda columna
+            .search(searchValue[1]) // Segundo término de búsqueda
+            .draw();
+    });
+});
+
 
 function arrancaEnviosRips(valorTabla,valorData)
 {
@@ -1200,7 +1226,7 @@ function GuardarDetalleRips()
 	
 function CrearEnviosRips()
 {
-
+	
 
             $.ajax({
                 data: $('#postFormEnviosRips').serialize(),

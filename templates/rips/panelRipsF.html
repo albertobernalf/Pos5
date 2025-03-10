@@ -149,28 +149,32 @@ div.dataTables_filter input {
 	            <!-- Espacio Modales  EnviosRips-->
 
             <div class="modal fade" id="crearModelEnviosRips" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeadingEnviosRips"></h4>
+                           <center>  <h4 class="modal-title" id="modelHeadingEnviosRips"></h4> </center> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearEnviosRips" onclick="CrearEnviosRips()">Grabar!</button> 
                         </div>
+		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
                                 <ul class="mb-0"></ul>
                             </div>
-                            <form id="postFormEnviosRips" name="postFormEnviosRips" class="form-horizontal"
-                                  novalidate>
-                                {% csrf_token %}
-                                <input type="hidden" name="post_id" id="post_id">
-                     
-				<div class="row row-cols-12" style="height=1px;">
+			
+    <form id="postFormEnviosRips" name="postFormEnviosRips">
 
-				<div class="col">
-                                    Sede Clinica:
-                                    <input type="text" id="sedesClinica_id" name="sedesClinica_id" value="1" readonly></input>
+                                <input type="hidden" name="post_id" id="post_id">
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+
+				  <div class="col-12">
+					
+                                    
+                                    <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="1" readonly></input>
                                 </div>
 
-				<div class="col">
+				<div class="col-12">
                                     Empresa:
 				<select class="select-css"  id="empresa_id"
                                                                 name="empresa_id">
@@ -183,8 +187,8 @@ div.dataTables_filter input {
                                 </div>
 
 
-				<div class="col">
-                                    RipsTiposNotas:
+				<div class="col-12">
+                                    Tipo Nota:
 				<select class="select-css"  id="ripsTiposNotas"  name="ripsTiposNotas">
                                                            {% for ripsTiposNotas in RipsTiposNotas %}
                                                             <option value="{{ripsTiposNotas.id}}">
@@ -195,63 +199,76 @@ div.dataTables_filter input {
                                                         </select>
                                 </div>
                           
-				<div class="col">
-                                   Fecha Envio:
+				<div class="col-12">
+				  <label class="visually-hidden" for="fechaEnvio">Fecha Envio:</label>
+                                   	 <label class="visually-hidden" for="fechaEnvio">FechaEnvio:</label>
                                
-					 <input type="datetime-local" id="fechaEnvio" name="fechaEnvio" readonly >
+					 <input type="datetime-local"  class="form-control" id="fechaEnvio" name="fechaEnvio" placeholder="fechaEnvio" readonly >
                                 </div>
 
-				<div class="col">
-                                    Fecha Respuesta:
-					 <input type="datetime-local" id="fechaRespuesta" name="fechaRespuesta" readonly>
+				<div class="col-12">
+				 <label class="visually-hidden" for="fechaRespuesta">Fecha Respuesta:</label>
+                                    
+					 <input type="datetime-local"  class="form-control" id="fechaRespuesta" name="fechaRespuesta" placeholder="fechaRespuesta"  readonly>
                                 </div>
 
-				<div class="col">
-                                    CantidadFacturas:
-                                    <input type="text" id="cantidadFacturas" name="cantidadFacturas" value="0" readonly></input>
+				<div class="col-12">
+                                    
+				 <label  for="cantidadFacturas">CantidadFacturas:</label>
+                                    <input type="text" class="form-control" id="cantidadFacturas" name="cantidadFacturas" value="0" placeholder="CantidadFacturas:" readonly></input>
                                 </div>
-				<div class="col">
+				<div class="col-12">
+				
                                     CantidadPasaron:
                                     <input type="text" id="cantidadPasaron" name="cantidadPasaron" value="0" readonly></input>
                                 </div>
-				<div class="col">
-                                    CantidadRechazadas:
-                                    <input type="text" id="cantidadRechazadas" name="cantidadRechazadas" value="0" readonly></input>
+				<div class="col-12">
+				<label  for="cantidadFacturas">CantidadRechazadas:</label>
+
+                                    
+                                    <input type="text" class="form-control" id="cantidadRechazadas" name="cantidadRechazadas" value="0" placeholder="CantidadRechazadas:"  readonly></input>
 	                                </div>
 
 
-                                <div class="col">
-                                    EstadoPasoMinisterio:
+                                <div class="col-12">
+                                    Estado:
                                     <input type="text" id="estadoMinisterio" name="estadoMinisterio" value="PENDIENTE" readonly></input>
                                 </div>
            
-                                <div class="col">
+                                <div class="col-12">
                                    
                                     <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
                                 </div>
 
 
 
-                                <div class="col">
-                                    EstadoRegistro:
-                                    <input type="text" id="estadoReg" name="estadoReg" value="A"  readonly> </input>
+                                <div class="col-12">
+				 <label  for="estadoReg">EstadoRegistro:</label>
+                                    
+                                    <input type="text" class="form-control" id="estadoReg" name="estadoReg" value="A" placeholder="CantidadRechazadas:"  estadoReg> </input>
                                 </div>
 
 
 
-                                <div class="col">
-                                    UsuarioRegistro_id:
+                                <div class="col-12">
+                                    Usuario:
                                     <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
                                 </div>
 
-
-                                <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="saveBtnCrearEnviosRips"   value="create" onclick="CrearEnviosRips()">Guardar </button>
+			<!--
+                                <div class="col-12">
+                                    <center> 
+					<button type="button" class="btn btn-primary" id="saveBtnCrearEnviosRips"   value="create" onclick="CrearEnviosRips()">Guardar </button> 
+					</center> 
                                 </div>
+
+			-->
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
+
                         </div> <!-- CIERRA BODY -->
+			</div> <!-- CIERRA DIV TAMANO -->			
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
