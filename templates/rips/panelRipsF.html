@@ -361,7 +361,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 	            <!-- Espacio Modales  RipsDetalle-->
 
             <div class="modal fade" id="crearModelRipsDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
                             <h4 class="modal-title" id="modelHeadingRipsDetalle"></h4>
@@ -373,72 +373,87 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                             <form id="postFormRipsDetalle" name="postFormRipsDetalle" class="form-horizontal"
                                   novalidate>
                                
-                               
+                                  <div class="row row-cols-lg-auto g-3 align-items-center mb-3">     
                      
-				<div class="row row-cols-13" style="height=1px;">
-		<div class="col">
+					<div class="col-12">
 
 			 Id : <input type="text" name="detalleRipsId" id="detalleRipsId" readonly>
 
                                 </div>
 
-				<div class="col">
-                                    Factura:
-                                    <input type="text" id="numeroFacturaT" name="numeroFacturaT"  readonly></input>
+				<div class="col-12">
+				   <label  for="numeroFacturaT">Factura:</label>                               
+                                   <input type="text" class="form-control" id="numeroFacturaT" name="numeroFacturaT" value="0" placeholder="numeroFacturaT:"  readonly></input>
+                             
                                 </div>
 
-				<div class="col">
-                                    Envio:
-                                    <input type="text" id="ripsEnvios" name="ripsEnvios"  readonly></input>
+				<div class="col-12">
+				   <label  for="numeroFacturaT">Envio:</label>                               
+                                   <input type="text" class="form-control" id="ripsEnvios" name="ripsEnvios" value="0" placeholder="ripsEnvios:"  readonly></input>
+  
+                                   
+                               </div>
+
+				<div class="col-12">
+
+				   <label  for="cuv">Cuv:</label>                               
+                                  <input type="text" class="form-control" id="cuv" name="cuv" value="0" placeholder="cuv:"  readonly></input>
+                                   
                                 </div>
 
-				<div class="col">
-                                    Cuv:
-                                    <input type="text" id="cuv" name="cuv" value=""  ></input>
-                                </div>
-                                <div class="col">
-                                    EstadoPasoMinisterio:
-                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" ></input>
+                                <div class="col-12">
+
+				   <label  for="cuv">Estado:</label>                               
+                                  <input type="text" class="form-control" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="0" placeholder="estadoPasoMinisterio:"  readonly></input>
+                                
+
                                 </div>
                           
-				<div class="col">
-                                   RutaJsonFactura:
-                               
-					 <input type="textl" id="rutaJsonFactura" name="rutaJsonFactura"  >
+				<div class="col-12">
+				   <label  for="cuv">RutaJsonFactura:</label>                               
+                                  <input type="text" class="form-control" id="rutaJsonFactura" name="rutaJsonFactura" value="0" placeholder="rutaJsonFactura:"  readonly></input>
+       
                                 </div>
 
 				<div class="col">
-                                    RutaJsonRespuesta:
-					 <input type="text" id="rutaJsonRespuesta" name="rutaJsonRespuesta">
+				   <label  for="cuv">RutaJsonRespuesta:</label>                               
+                                  <input type="text" class="form-control" id="rutaJsonRespuesta" name="rutaJsonRespuesta" value="0" placeholder="rutaJsonRespuesta:"  readonly></input>
                                 </div>
 
            
-                                <div class="col">
-                                   
-                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+                                <div class="col-12">
+                               	<label  for="cuv">fechaRegistro:</label>                               
+                                  <input type="text" class="form-control" id="fechaRegistro" name="fechaRegistro" value="0" placeholder="fechaRegistro:"  readonly></input>
+  
                                 </div>
 
 
 
-                                <div class="col">
-                                    EstadoRegistro:
-                                    <input type="text" id="estadoReg" name="estadoReg"  readonly> </input>
-                                </div>
+                                <div class="col-12">
+			     	<label  for="cuv">EstadoRegistro:</label>                               
+                                  <input type="text" class="form-control" id="fechaRegistro" name="estadoReg" value="0" placeholder="estadoReg:"  readonly></input>
+  
+                               </div>
 
 
-                                <div class="col">
-                                    UsuarioRegistro_id:
-                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
+                                <div class="col-12">
+
+			     	<label  for="cuv">UsuarioRegistro_id:</label>                               
+                                  <input type="text" class="form-control" id="UsuarioRegistro_id" name="UsuarioRegistro_id" value="0" placeholder="UsuarioRegistro_id:"  readonly></input>
+  
                                 </div>
 
 				<div class="col">
-                                    RutaPdf:
-					 <input type="text" id="rutaPdf" name="rutaPdf">
-                                </div>
+
+		     	<label  for="cuv">RutaPdf:</label>                               
+                                  <input type="text" class="form-control" id="rutaPdf" name="rutaPdf" value="0" placeholder="rutaPdf:"  readonly></input>
+                                  </div>
 
 				<div class="col">
-                                    RutaZip:
-					 <input type="text" id="rutaZip" name="rutaZip">
+
+				<label  for="cuv">RutaZip:</label>                               
+                                  <input type="text" class="form-control" id="rutaZip" name="rutaZip" value="0" placeholder="rutaZip:"  readonly></input>
+                               
                                 </div>
 
 

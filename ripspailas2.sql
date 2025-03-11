@@ -430,7 +430,6 @@ RAISE NOTICE 'TOTAL URGENCIAS = %s', totalUrgencias;
 if (totalUrgencias> 0) then
 
 	RAISE NOTICE 'eNTRE uRGENCIAS';
-
 	
 	SELECT '{"urgencias": [{"codPrestador": ' ||  '"' || urg."codPrestador"|| '",'  ||
 	   	    '"fechaInicioAtencion": ' || '"'  ||urg."fechaInicioAtencion"|| '",'  || 	
@@ -534,7 +533,7 @@ if (totalMedicamentos> 0) then
 	
 	valorJson = valorJson ||' ' || totalMedicamentos;
  END IF;
-
+ 
 
 	SELECT REPLACE (valorJson, '""', '')
 	into valorJson;
@@ -562,5 +561,40 @@ select * from rips_ripsusuarios; -- ripsDetalle_id
 select * from rips_ripsconsultas; -- ripsDetalle_id
 select * from facturacion_facturacion;
 
+/* ESQUELETO DE INSERCION EN TABLA URGENCIAS
 
-		
+
+
+INSERT INTO rips_ripsurgenciasobservacion ("codPrestador","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id",
+	"codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id",
+	"condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "tipoRips", "ripsTransaccion_id",
+	"fechaRegistro")  
+	SELECT sed."codigoHabilitacion",cast(i."fechaIngreso" as date), aut."numeroAutorizacion" , 
+	i."ripsCausaMotivoAtencion_id",
+	(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), 
+	(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),     
+	(select max(diag1.id) 
+	from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his
+	where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and
+	histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND
+	his."consecAdmision" = fac."consecAdmision") , 
+	(select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his 
+	where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),
+	(select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and
+	histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and
+	his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), 
+ -- dx de causa de muerte
+-- falta "condicionDestinoUsuarioEgreso": "01",
+	i."ripsCondicionDestinoUsuarioEgreso_id", null,
+ 
+	cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id,now() 
+	FROM sitios_sedesclinica sed 
+	inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) 
+	inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") 
+	inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) 
+	inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  
+	inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  
+	left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id)  
+	where sed.id = '1' AND env.id = 38
+
+		*/

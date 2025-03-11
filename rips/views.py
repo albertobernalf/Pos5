@@ -29,7 +29,7 @@ from clinico.models import Servicios
 from rips.models import RipsTransaccion, RipsUsuarios
 import pickle
 import io
-from rips.models import RipsEstados, RipsEnvios
+from rips.models import RipsEstados, RipsEnvios, RipsDetalle, RipsTransaccion, RipsHospitalizacion, RipsProcedimientos, RipsMedicamentos, RipsRecienNacido, RipsUrgenciasObservacion, RipsConsultas
 
 def decimal_serializer(obj):
     if isinstance(obj, Decimal):
@@ -621,6 +621,29 @@ def GenerarJsonRips(request):
 
     # HASTA AQUI RIPS HOSPITALIZACION
 
+
+
+    # RIPS URGENCIAS
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'INSERT INTO rips_ripsurgenciasobservacion ("codPrestador", "fechaInicioAtencion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "ripsTransaccion_id")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id",cast(i."fechaIngreso" as date), aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"),(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),     (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,   (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id)  where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
+
+    print("detalle = ", detalle)
+
+    curx.execute(detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
+    # HASTA AQUI RIPS URGENCIAS
+
+
+
+
+
+
     # RIPS MEDICAMENTOS
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -640,7 +663,6 @@ def GenerarJsonRips(request):
 
 
     # HASTA AQUI RIPSMedicamentos
-
 
 
 
@@ -694,7 +716,54 @@ def GenerarJsonRips(request):
         miConexiont.commit()
         miConexiont.close()
 
-        # Aqui Leeomos el JSON de la FUNCTION
+
+        # Aqui generamos los JSON de cada Factura
+
+        miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cury = miConexiony.cursor()
+        facturasJson = []
+
+        detalle = 'SELECT "numeroFactura_id" factura FROM rips_ripsdetalle WHERE "ripsEnvios_id" = ' + "'" + str(envioRipsId) + "'"
+        cury.execute(detalle)
+
+        for factura in cury.fetchall():
+            facturasJson.append({'factura': factura})
+
+        miConexiony.close()
+
+
+    for m in facturasJson[0]['factura']:
+
+        print ("Texto Factura JSON = ", m )
+
+        miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cury = miConexiony.cursor()
+        funcionJson = []
+
+        detalle = 'SELECT generaFacturaJSON(' + str(envioRipsId) + "," + str(m) +  ') dato'
+
+        cury.execute(detalle)
+
+        for dato in cury.fetchall():
+            funcionJson.append({'dato': dato})
+
+        miConexiony.close()
+
+        for j in funcionJson[0]['dato']:
+        	    print("texto funcionJson = ", j)
+
+	            # Aqui crea el archivo
+
+	            file = open(nombreCarpeta, "w")
+        	    file.writelines(j)
+	            file.close()
+
+
+        # Aqui generamos el JSON de la FUNCTION GLOBAL
+
+
 
         miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
@@ -1021,7 +1090,7 @@ def BorrarDetalleRips(request):
     RipsHospitalizacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
     RipsMedicamentos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
     RipsProcedimientos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsRecionNacido.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsRecienNacido.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
     RipsUsuarios.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
     RipsConsultas.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
     RipsUrgenciasObservacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
