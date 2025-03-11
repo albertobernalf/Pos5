@@ -289,7 +289,7 @@ ALTER FUNCTION generaJSON
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
 
-
+delete from 
 
 
 
@@ -297,7 +297,10 @@ select * from rips_ripsenvios;
 select * from rips_ripstransaccion;
 select * from rips_ripsusuarios;
 select * from generaFacturaJSON(31,41)
-	select * from generaFacturaJSON(38,40)
+	select * from generaFacturaJSON(38,42)
+	select * from generaFacturaJSON(33,42)
+	select * from generaFacturaJSON(31,41)
+	
 
 drop function generaFacturaJSON;
 
@@ -314,29 +317,38 @@ DECLARE valorJson character(50000);
 	    valorOtrosServicios character(50000);
 	    valorMedicamentos character(50000);
 		valorConsultas character(50000);
-		totalUrgencias numeric(10,2);
-		totalHospitalizacion numeric(10,2);
-		totalProcedimientos numeric(10,2);
-		totalMedicamentos numeric(10,2);
+		totalUrgencias integer := 0;
+		totalHospitalizacion integer := 0;
+		totalProcedimientos integer := 0;
+		totalMedicamentos integer := 0;
 
 BEGIN
 	valorJson= '';
 SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
 		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
-		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
-		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
+		||'"tipoUsuario": '|| '"' || CASE WHEN trim(u."tipoUsuario") is null THEN 'null' ELSE u."tipoUsuario"  END    || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
+		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || CASE WHEN trim(pais.codigo) is null THEN 'null' ELSE pais.codigo  END || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
 		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
-		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
+		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || CASE WHEN trim(pais.codigo) is null THEN 'null' ELSE pais.codigo  END
+	|| '",' DATO1
 INTO valorTransaccionYusuarios
-	from rips_ripstransaccion, rips_ripsusuarios u, rips_ripspaises pais, sitios_municipios muni --, rips_ripsprocedimientos proc
-where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and rips_ripstransaccion."numFactura" = cast(facturaId as text)  and u."ripsTransaccion_id" = rips_ripstransaccion.id and u."codPaisResidencia_id" = pais.id and 
-	muni.id = u."codMunicipioResidencia_id" ;
+	from rips_ripstransaccion ripstra
+	inner join  rips_ripsusuarios u on (u."ripsTransaccion_id" = ripstra.id)
+	left join  rips_ripspaises pais on (pais.id =  u."codPaisResidencia_id")
+	left join  sitios_municipios muni on ( muni.id = u."codMunicipioResidencia_id")	
+where  ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" = cast(facturaId as text)  and u."ripsTransaccion_id" = ripstra.id  ;
 
 valorJson = valorJson ||' ' || valorTransaccionYusuarios;
 
+raise notice 'transaccionusuarios: %s' , valorTransaccionYusuarios;
+	
 -- Procedimientos
-/*
+
 totalProcedimientos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id);
+
+if (totalProcedimientos> 0) then
+
+	RAISE NOTICE 'ENTRE TOTAL totalProcedimientos = %s', totalProcedimientos;
 
 SELECT '"servicios": {"procedimientos": [{"codPrestador": '|| '"' || proc."codPrestador" || '",'  ||'"fechaInicioAtencion": '|| '"' || proc."fechaInicioAtencion" || '",'
 	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
@@ -359,14 +371,21 @@ SELECT '"servicios": {"procedimientos": [{"codPrestador": '|| '"' || proc."codPr
 	||'"consecutivo": '|| '"' || proc."consecutivo"  || '",'	
 	||'	},],'
 INTO valorProcedimientos
-from rips_ripstransaccion, rips_ripsprocedimientos proc
-where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and proc."ripsTransaccion_id" = rips_ripstransaccion.id AND rips_ripstransaccion."ripsEnvio_id" = envioRipsId and rips_ripstransaccion."numFactura" = cast(facturaId as text);
+from rips_ripstransaccion ripstra
+inner join rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id)
+where  ripstra."ripsEnvio_id" = envioRipsId AND ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" = cast(facturaId as text);
 	
 valorJson = valorJson ||' ' ||  valorProcedimientos;
-*/
+end if;
+
 -- Hospitalizacion
-/*
+
 totalHospitalizacion  = (select count(*) from rips_ripstransaccion ripstra, rips_ripshospitalizacion hosp where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and hosp."ripsTransaccion_id" = ripstra.id);
+
+if (totalHospitalizacion> 0) then
+
+	RAISE NOTICE 'ENTRE TOTAL totalHospitalizacion = %s', totalHospitalizacion;
+
 
 SELECT '{"hospitalizacion": [{"codPrestador": ' ||'"'  ||   hosp."codPrestador"|| '",'  ||
 	   '"viaIngresoServicioSalud": ' || '"'  ||hosp."viaIngresoServicioSalud_id"|| '",'  ||
@@ -399,12 +418,19 @@ from rips_ripstransaccion
 where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and   rips_ripstransaccion."numFactura" =cast(facturaId as text) ;
 
 valorJson = valorJson ||' ' ||  valorHospitalizacion;
-*/
+ end if;
+
 -- Urgencias
 
 totalUrgencias  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsurgenciasobservacion urg where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and urg."ripsTransaccion_id" = ripstra.id);
-/*
-if totalUrgencias > 0 then
+
+	RAISE NOTICE 'ANTES DE URGENCIAS';
+RAISE NOTICE 'TOTAL URGENCIAS = %s', totalUrgencias;
+
+if (totalUrgencias> 0) then
+
+	RAISE NOTICE 'eNTRE uRGENCIAS';
+
 	
 	SELECT '{"urgencias": [{"codPrestador": ' ||  '"' || urg."codPrestador"|| '",'  ||
 	   	    '"fechaInicioAtencion": ' || '"'  ||urg."fechaInicioAtencion"|| '",'  || 	
@@ -430,15 +456,19 @@ if totalUrgencias > 0 then
 	left join clinico_diagnosticos dxrel3 on (dxrel3.id =  urg."codDiagnosticoRelacionadoE3_id")
 	left join rips_ripsDestinoEgreso egreso on (egreso.id = urg."condicionDestinoUsuarioEgreso_id" )
 	where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and   rips_ripstransaccion."numFactura" =cast(facturaId as text);
+	valorJson = valorJson ||' ' || valorUrgencias;
+END IF;
 
- END IF;
 
-valorJson = valorJson ||' ' || valorUrgencias;
-*/
-/*
 totalMedicamentos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsmedicamentos ripsmed where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsmed."ripsTransaccion_id" = ripstra.id);
+	RAISE NOTICE 'ANTES DE totalMedicamentos';
+RAISE NOTICE 'TOTAL totalMedicamentos = %s', totalMedicamentos;
 
-if totalMedicamentos > 0 then
+
+
+if (totalMedicamentos> 0) then
+
+	RAISE NOTICE 'ENTRE TOTAL totalMedicamentos = %s', totalMedicamentos;
 
 	SELECT
 	
@@ -502,10 +532,10 @@ if totalMedicamentos > 0 then
 	left join clinico_diagnosticos diag2 on (diag2.id = histdiag2.diagnosticos_id)	
 	where rips_ripstransaccion."ripsEnvio_id" =33 and rips_ripstransaccion."ripsEnvio_id" = env.id  and cast(rips_ripstransaccion."numFactura" as numeric) = fac.id	 ;
 	
+	valorJson = valorJson ||' ' || totalMedicamentos;
  END IF;
 
-valorJson = valorJson ||' ' || totalMedicamentos;
-*/
+
 	SELECT REPLACE (valorJson, '""', '')
 	into valorJson;
 
@@ -517,19 +547,20 @@ ALTER FUNCTION generaJSON
   OWNER TO postgres;
 
 
--- Medicamentos
-
-SELECT '{"numDocumentoIdObligado": ""' || "numDocumentoIdObligado" ||'",' || '"numFactura": ""' || "numFactura" || '"", "TipoNota": null,"numNota": null,"usuarios": ['
-		||'"tipoDocumentoIdentificacion": '|| '"' || u."tipoDocumentoIdentificacion" || '",'||'"numDocumentoIdentificacion": '|| '"' || u."numDocumentoIdentificacion" || '",'
-		||'"tipoUsuario": '|| '"' || u."tipoUsuario" || '",'||'"fechaNacimiento": '|| '"' || u."fechaNacimiento" || '",'
-		||'"codSexo": '|| '"' || u."codSexo" || '",'||'"codPaisResidencia": '|| '"' || pais.codigo || '",'||'"codMunicipioResidencia": '|| '"' ||muni."municipioCodigoDian" || '",'
-		||'"codZonaTerritorialResidencia": '|| '"' || u."codZonaTerritorialResidencia" || '",'||'"incapacidad": '|| '"' || u."incapacidad" || '",'
-		||'"consecutivo": '|| '"' || u."consecutivo" || '",'||'"codPaisOrigen": '|| '"' || pais.codigo || '",' DATO1
-
-	from rips_ripstransaccion ripstra
-	inner join  rips_ripsusuarios u on (u."ripsTransaccion_id" = ripstra.id)
-	left join  rips_ripspaises pais on (pais.id =  u."codPaisResidencia_id")
-	left join  sitios_municipios muni on ( muni.id = u."codMunicipioResidencia_id")
-where  ripstra."ripsEnvio_id" = 38 and ripstra."numFactura" = cast(40 as text)  
+	select * from generaFacturaJSON(31,41)
+	select * from generaFacturaJSON(38,40)
+	select * from generaFacturaJSON(38,48)
 
 select * from rips_ripstransaccion;
+select * from rips_ripsdetalle; -- numeroFactura_id
+select * from rips_ripshospitalizacion; -- ripsDetalle_id
+select * from rips_ripsmedicamentos; -- ripsDetalle_id
+select * from rips_ripsurgenciasobservacion; -- ripsDetalle_id
+select * from rips_ripsprocedimientos; -- ripsDetalle_id
+select * from rips_ripsreciennacido; -- ripsDetalle_id
+select * from rips_ripsusuarios; -- ripsDetalle_id
+select * from rips_ripsconsultas; -- ripsDetalle_id
+select * from facturacion_facturacion;
+
+
+		

@@ -553,7 +553,7 @@ def GenerarJsonRips(request):
 
     resultado = curx.execute(detalle)
 
-    print ("resultado = " , resultado)
+    print ("detalle = " , detalle)
 
     miConexionx.commit()
 
@@ -561,6 +561,8 @@ def GenerarJsonRips(request):
 
     transaccionIdU = RipsTransaccion.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
     transaccionId = (transaccionIdU['maximo']) + 0
+
+    print ("transaccionId = " , transaccionId )
 
     # RIPS USUARIOS
 
@@ -1010,6 +1012,25 @@ def BorrarDetalleRips(request):
     envioDetalleRipsId = request.POST["envioDetalleRipsId"]
     print ("el envioDetalleRipsId es = ", envioDetalleRipsId)
 
+    # Primero debo conseguir la factura a borrar
+
+    facturaId = RipsDetalle.objects.get(id=envioDetalleRipsId)
+    print("facturaId = " , facturaId.numeroFactura_id)
+    print("envioaId = ", facturaId.ripsEnvios_id)
+
+    RipsHospitalizacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsMedicamentos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsProcedimientos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsRecionNacido.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsUsuarios.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsConsultas.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    RipsUrgenciasObservacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+
+    a = Facturacion.objects.get(id=facturaId.numeroFactura_id)
+    a.ripsEnvio_id = ""
+    a.save()
+
+    # Ojo primero debo borrar todos los rips generados a esa factura
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
@@ -1019,5 +1040,7 @@ def BorrarDetalleRips(request):
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
+
+    # Despues tengo que actualizar en la factura el campo enviorips_id a NULL , por ORM
 
     return JsonResponse({'success': True, 'message': 'Detalle de Rips eliminado !'})
