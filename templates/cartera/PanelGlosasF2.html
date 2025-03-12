@@ -1,13 +1,13 @@
-{% extends "rips/menuRipsF.html" %}
+{% extends "cartera/menuGlosasF.html" %}
 {% load static %}
 
 {% block head %}
 
 
-<link rel="stylesheet" type="text/css" href={% static 'css/panelRips.css' %}>
+<link rel="stylesheet" type="text/css" href={% static 'css/panelGlosas.css' %}>
 <link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %}>
 <link rel="stylesheet" type="text/css"  href = {% static 'css/litle.css' %} >
-<script src={% static 'js/panelTabsRips.js' %} defer >         </script>
+<script src={% static 'js/panelTabsGlosas.js' %} defer >         </script>
 
 <!-- Datatable extension SELECT 
 <link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet" integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" crossorigin="anonymous">
@@ -18,11 +18,8 @@
 <div class="marco">
     <ul class="tabs">
 
-        <li><a href="#Rips"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Envios Rips </a></li>
-        <li><a href="#DetalleEnviosRips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
-        <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Generar Json Rips </a></li>
-        <li><a href="#EnviarRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Enviar Rips </a></li>
-        <li><a href="#RespuestaRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Respuesta Rips </a></li>
+        <li><a href="#Glosas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Glosas</a></li>
+        <li><a href="#DetalleGlosas"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Glosas</a></li>
 
 
     </ul>
@@ -55,7 +52,7 @@ div.dataTables_filter input {
 <div class="marco">
     <div class="secciones">
 
-        <article id="Rips">
+        <article id="Glosas">
       
 	
             <form action="/enviosRips/" method="get" id="FormEnviosRips">
@@ -89,9 +86,9 @@ div.dataTables_filter input {
 		<div class="container my-2">
              
    			   <div class="row">
-				  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				    
+				  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGlosas"  name="BtnGlosas" value="Adicionar" onclick= "Glosas()" >				    
 
-                                        <table  id= "tablaEnviosRips" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaGlosas" class=" display table table-striped" style="width: 100%";>
                                            <thead>
                                             <tr id= "filasEnvios">    
 						<bold>                                  
@@ -148,12 +145,12 @@ div.dataTables_filter input {
 
 	            <!-- Espacio Modales  EnviosRips-->
 
-            <div class="modal fade" id="crearModelEnviosRips" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id="crearModelGlosas" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
-                             <h4 class="modal-title" id="modelHeadingEnviosRips"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearEnviosRips" onclick="CrearEnviosRips()">Grabar!</button> 
+                             <h4 class="modal-title" id="modelHeadingGlosas"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosas" onclick="CrearGlosas()">Grabar!</button> 
                         </div>
 		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">
@@ -161,7 +158,7 @@ div.dataTables_filter input {
                                 <ul class="mb-0"></ul>
                             </div>
 			
-  			  <form id="postFormEnviosRips" name="postFormEnviosRips">
+  			  <form id="postFormGlosas" name="postFormGlosas">
 
                                 <input type="hidden" name="post_id" id="post_id">
 
@@ -258,7 +255,7 @@ div.dataTables_filter input {
 			<!--
                                 <div class="col-12">
                                     <center> 
-					<button type="button" class="btn btn-primary" id="saveBtnCrearEnviosRips"   value="create" onclick="CrearEnviosRips()">Guardar </button> 
+					<button type="button" class="btn btn-primary" id="saveBtnCrearGlosas"   value="create" onclick="CrearGlosas()">Guardar </button> 
 					</center> 
                                 </div>
 
@@ -278,7 +275,7 @@ div.dataTables_filter input {
         </article>
 
 
-<article id="DetalleEnviosRips">
+<article id="DetalleGlosas">
 
         	
 		<div class="container my-2">          
@@ -287,9 +284,8 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 			     Tipo:     <input type="text" name="tipoRips2" id="tipoRips2" readonly>  
    			   <div class="row">
 		     
-			     		<!--  <table  id= "tablaDetalleRipsAdicionar" class=" display table table-striped" style="width: 100%";> -->
+			     		         <table  id= "tablaDetalleGlosas" class=" display table table-striped" style="width: 100%";>
 
-                                        <table  id= "tablaDetalleRipsAdicionar" class="display nowrap table table table-bordered tablaDetalleRipsAdicionar table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -514,29 +510,6 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 
 </article>
-
-<article id="GenerarJsonRips">
-        	
-		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
-		   	
-
-			     Envio No: <input type="text" name="envioRipsId1" id="envioRipsId1">  
-			     Empresa: <input type="text" name="empresaId1" id="empresaId1" >  
-			     Tipo: <input type="text" name="tipoRips1" id="tipoRips1">  
-		
-		<div class="row">
-		</div>
-		
-		<div class="row">
-		<div class="col">
-                                    <button type="button" class="btn btn-primary" id="generarJsonRips"   value="Generar" onclick="GenerarJsonRips()">Generar JSON rips </button>
-                 </div>	
-		 </div>
-
-		 </div>
-
-</article>
-
 
 
 <article id="RipsTransaccion">
@@ -898,35 +871,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 		 </div>
 </article>
 
-<article id="EnviarRips">
 
-		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
-			  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
-		   	     Envio No: <input type="text" name="envioRipsId3" id="envioRipsId3">  
-			     Empresa: <input type="text" name="empresaId3" id="empresaId3" >  
-			     Tipo: <input type="text" name="tipoRips3" id="tipoRips3">  
-		
-		<div class="row">
-		</div>
-		
-		<div class="row">
-		<div class="col">
-                                    <button type="button" class="btn btn-primary" id="enviarJsonRips"   value="Generar" onclick="EnviarJsonRips()">Enviar JSON rips </button>
-                 </div>	
-		 </div>
-
-		 </div>
-		
-		 </div>
-</article>
-
-<article id="RespuestaRips">
-
-		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
-		
-		
-		 </div>
-</article>
 
      
     </div>

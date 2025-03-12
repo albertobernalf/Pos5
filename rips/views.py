@@ -621,9 +621,8 @@ def GenerarJsonRips(request):
 
     # HASTA AQUI RIPS HOSPITALIZACION
 
-
-
     # RIPS URGENCIAS
+
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
@@ -636,13 +635,19 @@ def GenerarJsonRips(request):
     miConexionx.commit()
     miConexionx.close()
 
-
     # HASTA AQUI RIPS URGENCIAS
 
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
 
+    detalle = 'INSERT INTO rips_ripsurgenciasobservacion ("codPrestador","fechaInicioAtencion","causaMotivoAtencion_id", 	"codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id",	"condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id", "fechaRegistro")  SELECT sed."codigoHabilitacion",cast(i."fechaIngreso" as date), 	i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") , (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"), (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), dest.id, (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,' + "'" + str('6') + "'" + ',  ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") 	inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join rips_ripsdestinoegreso dest  on (dest.id = i."ripsCondicionDestinoUsuarioEgreso_id")  where sed.id = ' + "'" + str(sede) + "'" + '  AND env.id = ' + "'" + str(envioRipsId) + "'"
 
+    print("detalle = ", detalle)
 
-
+    curx.execute(detalle)
+    miConexionx.commit()
+    miConexionx.close()
 
     # RIPS MEDICAMENTOS
 
@@ -664,6 +669,23 @@ def GenerarJsonRips(request):
 
     # HASTA AQUI RIPSMedicamentos
 
+    # RIPS RECIEN NACIDOS
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'INSERT INTO rips_ripsreciennacido ("codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", peso, "fechaEgreso", consecutivo, "fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id","tipoDocumentoIdentificacion_id", "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id") SELECT sed."codigoHabilitacion",	usu.documento,	usu."fechaNacio", i."ripsEdadGestacional", i."ripsNumConsultasCPrenatal" ,	usu.genero, i."ripsPesoRecienNacido" ,cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,now(), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('1') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") , dest.id, tipoDoc."tipoDocRips_id", ' + "'" + str(username_id) + "'" + ' ,det.id,' + "'" + str('7') + "'" + ' , ripstra.id	FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision")  inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join rips_ripsdestinoegreso dest  on (dest.id = i."ripsCondicionDestinoUsuarioEgreso_id") inner join usuarios_usuarios usu on (usu."tipoDoc_id" = i."tipoDoc_id" AND usu.id = i.documento_id) inner join usuarios_tiposdocumento tipoDoc on (tipoDoc.id = i."tipoDoc_id") where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
+
+    print("detalle = ", detalle)
+
+    curx.execute(detalle)
+    miConexionx.commit()
+    miConexionx.close()
+
+
+    # HASTA AQUI RECIEN NACIDOS
+
 
 
     ### Aqui actualizar cosas de la tabla rips_ripsenvios
@@ -679,25 +701,6 @@ def GenerarJsonRips(request):
     miConexionx.close()
 
     # Aqui CURSOR que genere los JSON de cada factura-Glosa
-
-    datosJson = []
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-    detalle = 'SELECT "numFactura" FROM public.rips_ripstransaccion  WHERE  "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'"
-
-    print(detalle)
-
-    curx.execute(detalle)
-
-    for numFactura in curx.fetchall():
-        datosJson.append({'numFactura': numFactura})
-
-    miConexionx.close()
-
-    print ("datosJson = ", datosJson)
 
     for i in datosJson[0]['numFactura']:
         print ("Factura = ",i)
@@ -752,25 +755,31 @@ def GenerarJsonRips(request):
         miConexiony.close()
 
         for j in funcionJson[0]['dato']:
-        	    print("texto funcionJson = ", j)
 
-	            # Aqui crea el archivo
+            print("texto funcionJson = ", j)
+            print("Factura = ", j)
+            archivo = 'Fac' + str(j) + '.txt'
+            nombreCarpeta = 'C:\\EntornosPython\\Pos3\\vulner\\JSONCLINICA\\' + str(archivo)
+            print("ruta =", nombreCarpeta)
+            # Aqui Actualiza la ruta en la tabla rips_ripsdetalle
+            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+            curt = miConexiont.cursor()
+            detalle = 'UPDATE rips_ripsDetalle SET "rutaJsonFactura" = ' + "'" + str(nombreCarpeta) + "'" + ' WHERE "ripsEnvios_id" = '  + "'" + str(envioRipsId) + "'" + '  AND "numeroFactura_id" = ' +"'" +str(j) + "'"
+            curt.execute(detalle)
+            miConexiont.commit()
+            miConexiont.close()
 
-	            file = open(nombreCarpeta, "w")
-        	    file.writelines(j)
-	            file.close()
 
 
         # Aqui generamos el JSON de la FUNCTION GLOBAL
-
-
 
         miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cury = miConexiony.cursor()
         funcionJson = []
 
-        detalle = 'SELECT generaJSON(' + str(envioRipsId) + ') dato'
+        detalle = 'SELECT generaEnvioRipsJSON(' + str(envioRipsId) + ') dato'
         cury.execute(detalle)
 
         for dato in cury.fetchall():
@@ -778,15 +787,26 @@ def GenerarJsonRips(request):
 
         miConexiony.close()
 
-        for j in funcionJson[0]['dato']:
-            print("tesxto funcionJson = ", j)
+        for y in funcionJson[0]['dato']:
+            print("tesxto funcionJson = ", y)
 
             # Aqui crea el archivo
 
             file = open(nombreCarpeta, "w")
-            file.writelines(j)
+            file.writelines(y)
             file.close()
 
+            # Aqui grabo la ruta del JSON GLOBAL
+
+            curt = miConexiont.cursor()
+            detalle = 'UPDATE rips_ripsEnvios SET "rutaJson" = ' + "'" + str(nombreCarpeta) + "'" + ' WHERE "ripsEnvios_id" = '  + "'" + str(envioRipsId) + "'"
+            curt.execute(detalle)
+            miConexiont.commit()
+            miConexiont.close()
+
+
+
+        # Aqui FIN JSON de la FUNCTION GLOBAL
 
 
     return JsonResponse({'success': True, 'message': 'Rips JSON generados satisfactoriamente!'})

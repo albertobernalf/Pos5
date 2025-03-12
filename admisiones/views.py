@@ -1893,7 +1893,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         ## Aqui contexto para solo Rips
 
         ## FIN CONTEXTO
-        return render(request, "cartera/PanelGlosas.html", context)
+        return render(request, "cartera/PanelGlosasF.html", context)
 
 
 

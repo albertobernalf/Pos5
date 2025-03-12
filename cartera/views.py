@@ -74,31 +74,33 @@ def load_dataGlosas(request, data):
 
     # Fin combo Indicadores
 
-    enviosRips = []
+    glosas = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id,  "fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas", "estadoPasoMinisterio", "jsonError", "jsonAprobado", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id"  FROM public.rips_ripsenvios'
+    detalle = 'SELECT id, "fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id, "fechaRespuesta", "tipoGlosa_id", "usuarioRecepcion_id", "usuarioRespuesta_id", "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id", "sedesClinica_id", "ripsEnvio_id" FROM public.cartera_glosas'
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  fechaEnvio, fechaRespuesta, cantidadFacturas, cantidadPasaron, cantidadRechazadas, estadoPasoMinisterio, jsonError, jsonAprobado, fechaRegistro, estadoReg, usuarioRegistro_id, empresa_id, sedesClinica_id in curx.fetchall():
-        enviosRips.append(
-            {"model": "rips.ripsEnvios", "pk": id, "fields":
-                {'id': id, 'fechaEnvio': fechaEnvio, 'fechaRespuesta': fechaRespuesta, 'cantidadFacturas': cantidadFacturas,
-                 'cantidadPasaron': cantidadPasaron, 'cantidadRechazadas': cantidadRechazadas,
-                 'estadoPasoMinisterio': estadoPasoMinisterio, 'jsonError': jsonError,
-                 'jsonAprobado': jsonAprobado, 'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,'usuarioRegistro_id':usuarioRegistro_id, 'empresa_id':empresa_id, 'sedesClinica_id': sedesClinica_id}})
+    for id,  fechaRecepcion, saldoFactura, totalSoportado, totalAceptado, observaciones, fechaRegistro, estadoReg, convenio_id, usuarioRegistro_id, factura_id,  fechaRespuesta, tipoGlosa_id, usuarioRecepcion_id, usuarioRespuesta_id,  valorGlosa, estadoRadicacion_id , estadoRecepcion_id, sedesClinica_id, ripsEnvio_id in curx.fetchall():
+        glosas.append(
+            {"model": "cartera.glosas", "pk": id, "fields":
+                {'id': id, 'fechaRecepcion': fechaRecepcion, 'saldoFactura': saldoFactura, 'totalSoportado': totalSoportado,
+                 'observaciones': observaciones, 'fechaRegistro': fechaRegistro,'estadoReg': estadoReg, 'convenio_id': convenio_id, 'usuarioRegistro_id': usuarioRegistro_id, 'factura_id': factura_id,
+                 'factura_id': factura_id, 'fechaRespuesta': fechaRespuesta,
+                 'tipoGlosa_id': tipoGlosa_id, 'usuarioRecepcion_id': usuarioRecepcion_id, 'usuarioRespuesta_id': usuarioRespuesta_id,
+                 'valorGlosa': valorGlosa, 'estadoRadicacion_id': estadoRadicacion_id, 'estadoRecepcion_id': estadoRecepcion_id,
+                 'sedesClinica_id': sedesClinica_id,'ripsEnvio_id':ripsEnvio_id}})
 
     miConexionx.close()
-    print("EnviosRips "  , enviosRips)
-    context['EnviosRips'] = enviosRips
+    print("glosas "  , glosas)
+    context['Glosas'] = glosas
 
-    serialized1 = json.dumps(enviosRips, default=serialize_datetime)
+    serialized1 = json.dumps(glosas,  default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 
@@ -151,6 +153,7 @@ def GuardaGlosas(request):
 
 
     return JsonResponse({'success': True, 'message': 'Envio realizado satisfactoriamente!'})
+
 
 
 

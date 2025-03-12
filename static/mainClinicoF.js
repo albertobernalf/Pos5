@@ -4,20 +4,11 @@ console.log('Hola Alberto Hi!')
 const form = document.getElementById('formHistoria')
 const form2 = document.getElementById('formClinicos')
 console.log(form)
-console.log(form2)
+
 
 let dataTable;
 let dataTableClinicoInitialized = false;
 
-
-$('.editPostar').on('click',function(event)
-{
- 	 alert("Entre a editPostt"); 
-	 var post_id = $(this).data('pk');
-          alert("pk1 = " + $(this).data('pk'));
-
-
-});
 
 function arrancaClinico(valorTabla,valorData)
 {
@@ -58,12 +49,11 @@ function arrancaClinico(valorTabla,valorData)
             columnDefs: [
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
-	    { width: '10%', targets: [9,15] },
+	  
 		{     "render": function ( data, type, row ) {
                         var btn = '';
-                          btn = btn + " <input type='radio' name='miClinico' class='form-check-input editPostClinico' data-pk='" + row.pk + "'>" + "</input>";
 
-
+				    btn = btn + " <input type='radio'  class='miClinico form-check-input ' data-pk='" + row.pk + "'>" + "</input>";
                        return btn;
                     },
 
@@ -111,15 +101,9 @@ function arrancaClinico(valorTabla,valorData)
 		{ data: "fields.salidaClinica"},
            ]
             }
-
-		alert("AQUI VOY");
-
+			
 	        dataTable = $('#tablaClinico').DataTable(dataTableOptionsClinico);
-
-				alert("AQUI llegue");
-
-
-
+			
   }
 }
 
@@ -161,16 +145,14 @@ window.addEventListener('load', async () => {
 
  /* FIN ONLOAD */
 
-
-
 	/*--------------------------------------------
         Click to Edit Button
         --------------------------------------------
         --------------------------------------------*/
-        $('body').on('click', '.editPostClinico', function () {
+        $('body').on('click', '.miClinico', function () {
 	
           var post_id = $(this).data('pk');
-          alert("pk1 = " + $(this).data('pk'));
+
 
 	$.ajax({
 	           url: '/creacionHc/postConsultaHcli/',
@@ -178,9 +160,7 @@ window.addEventListener('load', async () => {
 	           type: 'POST',
 	           dataType : 'json',
 	  		success: function (data) {
-                        alert("Regrese");
-                       alert("data="  + data);
-	  		  // var dato = JSON.parse(respuesta);
+
 			 $('#pk').val(data.pk);
 	       	        $('#tipoDocId').val(data.tipoDocId);
         	       	$('#nombreTipoDoc').val(data.nombreTipoDoc);
