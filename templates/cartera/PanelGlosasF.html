@@ -152,7 +152,7 @@ div.dataTables_filter input {
                                 </div>
 
 
-	            <!-- Espacio Modales  EnviosRips-->
+	            <!-- Espacio Modales  Glosas-->
 
             <div class="modal fade" id="crearModelGlosas" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document" modal-lg>
@@ -167,7 +167,7 @@ div.dataTables_filter input {
                                 <ul class="mb-0"></ul>
                             </div>
 			
-  			  <form id="postFormEnviosRips" name="postFormEnviosRips">
+  			  <form id="postFormGlosas" name="postFormGlosas">
 
                                 <input type="hidden" name="post_id" id="post_id">
 
@@ -181,72 +181,85 @@ div.dataTables_filter input {
                                 </div>
 
 				<div class="col-12">
-                                    Empresa:
-				<select class="select-css"  id="empresa_id"
-                                                                name="empresa_id">
-                                                            {% for empresas in Empresas %}
-                                                            <option value="{{empresas.id}}">
-                                                                {{empresas.nombre}}
+                                    convenio_id:
+				<select class="select-css"  id="convenio_id"
+                                                                name="convenio_id">
+                                                            {% for convenios in Convenios %}
+                                                            <option value="{{convenios.id}}">
+                                                                {{convenios.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
                                 </div>
 
 
+			  
 				<div class="col-12">
-                                    Tipo Nota:
-				<select class="select-css"  id="ripsTiposNotas"  name="ripsTiposNotas">
-                                                           {% for ripsTiposNotas in RipsTiposNotas %}
-                                                            <option value="{{ripsTiposNotas.id}}">
-                                                                {{ripsTiposNotas.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
-                                </div>
-                          
-				<div class="col-12">
-				  <label class="visually-hidden" for="fechaEnvio">Fecha Envio:</label>
-                                   	 <label class="visually-hidden" for="fechaEnvio">FechaEnvio:</label>
+					fechaRecepcion:
+                                   	 <label class="visually-hidden" for="fechaRecepcion">fechaRecepcion:</label>
                                
-					 <input type="datetime-local"  class="form-control" id="fechaEnvio" name="fechaEnvio" placeholder="fechaEnvio" readonly >
+					 <input type="datetime-local"  class="form-control" id="fechaRecepcion" name="fechaRecepcion" placeholder="fechaRecepcion"  >
                                 </div>
 
 				<div class="col-12">
+                                   	 <label class="visually-hidden" for="observaciones">observaciones:</label>
+                               
+					 <input type="text"  class="form-control" id="observaciones" name="observaciones" placeholder="observaciones"  >
+                                </div>
+
+
+				<div class="col-12">
+                                   	 <label class="visually-hidden" for="factura_id">factura_id:</label>
+                               
+					 <input type="text" class="form-control" id="factura_id" name="factura_id" placeholder="factura_id"  >
+                                </div>
+
+
+
+
+				<div class="col-12">
+			Fecha Respuesta:
 				 <label class="visually-hidden" for="fechaRespuesta">Fecha Respuesta:</label>
                                     
 					 <input type="datetime-local"  class="form-control" id="fechaRespuesta" name="fechaRespuesta" placeholder="fechaRespuesta"  readonly>
                                 </div>
 
+
+				<div class="col-12">
+                                    Tipo Glosa:
+				<select class="select-css"  id="tipoGlosa_id"  name="tipoGlosa_id">
+                                                           {% for tipoGlosa in TipoGlosa %}
+                                                            <option value="{{tipoGlosa.id}}">
+                                                                {{tipoGlosa.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
+                                </div>
+                   
 				<div class="col-12">
                                     
-				 <label  for="cantidadFacturas">CantidadFacturas:</label>
-                                    <input type="text" class="form-control" id="cantidadFacturas" name="cantidadFacturas" value="0" placeholder="CantidadFacturas:" readonly></input>
+				 <label  for="valorGlosa">valorGlosa:</label>
+                                    <input type="text" class="form-control" id="valorGlosa" name="valorGlosa" value="0" placeholder="valorGlosa:" ></input>
                                 </div>
+
+
 				<div class="col-12">
-				
-                                    Pasaron:
-                                    <input type="text" id="cantidadPasaron" name="cantidadPasaron" value="0" readonly></input>
+                                    Estado Recepcion:
+				<select class="select-css"  id="estadoRecepcion_id"  name="estadoRecepcion_id">
+                                                           {% for estadoRecepcion in EstadoRecepcion %}
+                                                            <option value="{{estadoRecepcion.id}}">
+                                                                {{estadoRecepcion.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
-				<div class="col-12">
-				<label  for="cantidadFacturas">CantidadRechazadas:</label>
 
-                                    
-                                    <input type="text" class="form-control" id="cantidadRechazadas" name="cantidadRechazadas" value="0" placeholder="CantidadRechazadas:"  readonly></input>
-	                                </div>
-
-
-                                <div class="col-12">
-                                    Estado:
-                                    <input type="text" id="estadoMinisterio" name="estadoMinisterio" value="PENDIENTE" readonly></input>
-                                </div>
-           
                                 <div class="col-12">
                                    
                                     <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
                                 </div>
-
-
 
                                 <div class="col-12">
 				 <label  for="estadoReg">EstadoRegistro:</label>
@@ -254,21 +267,11 @@ div.dataTables_filter input {
                                     <input type="text" class="form-control" id="estadoReg" name="estadoReg" value="A" placeholder="CantidadRechazadas:"  estadoReg> </input>
                                 </div>
 
-
-
                                 <div class="col-12">
                                     Usuario:
                                     <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
                                 </div>
 
-			<!--
-                                <div class="col-12">
-                                    <center> 
-					<button type="button" class="btn btn-primary" id="saveBtnCrearGlosas"   value="create" onclick="CrearGlosas()">Guardar </button> 
-					</center> 
-                                </div>
-
-			-->
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
