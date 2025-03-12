@@ -36,6 +36,7 @@ from facturacion import views as viewsFacturacion
 from contratacion import views as viewsConvenios
 from rips import views as viewsRips
 from cartera import views as viewsCartera
+
 from autorizaciones import views as viewsAutorizaciones
 #from mecanicosPacientes import views as viewsmecanicosPacientes
 
@@ -234,7 +235,7 @@ urlpatterns = [
 
     path('load_dataGlosas/<str:data>', viewsCartera.load_dataGlosas, name='loaddataGlosas'),
     path('guardaGlosas/', viewsCartera.GuardaGlosas, name='GuardaGlosas'),
-
+    path('load_tablaGlosasProcedimientos/<str:data>', viewsCartera.Load_tablaGlosasProcedimientos, name='load_tablaGlosasProcedimientos'),
 
 
     # Contratacion

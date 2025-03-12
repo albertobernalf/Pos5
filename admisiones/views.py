@@ -1890,10 +1890,80 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     if (escogeModulo == 'GLOSAS'):
         print("ENTRE PERMSISO GLOSAS")
-        ## Aqui contexto para solo Rips
 
-        ## FIN CONTEXTO
-        return render(request, "cartera/PanelGlosasF.html", context)
+
+    # Combo Convenios
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre FROM contratacion_convenios c"
+
+    curt.execute(comando)
+    print(comando)
+
+    convenios = []
+
+    for id, nombre in curt.fetchall():
+        convenios.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(convenios)
+
+    context['Convenios'] = convenios
+
+    # Fin combo convenios
+
+    # Combo Tipos Glosas
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre FROM cartera_tiposglosas c "
+
+    curt.execute(comando)
+    print(comando)
+
+    tiposGlosas = []
+
+    for id, nombre in curt.fetchall():
+        tiposGlosas.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(tiposGlosas)
+
+    context['TiposGlosas'] = tiposGlosas
+
+    # Fin combo Tipos Glosas
+
+    # Combo Estados Glosas
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre FROM cartera_estadosglosas c WHERE c.tipo= 'RECEPCION'"
+
+    curt.execute(comando)
+    print(comando)
+
+    estadosRecepcion = []
+
+    for id, nombre in curt.fetchall():
+        estadosRecepcion.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(estadosRecepcion)
+
+    context['EstadosRecepcion'] = estadosRecepcion
+
+    # Fin combo Estado Glosas recepcion
+
+
+
+    return render(request, "cartera/PanelGlosasF.html", context)
 
 
 

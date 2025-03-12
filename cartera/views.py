@@ -54,10 +54,10 @@ def load_dataGlosas(request, data):
 
     comando = 'SELECT ser.nombre, count(*) total FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd  WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
         sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + str(
-        'O') + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str(
-        'N') + "'" + ' and tp.id = u."tipoDoc_id" and  i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"  group by ser.nombre UNION SELECT ser.nombre, count(*) total FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , sitios_serviciosSedes sd, clinico_servicios ser WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND  t."sedesClinica_id" =  ' + "'" + str(
-        sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND  t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and  t."tipoDoc_id" = u."tipoDoc_id" and u.id = t."documento_id"  and ser.id = sd.servicios_id and  dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and  t."consecAdmision" = 0 and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str(
+        'O') + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' and tp.id = u."tipoDoc_id" and  i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"  group by ser.nombre UNION SELECT ser.nombre, count(*) total FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , sitios_serviciosSedes sd, clinico_servicios ser WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND  t."sedesClinica_id" =  ' + "'" + str(sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND  t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and  t."tipoDoc_id" = u."tipoDoc_id" and u.id = t."documento_id"  and ser.id = sd.servicios_id and  dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and  t."consecAdmision" = 0 and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str(
         'TRIAGE') + "'" + ' group by ser.nombre'
+
+    print("comando = ", comando)
 
     curt.execute(comando)
     print(comando)
@@ -80,19 +80,19 @@ def load_dataGlosas(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id, "fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id, "fechaRespuesta", "tipoGlosa_id", "usuarioRecepcion_id", "usuarioRespuesta_id", "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id", "sedesClinica_id", "ripsEnvio_id" FROM public.cartera_glosas'
+    detalle = 'SELECT glo.id, "fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, glo."fechaRegistro", glo."estadoReg", convenio_id,  conv.nombre nombreConvenio,glo."usuarioRegistro_id", factura_id, "fechaRespuesta", "tipoGlosa_id", tipglo.nombre nombreTipoGlosa,  "usuarioRecepcion_id", "usuarioRespuesta_id", "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id", estGlosa.nombre estadoGlosaRecepcion, glo."sedesClinica_id", "ripsEnvio_id" FROM public.cartera_glosas glo, cartera_estadosglosas estGlosa , contratacion_convenios conv, cartera_tiposglosas tipglo WHERE glo."sedesClinica_id" = ' + "'" + str(sede) + "'" + 'AND tipglo.id = glo."tipoGlosa_id"   AND  conv.id = glo.convenio_id AND estGlosa.id =  glo."estadoRecepcion_id" AND estGlosa.tipo = ' + "'" + str('RECEPCION') + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  fechaRecepcion, saldoFactura, totalSoportado, totalAceptado, observaciones, fechaRegistro, estadoReg, convenio_id, usuarioRegistro_id, factura_id,  fechaRespuesta, tipoGlosa_id, usuarioRecepcion_id, usuarioRespuesta_id,  valorGlosa, estadoRadicacion_id , estadoRecepcion_id, sedesClinica_id, ripsEnvio_id in curx.fetchall():
+    for id,  fechaRecepcion, saldoFactura, totalSoportado, totalAceptado, observaciones, fechaRegistro, estadoReg, convenio_id, nombreConvenio, usuarioRegistro_id, factura_id,  fechaRespuesta, tipoGlosa_id,nombreTipoGlosa, usuarioRecepcion_id, usuarioRespuesta_id,  valorGlosa, estadoRadicacion_id , estadoRecepcion_id, estadoGlosaRecepcion,  sedesClinica_id, ripsEnvio_id in curx.fetchall():
         glosas.append(
             {"model": "cartera.glosas", "pk": id, "fields":
-                {'id': id, 'fechaRecepcion': fechaRecepcion, 'saldoFactura': saldoFactura, 'totalSoportado': totalSoportado,
-                 'observaciones': observaciones, 'fechaRegistro': fechaRegistro,'estadoReg': estadoReg, 'convenio_id': convenio_id, 'usuarioRegistro_id': usuarioRegistro_id, 'factura_id': factura_id,
+                {'id': id, 'fechaRecepcion': fechaRecepcion, 'saldoFactura': saldoFactura, 'totalSoportado': totalSoportado,'totalAceptado':totalAceptado,
+                 'observaciones': observaciones, 'fechaRegistro': fechaRegistro,'estadoReg': estadoReg, 'convenio_id': convenio_id,'nombreConvenio':nombreConvenio, 'usuarioRegistro_id': usuarioRegistro_id, 'factura_id' : factura_id,
                  'factura_id': factura_id, 'fechaRespuesta': fechaRespuesta,
-                 'tipoGlosa_id': tipoGlosa_id, 'usuarioRecepcion_id': usuarioRecepcion_id, 'usuarioRespuesta_id': usuarioRespuesta_id,
+                 'tipoGlosa_id': tipoGlosa_id,'nombreTipoGlosa' :nombreTipoGlosa, 'usuarioRecepcion_id': usuarioRecepcion_id,'estadoGlosaRecepcion':estadoGlosaRecepcion, 'usuarioRespuesta_id': usuarioRespuesta_id,
                  'valorGlosa': valorGlosa, 'estadoRadicacion_id': estadoRadicacion_id, 'estadoRecepcion_id': estadoRecepcion_id,
                  'sedesClinica_id': sedesClinica_id,'ripsEnvio_id':ripsEnvio_id}})
 
@@ -109,42 +109,48 @@ def GuardaGlosas(request):
 
     print ("Entre Guarda Glosas" )
 
-    empresa_id = request.POST['empresa_id']
-    print("empresa_id =", empresa_id)
+    convenio_id = request.POST['convenio_id']
+    print("convenio_id =", convenio_id)
 
     sedesClinica_id = request.POST['sedesClinica_id']
     print("sedesClinica_id =", sedesClinica_id)
 
-    fechaEnvio = request.POST['fechaEnvio']
-    print ("fechaEnvio =", fechaEnvio)
+    fechaRecepcion = request.POST["fechaRecepcion"]
+    print("fechaRecepcion =", fechaRecepcion)
+
+
+    observaciones = request.POST["observaciones"]
+    print("observaciones =", observaciones)
+
+
+    factura_id = request.POST['factura_id']
+    print ("factura_id =", factura_id)
 
     fechaRespuesta = request.POST["fechaRespuesta"]
-    print ("fechaRespuesta =", fechaRespuesta)
-
-    cantidadFacturas = request.POST['cantidadFacturas']
-    print ("cantidadFacturas =", cantidadFacturas)
-    cantidadPasaron = request.POST['cantidadPasaron']
-    print ("cantidadPasaron =", cantidadPasaron)
-    cantidadRechazadas = request.POST['cantidadRechazadas']
-    print ("cantidadRechazadas =", cantidadRechazadas)
+    print("fechaRespuesta =", fechaRespuesta)
 
 
-    estadoPasoMinisterio = request.POST['estadoPasoMinisterio']
-    print ("estadoPasoMinisterio =", estadoPasoMinisterio)
-    jsonError = request.POST['jsonError']
-    print ("jsonError =", jsonError)
-    jsonAprobado = request.POST['jsonAprobado']
-    print ("jsonAprobado =", jsonAprobado)
+    tipoGlosa_id = request.POST["tipoGlosa_id"]
+    print ("tipoGlosa_id =", tipoGlosa_id)
+
+    valorGlosa = request.POST['valorGlosa']
+    print ("valorGlosa =", valorGlosa)
+
+    estadoRecepcion_id = request.POST['estadoRecepcion_id']
+    print ("estadoRecepcion_id =", estadoRecepcion_id)
+
+
     usuarioRegistro_id = request.POST['usuarioRegistro_id']
     print ("usuarioRegistro_id =", usuarioRegistro_id)
+
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
-
-
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","estadoPasoMinisterio", "jsonError", "jsonAprobado", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id") values ('  +  "'" + str(fechaEnvio) + "'," + "'" + str(fechaRespuesta) + "'," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoPasoMinisterio) + "'" + '  , ' + "'" + str(jsonError) + "'" + ', ' + "'" + str(jsonAprobado) + "',"   + "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "');"
+
+    comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ) VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null)"
+
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
@@ -154,6 +160,47 @@ def GuardaGlosas(request):
 
     return JsonResponse({'success': True, 'message': 'Envio realizado satisfactoriamente!'})
 
+
+def Load_tablaGlosasProcedimientos(request, data):
+    print("Entre load_data Procedimientos Glosas")
+
+    context = {}
+    d = json.loads(data)
+
+    sedesClinica_id = d['sedesClinica_id']
+    print("sedesClinica_id = ", sedesClinica_id)
+
+    facturaId = d['facturaId']
+    print("facturaId = ", facturaId)
+
+
+    procedimientosRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT  ripsproc.id, "codPrestador", cast("fechaInicioAtencion" as date), "idMIPRES", "numAutorizacion", ripsproc."numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", ripsproc.consecutivo, ripsproc."fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", ripsproc."tipoDocumentoIdentificacion_id", ripsproc."usuarioRegistro_id", "viaIngresoServicioSalud_id", ripsproc."ripsDetalle_id", "itemFactura", ripsproc."ripsTipos_id", "tipoPagoModerador_id", ripsproc."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra, public.rips_ripsprocedimientos ripsproc WHERE  ripstra."sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'" + ' ripstra.id = ripsproc."ripsTransaccion_id"  AND cast(ripstra."numFactura" as numeric) = ' + "'" + str(facturaId) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  codPrestador, fechaInicioAtencion, idMIPRES,numAutorizacion, numDocumentoIdentificacion,  vrServicio,  valorPagoModerador, numFEVPagoModerador, consecutivo , fechaRegistro,  codComplicacion_id, codDiagnosticoPrincipal_id, codDiagnosticoRelacionado_id, codProcedimiento_id, codServicio_id, conceptoRecaudo_id, finalidadTecnologiaSalud_id, grupoServicios_id, modalidadGrupoServicioTecSal_id, tipoDocumentoIdentificacion_id, usuarioRegistro_id, viaIngresoServicioSalud_id, ripsDetalle_id, itemFactura, ripsTipos_id, tipoPagoModerador_id, ripsTransaccion_id in curx.fetchall():
+        procedimientosRips.append(
+            {"model": "rips.RipsProcedimientos", "pk": id, "fields":
+                {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion, 'idMIPRES': idMIPRES, 'numAutorizacion':numAutorizacion, 'numDocumentoIdentificacion':numDocumentoIdentificacion,'vrServicio':vrServicio, 'valorPagoModerador':valorPagoModerador,'consecutivo':consecutivo,'fechaRegistro':fechaRegistro,'codComplicacion_id':codComplicacion_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id,'codDiagnosticoRelacionado_id':codDiagnosticoRelacionado_id, 'codProcedimiento_id':codProcedimiento_id,'codServicio_id':codServicio_id,'conceptoRecaudo_id':conceptoRecaudo_id,'finalidadTecnologiaSalud_id':finalidadTecnologiaSalud_id, 'grupoServicios_id':grupoServicios_id, 'modalidadGrupoServicioTecSal_id':modalidadGrupoServicioTecSal_id,'tipoDocumentoIdentificacion_id':tipoDocumentoIdentificacion_id,'usuarioRegistro_id':usuarioRegistro_id,'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id,'ripsDetalle_id':ripsDetalle_id,  'itemFactura': itemFactura,'ripsTipos_id ':ripsTipos_id,'tipoPagoModerador_id':tipoPagoModerador_id , 'ripsTransaccion_id':ripsTransaccion_id
+                 }})
+
+
+
+    miConexionx.close()
+    print("procedimientosRips "  , procedimientosRips)
+    #context['usuariosRips'] = usuariosRips
+
+    serialized1 = json.dumps(procedimientosRips,  default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
 
 
 

@@ -13,11 +13,11 @@ let dataTableGlosasInitialized = false;
 let dataTableGlosasDetalleInitialized = false;
 let dataTableDetalleRipsAdicionarInitialized = false;
 let dataTableDetalleRipsInitialized = false;
-let dataTableRipsTransaccionInitialized = false;
-let dataTableRipsUsuariosInitialized = false;
-let dataTableRipsProcedimientosInitialized = false;
-let dataTableRipsHospitalizacionInitialized = false;
-let dataTableRipsMedicamentosInitialized = false;
+let dataTableGlosasTransaccionInitialized = false;
+let dataTableGlosasUsuariosInitialized = false;
+let dataTableGlosasProcedimientosInitialized = false;
+let dataTableGlosasHospitalizacionInitialized = false;
+let dataTableGlosasMedicamentosInitialized = false;
 
 
 $(document).ready(function() {
@@ -89,13 +89,13 @@ function arrancaGlosas(valorTabla,valorData)
 
 		{     "render": function ( data, type, row ) {
                         var btn = '';
-             btn = btn + " <input type='radio'  class='miGlosa form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+             btn = btn + " <input type='radio'  name='glosa'  class='miGlosa form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
 
                        return btn;
                     },
 
-                    "targets": 20
+                    "targets": 23
                }
             ],
 	 pageLength: 3,
@@ -134,15 +134,18 @@ function arrancaGlosas(valorTabla,valorData)
                 { data: "fields.fechaRegistro"},
                 { data: "fields.estadoReg"},
 		{ data: "fields.convenio_id"},
+		{ data: "fields.nombreConvenio"},
                 { data: "fields.usuarioRegistro_id"},
 		 { data: "fields.factura_id"},
 		 { data: "fields.fechaRespuesta"},
 		 { data: "fields.tipoGlosa_id"},
+		 { data: "fields.nombreTipoGlosa"},
 		  { data: "fields.usuarioRecepcion_id"},
                 { data: "fields.usuarioRespuesta_id"},    
                 { data: "fields.valorGlosa"},    
                 { data: "fields.estadoRadicacion_id"},    
                 { data: "fields.estadoRecepcion_id"},    
+                { data: "fields.estadoGlosaRecepcion"},    
                 { data: "fields.sedesClinica_id"},    
                 { data: "fields.ripsEnvio_id"},    
 
@@ -263,7 +266,7 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 4)
     {
 
-        let dataTableOptionsRipsTransaccion  ={
+        let dataTableOptionsGlosasTransaccion  ={
   dom: 'Bfrtilp',
   buttons: [
     {
@@ -323,7 +326,7 @@ function arrancaGlosas(valorTabla,valorData)
 		    }
 			},
            ajax: {
-                 url:"/load_tablaRipsTransaccion/" +  data,
+                 url:"/load_tablaGlosasTransaccion/" +  data,
                  type: "POST",
                  dataSrc: ""
             },
@@ -340,15 +343,15 @@ function arrancaGlosas(valorTabla,valorData)
                      ]
             }
 
-            if  (dataTableRipsTransaccionInitialized)  {
+            if  (dataTableGlosasTransaccionInitialized)  {
 
-		            dataTableD = $("#tablaRipsTransaccion").dataTable().fnDestroy();
+		            dataTableD = $("#tablaGlosasTransaccion").dataTable().fnDestroy();
 
                     }
 
-                dataTableD = $('#tablaRipsTransaccion').DataTable(dataTableOptionsRipsTransaccion);
+                dataTableD = $('#tablaGlosasTransaccion').DataTable(dataTableOptionsGlosasTransaccion);
 
-	            dataTableRipsTransaccionInitialized  = true;
+	            dataTableGlosasransaccionInitialized  = true;
       }
 
 
@@ -358,7 +361,7 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 5)
     {
 
-        let dataTableOptionsRipsUsuarios  ={
+        let dataTableOptionsGlosasUsuarios  ={
   dom: 'Bfrtilp',
   buttons: [
     {
@@ -418,7 +421,7 @@ function arrancaGlosas(valorTabla,valorData)
 		    }
 			},
            ajax: {
-                 url:"/load_tablaRipsUsuarios/" +  data,
+                 url:"/load_tablaGlosasUsuarios/" +  data,
                  type: "POST",
                  dataSrc: ""
             },
@@ -444,15 +447,15 @@ function arrancaGlosas(valorTabla,valorData)
                      ]
             }
 
-            if  (dataTableRipsUsuariosInitialized)  {
+            if  (dataTableGlosasUsuariosInitialized)  {
 
-		            dataTableE = $("#tablaRipsUsuarios").dataTable().fnDestroy();
+		            dataTableE = $("#tablaGlosasUsuarios").dataTable().fnDestroy();
 
                     }
 
-                dataTableE = $('#tablaRipsUsuarios').DataTable(dataTableOptionsRipsUsuarios);
+                dataTableE = $('#tablaGlosasUsuarios').DataTable(dataTableOptionsGlosasUsuarios);
 
-	            dataTableRipsUsuariosInitialized  = true;
+	            dataTableGlosasUsuariosInitialized  = true;
       }
 
 
@@ -461,7 +464,7 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 6)
     {
 
-        let dataTableOptionsRipsProcedimientos  ={
+        let dataTableOptionsGlosasProcedimientos  ={
   dom: 'Bfrtilp',
   buttons: [
     {
@@ -521,7 +524,7 @@ function arrancaGlosas(valorTabla,valorData)
 		    }
 			},
            ajax: {
-                 url:"/load_tablaRipsProcedimientos/" +  data,
+                 url:"/load_tablaGlosasProcedimientos/" +  data,
                  type: "POST",
                  dataSrc: ""
             },
@@ -558,15 +561,15 @@ function arrancaGlosas(valorTabla,valorData)
                      ]
             }
 
-            if  (dataTableRipsProcedimientosInitialized)  {
+            if  (dataTableGlosasProcedimientosInitialized)  {
 
-		            dataTableF = $("#tablaRipsProcedimientos").dataTable().fnDestroy();
+		            dataTableF = $("#tablaGlosasProcedimientos").dataTable().fnDestroy();
 
                     }
 
-                dataTableF = $('#tablaRipsProcedimientos').DataTable(dataTableOptionsRipsProcedimientos);
+                dataTableF = $('#tablaGlosasProcedimientos').DataTable(dataTableOptionsGlosasProcedimientos);
 
-	            dataTableRipsProcedimientosInitialized  = true;
+	            dataTableGlosasProcedimientosInitialized  = true;
       }
 
 
@@ -684,7 +687,7 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 8)
     {
 
-        let dataTableOptionsRipsMedicamentos  ={
+        let dataTableOptionsGlosasMedicamentos  ={
   dom: 'Bfrtilp',
   buttons: [
     {
@@ -744,7 +747,7 @@ function arrancaGlosas(valorTabla,valorData)
 		    }
 			},
            ajax: {
-                 url:"/load_tablaRipsMedicamentos/" +  data,
+                 url:"/load_tablaGlosasMedicamentos/" +  data,
                  type: "POST",
                  dataSrc: ""
             },
@@ -770,15 +773,15 @@ function arrancaGlosas(valorTabla,valorData)
                      ]
             }
 
-            if  (dataTableRipsMedicamentosInitialized)  {
+            if  (dataTableGlosasMedicamentosInitialized)  {
 
-		            dataTableH = $("#tablaRipsMedicamentos").dataTable().fnDestroy();
+		            dataTableH = $("#tablaGlosasMedicamentos").dataTable().fnDestroy();
 
                     }
 
-                dataTableH = $('#tablaRipsMedicamentos').DataTable(dataTableOptionsRipsMedicamentos);
+                dataTableH = $('#tablaGlosasMedicamentos').DataTable(dataTableOptionsGlosasMedicamentos);
 
-	            dataTableRipsMedicamentosInitialized  = true;
+	            dataTableGlosassMedicamentosInitialized  = true;
       }
 
 }
@@ -822,10 +825,12 @@ window.addEventListener('load', async () => {
 
         var post_id = $(this).data('pk');
 	var row = $(this).closest('tr'); // Encuentra la fila
+	alert("Entre Glosa");
+
 
         var data =  {}   ;
 
-		var table = $('#tablaEnviosRips').DataTable();  // Inicializa el DataTable jquery 	      
+		var table = $('#tablaGlosas').DataTable();  // Inicializa el DataTable jquery 	      
 
   	        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
 
@@ -835,55 +840,32 @@ window.addEventListener('load', async () => {
 		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
 	        dato3 = dato1[2];
 		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
-	        console.log ( "dato10 empresa = " , dato3.empresa_id); 
+	        console.log ( "dato10 factura_id = " , dato3.factura_id); 
 
-		var id_empresa = dato3.empresa_id;  // jquery
-		var tipoRips = dato3.tipoNota;  // jquery
+		var facturaId = dato3.factura_id;  // jquery
+		alert("facturaId = " + facturaId);
 
-		data['empresaId'] = id_empresa;
-		data['envioRipsId'] = post_id;
-		data['tipoRips'] = tipoRips;
 
-		alert("id_empresa = "  + id_empresa);
-		alert("tipoRips = "  + tipoRips);
-		alert("envioRipsId = "  +  post_id);
+		data['facturaId'] = factura_id
 
 	        data = JSON.stringify(data);
 
-		document.getElementById("empresaId").value = id_empresa;
-		document.getElementById("envioRipsId").value = post_id;
-		document.getElementById("tipoRips2").value = tipoRips;	
-
-		document.getElementById("empresaId1").value = id_empresa;
-		document.getElementById("envioRipsId1").value = post_id;
-		document.getElementById("tipoRips1").value = tipoRips;
-
-		document.getElementById("empresaId3").value = id_empresa;
-		document.getElementById("envioRipsId3").value =post_id;
-		document.getElementById("tipoRips3").value = tipoRips;
-
-		 document.getElementById("envioRipsIdJ").value = post_id;
+		// document.getElementById("facturaId").value = facturaId ;
 
 
-		   arrancaEnviosRips(2,data);
-  			dataTableDetalleRipsAdicionarInitialized  = true;
-		   arrancaEnviosRips(3,data);
-  			dataTableDetalleRipsInitialized  = true;
-		   arrancaEnviosRips(4,data);
- 			 dataTableRipsTransaccionInitialized= true;
 
-		   arrancaEnviosRips(5,data);
+		   arrancaGlosas(6,data);
+ 			 dataTableRipsProcedimientosInitialized= true;
+
+		   arrancaGlosas(8,data);
+ 			 dataTableRipsMedicamentosInitialized= true;
+
+
+		   arrancaGlosas(5,data);
  			 dataTableRipsUsuariosInitialized= true;
 
 
-		   arrancaEnviosRips(6,data);
- 			 dataTableRipsProcedimientosInitialized= true;
 
-		   arrancaEnviosRips(7,data);
- 			 dataTableRipsHospitalizacionInitialized= true;
-
-		   arrancaEnviosRips(8,data);
- 			 dataTableRipsMedicamentosInitialized= true;
 
   });
 
@@ -989,116 +971,6 @@ window.addEventListener('load', async () => {
 
 
   });
-
-
-/* ---------------------------------
-Para borrar detalle rips
-------------------------------------*/
-
-
-$('#tablaDetalleRips tbody').on('click', '.miBorrar', function() {
-
-	     var post_id = $(this).data('pk');
-
-        var envioDetalleRipsId = post_id;
-	var envioRipsId = document.getElementById("envioRipsId").value ;
-	var empresaId = document.getElementById("empresaId").value ;
-
-
-      
-	$.ajax({
-
-	        url: "/borrarDetalleRips/",
-                data: {'envioDetalleRipsId':envioDetalleRipsId},
-                type: "POST",
-                dataType: 'json',
-                success: function (info) {
-
-		    $("#mensajes").html(info);
-
-		  var data =  {}   ;
-		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
-	        var username = document.getElementById("username").value;
-	        var nombreSede = document.getElementById("nombreSede").value;
-	    	var sede = document.getElementById("sede").value;
-	        var username_id = document.getElementById("username_id").value;
-
-
-	        data['username'] = username;
-	        data['sedeSeleccionada'] = sedeSeleccionada;
-	        data['nombreSede'] = nombreSede;
-	        data['sede'] = sede;
-	        data['username_id'] = username_id;
-		data['envioRipsId'] = envioRipsId;
-		data['envioDetalleRipsId'] = envioDetalleRipsId;
-	        data = JSON.stringify(data);
-
-  	
-	 		  arrancaEnviosRips(2,data);
-  			dataTableDetalleRipsAdicionarInitialized  = true;
-			   arrancaEnviosRips(3,data);
-  			dataTableDetalleRipsInitialized  = true;
-			   arrancaEnviosRips(4,data);
-				
-
-                },
-                 error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
-            });
-      
-  });
-
-
-
-
-/*----------------------------------------
---------------------------------------------/
-
-
- $('#tablaDetalleRips tbody').on('click', '.miJson', function() {
-
-	     var post_id = $(this).data('pk');
-	var envioRipsId = document.getElementById("envioRipsId").value ;
-
-	var table = $('#tablaDetalleRips').DataTable();  // Inicializa el DataTable jquery//
-	
-	var rowindex = table.row(0).node();  // Selecciona la primera fila jquery
-       console.log("rowindex= " , rowindex);
-
-	
-	var facturaId = table.row(0).cell(rowindex, 1).data();  // jquery
-       console.log("facturaId = " , facturaId );
-       console.log("otra1 = " , table.row(0).cell(rowindex, 0).data() );
-       console.log("otra2 = " , table.row(0).cell(rowindex, 2).data() );
-
-      
-	$.ajax({
-
-	        url: "/traerJsonRips/",
-                data: {'envioRipsId':envioRipsId,'facturaId':facturaId},
-                type: "POST",
-                dataType: 'json',
-                success: function (info) {
-
-            $('#postFormRipsJson').trigger("reset");
-
-  	
- 				$('#valorJson').val(info[0].fields.valorJson);
-				
-
-            $('#modelHeadingRipsJson').html("Detalle Envios Rips");
-            $('#crearModelRipsJson').modal('show');
-
-                },
-                 error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
-            });
-      
-  });
-
-
 	/*------------------------------------------
         --------------------------------------------
         Create GuardarDetalleRips
@@ -1134,6 +1006,7 @@ function GuardarDetalleRips()
 
 		data['empresaId'] = empresaId;
 		data['envioRipsId'] = envioRipsId;
+		data['envioRipsId'] = envioRipsId;
 	        data = JSON.stringify(data);
 
 		  var tableA = $('#tablaDetalleRips').DataTable();
@@ -1150,31 +1023,51 @@ function GuardarDetalleRips()
 }
 
 	
-function CrearGlosass()
+function CrearGlosas()
 {
 	
+	alert("Entre crear Glosas");
+
+		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+
+
 
             $.ajax({
-                data: $('#postFormEnviosRips').serialize(),
-	        url: "/guardaEnviosRips/",
+                data: $('#postFormGlosas').serialize(),
+	        url: "/guardaGlosas/",
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
 		   $("#mensajes").html(data2.message);
-                  $('#postFormEnviosRips').trigger("reset");
+                  $('#postFormGlosas').trigger("reset");
+
+
+
 
 		var data =  {}   ;
 	        data['username'] = username;
+		  data['username_id'] = username_id;
 	       data['sedeSeleccionada'] = sedeSeleccionada;
 	       data['nombreSede'] = nombreSede;
 	      data['sede'] = sede;
-	        data['username_id'] = username_id;
-        data = JSON.stringify(data);
-	
-		  var tableA = $('#tablaEnviosRips').DataTable();
-	          tableA.ajax.reload();
+	        data['sedesClinica_id'] = sede;
 
- 		 $('#crearModelEnviosRips').modal('hide');
+        data = JSON.stringify(data);
+
+  		 if  (dataTableGlosasInitialized)  {
+
+		            dataTableC = $("#tablaGlosas").dataTable().fnDestroy();
+
+                    }
+
+			 arrancaGlosas(1,data);
+			    dataTableGlosasInitialized = true;
+ 		 $('#crearModelGlosas').modal('hide');
+
                 },
             error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
