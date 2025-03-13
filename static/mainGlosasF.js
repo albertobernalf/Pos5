@@ -351,7 +351,7 @@ function arrancaGlosas(valorTabla,valorData)
 
                 dataTableD = $('#tablaGlosasTransaccion').DataTable(dataTableOptionsGlosasTransaccion);
 
-	            dataTableGlosasransaccionInitialized  = true;
+	            dataTableGlosasTransaccionInitialized  = true;
       }
 
 
@@ -579,7 +579,7 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 7)
     {
 
-        let dataTableOptionsRipsHospitalizacion  ={
+        let dataTableOptionsGlosasHospitalizacion  ={
   dom: 'Bfrtilp',
   buttons: [
     {
@@ -612,7 +612,7 @@ function arrancaGlosas(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 		{     "render": function ( data, type, row ) {
                         var btn = '';
-                          btn = btn + " <input type='radio' class='miProcedimientos form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                          btn = btn + " <input type='radio' class='miHospitalizacion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
                        return btn;
                     },
@@ -639,7 +639,7 @@ function arrancaGlosas(valorTabla,valorData)
 		    }
 			},
            ajax: {
-                 url:"/load_tablaRipsHospitalizacion/" +  data,
+                 url:"/load_tablaGlosasHospitalizacion/" +  data,
                  type: "POST",
                  dataSrc: ""
             },
@@ -669,15 +669,15 @@ function arrancaGlosas(valorTabla,valorData)
                      ]
             }
 
-            if  (dataTableRipsHospitalizacionInitialized)  {
+            if  (dataTableGlosasHospitalizacionInitialized)  {
 
-		            dataTableG = $("#tablaRipsHospitalizacion").dataTable().fnDestroy();
+		            dataTableG = $("#tablaGlosasHospitalizacion").dataTable().fnDestroy();
 
                     }
 
-                dataTableG = $('#tablaRipsHospitalizacion').DataTable(dataTableOptionsRipsHospitalizacion);
+                dataTableG = $('#tablaGlosasHospitalizacion').DataTable(dataTableOptionsGlosasHospitalizacion);
 
-	            dataTableRipsHospitalizacionInitialized  = true;
+	            dataTableGlosasHospitalizacionInitialized  = true;
       }
 
 
@@ -804,9 +804,19 @@ const initDataTableGlosas = async () => {
         data['username_id'] = username_id;
  	    data = JSON.stringify(data);
 
-
         arrancaGlosas(1,data);
 	    dataTableGlosasInitialized = true;
+        arrancaGlosas(4,data);
+	    dataTableGlosasInitialized = true;
+        arrancaGlosas(5,data);
+	    dataTableGlosasInitialized = true;
+        arrancaGlosas(6,data);
+	    dataTableGlosasInitialized = true;
+
+        arrancaGlosas(8,data);
+	    dataTableGlosasInitialized = true;
+
+
 }
 
  // COMIENZA ONLOAD
@@ -845,7 +855,8 @@ window.addEventListener('load', async () => {
 		var facturaId = dato3.factura_id;  // jquery
 		alert("facturaId = " + facturaId);
 
-
+		sedesClinica_id = dato3.sedesClinica_id
+		data['sedesClinica_id'] = sedesClinica_id
 		data['facturaId'] = factura_id
 
 	        data = JSON.stringify(data);
@@ -853,17 +864,16 @@ window.addEventListener('load', async () => {
 		// document.getElementById("facturaId").value = facturaId ;
 
 
-
-		   arrancaGlosas(6,data);
- 			 dataTableRipsProcedimientosInitialized= true;
-
-		   arrancaGlosas(8,data);
- 			 dataTableRipsMedicamentosInitialized= true;
-
-
-		   arrancaGlosas(5,data);
- 			 dataTableRipsUsuariosInitialized= true;
-
+	    arrancaGlosas(1,data);
+	    dataTableGlosasInitialized = true;
+	        arrancaGlosas(4,data);
+	    dataTableGlosasInitialized = true;
+	        arrancaGlosas(5,data);
+	    dataTableGlosasInitialized = true;
+        	arrancaGlosas(6,data);
+	    dataTableGlosasInitialized = true;
+	        arrancaGlosas(8,data);
+	    dataTableGlosasInitialized = true;
 
 
 
