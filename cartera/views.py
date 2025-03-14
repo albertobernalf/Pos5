@@ -334,13 +334,13 @@ def Load_tablaGlosasMedicamentos(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsmed.id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripscums cums  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
+    detalle = 'SELECT  ripsmed.id id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripscums cums  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for  id, itemFactura, nomTecnologiaSalud, idMIPRES, fechaDispensAdmon, nomTecnologiaSalud, cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito in curx.fetchall():
+    for  id, itemFactura, nomTecnologiaSalud,  cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito in curx.fetchall():
         medicamentosRips.append(
             {"model": "rips.RipsMedicamentos", "pk": id, "fields":
                 {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud,  'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
@@ -359,6 +359,7 @@ def Load_tablaGlosasMedicamentos(request, data):
 
 
 def ConsultaGlosasRipsMedicamentos(request, data):
+    
     print("Entre consultaGlosasRipsMedicamentos")
 
     context = {}

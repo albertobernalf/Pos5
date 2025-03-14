@@ -919,37 +919,20 @@ window.addEventListener('load', async () => {
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
-        data['username'] = username;
-        data['sedeSeleccionada'] = sedeSeleccionada;
-        data['nombreSede'] = nombreSede;
-        data['sede'] = sede;
-        data['username_id'] = username_id;
+//        data['username'] = username;
+//        data['sedeSeleccionada'] = sedeSeleccionada;
+//        data['nombreSede'] = nombreSede;
+//        data['sede'] = sede;
+//        data['username_id'] = username_id;
 	sedesClinica_id = sede;
-	data['sedesClinica_id'] = sedesClinica_id
+//	data['sedesClinica_id'] = sedesClinica_id
 
-	var table = $('#tablaGlosas').DataTable();  // Inicializa el DataTable jquery 	      
+//		data['id'] = post_id
 
-  	        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
-
-
-	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
-	        dato1 = Object.values(rowindex);
-		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
-	        dato3 = dato1[2];
-		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
-	        console.log ( "dato10 factura_id = " , dato3.factura_id); 
-
-		var facturaId = dato3.factura_id;  // jquery
-		var id = dato3.id;  // jquery
-		alert("facturaId = " + facturaId);
-
-		data['facturaId'] = facturaId
-		data['id'] = id
-
-	        data = JSON.stringify(data);
+//	        data = JSON.stringify(data);
 
      $.ajax({
-                data: {'data':data},
+		   data: $('#postFormMedicamentos').serialize(),
 	        url: "/consultaGlosasRipsMedicamentos/",
                 type: "POST",
                 dataType: 'json',
