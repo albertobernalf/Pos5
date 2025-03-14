@@ -722,7 +722,7 @@ function arrancaGlosas(valorTabla,valorData)
 
                        return btn;
                     },
-                    "targets": 15
+                    "targets": 24
                }
             ],
 	 pageLength: 3,
@@ -751,22 +751,29 @@ function arrancaGlosas(valorTabla,valorData)
             },
             columns: [
 		 { data: "fields.id"},
-	 	  { data: "fields.codPrestador"},
-	  { data: "fields.numAutorizacion"},
+	 	  { data: "fields.itemFactura"},
+	  { data: "fields.nomTecnologiaSalud"},
 	  { data: "fields.idMIPRES"},
 	  { data: "fields.fechaDispensAdmon"},
 	  { data: "fields.nomTecnologiaSalud"},
+	  { data: "fields.cums"},
 	  { data: "fields.concentracionMedicamento"},
 	  { data: "fields.cantidadMedicamento"},
-	  { data: "fields.diasTratamiento"},
-	  { data: "fields.numDocumentoIdentificacion"},
-	{ data: "fields.vrUnitMedicamento"},
+  	 { data: "fields.vrUnitMedicamento"},
 	  { data: "fields.vrServicio"},
-	  { data: "fields.valorPagoModerador"},
-	  { data: "fields.numFEVPagoModerador"},
 	  { data: "fields.consecutivo"},
-	
-
+	  { data: "fields.tipoMedicamento_id"},
+	  { data: "fields.unidadMedida_id"},
+	  { data: "fields.cantidadGlosada"},
+	  { data: "fields.cantidadAceptada"},
+	  { data: "fields.cantidadSoportado"},
+	  { data: "fields.valorGlosado"},
+	  { data: "fields.vAceptado"},
+	  { data: "fields.valorSoportado"},
+	  { data: "fields.motivoGlosa_id"},
+	  { data: "fields.notasCreditoGlosa"},
+	  { data: "fields.notasCreditoOtras"},
+	  { data: "fields.notasDebito"},
 
                      ]
             }
@@ -891,6 +898,98 @@ window.addEventListener('load', async () => {
         	arrancaGlosas(6,data);
 	    dataTableGlosasProcedimientos = true;
         alert ("pase ULTIMO");
+
+
+
+  });
+
+
+
+ $('#tablaGlosasMedicamentos tbody').on('click', '.miMedicamentos', function() {
+
+        var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
+	alert("Entre Rips Medicamentos");
+
+
+        var data =  {}   ;
+
+ 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	sedesClinica_id = sede;
+	data['sedesClinica_id'] = sedesClinica_id
+
+	var table = $('#tablaGlosas').DataTable();  // Inicializa el DataTable jquery 	      
+
+  	        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato10 factura_id = " , dato3.factura_id); 
+
+		var facturaId = dato3.factura_id;  // jquery
+		var id = dato3.id;  // jquery
+		alert("facturaId = " + facturaId);
+
+		data['facturaId'] = facturaId
+		data['id'] = id
+
+	        data = JSON.stringify(data);
+
+     $.ajax({
+                data: {'data':data},
+	        url: "/consultaGlosasRipsMedicamentos/",
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+		   $("#mensajes").html(data2.message);
+     $('#postFormMedicamentos').trigger("reset");
+
+  	$('#id').val(info[0].fields.id);
+  	$('#itemFactura').val(info[0].fields.itemFactura);
+  	$('#nomTecnologiaSalud').val(info[0].fields.nomTecnologiaSalud);
+  	$('#cums').val(info[0].fields.cums);
+  	$('#concentracionMedicamento').val(info[0].fields.concentracionMedicamento);
+  	$('#cantidadMedicamento').val(info[0].fields.cantidadMedicamento);
+  	$('#vrUnitMedicamento').val(info[0].fields.vrUnitMedicamento);
+  	$('#vrServicio').val(info[0].fields.vrServicio);
+  	$('#consecutivo').val(info[0].fields.consecutivo);
+  	$('#tipoMedicamento_id').val(info[0].fields.tipoMedicamento_id);
+  	$('#unidadMedida_id').val(info[0].fields.unidadMedida_id);
+  	$('#cantidadGlosada').val(info[0].fields.cantidadGlosada);
+  	$('#cantidadAceptada').val(info[0].fields.cantidadAceptada);
+  	$('#cantidadSoportado').val(info[0].fields.cantidadSoportado);
+
+  	$('#valorGlosado').val(info[0].fields.valorGlosado);
+  	$('#vAceptado').val(info[0].fields.vAceptado);
+  	$('#valorSoportado').val(info[0].fields.valorSoportado);
+  	$('#motivoGlosa_id').val(info[0].fields.motivoGlosa_id);
+  	$('#notasCreditoGlosa').val(info[0].fields.notasCreditoGlosa);
+  	$('#notasCreditoOtras').val(info[0].fields.notasCreditoOtras);
+  	$('#notasDebito').val(info[0].fields.notasDebito);
+
+
+		 $('#crearModelGlosasMedicamentos').modal('show');
+
+                },
+            error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
 
 
 
@@ -1050,10 +1149,10 @@ function GuardarDetalleRips()
 }
 
 	
-function CrearGlosas()
+function CrearGlosasMedicamentos()
 {
 	
-	alert("Entre crear Glosas");
+	alert("Entre crear GlosasMedicamnetos");
 
 		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
 	        var username = document.getElementById("username").value;
@@ -1064,13 +1163,13 @@ function CrearGlosas()
 
 
             $.ajax({
-                data: $('#postFormGlosas').serialize(),
-	        url: "/guardaGlosas/",
+                data: $('#postFormGlosasMedicamentos').serialize(),
+	        url: "/guardarGlosasMedicamentos/",
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
 		   $("#mensajes").html(data2.message);
-                  $('#postFormGlosas').trigger("reset");
+                  $('#postFormGlosasMedicamentos').trigger("reset");
 
 
 
@@ -1093,7 +1192,7 @@ function CrearGlosas()
 
 			 arrancaGlosas(1,data);
 			    dataTableGlosasInitialized = true;
- 		 $('#crearModelGlosas').modal('hide');
+ 		 $('#crearModelGlosasGlosas').modal('hide');
 
                 },
             error: function (request, status, error) {
@@ -1143,3 +1242,5 @@ function CerrarModalJson()
 
             $('#crearModelRipsJson').modal('hide');
 }
+
+

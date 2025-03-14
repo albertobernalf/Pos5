@@ -334,18 +334,17 @@ def Load_tablaGlosasMedicamentos(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsmed.id, "codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", "diasTratamiento", "numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, ripsmed."fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", ripsmed."usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", ripsmed."ripsTransaccion_id" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
+    detalle = 'SELECT  ripsmed.id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripscums cums  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for  id, codPrestador, numAutorizacion, idMIPRES, fechaDispensAdmon, nomTecnologiaSalud, concentracionMedicamento, cantidadMedicamento, diasTratamiento, numDocumentoIdentificacion, vrUnitMedicamento, vrServicio, valorPagoModerador, numFEVPagoModerador, consecutivo, fechaRegistro, codDiagnosticoPrincipal_id, codDiagnosticoRelacionado_id, codTecnologiaSalud_id, conceptoRecaudo_id, formaFarmaceutica_id, tipoDocumentoIdentificacion_id, tipoMedicamento_id, unidadMedida_id, unidadMinDispensa_id, usuarioRegistro_id, ripsDetalle_id, itemFactura, ripsTipos_id, ripsTransaccion_id in curx.fetchall():
+    for  id, itemFactura, nomTecnologiaSalud, idMIPRES, fechaDispensAdmon, nomTecnologiaSalud, cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito in curx.fetchall():
         medicamentosRips.append(
             {"model": "rips.RipsMedicamentos", "pk": id, "fields":
-                {'id': id, 'codPrestador': codPrestador , 'numAutorizacion': numAutorizacion,  'idMIPRES':idMIPRES, 'fechaDispensAdmon':fechaDispensAdmon,'nomTecnologiaSalud':nomTecnologiaSalud,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
-		'diasTratamiento':diasTratamiento, 'numDocumentoIdentificacion':numDocumentoIdentificacion, 'vrUnitMedicamento':vrUnitMedicamento, 'vrServicio':vrServicio,'valorPagoModerador':valorPagoModerador,'numFEVPagoModerador':numFEVPagoModerador,'consecutivo':consecutivo,
-                 'fechaRegistro':fechaRegistro, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id, 'codDiagnosticoRelacionado_id':codDiagnosticoRelacionado_id, 'codTecnologiaSalud_id':codTecnologiaSalud_id, 'conceptoRecaudo_id':conceptoRecaudo_id,'formaFarmaceutica_id':formaFarmaceutica_id,'tipoDocumentoIdentificacion_id':tipoDocumentoIdentificacion_id,'tipoMedicamento_id':tipoMedicamento_id,'unidadMedida_id':unidadMedida_id,'unidadMinDispensa_id':unidadMinDispensa_id,'usuarioRegistro_id':usuarioRegistro_id,'ripsDetalle_id':ripsDetalle_id,'itemFactura':itemFactura,'ripsTipos_id':ripsTipos_id,'ripsTransaccion_id':ripsTransaccion_id
+                {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud,  'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
+		 'vrUnitMedicamento':vrUnitMedicamento, 'vrServicio':vrServicio, 'consecutivo':consecutivo,'tipoMedicamento_id':tipoMedicamento_id,'unidadMedida_id':unidadMedida_id,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'motivoGlosa_id':motivoGlosa_id,'notasCreditoGlosa':notasCreditoGlosa, 'notasCreditoOtras':notasCreditoOtras, 'notasDebito':notasDebito
                  }})
 
 
@@ -357,4 +356,116 @@ def Load_tablaGlosasMedicamentos(request, data):
     serialized1 = json.dumps(medicamentosRips,  default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+def ConsultaGlosasRipsMedicamentos(request, data):
+    print("Entre consultaGlosasRipsMedicamentos")
+
+    context = {}
+    d = json.loads(data)
+
+    facturaId = d['facturaId']
+    print("facturaId = ", facturaId)
+
+    id= d['id']
+    print("id= ", id)
+
+
+    medicamentosRipsUnRegistro = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT med.id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripsmedicamentos med, public.rips_ripscums cums where med.id= ' + "'" + str(id) + "'" + ' and cum ="nomTecnologiaSalud"'
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, itemFactura, nomTecnologiaSalud, cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito   in curx.fetchall():
+     medicamentosRipsUnRegistro.append(
+            {"model": "rips.RipsMedicamentos", "pk": id, "fields":
+                {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud,  'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
+		 'vrUnitMedicamento':vrUnitMedicamento, 'vrServicio':vrServicio,'consecutivo':consecutivo,'tipoMedicamento_id':tipoMedicamento_id,'unidadMedida_id':unidadMedida_id,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'motivoGlosa_id':motivoGlosa_id,'notasCreditoGlosa':notasCreditoGlosa, 'notasCreditoOtras':notasCreditoOtras, 'notasDebito':notasDebito
+                 }})
+
+
+    miConexionx.close()
+    print("medicamentosRipsUnRegistro "  , medicamentosRipsUnRegistro)
+    context['MedicamentosRipsUnRegistro'] = medicamentosRipsUnRegistro
+
+    serialized1 = json.dumps(medicamentosRipsUnRegistro, default=serialize_datetime)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
+def GuardarGlosasMedicamentos(request):
+
+    print ("Entre Guardar Glosas Medicamentos" )
+
+    convenio_id = request.POST['convenio_id']
+    print("convenio_id =", convenio_id)
+
+    sedesClinica_id = request.POST['sedesClinica_id']
+    print("sedesClinica_id =", sedesClinica_id)
+
+
+    observaciones = request.POST["observaciones"]
+    print("observaciones =", observaciones)
+
+
+    id = request.POST['id']
+    print ("id =", id)
+
+
+
+    motivoGlosa_id= request.POST["motivoGlosa_id"]
+    print ("motivoGlosa_id =", motivoGlosa_id)
+
+    valorGlosa = request.POST['valorGlosa']
+    print ("valorGlosa =", valorGlosa)
+
+    cantidadGlosada = request.POST['cantidadGlosada']
+    print ("cantidadGlosada =", cantidadGlosada)
+    cantidadAceptada = request.POST['cantidadAceptada']
+    print ("cantidadAceptada =", cantidadAceptada)
+    cantidadSoportado = request.POST['cantidadSoportado']
+    print ("cantidadSoportado =", cantidadSoportado)
+    valorGlosado = request.POST['valorGlosado']
+    print ("valorGlosado =", valorGlosado)
+    vAceptado = request.POST['vAceptado']
+    print ("vAceptado =", vAceptado)
+    valorSoportado = request.POST['valorSoportado']
+    print ("valorSoportado=",valorSoportado)
+    notasCreditoGlosa = request.POST['notasCreditoGlosa']
+    print ("notasCreditoGlosa=",notasCreditoGlosa)
+    notasCreditoOtras = request.POST['notasCreditoOtras']
+    print ("notasCreditoOtras=",notasCreditoOtras)
+    notasDebito = request.POST['notasDebito']
+    print ("notasDebito=",notasDebito)
+
+
+
+
+    usuarioRegistro_id = request.POST['usuarioRegistro_id']
+    print ("usuarioRegistro_id =", usuarioRegistro_id)
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras "= ' + "'" + str(notasCreditoOtras ) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "'" + '  WHERE id = ' + str(id)
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+
+    return JsonResponse({'success': True, 'message': 'Glosa Actualizado satisfactoriamente!'})
 
