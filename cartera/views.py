@@ -29,6 +29,22 @@ from clinico.models import Servicios
 import pickle
 
 
+# Function to convert dictionary keys and values
+def convert_keys_and_values(d):
+    return {str(k) if isinstance(k, Decimal) else k: (float(v) if isinstance(v, Decimal) else v)
+            for k, v in d.items()}
+
+
+def decimal_serializer(obj):
+    if isinstance(obj, Decimal):
+        return str(obj)
+    raise TypeError("Type not serializable")
+
+def serialize_datetime(obj):
+    if isinstance(obj, datetime.datetime):
+        return obj.isoformat()
+    raise TypeError("Type not serializable")
+
 
 # Create your views here.
 def load_dataGlosas(request, data):
@@ -162,6 +178,7 @@ def GuardaGlosas(request):
 
 
 def Load_tablaGlosasProcedimientos(request, data):
+
     print("Entre load_data Procedimientos Glosas")
 
     context = {}
@@ -173,32 +190,39 @@ def Load_tablaGlosasProcedimientos(request, data):
     facturaId = d['facturaId']
     print("facturaId = ", facturaId)
 
-
     procedimientosRips = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsproc.id, "codPrestador", cast("fechaInicioAtencion" as date), "idMIPRES", "numAutorizacion", ripsproc."numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", ripsproc.consecutivo, ripsproc."fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", ripsproc."tipoDocumentoIdentificacion_id", ripsproc."usuarioRegistro_id", "viaIngresoServicioSalud_id", ripsproc."ripsDetalle_id", "itemFactura", ripsproc."ripsTipos_id", "tipoPagoModerador_id", ripsproc."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra, public.rips_ripsprocedimientos ripsproc WHERE  ripstra."sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'" + ' ripstra.id = ripsproc."ripsTransaccion_id"  AND cast(ripstra."numFactura" as numeric) = ' + "'" + str(facturaId) + "'"
+    detalle = 'SELECT  ripsproc.id id, "codPrestador", cast("fechaInicioAtencion" as date), "idMIPRES", "numAutorizacion", ripsproc."numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", ripsproc.consecutivo, ripsproc."fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", ripsproc."tipoDocumentoIdentificacion_id", ripsproc."usuarioRegistro_id", "viaIngresoServicioSalud_id", ripsproc."ripsDetalle_id", "itemFactura", ripsproc."ripsTipos_id", "tipoPagoModerador_id", ripsproc."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra, public.rips_ripsprocedimientos ripsproc WHERE  ripstra."sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'" + ' AND ripstra.id = ripsproc."ripsTransaccion_id"  AND cast(ripstra."numFactura" as numeric) = ' +  str(facturaId)
 
-    print(detalle)
+    print ("detalle = ", detalle)
 
     curx.execute(detalle)
 
-    for id,  codPrestador, fechaInicioAtencion, idMIPRES,numAutorizacion, numDocumentoIdentificacion,  vrServicio,  valorPagoModerador, numFEVPagoModerador, consecutivo , fechaRegistro,  codComplicacion_id, codDiagnosticoPrincipal_id, codDiagnosticoRelacionado_id, codProcedimiento_id, codServicio_id, conceptoRecaudo_id, finalidadTecnologiaSalud_id, grupoServicios_id, modalidadGrupoServicioTecSal_id, tipoDocumentoIdentificacion_id, usuarioRegistro_id, viaIngresoServicioSalud_id, ripsDetalle_id, itemFactura, ripsTipos_id, tipoPagoModerador_id, ripsTransaccion_id in curx.fetchall():
+    for id,  codPrestador, fechaInicioAtencion, idMIPRES,numAutorizacion, numDocumentoIdentificacion,  vrServicio,  valorPagoModerador,  consecutivo , fechaRegistro,  codComplicacion_id, codDiagnosticoPrincipal_id, codDiagnosticoRelacionado_id, codProcedimiento_id, codServicio_id, conceptoRecaudo_id, finalidadTecnologiaSalud_id, grupoServicios_id, modalidadGrupoServicioTecSal_id, tipoDocumentoIdentificacion_id, usuarioRegistro_id, viaIngresoServicioSalud_id, ripsDetalle_id, itemFactura, ripsTipos_id, tipoPagoModerador_id, ripsTransaccion_id in curx.fetchall():
         procedimientosRips.append(
             {"model": "rips.RipsProcedimientos", "pk": id, "fields":
-                {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion, 'idMIPRES': idMIPRES, 'numAutorizacion':numAutorizacion, 'numDocumentoIdentificacion':numDocumentoIdentificacion,'vrServicio':vrServicio, 'valorPagoModerador':valorPagoModerador,'consecutivo':consecutivo,'fechaRegistro':fechaRegistro,'codComplicacion_id':codComplicacion_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id,'codDiagnosticoRelacionado_id':codDiagnosticoRelacionado_id, 'codProcedimiento_id':codProcedimiento_id,'codServicio_id':codServicio_id,'conceptoRecaudo_id':conceptoRecaudo_id,'finalidadTecnologiaSalud_id':finalidadTecnologiaSalud_id, 'grupoServicios_id':grupoServicios_id, 'modalidadGrupoServicioTecSal_id':modalidadGrupoServicioTecSal_id,'tipoDocumentoIdentificacion_id':tipoDocumentoIdentificacion_id,'usuarioRegistro_id':usuarioRegistro_id,'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id,'ripsDetalle_id':ripsDetalle_id,  'itemFactura': itemFactura,'ripsTipos_id ':ripsTipos_id,'tipoPagoModerador_id':tipoPagoModerador_id , 'ripsTransaccion_id':ripsTransaccion_id
+                {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion, 'idMIPRES': idMIPRES, 'numAutorizacion':numAutorizacion,
+                 'numDocumentoIdentificacion':numDocumentoIdentificacion, 'vrServicio':vrServicio, 'valorPagoModerador':valorPagoModerador,
+                 consecutivo:consecutivo, 'fechaRegistro':fechaRegistro, 'codComplicacion_id':codComplicacion_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id,
+                 'codDiagnosticoRelacionado_id':codDiagnosticoRelacionado_id, 'codProcedimiento_id':codProcedimiento_id,'codServicio_id':codServicio_id,
+                 'conceptoRecaudo_id':conceptoRecaudo_id,'finalidadTecnologiaSalud_id':finalidadTecnologiaSalud_id, 'grupoServicios_id':grupoServicios_id,
+                 'modalidadGrupoServicioTecSal_id':modalidadGrupoServicioTecSal_id,'tipoDocumentoIdentificacion_id':tipoDocumentoIdentificacion_id,
+                 'usuarioRegistro_id':usuarioRegistro_id,'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id,'ripsDetalle_id':ripsDetalle_id,
+                 'itemFactura': itemFactura,'ripsTipos_id ':ripsTipos_id,'tipoPagoModerador_id':tipoPagoModerador_id , 'ripsTransaccion_id':ripsTransaccion_id
                  }})
 
 
 
     miConexionx.close()
     print("procedimientosRips "  , procedimientosRips)
-    #context['usuariosRips'] = usuariosRips
 
-    serialized1 = json.dumps(procedimientosRips,  default=str)
+    procedimientosRips_converted = [convert_keys_and_values(d) for d in procedimientosRips]
+
+    serialized1 = json.dumps(procedimientosRips_converted, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 
@@ -224,8 +248,7 @@ def Load_tablaGlosasTransaccion(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT id, "numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id"  FROM public.rips_ripstransaccion WHERE  "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'"
-
+    detalle = 'SELECT id, "numDocumentoIdObligado", "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id"  FROM public.rips_ripstransaccion ripstra WHERE  cast(ripstra."numFactura" as integer) =' +  str(facturaId)
     print(detalle)
 
     curx.execute(detalle)
@@ -242,7 +265,7 @@ def Load_tablaGlosasTransaccion(request, data):
     print("transaccionRips "  , transaccionRips)
     #context['TransaccionRips'] = transaccionRips
 
-    serialized1 = json.dumps(transaccionRips, default=serialize_datetime)
+    serialized1 = json.dumps(transaccionRips, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 
@@ -266,7 +289,7 @@ def Load_tablaGlosasUsuarios(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsu.id, ripsu."tipoDocumentoIdentificacion", ripsu."tipoUsuario", ripsu."fechaNacimiento", ripsu."codSexo", "codZonaTerritorialResidencia", ripsu.incapacidad, ripsu.consecutivo, ripsu."fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", ripsu."usuarioRegistro_id", "numDocumentoIdentificacion", ripsu."ripsDetalle_id", ripsu."ripsTransaccion_id"  FROM public.rips_ripsusuarios ripsu, public.rips_ripstransaccion ripstra  WHERE  ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' AND ripstra.id = ripsu."ripsTransaccion_id" '
+    detalle = 'SELECT  ripsu.id, ripsu."tipoDocumentoIdentificacion", ripsu."tipoUsuario", ripsu."fechaNacimiento", ripsu."codSexo", ripsu."codZonaTerritorialResidencia", ripsu.incapacidad, ripsu.consecutivo, ripsu."fechaRegistro", ripsu."codMunicipioResidencia_id", ripsu."codPaisOrigen_id",ripsu."codPaisResidencia_id", ripsu."usuarioRegistro_id", ripsu."numDocumentoIdentificacion", ripsu."ripsDetalle_id", ripsu."ripsTransaccion_id"  FROM public.rips_ripsusuarios ripsu, public.rips_ripstransaccion ripstra  WHERE ripstra.id = ripsu."ripsTransaccion_id" and cast(ripstra."numFactura" as integer) =' + "'" + str(facturaId) + "'"
 
     print(detalle)
 
@@ -286,16 +309,17 @@ def Load_tablaGlosasUsuarios(request, data):
     print("usuariosRips "  , usuariosRips)
     #context['usuariosRips'] = usuariosRips
 
-    serialized1 = json.dumps(usuariosRips, default=serialize_datetime)
+    serialized1 = json.dumps(usuariosRips, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 
 
 def Load_tablaGlosasMedicamentos(request, data):
-    print("Entre  Load_tablaGlosasMedicamentos Rips")
+    print("Entre  Load_tablaGlosasMedicamentos Glosas")
 
     context = {}
     d = json.loads(data)
+
 
     sedesClinica_id = d['sedesClinica_id']
     print("sedesClinica_id = ", sedesClinica_id)
@@ -310,7 +334,7 @@ def Load_tablaGlosasMedicamentos(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsmed.id, "codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", "diasTratamiento", "numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, ripsmed."fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", ripsmed."usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", ripsmed."ripsTransaccion_id" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripsmed."ripsDetalle_id" AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripsmed."ripsTransaccion_id" '
+    detalle = 'SELECT  ripsmed.id, "codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", "diasTratamiento", "numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, ripsmed."fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", ripsmed."usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", ripsmed."ripsTransaccion_id" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
 
     print(detalle)
 

@@ -501,7 +501,7 @@ function arrancaGlosas(valorTabla,valorData)
 
                        return btn;
                     },
-                    "targets": 16
+                    "targets": 23
                }
             ],
 	 pageLength: 3,
@@ -538,7 +538,6 @@ function arrancaGlosas(valorTabla,valorData)
                 { data: "fields.numDocumentoIdentificacion"},
                 { data: "fields.vrServicio"},
                 { data: "fields.valorPagoModerador"},
-                { data: "fields.numFEVPagoModerador"},
                 { data: "fields.consecutivo"},
                 { data: "fields.codComplicacion_id"},
                 { data: "fields.codDiagnosticoPrincipal_id"},
@@ -546,7 +545,6 @@ function arrancaGlosas(valorTabla,valorData)
                 { data: "fields.codProcedimiento_id"},
                 { data: "fields.codServicio_id"},
                 { data: "fields.conceptoRecaudo_id"},
-
                 { data: "fields.finalidadTecnologiaSalud_id"},
                 { data: "fields.grupoServicios_id"},
                 { data: "fields.modalidadGrupoServicioTecSal_id"},
@@ -802,19 +800,22 @@ const initDataTableGlosas = async () => {
         data['nombreSede'] = nombreSede;
         data['sede'] = sede;
         data['username_id'] = username_id;
+	sedesClinica_id = sede;
+	data['sedesClinica_id'] = sedesClinica_id
+	data['facturaId'] = 1
+
  	    data = JSON.stringify(data);
 
-        arrancaGlosas(1,data);
-	    dataTableGlosasInitialized = true;
-        arrancaGlosas(4,data);
-	    dataTableGlosasInitialized = true;
-        arrancaGlosas(5,data);
-	    dataTableGlosasInitialized = true;
-        arrancaGlosas(6,data);
-	    dataTableGlosasInitialized = true;
 
-        arrancaGlosas(8,data);
+         arrancaGlosas(1,data);
+	    dataTableGlosasTransaccionInitialized = true;
+	        arrancaGlosas(4,data);
 	    dataTableGlosasInitialized = true;
+	        arrancaGlosas(5,data);
+	    dataTableGlosasUsuariosInitialized = true;
+        	arrancaGlosas(8,data);
+	    dataTableGlosasProcedimientos = true;
+	
 
 
 }
@@ -823,7 +824,7 @@ const initDataTableGlosas = async () => {
 
 window.addEventListener('load', async () => {
     await  initDataTableGlosas();
-	 $('#tablaGlosas tbody tr:eq(0) .miGlosa').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
+	 
 
 });
 
@@ -840,7 +841,20 @@ window.addEventListener('load', async () => {
 
         var data =  {}   ;
 
-		var table = $('#tablaGlosas').DataTable();  // Inicializa el DataTable jquery 	      
+ 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	sedesClinica_id = sede;
+	data['sedesClinica_id'] = sedesClinica_id
+
+	var table = $('#tablaGlosas').DataTable();  // Inicializa el DataTable jquery 	      
 
   	        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
 
@@ -855,9 +869,7 @@ window.addEventListener('load', async () => {
 		var facturaId = dato3.factura_id;  // jquery
 		alert("facturaId = " + facturaId);
 
-		sedesClinica_id = dato3.sedesClinica_id
-		data['sedesClinica_id'] = sedesClinica_id
-		data['facturaId'] = factura_id
+		data['facturaId'] = facturaId
 
 	        data = JSON.stringify(data);
 
@@ -865,15 +877,20 @@ window.addEventListener('load', async () => {
 
 
 	    arrancaGlosas(1,data);
-	    dataTableGlosasInitialized = true;
+	    dataTableGlosasTransaccionInitialized = true;
+
 	        arrancaGlosas(4,data);
 	    dataTableGlosasInitialized = true;
+
 	        arrancaGlosas(5,data);
-	    dataTableGlosasInitialized = true;
+	    dataTableGlosasUsuariosInitialized = true;
+
+        	arrancaGlosas(8,data);
+	    dataTableGlosasMedicamentos = true;
+
         	arrancaGlosas(6,data);
-	    dataTableGlosasInitialized = true;
-	        arrancaGlosas(8,data);
-	    dataTableGlosasInitialized = true;
+	    dataTableGlosasProcedimientos = true;
+        alert ("pase ULTIMO");
 
 
 
@@ -920,10 +937,10 @@ window.addEventListener('load', async () => {
 
 	        data = JSON.stringify(data);
 
-		 arrancaEnviosRips(2,data);
-  			dataTableDetalleRipsAdicionarInitialized  = true;
-		   arrancaEnviosRips(3,data);
-  			dataTableDetalleRipsInitialized  = true;
+		// arrancaGlosas(2,data);
+  	//	dataTableDetalleGlosasAdicionarInitialized  = true;
+	//	   arrancaGlosas(3,data);
+   //			dataTableDetalleGlosasInitialized  = true;
 
 
                 },
