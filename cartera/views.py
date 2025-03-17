@@ -358,18 +358,12 @@ def Load_tablaGlosasMedicamentos(request, data):
     return HttpResponse(serialized1, content_type='application/json')
 
 
-def ConsultaGlosasRipsMedicamentos(request, data):
+def ConsultaGlosasRipsMedicamentos(request):
     
     print("Entre consultaGlosasRipsMedicamentos")
 
-    context = {}
-    d = json.loads(data)
-
-    facturaId = d['facturaId']
-    print("facturaId = ", facturaId)
-
-    id= d['id']
-    print("id= ", id)
+    id  = request.POST['id']
+    print("id  =", id )
 
 
     medicamentosRipsUnRegistro = []
@@ -394,9 +388,8 @@ def ConsultaGlosasRipsMedicamentos(request, data):
 
     miConexionx.close()
     print("medicamentosRipsUnRegistro "  , medicamentosRipsUnRegistro)
-    context['MedicamentosRipsUnRegistro'] = medicamentosRipsUnRegistro
-
-    serialized1 = json.dumps(medicamentosRipsUnRegistro, default=serialize_datetime)
+    
+    serialized1 = json.dumps(medicamentosRipsUnRegistro, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 
@@ -406,52 +399,80 @@ def GuardarGlosasMedicamentos(request):
 
     print ("Entre Guardar Glosas Medicamentos" )
 
-    convenio_id = request.POST['convenio_id']
-    print("convenio_id =", convenio_id)
-
     sedesClinica_id = request.POST['sedesClinica_id']
     print("sedesClinica_id =", sedesClinica_id)
 
+    glosaId = request.POST['glosaRipsMed']
+    print ("id =", glosaId)
 
-    observaciones = request.POST["observaciones"]
-    print("observaciones =", observaciones)
 
-
-    id = request.POST['id']
+    id = request.POST['post_idRipsMed']
     print ("id =", id)
 
-
-
-    motivoGlosa_id= request.POST["motivoGlosa_id"]
+    motivoGlosa_id= request.POST["motivoGlosa_idRipsMed"]
     print ("motivoGlosa_id =", motivoGlosa_id)
 
-    valorGlosa = request.POST['valorGlosa']
-    print ("valorGlosa =", valorGlosa)
 
-    cantidadGlosada = request.POST['cantidadGlosada']
+    cantidadGlosada = request.POST['cantidadGlosadaRipsMed']
     print ("cantidadGlosada =", cantidadGlosada)
-    cantidadAceptada = request.POST['cantidadAceptada']
+
+    if (cantidadGlosada==''):
+        cantidadGlosada=0
+
+    print ("cantidadGlosada =", cantidadGlosada)
+
+    cantidadAceptada = request.POST['cantidadAceptadaRipsMed']
     print ("cantidadAceptada =", cantidadAceptada)
-    cantidadSoportado = request.POST['cantidadSoportado']
+
+    if (cantidadAceptada==''):
+        cantidadAceptada=0
+
+    cantidadSoportado = request.POST['cantidadSoportadoRipsMed']
     print ("cantidadSoportado =", cantidadSoportado)
-    valorGlosado = request.POST['valorGlosado']
+
+    if (cantidadSoportado==''):
+        cantidadSoportado=0
+
+
+    valorGlosado = request.POST['valorGlosadoRipsMed']
     print ("valorGlosado =", valorGlosado)
-    vAceptado = request.POST['vAceptado']
+
+    if (valorGlosado==''):
+        valorGlosado=0
+
+
+    vAceptado = request.POST['vAceptadoRipsMed']
     print ("vAceptado =", vAceptado)
-    valorSoportado = request.POST['valorSoportado']
+    if (vAceptado==''):
+        vAceptado=0
+
+
+    valorSoportado = request.POST['valorSoportadoRipsMed']
     print ("valorSoportado=",valorSoportado)
-    notasCreditoGlosa = request.POST['notasCreditoGlosa']
+
+    if (valorSoportado==''):
+        valorSoportado=0
+
+    notasCreditoGlosa = request.POST['notasCreditoGlosaRipsMed']
     print ("notasCreditoGlosa=",notasCreditoGlosa)
-    notasCreditoOtras = request.POST['notasCreditoOtras']
+
+    if (notasCreditoGlosa==''):
+        notasCreditoGlosa=0
+
+
+    notasCreditoOtras = request.POST['notasCreditoOtrasRipsMed']
     print ("notasCreditoOtras=",notasCreditoOtras)
-    notasDebito = request.POST['notasDebito']
+
+    if (notasCreditoOtras==''):
+        notasCreditoOtras=0
+
+    notasDebito = request.POST['notasDebitoRipsMed']
     print ("notasDebito=",notasDebito)
 
+    if (notasDebito==''):
+        notasDebito=0
 
 
-
-    usuarioRegistro_id = request.POST['usuarioRegistro_id']
-    print ("usuarioRegistro_id =", usuarioRegistro_id)
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
@@ -459,14 +480,20 @@ def GuardarGlosasMedicamentos(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras "= ' + "'" + str(notasCreditoOtras ) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "'" + '  WHERE id = ' + str(id)
+    comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras"= ' + "'" + str(notasCreditoOtras) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "', glosa_id = '" + str(glosaId) + "'"   + '  WHERE id = ' + str(id)
 
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
 
+    # TIENE QUE ACTUALIZAR CARTERA_GLOSAS
 
 
+
+    # TIENE QUE ACTUALIZAR CARTERA_GLOSASDETALLE
+    # TIENE QUE ACTUALIZAR FACTURACION_FACTURACIONDETALLE
+    # CREO NO MAS
+    
     return JsonResponse({'success': True, 'message': 'Glosa Actualizado satisfactoriamente!'})
 

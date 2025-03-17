@@ -5,6 +5,9 @@ select * from facturacion_facturacion;
 select * from contratacion_convenios ;
 select * from rips_ripsmedicamentos;
 
+select * from rips_ripscums;
+select * from rips_ripsumm;
+
 select * from rips_ripsmedicamentos;
 select * from rips_ripsdetalle where id = 56; -- 40
 select * from rips_ripstransaccion;
@@ -26,12 +29,20 @@ select id, factura_id,"fechaRecepcion","valorGlosa",  "totalSoportado", "totalAc
 	"fechaRespuesta", "tipoGlosa_id", "usuarioRecepcion_id", "usuarioRespuesta_id",  "estadoRadicacion_id", "estadoRecepcion_id"
 from cartera_glosas;		
 	
-	
+select * from rips_ripscums WHERE cum='19903543-2';
+
 -- query medicamentos
-SELECT id,"itemFactura",  "concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id",
+SELECT med.id,"itemFactura", "nomTecnologiaSalud", cums.nombre,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id",
 	   "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", 
 	"valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito"
-	FROM public.rips_ripsmedicamentos;
+	FROM public.rips_ripsmedicamentos med, public.rips_ripscums cums 
+	where med.id=13 and cum ="nomTecnologiaSalud" ;
+
+
+SELECT med.id,"itemFactura", "nomTecnologiaSalud", cums.nombre,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripsmedicamentos med, public.rips_ripscums cums where med.id=13 and cum ="nomTecnologiaSalud"
+
+	
+	
 
 -- query glosas
 

@@ -11,6 +11,8 @@ let dataTableH;
 
 let dataTableGlosasInitialized = false;
 let dataTableGlosasDetalleInitialized = false;
+let dataTableDetalleRipsAdicionarInitialized = false;
+let dataTableDetalleRipsInitialized = false;
 let dataTableGlosasTransaccionInitialized = false;
 let dataTableGlosasUsuariosInitialized = false;
 let dataTableGlosasProcedimientosInitialized = false;
@@ -167,6 +169,94 @@ function arrancaGlosas(valorTabla,valorData)
 
     if (valorTabla == 3)
     {
+        let dataTableOptionsDetalleRips  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+			      btn = btn + " <button class='miDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
+                 	      btn = btn + " <button class='miJson btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+                 	      btn = btn + " <button class='miBorrar btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+                    },
+                    "targets": 9
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataDetalleRips/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	 { data: "fields.id"},
+                { data: "fields.numeroFactura_id"},
+                { data: "fields.cuv"},
+                { data: "fields.estadoPasoMinisterio"},
+                { data: "fields.rutaJsonRespuesta"},
+                { data: "fields.rutaJsonFactura"},
+                { data: "fields.rutaPdf"},
+                { data: "fields.rutaZip"},
+		 { data: "fields.usuarioRegistro_id"},
+                     ]
+            }
+
+            if  (dataTableGlosasInitialized)  {
+
+		            dataTableC = $("#tablaDetalleRips").dataTable().fnDestroy();
+
+                    }
+
+                dataTableC = $('#tablaDetalleRips').DataTable(dataTableOptionsDetalleRips);
+
+	            dataTableDetalleRipsInitialized  = true;
 
       }
 
@@ -725,13 +815,13 @@ const initDataTableGlosas = async () => {
 
 
          arrancaGlosas(1,data);
-	 dataTableGlosasInitialized = true;
-         arrancaGlosas(4,data);
-         dataTableGlosasTransaccionInitialized = true;
-	 arrancaGlosas(5,data);
-	 dataTableGlosasUsuariosInitialized = true;
-         arrancaGlosas(8,data);
-	 dataTableGlosasProcedimientos = true;
+	    dataTableGlosasTransaccionInitialized = true;
+	        arrancaGlosas(4,data);
+	    dataTableGlosasInitialized = true;
+	        arrancaGlosas(5,data);
+	    dataTableGlosasUsuariosInitialized = true;
+        	arrancaGlosas(8,data);
+	    dataTableGlosasProcedimientos = true;
 	
 
 
@@ -805,35 +895,9 @@ window.addEventListener('load', async () => {
         	arrancaGlosas(8,data);
 	    dataTableGlosasMedicamentos = true;
 
-	// AQUI tengo que colocar los datosde la Glosa en el Formulario de Medicamentos y demas
-
-	document.getElementById("post_idMedGlo").value =post_id;
-	document.getElementById("factura_idMed").value = dato3.factura_id;
-	document.getElementById("fechaRecepcionMed").value = dato3.fechaRecepcion;
-	document.getElementById("valorGlosaMed").value = dato3.valorGlosa;
-	document.getElementById("estadoRegMed").value = dato3.estadoReg;
-	document.getElementById("totalSoportadoMed").value = dato3.totalSoportado;
-	document.getElementById("totalAceptadoMed").value = dato3.totalAceptado;
-	document.getElementById("saldoFacturaMed").value = dato3.saldoFactura;
-	document.getElementById("observacionesMed").value = dato3.observaciones;
-	document.getElementById("convenio_idMed").value = dato3.convenio_id;
-	document.getElementById("fechaRegistroMed").value = dato3.fechaRegistro;
-	document.getElementById("usuarioRegistro_idMed").value = dato3.usuarioRegistro_id;
-	document.getElementById("fechaRespuestaMed").value = dato3.fechaRespuesta;
-	document.getElementById("tipoGlosa_idMed").value = dato3.tipoGlosa_id;
-	document.getElementById("usuarioRecepcion_idMed").value = dato3.usuarioRecepcion_id;
-	document.getElementById("usuarioRespuesta_idMed").value = dato3.usuarioRespuesta_id;
-	document.getElementById("estadoRadicacion_idMed").value = dato3.estadoRadicacion_id;
-	document.getElementById("estadoRecepcion_idMed").value = dato3.estadoRecepcion_id;
-
-
-
-
         	arrancaGlosas(6,data);
 	    dataTableGlosasProcedimientos = true;
-
-
-
+        alert ("pase ULTIMO");
 
 
 
@@ -845,42 +909,59 @@ window.addEventListener('load', async () => {
 
         var post_id = $(this).data('pk');
 	var row = $(this).closest('tr'); // Encuentra la fila
+	alert("Entre Rips Medicamentos");
+
+
+        var data =  {}   ;
+
+ 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+//        data['username'] = username;
+//        data['sedeSeleccionada'] = sedeSeleccionada;
+//        data['nombreSede'] = nombreSede;
+//        data['sede'] = sede;
+//        data['username_id'] = username_id;
+	sedesClinica_id = sede;
+//	data['sedesClinica_id'] = sedesClinica_id
+
+//		data['id'] = post_id
+
+//	        data = JSON.stringify(data);
 
      $.ajax({
-		   data: {'id':post_id},
+		   data: $('#postFormMedicamentos').serialize(),
 	        url: "/consultaGlosasRipsMedicamentos/",
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
-		   $("#mensajes").html(info.message);
-
+		   $("#mensajes").html(data2.message);
      $('#postFormMedicamentos').trigger("reset");
 
-  	$('#post_idRipsMed').val(info[0].fields.id);
-  	$('#glosaRipsMed').val(document.getElementById("post_idMedGlo").value);
+  	$('#id').val(info[0].fields.id);
+  	$('#itemFactura').val(info[0].fields.itemFactura);
+  	$('#nomTecnologiaSalud').val(info[0].fields.nomTecnologiaSalud);
+  	$('#cums').val(info[0].fields.cums);
+  	$('#concentracionMedicamento').val(info[0].fields.concentracionMedicamento);
+  	$('#cantidadMedicamento').val(info[0].fields.cantidadMedicamento);
+  	$('#vrUnitMedicamento').val(info[0].fields.vrUnitMedicamento);
+  	$('#vrServicio').val(info[0].fields.vrServicio);
+  	$('#consecutivo').val(info[0].fields.consecutivo);
+  	$('#tipoMedicamento_id').val(info[0].fields.tipoMedicamento_id);
+  	$('#unidadMedida_id').val(info[0].fields.unidadMedida_id);
+  	$('#cantidadGlosada').val(info[0].fields.cantidadGlosada);
+  	$('#cantidadAceptada').val(info[0].fields.cantidadAceptada);
+  	$('#cantidadSoportado').val(info[0].fields.cantidadSoportado);
 
-
-  	$('#itemFacturaRipsMed').val(info[0].fields.itemFactura);
-  	$('#nomTecnologiaSaludRipsMed').val(info[0].fields.nomTecnologiaSalud);
-  	$('#cumsRipsMed').val(info[0].fields.cums);
-  	$('#concentracionMedicamentoRipsMed').val(info[0].fields.concentracionMedicamento);
-  	$('#cantidadMedicamentoRipsMed').val(info[0].fields.cantidadMedicamento);
-  	$('#vrUnitMedicamentoRipsMed').val(info[0].fields.vrUnitMedicamento);
-  	$('#vrServicioRipsMed').val(info[0].fields.vrServicio);
-  	$('#consecutivoRipsMed').val(info[0].fields.consecutivo);
-  	$('#tipoMedicamento_idRipsMed').val(info[0].fields.tipoMedicamento_id);
-  	$('#unidadMedida_idRipsMed').val(info[0].fields.unidadMedida_id);
-  	$('#cantidadGlosadaRipsMed').val(info[0].fields.cantidadGlosada);
-  	$('#cantidadAceptadaRipsMed').val(info[0].fields.cantidadAceptada);
-  	$('#cantidadSoportadoRipsMed').val(info[0].fields.cantidadSoportado);
-
-  	$('#valorGlosadoRipsMed').val(info[0].fields.valorGlosado);
-  	$('#vAceptadoRipsMed').val(info[0].fields.vAceptado);
-  	$('#valorSoportadoRipsMed').val(info[0].fields.valorSoportado);
-  	$('#motivoGlosa_idRipsMed').val(info[0].fields.motivoGlosa_id);
-  	$('#notasCreditoGlosaRipsMed').val(info[0].fields.notasCreditoGlosa);
-  	$('#notasCreditoOtrasRipsMed').val(info[0].fields.notasCreditoOtras);
-  	$('#notasDebitoRipsMed').val(info[0].fields.notasDebito);
+  	$('#valorGlosado').val(info[0].fields.valorGlosado);
+  	$('#vAceptado').val(info[0].fields.vAceptado);
+  	$('#valorSoportado').val(info[0].fields.valorSoportado);
+  	$('#motivoGlosa_id').val(info[0].fields.motivoGlosa_id);
+  	$('#notasCreditoGlosa').val(info[0].fields.notasCreditoGlosa);
+  	$('#notasCreditoOtras').val(info[0].fields.notasCreditoOtras);
+  	$('#notasDebito').val(info[0].fields.notasDebito);
 
 
 		 $('#crearModelGlosasMedicamentos').modal('show');
@@ -891,15 +972,171 @@ window.addEventListener('load', async () => {
 	   	    	}
             });
 
+
+
+
+
   });
 
 
 
 
+// FIN DE LO NUEVO
+
+
+
+ $('#tablaDetalleRipsAdicionar tbody').on('click', '.miFactura', function() {
+
+        var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+	var empresaId = document.getElementById("empresaId").value; 
+	var envioRipsId = document.getElementById("envioRipsId").value ;
+	var tipoRips = document.getElementById("tipoRips2").value ;
+
+        var facturaId = post_id;
+
+	$.ajax({
+
+	        url: "/actualizarEmpresaDetalleRips/",
+                data: {'facturaId':facturaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id, 'tipoRips':tipoRips},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+	        var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+		data['empresaId'] = empresaId;
+		data['envioRipsId'] = envioRipsId;
+		data['tipoRips'] = tipoRips;
+
+	        data = JSON.stringify(data);
+
+		// arrancaGlosas(2,data);
+  	//	dataTableDetalleGlosasAdicionarInitialized  = true;
+	//	   arrancaGlosas(3,data);
+   //			dataTableDetalleGlosasInitialized  = true;
+
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+  });
+
+ $('#tablaDetalleRips tbody').on('click', '.miDetalle', function() {
+
+     var post_id = $(this).data('pk');
+
+
+       var detalleRipsId = post_id;
+
+
+	$.ajax({
+
+	        url: "/traeDetalleRips/",
+                data: {'detalleRipsId':post_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+            $('#postFormRipsDetalle').trigger("reset");
+
+  	
+ 				$('#detalleRipsId').val(detalleRipsId);
+				
+  		        	$('#numeroFacturaT').val(info[0].fields.numeroFactura);
+        	       	$('#cuv').val(info[0].fields.cuv);
+	                $('#estadoPasoMinisterio').val(info[0].fields.estadoPasoMinisterio);
+	                $('#rutaJsonRespuesta').val(info[0].fields.rutaJsonRespuesta);
+	                $('#rutaJsonFactura').val(info[0].fields.rutaJsonFactura);
+	                $('#fechaRegistro').val(info[0].fields.fechaRegistro);
+	                $('#estadoReg').val(info[0].fields.estadoReg);
+	                $('#ripsEnvios').val(info[0].fields.ripsEnvios_id);
+	                $('#usuarioRegistro_id').val(info[0].fields.usuarioRegistro_id);
+	                $('#estado').val(info[0].fields.estado);
+	                $('#rutaPdf').val(info[0].fields.rutaPdf);
+	                $('#rutaZip').val(info[0].fields.rutaZip);
+
+
+            $('#modelHeadingRipsDetalle').html("Detalle Envios Rips");
+            $('#crearModelRipsDetalle').modal('show');
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+
+  });
+	/*------------------------------------------
+        --------------------------------------------
+        Create GuardarDetalleRips
+        --------------------------------------------
+        --------------------------------------------*/
+
+
+function GuardarDetalleRips()
+{
+
+            $.ajax({
+                data: $('#postFormRipsDetalle').serialize(),
+	        url: "/guardaDetalleRips/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		   $("#mensajes").html(data2.message);
+                  $('#postFormDetalleRips').trigger("reset");
+
+	        var data =  {}   ;
+		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+
+
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+
+		data['empresaId'] = empresaId;
+		data['envioRipsId'] = envioRipsId;
+		data['envioRipsId'] = envioRipsId;
+	        data = JSON.stringify(data);
+
+		  var tableA = $('#tablaDetalleRips').DataTable();
+	          tableA.ajax.reload();
+
+ 		 $('#crearModelRipsDetalle').modal('hide');
+                },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+}
+
 	
-function GuardarGlosasMedicamentos()
+function CrearGlosasMedicamentos()
 {
 	
+	alert("Entre crear GlosasMedicamnetos");
+
 		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
 	        var username = document.getElementById("username").value;
 	        var nombreSede = document.getElementById("nombreSede").value;
@@ -909,28 +1146,27 @@ function GuardarGlosasMedicamentos()
 
 
             $.ajax({
-                data: $('#postFormMedicamentos').serialize(),
+                data: $('#postFormGlosasMedicamentos').serialize(),
 	        url: "/guardarGlosasMedicamentos/",
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
 		   $("#mensajes").html(data2.message);
-                  $('#postFormMedicamentos').trigger("reset");
+                  $('#postFormGlosasMedicamentos').trigger("reset");
+
+
+
 
 		var data =  {}   ;
 	        data['username'] = username;
-		data['username_id'] = username_id;
-	        data['sedeSeleccionada'] = sedeSeleccionada;
-	        data['nombreSede'] = nombreSede;
-	        data['sede'] = sede;
+		  data['username_id'] = username_id;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
 	        data['sedesClinica_id'] = sede;
 
-		var facturaId = dato3.factura_id;  // jquery
-		data['facturaId'] = document.getElementById("factura_idMed").value;
+        data = JSON.stringify(data);
 
-	        data = JSON.stringify(data);
-
-	
   		 if  (dataTableGlosasInitialized)  {
 
 		            dataTableC = $("#tablaGlosas").dataTable().fnDestroy();
@@ -939,11 +1175,7 @@ function GuardarGlosasMedicamentos()
 
 			 arrancaGlosas(1,data);
 			    dataTableGlosasInitialized = true;
-			 arrancaGlosas(8,data);
-			    dataTableGlosasMedicamentosInitialized = true;
-
-
- 		 $('#crearModelGlosasMedicamentos').modal('hide');
+ 		 $('#crearModelGlosasGlosas').modal('hide');
 
                 },
             error: function (request, status, error) {
@@ -993,6 +1225,5 @@ function CerrarModalJson()
 
             $('#crearModelRipsJson').modal('hide');
 }
-
 
 

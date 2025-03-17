@@ -196,4 +196,11 @@ ul.tabs li a .tab-text{
     background-color: orange;
 }
 
-
+.form-control-sm
+{
+height: calc(1.5em + .5 rem + 2px);
+padding: .25rem .5 rem;
+font-size: .875 rem;
+line-height: 1.5;
+border-radius: .2 rem;
+}

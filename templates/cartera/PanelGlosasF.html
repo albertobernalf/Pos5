@@ -20,7 +20,7 @@
 
         <li><a href="#Glosas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Glosas</a></li>
         <li><a href="#DetalleGlosas"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Glosas</a></li>
-        <li><a href="#GlosaCompleta"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Glosa</a></li>
+        <li><a href="#GlosaClinica"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Glosa Clinica</a></li>
         <li><a href="#NotasCredito"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Notas Credito</a></li>
         <li><a href="#NotasDebito"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Nots Debito</a></li>
 
@@ -38,6 +38,8 @@ div.dataTables_wrapper  div.dataTables_filter input {
 div.dataTables_filter input {
     width: 50px;
   }
+
+
 </style>
 
 
@@ -58,7 +60,7 @@ div.dataTables_filter input {
         <article id="Glosas">
       
 	
-            <form action="/enviosRips/" method="get" id="FormEnviosRips">
+            <form action="/glosasx/" method="get" id="FormGlosasx">
 
                 <input type="hidden" id="username" name="username" value="{{Username}}">
                 <input type="hidden" id="sedeSeleccionada" name="sedeSeleccionada" value="{{SedeSeleccionada}}">
@@ -529,7 +531,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 </article>
 
-<article id="GlosaCompleta">
+<article id="GlosaClinica">
 
 		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
 		
@@ -733,141 +735,145 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 <!-- DESDE AQUI ENCABEZADO GLOSA-->
 
 	  <form id="postFormGlosasMed" name="postFormGlosasMed">
-                                <input type="hidden" name="post_id" id="post_id">
+		<input type="hidden" name="post_id" id="post_id">
 
-                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+                      <div class="row">
+
+			<div class="col-1">
+
+				Glosa No
+                                <input type="text" class="form-control form-control-sm"  name="post_idMedGlo" id="post_idMedGlo">
+			</div>
 
 
-
-				  <div class="col-12">
 					                                   
                                     <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="{{Sede}}" readonly></input>
-                                </div>
+                           
 
-				<div class="col-12">
+			<div class="col-1">
 					Factura:
-                                   	 <label class="visually-hidden" for="factura_idMed">factura_id:</label>
+                                   	
                                
-					 <input type="text" class="form-control" id="factura_idMed" name="factura_idMed" placeholder="factura_id" readonly >
-                                </div>
-
-				<div class="col-12">
+					 <input type="text" class="form-control form-control-sm" id="factura_idMed" name="factura_idMed"  readonly >
+                             
+</div>
+				<div class="col-2">
 					Fecha Recepcion:
-                                   	 <label class="visually-hidden" for="fechaRecepcionMed">FechaRecep:</label>
+                                   	
                                
-					 <input type="text" class="form-control" id="fechaRecepcionMed" name="fechaRecepcionMed" placeholder="fechaRecepcion" readonly >
-                                </div>
+					 <input type="text" class="form-control form-control-sm" id="fechaRecepcionMed" name="fechaRecepcionMed"  readonly >
+                               
+</div>
 
-
-				<div class="col-12">
+				<div class="col-2">
 					ValorGlosa
                                    	 <label class="visually-hidden" for="valorGlosaMed">Valor Glosa:</label>
                                
-					 <input type="text" class="form-control" id="valorGlosaMed" name="valorGlosaMed" placeholder="valorGlosa" readonly >
-                                </div>
+					 <input type="text" class="form-control form-control-sm" id="valorGlosaMed" name="valorGlosaMed"  readonly >
+                              
 
-
-				<div class="col-12">
+</div>
+				<div class="col-2">
 					EstadoReg:
                                    	 <label class="visually-hidden" for="estadoRegMed">EstadoReg:</label>
                                
-					 <input type="text" class="form-control" id="estadoRegMed" name="estadoRegMed" placeholder="estadoRegMed" readonly >
-                                </div>
+					 <input type="text" class="form-control form-control-sm" id="estadoRegMed" name="estadoRegMed" readonly >
+                           </div>
 
-				<div class="col-12">
+				<div class="col-2">
 					TotalSoportado:
                                    	 <label class="visually-hidden" for="totalSoportadoMed">TotalSoportado:</label>
                                
-					 <input type="text" class="form-control" id="totalSoportadoMed" name="totalSoportadoMed" placeholder="totalSoportado" readonly >
+					 <input type="text" class="form-control form-control-sm" id="totalSoportadoMed" name="totalSoportadoMed"  readonly >
                                 </div>
 
 
-				<div class="col-12">
+				<div class="col-2">
 					TotalAceptado:
                                    	 <label class="visually-hidden" for="totalAceptadoMed">TotalSoportado:</label>
                                
-					 <input type="text" class="form-control" id="totalAceptadoMed" name="totalAceptadoMed" placeholder="totalAceptado" readonly >
+					 <input type="text" class="form-control form-control-sm" id="totalAceptadoMed" name="totalAceptadoMed"  readonly >
                                 </div>
 
-				<div class="col-12">
+				<div class="col-1">
 					SaldoFactura:
                                    	 <label class="visually-hidden" for="saldoFacturaMed">SaldoFactura:</label>
                                
-					 <input type="text" class="form-control" id="saldoFacturaMed" name="saldoFacturaMed" placeholder="saldoFactura" readonly >
+					 <input type="text" class="form-control form-control-sm" id="saldoFacturaMed" name="saldoFacturaMed"  readonly >
                                 </div>
-				<div class="col-12">
+				<div class="col-1">
 					Observaciones:
-                                   	 <label class="visually-hidden" for="observacionesMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="observacionesMed">Observa:</label>
                                
-					 <input type="text" class="form-control" id="observacionesMed" name="observacionesMed" placeholder="observaciones" readonly >
+					 <input type="text" class="form-control form-control-sm" id="observacionesMed" name="observacionesMed" preadonly >
                                 </div>
 
-		<div class="col-12">
+		<div class="col-1">
 					convenio_id:
-                                   	 <label class="visually-hidden" for="convenio_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="convenio_idMed">Convenio:</label>
                                
-					 <input type="text" class="form-control" id="convenio_idMed" name="convenio_idMed" placeholder="convenio_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="convenio_idMed" name="convenio_idMed"  readonly >
                                 </div>
 
 
-	<div class="col-12">
+	<div class="col-1">
 					convenio_id:
-                                   	 <label class="visually-hidden" for="convenio_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="convenio_idMed">Convenio:</label>
                                
-					 <input type="text" class="form-control" id="convenio_idMed" name="convenio_idMed" placeholder="convenio_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="convenio_idMed" name="convenio_idMed"  readonly >
                                 </div>
 
-<div class="col-12">
+<div class="col-1">
 					fechaRegistro:
-                                   	 <label class="visually-hidden" for="fechaRegistroMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="fechaRegistroMed">FecRegistro:</label>
                                
-					 <input type="text" class="form-control" id="fechaRegistroMed" name="fechaRegistroMed" placeholder="fechaRegistro" readonly >
+					 <input type="text" class="form-control form-control-sm" id="fechaRegistroMed" name="fechaRegistroMed"  readonly >
                                 </div>
 
-				<div class="col-12">
+				<div class="col-1">
 					usuarioRegistro_id:
-                                   	 <label class="visually-hidden" for="usuarioRegistro_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="usuarioRegistro_idMed">UsuarioReg:</label>
                                
-					 <input type="text" class="form-control" id="usuarioRegistro_idMed" name="usuarioRegistro_idMed" placeholder="usuarioRegistro_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="usuarioRegistro_idMed" name="usuarioRegistro_idMed"  readonly >
                                 </div>
-				<div class="col-12">
+				<div class="col-1">
 					fechaRespuesta:
-                                   	 <label class="visually-hidden" for="fechaRespuestaMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="fechaRespuestaMed">FecRta:</label>
                                
-					 <input type="text" class="form-control" id="fechaRespuestaMed" name="fechaRespuestaMed" placeholder="fechaRespuesta" readonly >
+					 <input type="text" class="form-control form-control-sm" id="fechaRespuestaMed" name="fechaRespuestaMed"  readonly >
                                 </div>
 
-			<div class="col-12">
+			<div class="col-1">
 					tipoGlosa_id:
-                                   	 <label class="visually-hidden" for="tipoGlosa_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="tipoGlosa_idMed">TipoGlosa:</label>
                                
-					 <input type="text" class="form-control" id="tipoGlosa_idMed" name="tipoGlosa_idMed" placeholder="tipoGlosa_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="tipoGlosa_idMed" name="tipoGlosa_idMed"  readonly >
                                 </div>
 
-			<div class="col-12">
+			<div class="col-1">
 					usuarioRecepcion_id:
-                                   	 <label class="visually-hidden" for="usuarioRecepcion_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="usuarioRecepcion_idMed">UsuarioRecep:</label>
                                
-					 <input type="text" class="form-control" id="usuarioRecepcion_idMed" name="usuarioRecepcion_idMed" placeholder="usuarioRecepcion_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="usuarioRecepcion_idMed" name="usuarioRecepcion_idMed"  readonly >
                                 </div>
-		<div class="col-12">
+		<div class="col-1">
 					usuarioRespuesta_id:
-                                   	 <label class="visually-hidden" for="usuarioRespuesta_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="usuarioRespuesta_idMed">UsuarioRta:</label>
                                
-					 <input type="text" class="form-control" id="usuarioRespuesta_idMed" name="usuarioRespuesta_idMed" placeholder="usuarioRecepcion_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="usuarioRespuesta_idMed" name="usuarioRespuesta_idMed"  readonly >
                                 </div>
-		<div class="col-12">
+		<div class="col-1">
 					estadoRadicacion_id:
-                                   	 <label class="visually-hidden" for="estadoRadicacion_idMed">SaldoFactura:</label>
+                                   	 <label class="visually-hidden" for="estadoRadicacion_idMed">EstRadica:</label>
                                
-					 <input type="text" class="form-control" id="estadoRadicacion_idMed" name="estadoRadicacion_idMed" placeholder="estadoRadicacion_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="estadoRadicacion_idMed" name="estadoRadicacion_idMed"  readonly >
                                 </div>
 
-	<div class="col-12">
+	<div class="col-1">
 					estadoRecepcion_id:
                                    	 <label class="visually-hidden" for="estadoRecepcion_idMed">estadoRecepcion_id:</label>
                                
-					 <input type="text" class="form-control" id="estadoRecepcion_idMed" name="estadoRecepcion_idMed" placeholder="estadoRecepcion_id" readonly >
+					 <input type="text" class="form-control form-control-sm" id="estadoRecepcion_idMed" name="estadoRecepcion_idMed"  readonly >
                                 </div>
 
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
@@ -951,14 +957,14 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                 </div>
 
 
-	            <!-- Espacio Modales  Glosas-->
+	            <!-- Espacio Modales Glosas Medicamentos-->
 
             <div class="modal fade" id="crearModelGlosasMedicamentos" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingGlosasMedicamentos"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosasMedicamentos" onclick="CrearGlosasMedicamentos()">Grabar!</button> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosasMedicamentos" onclick="GuardarGlosasMedicamentos()">Grabar!</button> 
                         </div>
 		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">
@@ -968,168 +974,178 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 			
   			  <form id="postFormMedicamentos" name="postFormMedicamentos">
 
-                                <input type="hidden" name="post_id" id="post_id">
+                                
 
-                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+                      <div class="row">
+
+			 <div class="col-2">
+				<input type="text" class="form-control form-control-sm" name="post_idRipsMed" id="post_idRipsMed">
+			   </div>
 
 
-				  <div class="col-12">
+
+			 <div class="col-2">
+				<input type="text" class="form-control form-control-sm" name="glosaRipsMed" id="glosaRipsMed">
+			   </div>
+
+
+				  <div class="col-1">
 					                                   
                                     <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="{{Sede}}" readonly></input>
                                 </div>
 
 			  
-				<div class="col-12">
-					itemFactura:
-                                   	 <label class="visually-hidden" for="itemFactura">itemFactura:</label>
+				<div class="col-2">
+					
+                                   	 <label  for="itemFacturaRipsMed">itemFactura:</label>
                                
-					 <input type="datetime-local"  class="form-control" id="itemFactura" name="itemFactura" placeholder="itemFactura" readonly >
+					 <input type="text"  class="form-control form-control-sm" id="itemFacturaRipsMed" name="itemFacturaRipsMed" readonly >
                                 </div>
 
-				<div class="col-12">
-				nomTecnologiaSalud:
-                                   	 <label class="visually-hidden" for="nomTecnologiaSalud">nomTecnologiaSalud:</label>
+				<div class="col-3">
+				
+                                   	 <label  for="nomTecnologiaSaludRipsMed">nomTecnologiaSalud:</label>
                                
-					 <input type="text"  class="form-control" id="nomTecnologiaSalud" name="nomTecnologiaSalud" placeholder="nomTecnologiaSalud" readonly  >
-                                </div>
-
-
-				<div class="col-12">
-					cums:
-                                   	 <label class="visually-hidden" for="cums">cums:</label>
-                               
-					 <input type="text" class="form-control" id="cums" name="cums" placeholder="cums"  >
+					 <input type="text"  class="form-control form-control-sm" id="nomTecnologiaSaludRipsMed" name="nomTecnologiaSaludRipsMed" readonly  >
                                 </div>
 
 
+				<div class="col-2">
+					
+                                   	 <label  for="cumsRipsMed">cums:</label>
+                               
+					 <input type="text" class="form-control form-control-sm" id="cumsRipsMed" name="cumsRipsMed"  readonly  >
+                                </div>
 
 
-				<div class="col-12">
-			concentracionMedicamento:
-				 <label class="visually-hidden" for="concentracionMedicamento">concentracionMedicamento:</label>
+
+
+				<div class="col-4">
+			
+				 <label for="concentracionMedicamentoRipsMed">concentracionMedicamento:</label>
                                     
-					 <input type="text"  class="form-control" id="concentracionMedicamento" name="concentracionMedicamento" placeholder="concentracionMedicamento"  readonly>
+					 <input type="text"  class="form-control form-control-sm" id="concentracionMedicamentoRipsMed" name="concentracionMedicamentoRipsMed"   readonly>
                                 </div>
 
                    
-				<div class="col-12">
-                                    		cantidadMedicamento:
-				 <label  for="cantidadMedicamento">cantidadMedicamento:</label>
-                                    <input type="text" class="form-control" id="cantidadMedicamento" name="cantidadMedicamento" value="0" placeholder="cantidadMedicamento:" readonly></input>
+				<div class="col-2">
+                                    		
+				 <label  for="cantidadMedicamentoRipsMed">cantidadMedicamento:</label>
+                                    <input type="text" class="form-control form-control-sm" id="cantidadMedicamentoRipsMed" name="cantidadMedicamentoRipsMed" value="0"  readonly></input>
                                 </div>
 
 
-                                <div class="col-12">
+                                <div class="col-1">
                                    
-                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+                                    <input type="hidden" id="fechaRegistroRipsMed" name="fechaRegistroRipsMed" value="" > </input>
                                 </div>
 
-                                <div class="col-12">
-				 <label  for="estadoReg">EstadoRegistro:</label>
+                                <div class="col-4">
+				 <label  for="estadoRegRipsMed">EstadoRegistro:</label>
                                     
-                                    <input type="text" class="form-control" id="estadoReg" name="estadoReg" value="A" placeholder="CantidadRechazadas:"  estadoReg> </input>
+                                    <input type="text" class="form-control form-control-sm" id="estadoRegRipsMed" name="estadoRegRipsMed" value="A"  readonly> </input>
                                 </div>
 
-                                <div class="col-12">
-                                    vrUnitMedicamento:
-                                    <input type="text" id="vrUnitMedicamento" name="vrUnitMedicamento" value="" readonly > </input>
+                                <div class="col-4">
+                                  <label  for="vrUnitMedicamentoRipsMed">VrUnitMedicamento:</label>
+                                    <input type="text" id="vrUnitMedicamentoRipsMed" name="vrUnitMedicamentoRipsMed" value="" readonly > </input>
                                 </div>
 
-				<div class="col-12">
-                                    		vrServicio:
-				 <label  for="vrServicio">vrServicio:</label>
-                                    <input type="text" class="form-control" id="vrServicio" name="vrServicio" value="0" placeholder="vrServicio:" readonly></input>
-                                </div>
-
-
-
-				<div class="col-12">
-                                    		consecutivo:
-				 <label  for="consecutivo">consecutivo:</label>
-                                    <input type="text" class="form-control" id="consecutivo" name="consecutivo" value="0" placeholder="consecutivo:" readonly></input>
-                                </div>
-
-
-				<div class="col-12">
-                                    		tipoMedicamento_id:
-				 <label  for="tipoMedicamento_id">tipoMedicamento_id:</label>
-                                    <input type="text" class="form-control" id="tipoMedicamento_id" name="tipoMedicamento_id" value="0" placeholder="tipoMedicamento_id:" readonly></input>
-                                </div>
-
-				<div class="col-12">
-                                    		tipoMedicamento_id:
-				 <label  for="tipoMedicamento_id">tipoMedicamento_id:</label>
-                                    <input type="text" class="form-control" id="tipoMedicamento_id" name="tipoMedicamento_id" value="0" placeholder="tipoMedicamento_id:" readonly></input>
-                                </div>
-
-				<div class="col-12">
-                                    		unidadMedida_id:
-				 <label  for="unidadMedida_id">unidadMedida_id:</label>
-                                    <input type="text" class="form-control" id="unidadMedida_id" name="unidadMedida_id" value="0" placeholder="unidadMedida_id:" readonly></input>
-                                </div>
-
-			<div class="col-12">
-                                    		cantidadGlosada:
-				 <label  for="cantidadGlosada">cantidadGlosada:</label>
-                                    <input type="text" class="form-control" id="cantidadGlosada" name="cantidadGlosada" value="0" placeholder="cantidadGlosada:" ></input>
-                                </div>
-
-				<div class="col-12">
-                                    		cantidadAceptada:
-				 <label  for="cantidadAceptada">cantidadAceptada:</label>
-                                    <input type="text" class="form-control" id="cantidadAceptada" name="cantidadAceptada" value="0" placeholder="cantidadAceptada:" ></input>
-                                </div>
-
-				<div class="col-12">
-                                    		cantidadSoportado:
-				 <label  for="cantidadSoportado">cantidadSoportado:</label>
-                                    <input type="text" class="form-control" id="cantidadSoportado" name="cantidadSoportado" value="0" placeholder="cantidadSoportado:" ></input>
+				<div class="col-4">
+                                    		
+				 <label  for="vrServicioRipsMed">vrServicio:</label>
+                                    <input type="text" class="form-control form-control-sm" id="vrServicioRipsMed" name="vrServicioRipsMed" value="0"  readonly></input>
                                 </div>
 
 
 
-				<div class="col-12">
-                                    		valorGlosado:
-				 <label  for="valorGlosado">valorGlosado:</label>
-                                    <input type="text" class="form-control" id="valorGlosado" name="valorGlosado" value="0" placeholder="valorGlosado:" ></input>
+				<div class="col-4">
+                                    		
+				 <label  for="consecutivoRipsMed">consecutivoRips:</label>
+                                    <input type="text" class="form-control form-control-sm" id="consecutivoRipsMed" name="consecutivoRipsMed" value="0" readonly></input>
                                 </div>
 
 
-				<div class="col-12">
-                                    		vAceptado:
-				 <label  for="vAceptado">vAceptado:</label>
-                                    <input type="text" class="form-control" id="vAceptado" name="vAceptado" value="0" placeholder="vAceptado:" ></input>
+				<div class="col-4">
+                                    		
+				 <label  for="tipoMedicamento_idRipsMed">tipoMedicamento_id:</label>
+                                    <input type="text" class="form-control form-control-sm" id="tipoMedicamento_idRipsMed" name="tipoMedicamento_idRipsMed" value="0"  readonly></input>
                                 </div>
 
-				<div class="col-12">
-                                    		valorSoportado:
-				 <label  for="valorSoportado">valorSoportado:</label>
-                                    <input type="text" class="form-control" id="valorSoportado" name="valorSoportado" value="0" placeholder="valorSoportado:" ></input>
+				<div class="col-4">
+                                    		
+				 <label  for="tipoMedicamento_idRipsMed">tipoMedicamento_id:</label>
+                                    <input type="text" class="form-control form-control-sm" id="tipoMedicamento_idRipsMed" name="tipoMedicamento_idRipsMed" value="0"  readonly></input>
                                 </div>
 
-		<div class="col-12">
-                                    		motivoGlosa_id:
-				 <label  for="motivoGlosa_id">motivoGlosa_id:</label>
-                                    <input type="text" class="form-control" id="motivoGlosa_id" name="motivoGlosa_id" value="0" placeholder="motivoGlosa_id:" ></input>
-                                </div>
-			<div class="col-12">
-                                    		notasCreditoGlosa:
-				 <label  for="notasCreditoGlosa">notasCreditoGlosa:</label>
-                                    <input type="text" class="form-control" id="notasCreditoGlosa" name="notasCreditoGlosa" value="0" placeholder="notasCreditoGlosa:" ></input>
+				<div class="col-4">
+                                    		
+				 <label  for="unidadMedida_idRipsMed">unidadMedida_id:</label>
+                                    <input type="text" class="form-control form-control-sm" id="unidadMedida_idRipsMed" name="unidadMedida_idRipsMed" value="0" readonly></input>
                                 </div>
 
+			<div class="col-4">
+                                    		
+				 <label  for="cantidadGlosadaRipsMed">cantidadGlosada:</label>
+                                    <input type="text" class="form-control form-control-sm" id="cantidadGlosadaRipsMed" name="cantidadGlosadaRipsMed" value="0"  ></input>
+                                </div>
 
-			<div class="col-12">
-                                    		notasCreditoOtras:
-				 <label  for="notasCreditoOtras">notasCreditoOtras:</label>
-                                    <input type="text" class="form-control" id="notasCreditoOtras" name="notasCreditoOtras" value="0" placeholder="notasCreditoOtras:" ></input>
+				<div class="col-4">
+                                    		
+				 <label  for="cantidadAceptadaRipsMed">cantidadAceptada:</label>
+                                    <input type="text" class="form-control form-control-sm" id="cantidadAceptadaRipsMed" name="cantidadAceptadaRipsMed" value="0"  ></input>
+                                </div>
+
+				<div class="col-4">
+                                    		
+				 <label  for="cantidadSoportadoRipsMed">cantidadSoportado:</label>
+                                    <input type="text" class="form-control form-control-sm" id="cantidadSoportadoRipsMed" name="cantidadSoportadoRipsMed" value="0"  ></input>
                                 </div>
 
 
-			<div class="col-12">
-                                    		notasDebito:
-				 <label  for="notasDebito">notasDebito:</label>
-                                    <input type="text" class="form-control" id="notasDebito" name="notasDebito" value="0" placeholder="notasDebito:" ></input>
+
+				<div class="col-4">
+                                    		
+				 <label  for="valorGlosadoRipsMed">valorGlosado:</label>
+                                    <input type="text" class="form-control form-control-sm" id="valorGlosadoRipsMed" name="valorGlosadoRipsMed" value="0"  ></input>
+                                </div>
+
+
+				<div class="col-4">
+                                    		
+				 <label  for="vAceptadoRipsMed">vAceptado:</label>
+                                    <input type="text" class="form-control form-control-sm" id="vAceptadoRipsMed" name="vAceptadoRipsMed" value="0" ></input>
+                                </div>
+
+				<div class="col-4">
+                                    		
+				 <label  for="valorSoportadoRipsMed">valorSoportado:</label>
+                                    <input type="text" class="form-control form-control-sm" id="valorSoportadoRipsMed" name="valorSoportadoRipsMed" value="0"  ></input>
+                                </div>
+
+		<div class="col-4">
+                                    		
+				 <label  for="motivoGlosa_idRipsMed">motivoGlosa_id:</label>
+                                    <input type="text" class="form-control form-control-sm" id="motivoGlosa_idRipsMed" name="motivoGlosa_idRipsMed" value="0"  ></input>
+                                </div>
+			<div class="col-4">
+                                    		
+				 <label  for="notasCreditoGlosaRipsMed">notasCreditoGlosa:</label>
+                                    <input type="text" class="form-control form-control-sm" id="notasCreditoGlosaRipsMed" name="notasCreditoGlosaRipsMed" value="0"  ></input>
+                                </div>
+
+
+			<div class="col-4">
+                                    		
+				 <label  for="notasCreditoOtrasRipsMed">notasCreditoOtras:</label>
+                                    <input type="text" class="form-control form-control-sm" id="notasCreditoOtrasRipsMed" name="notasCreditoOtrasRipsMed" value="0"  ></input>
+                                </div>
+
+
+			<div class="col-4">
+                                    		
+				 <label  for="notasDebitoRipsMed">notasDebito:</label>
+                                    <input type="text" class="form-control form-control-sm" id="notasDebitoRipsMed" name="notasDebitoRipsMed" value="0"  ></input>
                                 </div>
 
 
