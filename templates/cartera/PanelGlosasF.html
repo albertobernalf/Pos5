@@ -808,22 +808,20 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 					 <input type="text" class="form-control form-control-sm" id="observacionesMed" name="observacionesMed" preadonly >
                                 </div>
 
-		<div class="col-1">
-					convenio_id:
-                                   	 <label class="visually-hidden" for="convenio_idMed">Convenio:</label>
-                               
-					 <input type="text" class="form-control form-control-sm" id="convenio_idMed" name="convenio_idMed"  readonly >
+				<div class="col-1">
+                                    Convenio:
+				<select class="select-css"  id="convenio_idMed"  name="convenio_idMed" disable>
+                                                           {% for convenios in Convenios %}
+                                                            <option value="{{convenios.id}}">
+								  {{convenios.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
 
 
-	<div class="col-1">
-					convenio_id:
-                                   	 <label class="visually-hidden" for="convenio_idMed">Convenio:</label>
-                               
-					 <input type="text" class="form-control form-control-sm" id="convenio_idMed" name="convenio_idMed"  readonly >
-                                </div>
-
-<div class="col-1">
+			<div class="col-1">
 					fechaRegistro:
                                    	 <label class="visually-hidden" for="fechaRegistroMed">FecRegistro:</label>
                                
@@ -843,12 +841,18 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 					 <input type="text" class="form-control form-control-sm" id="fechaRespuestaMed" name="fechaRespuestaMed"  readonly >
                                 </div>
 
-			<div class="col-1">
-					tipoGlosa_id:
-                                   	 <label class="visually-hidden" for="tipoGlosa_idMed">TipoGlosa:</label>
-                               
-					 <input type="text" class="form-control form-control-sm" id="tipoGlosa_idMed" name="tipoGlosa_idMed"  readonly >
+				<div class="col-1">
+                                    Tipo Glosa:
+				<select class="select-css"  id="tipoGlosa_idMed"  name="tipoGlosa_idMed" >
+                                                           {% for tiposGlosas in TiposGlosas %}
+                                                            <option value="{{tiposGlosas.id}}">
+                                                                {{tiposGlosas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
+
 
 			<div class="col-1">
 					usuarioRecepcion_id:
@@ -869,12 +873,18 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 					 <input type="text" class="form-control form-control-sm" id="estadoRadicacion_idMed" name="estadoRadicacion_idMed"  readonly >
                                 </div>
 
-	<div class="col-1">
-					estadoRecepcion_id:
-                                   	 <label class="visually-hidden" for="estadoRecepcion_idMed">estadoRecepcion_id:</label>
-                               
-					 <input type="text" class="form-control form-control-sm" id="estadoRecepcion_idMed" name="estadoRecepcion_idMed"  readonly >
+			<div class="col-1">
+                                    EstadoRecepcion:
+				<select class="select-css"  id="estadoRecepcion_idMed"  name="estadoRecepcion_idMed">
+                                                           {% for estadosRecepcion in EstadosRecepcion %}
+                                                            <option value="{{estadosRecepcion.id}}">
+								  {{estadosRecepcion.nombre}}	
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
+
 
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
@@ -892,8 +902,6 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 			<th>itemFac</th>
 			<th>nom</th>
 			<th> MIPRES</th>
-			<th> fecDispens</th>
-			<th> nomTecno</th>
 			<th> cums</th>
 			<th> concentra</th>
 			<th> cantidad</th>
@@ -924,10 +932,8 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 						<bold>                                  
 				<th>id</th>
 			<th>itemFac</th>
-			<th>nom</th>
+			<th>nomTecno</th>
 			<th> MIPRES</th>
-			<th> fecDispens</th>
-			<th> nomTecno</th>
 			<th> cums</th>
 			<th> concentra</th>
 			<th> cantidad</th>
@@ -1123,11 +1129,19 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                     <input type="text" class="form-control form-control-sm" id="valorSoportadoRipsMed" name="valorSoportadoRipsMed" value="0"  ></input>
                                 </div>
 
-		<div class="col-4">
-                                    		
-				 <label  for="motivoGlosa_idRipsMed">motivoGlosa_id:</label>
-                                    <input type="text" class="form-control form-control-sm" id="motivoGlosa_idRipsMed" name="motivoGlosa_idRipsMed" value="0"  ></input>
+			<div class="col-4">
+                                    Motivo Glosa:
+				<select class="select-css"  id="motivoGlosa_idRipsMed"  name="motivoGlosa_idRipsMed">
+                                                           {% for motivosGlosas in MotivosGlosas %}
+                                                            <option value="{{motivosGlosas.id}}">
+                                                                {{motivosGlosas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
+
+
 			<div class="col-4">
                                     		
 				 <label  for="notasCreditoGlosaRipsMed">notasCreditoGlosa:</label>
@@ -1148,7 +1162,12 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                     <input type="text" class="form-control form-control-sm" id="notasDebitoRipsMed" name="notasDebitoRipsMed" value="0"  ></input>
                                 </div>
 
-
+			
+			<div class="col-4">
+                                    		
+				 <label  for="mensajesMed">Mensajes:</label>
+                                    <span id="mensajesMed" name="mensajesMed" style="color:red";> </span>
+                                </div>
 
 
 

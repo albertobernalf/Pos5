@@ -632,7 +632,7 @@ function arrancaGlosas(valorTabla,valorData)
 
                        return btn;
                     },
-                    "targets": 24
+                    "targets": 22
                }
             ],
 	 pageLength: 3,
@@ -664,8 +664,6 @@ function arrancaGlosas(valorTabla,valorData)
 	 	  { data: "fields.itemFactura"},
 	  { data: "fields.nomTecnologiaSalud"},
 	  { data: "fields.idMIPRES"},
-	  { data: "fields.fechaDispensAdmon"},
-	  { data: "fields.nomTecnologiaSalud"},
 	  { data: "fields.cums"},
 	  { data: "fields.concentracionMedicamento"},
 	  { data: "fields.cantidadMedicamento"},
@@ -816,6 +814,7 @@ window.addEventListener('load', async () => {
 	document.getElementById("totalAceptadoMed").value = dato3.totalAceptado;
 	document.getElementById("saldoFacturaMed").value = dato3.saldoFactura;
 	document.getElementById("observacionesMed").value = dato3.observaciones;
+
 	document.getElementById("convenio_idMed").value = dato3.convenio_id;
 	document.getElementById("fechaRegistroMed").value = dato3.fechaRegistro;
 	document.getElementById("usuarioRegistro_idMed").value = dato3.usuarioRegistro_id;
@@ -825,6 +824,7 @@ window.addEventListener('load', async () => {
 	document.getElementById("usuarioRespuesta_idMed").value = dato3.usuarioRespuesta_id;
 	document.getElementById("estadoRadicacion_idMed").value = dato3.estadoRadicacion_id;
 	document.getElementById("estadoRecepcion_idMed").value = dato3.estadoRecepcion_id;
+
 
 
 
@@ -854,7 +854,7 @@ window.addEventListener('load', async () => {
                 success: function (info) {
 		   $("#mensajes").html(info.message);
 
-     $('#postFormMedicamentos').trigger("reset");
+	$('#postFormMedicamentos').trigger("reset");
 
   	$('#post_idRipsMed').val(info[0].fields.id);
   	$('#glosaRipsMed').val(document.getElementById("post_idMedGlo").value);
@@ -882,9 +882,7 @@ window.addEventListener('load', async () => {
   	$('#notasCreditoOtrasRipsMed').val(info[0].fields.notasCreditoOtras);
   	$('#notasDebitoRipsMed').val(info[0].fields.notasDebito);
 
-
 		 $('#crearModelGlosasMedicamentos').modal('show');
-
                 },
             error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
@@ -907,15 +905,26 @@ function GuardarGlosasMedicamentos()
 	        var username_id = document.getElementById("username_id").value;
 
 
-
             $.ajax({
                 data: $('#postFormMedicamentos').serialize(),
 	        url: "/guardarGlosasMedicamentos/",
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
-		   $("#mensajes").html(data2.message);
-                  $('#postFormMedicamentos').trigger("reset");
+
+
+			if (data2.Error == 'Si' )
+				{
+		
+
+				   $("#mensajesMed").html(data2.message);
+					return ;
+				}
+	
+				if (data2.Error == 'No' )
+				{
+
+				 $('#postFormMedicamentos').trigger("reset");
 
 		var data =  {}   ;
 	        data['username'] = username;
@@ -944,6 +953,9 @@ function GuardarGlosasMedicamentos()
 
 
  		 $('#crearModelGlosasMedicamentos').modal('hide');
+
+
+				}	// Cierra el if		
 
                 },
             error: function (request, status, error) {

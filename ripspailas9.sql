@@ -20,3 +20,10 @@ select * 	FROM public.rips_ripsotrosservicios ripsserv ,rips_ripstransaccion rip
 
 
 select * 	FROM public.rips_ripsmedicamentos;
+
+select  sum("valorGlosado"), sum("valorSoportado") , sum("vAceptado") 	FROM public.rips_ripsmedicamentos ripsmed where  ripsmed.glosa_id = 6 ;
+
+select sum("valorGlosado"), sum("valorSoportado") , sum("vAceptado") FROM public.rips_ripsprocedimientos ripsproc  where  ripsproc.glosa_id = 6 ;
+select sum("valorGlosado"), sum("valorSoportado") , sum("vAceptado") 	FROM public.rips_ripsotrosservicios ripsserv 	 where  ripsserv.glosa_id = 6 ;
+
+

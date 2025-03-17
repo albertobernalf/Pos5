@@ -26,6 +26,7 @@ from facturacion.models import ConveniosPacienteIngresos, Liquidacion, Liquidaci
 from cartera.models import TiposPagos, FormasPagos, Pagos, PagosFacturas
 from triage.models import Triage
 from clinico.models import Servicios
+from rips.models  import RipsMedicamentos, RipsConsultas, RipsProcedimientos, RipsOtrosServicios
 import pickle
 
 
@@ -334,16 +335,16 @@ def Load_tablaGlosasMedicamentos(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsmed.id id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripscums cums  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
+    detalle = 'SELECT  ripsmed.id id,"itemFactura", "nomTecnologiaSalud", ripsmed."idMIPRES",  cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripscums cums  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for  id, itemFactura, nomTecnologiaSalud,  cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito in curx.fetchall():
+    for  id, itemFactura, nomTecnologiaSalud, idMIPRES, cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito in curx.fetchall():
         medicamentosRips.append(
             {"model": "rips.RipsMedicamentos", "pk": id, "fields":
-                {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud,  'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
+                {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud, 'idMIPRES' :idMIPRES, 'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
 		 'vrUnitMedicamento':vrUnitMedicamento, 'vrServicio':vrServicio, 'consecutivo':consecutivo,'tipoMedicamento_id':tipoMedicamento_id,'unidadMedida_id':unidadMedida_id,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'motivoGlosa_id':motivoGlosa_id,'notasCreditoGlosa':notasCreditoGlosa, 'notasCreditoOtras':notasCreditoOtras, 'notasDebito':notasDebito
                  }})
 
@@ -417,7 +418,7 @@ def GuardarGlosasMedicamentos(request):
     print ("cantidadGlosada =", cantidadGlosada)
 
     if (cantidadGlosada==''):
-        cantidadGlosada=0
+        cantidadGlosada=0.0
 
     print ("cantidadGlosada =", cantidadGlosada)
 
@@ -425,75 +426,126 @@ def GuardarGlosasMedicamentos(request):
     print ("cantidadAceptada =", cantidadAceptada)
 
     if (cantidadAceptada==''):
-        cantidadAceptada=0
+        cantidadAceptada=0.0
 
     cantidadSoportado = request.POST['cantidadSoportadoRipsMed']
     print ("cantidadSoportado =", cantidadSoportado)
 
     if (cantidadSoportado==''):
-        cantidadSoportado=0
+        cantidadSoportado=0.0
 
 
-    valorGlosado = request.POST['valorGlosadoRipsMed']
+    valorGlosado = float(request.POST['valorGlosadoRipsMed'])
     print ("valorGlosado =", valorGlosado)
 
     if (valorGlosado==''):
-        valorGlosado=0
+        valorGlosado=0.0
 
-
-    vAceptado = request.POST['vAceptadoRipsMed']
+    vAceptado = float(request.POST['vAceptadoRipsMed'])
     print ("vAceptado =", vAceptado)
+
     if (vAceptado==''):
-        vAceptado=0
+        vAceptado=0.0
 
-
-    valorSoportado = request.POST['valorSoportadoRipsMed']
+    valorSoportado = float(request.POST['valorSoportadoRipsMed'])
     print ("valorSoportado=",valorSoportado)
 
     if (valorSoportado==''):
-        valorSoportado=0
+        valorSoportado=0.0
 
     notasCreditoGlosa = request.POST['notasCreditoGlosaRipsMed']
     print ("notasCreditoGlosa=",notasCreditoGlosa)
 
     if (notasCreditoGlosa==''):
-        notasCreditoGlosa=0
+        notasCreditoGlosa=0.0
 
-
-    notasCreditoOtras = request.POST['notasCreditoOtrasRipsMed']
+    notasCreditoOtras = float(request.POST['notasCreditoOtrasRipsMed'])
     print ("notasCreditoOtras=",notasCreditoOtras)
 
-    if (notasCreditoOtras==''):
-        notasCreditoOtras=0
 
-    notasDebito = request.POST['notasDebitoRipsMed']
+    if (notasCreditoOtras==''):
+        notasCreditoOtras=0.0
+
+    notasDebito = float(request.POST['notasDebitoRipsMed'])
     print ("notasDebito=",notasDebito)
 
-    if (notasDebito==''):
-        notasDebito=0
 
+    if (notasDebito==''):
+        notasDebito=0.0
+
+
+    vrServicioRipsMed = float(request.POST['vrServicioRipsMed'])
+    print ("vrServicioRipsMed=", vrServicioRipsMed)
 
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
+    if ( valorGlosado > vrServicioRipsMed ):
+        print ("Entre 1")
+        print("valorGlosado=", valorGlosado)
+        print("vrServicioRipsMed=", vrServicioRipsMed)
+        return JsonResponse({'success': False, 'Error' :'Si', 'message': 'Valor Glosa mayor que el valor del servicio!'})
+
+    if ( valorSoportado > vrServicioRipsMed ):
+        print ("Entre 4")
+        return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor Soportado mayor que el valor del servicio!'})
+
+    if ( vAceptado > vrServicioRipsMed ):
+        print ("Entre 5")
+        return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor aceptado mayor que el valor del servicio!'})
+
+    if ( cantidadAceptada > cantidadGlosada ):
+        print ("Entre 2")
+        return JsonResponse({'success': False, 'Error' :'Si','message': 'Cantidad aceptada mayor que el valor del glosado!'})
+
+    if ( cantidadSoportado > cantidadGlosada ):
+        print ("Entre 3")
+        return JsonResponse({'success': False, 'Error' :'Si','message': 'Cantidad soportada mayor que el valor del glosado!'})
+
+
+    if ( (vAceptado + valorSoportado) > vrServicioRipsMed ):
+        print ("Entre 3")
+        return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor soportado mas valor aceptado mayor que el valor del servicio!'})
+
+
+
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras"= ' + "'" + str(notasCreditoOtras) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "', glosa_id = '" + str(glosaId) + "'"   + '  WHERE id = ' + str(id)
+    comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras"= ' + "'" + str(notasCreditoOtras) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "', glosa_id = '" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(id)
 
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
 
-    # TIENE QUE ACTUALIZAR CARTERA_GLOSAS
+
+    # TOTALES
+    totalAceptadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+
+    totalAceptadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+
+    totalAceptadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+
+    totalAceptadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
 
 
-    # TIENE QUE ACTUALIZAR CARTERA_GLOSASDETALLE
-    # TIENE QUE ACTUALIZAR FACTURACION_FACTURACIONDETALLE
-    # CREO NO MAS
-    
-    return JsonResponse({'success': True, 'message': 'Glosa Actualizado satisfactoriamente!'})
+    # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES
+
+
+    # TIENE QUE ACTUALIZAR CARTERA_GLOSASDETALLE INSERTAR O UPDATE
+    # TIENE QUE ACTUALIZAR FACTURACION_FACTURACIONDETALLE INSERTAR O UPDATE DE PRONOT OPCIOPNAL ??
+    # CREO NO MAS ??
+
+    return JsonResponse({'success': True, 'Error' :'No', 'message': 'Glosa Actualizado satisfactoriamente!'})
 

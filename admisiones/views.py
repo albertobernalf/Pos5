@@ -1938,6 +1938,30 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Fin combo Tipos Glosas
 
+    # Combo Motivos Glosas
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre FROM cartera_motivosglosas c "
+
+    curt.execute(comando)
+    print(comando)
+
+    motivosGlosas = []
+
+    for id, nombre in curt.fetchall():
+        motivosGlosas.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(motivosGlosas)
+
+    context['MotivosGlosas'] = motivosGlosas
+
+    # Fin combo motivos Glosas
+
+
     # Combo Estados Glosas
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
