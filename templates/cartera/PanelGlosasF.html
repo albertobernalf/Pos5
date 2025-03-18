@@ -519,52 +519,45 @@ div.dataTables_filter input {
 <article id="RipsMedicamentos">
 		
 <!-- DESDE AQUI ENCABEZADO GLOSA-->
+	<div style="position: relative; left: 150px; width:1200px; height:110px;>
 
 	  <form id="postFormGlosasMed" name="postFormGlosasMed">
 		<input type="hidden" name="post_id" id="post_id">
-
+		
                       <div class="row">
 
 			<div class="col-1">
-
-				Glosa No
-                                <input type="text" class="form-control form-control-sm"  name="post_idMedGlo" id="post_idMedGlo">
+			 <label for="post_idMedGlo">Glosa No</label>
+                                <input type="text" class="form-control input-smform-control-sm"  name="post_idMedGlo" id="post_idMedGlo">
 			</div>
 
 
-					                                   
-                                    <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="{{Sede}}" readonly></input>
-                           
+			<div class="col-1">		                                   
+                                   
+                            <input type="text" class="form-control input-sm form-control-sm" id="sedesClinica_idMed" name="sedesClinica_idMed"  value="{{Sede}}" ></input>
+			</div>
 
 			<div class="col-1">
-					Factura:
-                                   	
-                               
-					 <input type="text" class="form-control form-control-sm" id="factura_idMed" name="factura_idMed"  readonly >
+					
+					
+					Factura:                                 	                              
+					 <input type="text" class="form-control input-sm form-control-sm " id="factura_idMed" name="factura_idMed"  readonly >
                              
-</div>
+			</div>
 				<div class="col-2">
-					Fecha Recepcion:
-                                   	
+					Fecha Recepcion:                                	                               
+					 <input type="text" class="form-control input-sm form-control-sm " id="fechaRecepcionMed" name="fechaRecepcionMed"  readonly >
                                
-					 <input type="text" class="form-control form-control-sm" id="fechaRecepcionMed" name="fechaRecepcionMed"  readonly >
-                               
-</div>
+			</div>
 
 				<div class="col-2">
 					ValorGlosa
-                                   	 <label class="visually-hidden" for="valorGlosaMed">Valor Glosa:</label>
+                                   	 <label for="valorGlosaMed">Valor Glosa:</label>
                                
 					 <input type="text" class="form-control form-control-sm" id="valorGlosaMed" name="valorGlosaMed"  readonly >
                               
 
-</div>
-				<div class="col-2">
-					EstadoReg:
-                                   	 <label class="visually-hidden" for="estadoRegMed">EstadoReg:</label>
-                               
-					 <input type="text" class="form-control form-control-sm" id="estadoRegMed" name="estadoRegMed" readonly >
-                           </div>
+				</div>
 
 				<div class="col-2">
 					TotalSoportado:
@@ -615,7 +608,7 @@ div.dataTables_filter input {
                                 </div>
 
 				<div class="col-1">
-					usuarioRegistro_id:
+					usuarioReg:
                                    	 <label class="visually-hidden" for="usuarioRegistro_idMed">UsuarioReg:</label>
                                
 					 <input type="text" class="form-control form-control-sm" id="usuarioRegistro_idMed" name="usuarioRegistro_idMed"  readonly >
@@ -641,13 +634,13 @@ div.dataTables_filter input {
 
 
 			<div class="col-1">
-					usuarioRecepcion_id:
+					usuarioRecepcion:
                                    	 <label class="visually-hidden" for="usuarioRecepcion_idMed">UsuarioRecep:</label>
                                
 					 <input type="text" class="form-control form-control-sm" id="usuarioRecepcion_idMed" name="usuarioRecepcion_idMed"  readonly >
                                 </div>
 		<div class="col-1">
-					usuarioRespuesta_id:
+					usuarioResp:
                                    	 <label class="visually-hidden" for="usuarioRespuesta_idMed">UsuarioRta:</label>
                                
 					 <input type="text" class="form-control form-control-sm" id="usuarioRespuesta_idMed" name="usuarioRespuesta_idMed"  readonly >
@@ -655,7 +648,7 @@ div.dataTables_filter input {
 
 
 				<div class="col-1">
-                                    Estado radicacion:
+                                    EstadoRadica:
 				<select class="select-css"  id="estadoRadicacion_idMed"  name="estadoRadicacion_idMed">
                                                            {% for estadosRadicacion in EstadosRadicacion %}
                                                             <option value="{{estadosRadicacion.id}}">
@@ -677,15 +670,23 @@ div.dataTables_filter input {
                                                           
                                                         </select>
                                 </div>
+				<div class="col-1">
+					EstadoReg:
+                                   	 <label class="visually-hidden" for="estadoRegMed">EstadoReg:</label>
+                               
+					 <input type="text" class="form-control form-control-sm" id="estadoRegMed" name="estadoRegMed" readonly >
+                           </div>
+
+
 
 		<div class="col-1">
-			<button type="button" class="btn btn-primary" id="saveBtnGuardarGlosa" onclick="GuardaGlosasEstados()">Grabar!</button> 
+			<button type="button" class="btn btn-primary btn-sm" id="saveBtnGuardarGlosa" onclick="GuardaGlosasEstados()">Guardar !</button> 
 		 </div>
 
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
-
+	</div>
 
 
 	<div class="container my-2">          

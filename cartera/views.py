@@ -620,21 +620,20 @@ def GuardaGlosasEstados(request):
 
     print ("Entre Guarda Glosas Estados" )
 
-    sedesClinica_id = request.POST['sedesClinica_id']
-    print("sedesClinica_id =", sedesClinica_id)
-
-    glosaId = request.POST['post_idMedGlo']
+    glosaId = request.POST.get('post_idMedGlo')
     print ("id =", glosaId)
 
     tipoGlosa = request.POST["tipoGlosa_idMed"]
     print ("tipoGlosa =", tipoGlosa)
 
-    estadoRadicacion = request.POST["tipoGlosa_idMed"]
+    estadoRadicacion = request.POST["estadoRadicacion_idMed"]
     print ("estadoRadicacion =", estadoRadicacion)
 
     estadoRecepcion = request.POST["estadoRecepcion_idMed"]
     print ("estadoRecepcion =", estadoRecepcion)
 
+    sedesClinica_id = request.POST["sedesClinica_idMed"]
+    print("sedesClinica_id =", sedesClinica_id)
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()

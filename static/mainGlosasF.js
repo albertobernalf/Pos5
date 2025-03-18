@@ -819,16 +819,8 @@ window.addEventListener('load', async () => {
 	document.getElementById("estadoRadicacion_idMed").value = dato3.estadoRadicacion_id;
 	document.getElementById("estadoRecepcion_idMed").value = dato3.estadoRecepcion_id;
 
-
-
-
-
         	arrancaGlosas(6,data);
 	    dataTableGlosasProcedimientos = true;
-
-
-
-
 
 
   });
@@ -896,7 +888,6 @@ function GuardarGlosasMedicamentos()
 	    	var sede = document.getElementById("sede").value;
 	        var username_id = document.getElementById("username_id").value;
 
-
             $.ajax({
                 data: $('#postFormMedicamentos').serialize(),
 	        url: "/guardarGlosasMedicamentos/",
@@ -904,29 +895,36 @@ function GuardarGlosasMedicamentos()
                 dataType: 'json',
                 success: function (data2) {
 
-			alert("Esto llega = " + data2);
+			filtrodata = JSON.stringify(data2['Data']);
+			filtrodata = filtrodata.replace ('[','');
+			filtrodata = filtrodata.replace (']','');
+			filtro = JSON.parse(filtrodata);
 
+			alert("filtro = " + filtro.fields);
+			alert("filtro = " + filtro.fields.totalSoportado);
+			alert("filtro = " + filtro.fields.totalAceptado);
+ 
 
-			if (data2.Error == 'Si' )
+			if (data2['Error'] == 'Si' )
 				{
 		
 
-				   $("#mensajesMed").html(data2.message);
+				   $("#mensajesMed").html(data2['message']);
 					return ;
 				}
 	
-				if (data2.Error == 'No' )
+				if (data2['Error'] == 'No' )
 				{
 
 				 $('#postFormMedicamentos').trigger("reset");
 
-		document.getElementById("valorGlosaMed").value = data.valorGlosa;
-		document.getElementById("totalSoportadoMed").value = data.totalSoportado;
-		document.getElementById("totalAceptadoMed").value = data.totalAceptado;
-		document.getElementById("saldoFacturaMed").value = data.saldoFactura;
-		document.getElementById("tipoGlosa_idMed").value = data.tipoGlosa_id;
-		document.getElementById("estadoRadicacion_idMed").value = data.estadoRadicacion_id;
-		document.getElementById("estadoRecepcion_idMed").value = data.estadoRecepcion_id;
+		document.getElementById("valorGlosaMed").value = filtro.fields.valorGlosa;
+		document.getElementById("totalSoportadoMed").value = filtro.fields.totalSoportado;
+		document.getElementById("totalAceptadoMed").value = filtro.fields.totalAceptado;
+		document.getElementById("saldoFacturaMed").value = filtro.fields.saldoFactura;
+		document.getElementById("tipoGlosa_idMed").value = filtro.fields.tipoGlosa_id;
+		document.getElementById("estadoRadicacion_idMed").value = filtro.fields.estadoRadicacion_id;
+		document.getElementById("estadoRecepcion_idMed").value = filtro.fields.estadoRecepcion_id;
 
 		var data =  {}   ;
 	        data['username'] = username;
@@ -978,9 +976,17 @@ function GuardaGlosasEstados()
 	        var username_id = document.getElementById("username_id").value;
 		alert("Entre Guardar Glosas Estado");
 
+	        var post_idMedGlo = document.getElementById("post_idMedGlo").value;
+	        var tipoGlosa_idMed = document.getElementById("tipoGlosa_idMed").value;
+	        var tipoGlosa_idMed = document.getElementById("tipoGlosa_idMed").value;
+	        var estadoRecepcion_idMed = document.getElementById("estadoRecepcion_idMed").value;
+	        var sedesClinica_idMed = document.getElementById("sedesClinica_idMed").value;
+
+
+
 
             $.ajax({
-                data: $('#postFormGlosasMed').serialize(),
+                data: {'post_idMedGlo':post_idMedGlo,'tipoGlosa_idMed':tipoGlosa_idMed,'tipoGlosa_idMed':tipoGlosa_idMed, 'estadoRecepcion_idMed':estadoRecepcion_idMed, 'sedesClinica_idMed':sedesClinica_idMed  },
 	        url: "/guardaGlosasEstados/",
                 type: "POST",
                 dataType: 'json',
@@ -1003,6 +1009,7 @@ function GuardaGlosasEstados()
   		 if  (dataTableGlosasInitialized)  {
 		            dataTableC = $("#tablaGlosas").dataTable().fnDestroy();
                     }
+
 			 arrancaGlosas(1,data);
 			    dataTableGlosasInitialized = true;
 			 arrancaGlosas(8,data);
@@ -1059,5 +1066,69 @@ function CerrarModalJson()
             $('#crearModelRipsJson').modal('hide');
 }
 
+
+function CrearGlosas()
+{
+	
+		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+		alert("Entre Guardar Glosas Estado");
+
+	        
+		var convenio_id = document.getElementById("convenio_id").value;
+	        var sedesClinica_id = document.getElementById("sedesClinica_id").value;
+	        var fechaRecepcion = document.getElementById("fechaRecepcion").value;
+	        var observaciones = document.getElementById("observaciones").value;
+	        var factura_id = document.getElementById("factura_id").value;
+	        var fechaRespuesta = document.getElementById("fechaRespuesta").value;
+	        var tipoGlosa_id = document.getElementById("tipoGlosa_id").value;
+	        var valorGlosa = document.getElementById("valorGlosa").value;
+	        var estadoRecepcion_id = document.getElementById("estadoRecepcion_id").value;
+	        var usuarioRegistro_id = document.getElementById("usuarioRegistro_id").value;
+
+
+            $.ajax({
+                data: {'convenio_id':convenio_id,'sedesClinica_id':sedesClinica_id, 'fechaRecepcion':fechaRecepcion, 'observaciones':observaciones,'factura_id':factura_id,  'fechaRespuesta':fechaRespuesta, 'tipoGlosa_id':tipoGlosa_id, 'valorGlosa':valorGlosa, 'estadoRecepcion_id':estadoRecepcion_id, 'usuarioRegistro_id':usuarioRegistro_id },
+	        url: "/guardaGlosas/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+
+		var data =  {}   ;
+	        data['username'] = username;
+		data['username_id'] = username_id;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['sedesClinica_id'] = sede;
+
+		var facturaId = document.getElementById("factura_idMed").value;
+		data['facturaId'] = document.getElementById("factura_idMed").value;
+
+	        data = JSON.stringify(data);
+	
+  		 if  (dataTableGlosasInitialized)  {
+		            dataTableC = $("#tablaGlosas").dataTable().fnDestroy();
+                    }
+
+			 arrancaGlosas(1,data);
+			    dataTableGlosasInitialized = true;
+			 arrancaGlosas(8,data);
+			    dataTableGlosasMedicamentosInitialized = true;
+
+
+		  $("#mensajes").html(data2.message);
+                },
+            error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+}
 
 
