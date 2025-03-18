@@ -295,7 +295,7 @@ select * from rips_ripsusuarios;
 select * from generaFacturaJSON(31,41)
 	select * from generaFacturaJSON(38,42)
 	select * from generaFacturaJSON(33,42)
-	select * from generaFacturaJSON(31,41)
+	select * from generaFacturaJSON(30,40)
 	
 
 drop function generaFacturaJSON;
@@ -534,7 +534,7 @@ if (totalMedicamentos> 0) then
 
 
 
-	totalRecienNacidos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsreciennacidos ripsnac where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsnac."ripsTransaccion_id" = ripstra.id);
+	totalRecienNacidos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsreciennacido ripsnac where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsnac."ripsTransaccion_id" = ripstra.id);
 	RAISE NOTICE 'ANTES DE totalRecienNacidos';
 RAISE NOTICE 'TOTAL totalRecienNacidos = %s', totalMedicamentos;
 
@@ -574,7 +574,7 @@ end if;
 END $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100;
-ALTER FUNCTION generaJSON
+ALTER FUNCTION generaFacturaJSON
   OWNER TO postgres;
 
 select * from rips_ripsdetalle;
@@ -609,7 +609,7 @@ DECLARE
 		totalHospitalizacion integer := 0;
 		totalProcedimientos integer := 0;
 		totalMedicamentos integer := 0; 
-		totalRecienNacidos integer := 0;
+		totalRecienNacido integer := 0;
 
 BEGIN
 
@@ -834,11 +834,11 @@ BEGIN
 
 
 
-	totalRecienNacidos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsreciennacido ripsnac where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsnac."ripsTransaccion_id" = ripstra.id);
+	totalRecienNacido  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsreciennacido ripsnac where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and ripsnac."ripsTransaccion_id" = ripstra.id);
 	RAISE NOTICE 'ANTES DE totalRecienNacidos';
 	RAISE NOTICE 'TOTAL totalRecienNacidos = %s', totalMedicamentos;
 
-	if (totalRecienNacidos> 0) then
+	if (totalRecienNacido> 0) then
 
 		SELECT '{"urgencias": [{"codPrestador": ' ||  '"' || nac."codPrestador"|| '",'  ||
 	   	    '"tipoDocumentoIdentificacion": ' || '"'  ||tipoDoc.codigo|| '",'  || 	
@@ -863,7 +863,7 @@ BEGIN
 		left join rips_ripstiposdocumento tipoDoc on (tipoDoc.id = nac."tipoDocumentoIdentificacion_id" )
 		where  rips_ripstransaccion."ripsEnvio_id" = envioRipsId and   rips_ripstransaccion."numFactura" =cast(facturaId as text);
 
-		valorJson = valorJson ||' ' || totalRecienNacidos;
+		valorJson = valorJson ||' ' || totalRecienNacido;
 	end if;
 
  END LOOP;

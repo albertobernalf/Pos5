@@ -19,7 +19,6 @@
     <ul class="tabs">
 
         <li><a href="#Glosas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Glosas</a></li>
-        <li><a href="#DetalleGlosas"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Glosas</a></li>
         <li><a href="#GlosaClinica"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Glosa Clinica</a></li>
         <li><a href="#NotasCredito"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Notas Credito</a></li>
         <li><a href="#NotasDebito"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Nots Debito</a></li>
@@ -294,242 +293,7 @@ div.dataTables_filter input {
 
         </article>
 
-
-<article id="DetalleGlosas">
-
-        	
-		<div class="container my-2">          
-Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>  
-			     Empresa:  <input type="text" name="empresaId" id="empresaId" readonly>  
-			     Tipo:     <input type="text" name="tipoRips2" id="tipoRips2" readonly>  
-   			   <div class="row">
-		     
-			     		         <table  id= "tablaDetalleGlosas" class=" display table table-striped" style="width: 100%";>
-
-                                           <thead>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Factura No</th>
-                                                <th>Fecha Factura </th>
-                                                <th>Paciente</th>
-                                                <th>ValorFactura</th>
-                                                <th>Estado</th>
-                                                <th>Action</th>
-						</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody style="vertical-align:bottom; horizontal-align:left">
-                                            <tr style="height:10%">
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>	
-			   </div>	
-				<!-- hasta aquip -->
-
-
-
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
-		<div class="container my-2">          
-   			   <div class="row">
-                                        <table  id= "tablaDetalleRips" class=" display table table-striped" style="width: 100%";>
-                                           <thead>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Factura No</th>
-                                                <th>Cuv</th>
-                                                <th>EstadoPasoAlMinisterio</th>
-                                                <th>RutaJsonRespuesta</th>
-                                                <th>RutaJsonFactura</th>
-                                                <th>RutaPdf</th>
-                                                <th>RutaZip</th>
-						<th>UsuarioRegistro</th>
-                                                <th>Action</th>
-						</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Factura No</th>
-                                                <th>Cuv</th>
-                                                <th>EstadoPasoAlMinisterio</th>
-                                                <th>RutaJsonRespuesta</th>
-                                                <th>RutaJsonFactura</th>
-                                                <th>RutaPdf</th>
-                                                <th>RutaZip</th>
-						<th>UsuarioRegistro</th>
-                                                <th>Action</th>
-						</bold>                                  
-                                            </tr>
-                                            </tfoot>
-
-                                        </table>
-                                    </div>
-                                </div>
-
-
-	            <!-- Espacio Modales  RipsDetalle-->
-
-            <div class="modal fade" id="crearModelRipsDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" modal-lg>
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeadingRipsDetalle"></h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="alert alert-danger error-msg" style="display:none">
-                                <ul class="mb-0"></ul>
-                            </div>
-                            <form id="postFormRipsDetalle" name="postFormRipsDetalle" class="form-horizontal"
-                                  novalidate>
-                               
-                                  <div class="row row-cols-lg-auto g-3 align-items-center mb-3">     
-                     
-					<div class="col-12">
-
-			 Id : <input type="text" name="detalleRipsId" id="detalleRipsId" readonly>
-
-                                </div>
-
-				<div class="col-12">
-				   <label  for="numeroFacturaT">Factura:</label>                               
-                                   <input type="text" class="form-control" id="numeroFacturaT" name="numeroFacturaT" value="0" placeholder="numeroFacturaT:"  readonly></input>
-                             
-                                </div>
-
-				<div class="col-12">
-				   <label  for="numeroFacturaT">Envio:</label>                               
-                                   <input type="text" class="form-control" id="ripsEnvios" name="ripsEnvios" value="0" placeholder="ripsEnvios:"  readonly></input>
-  
-                                   
-                               </div>
-
-				<div class="col-12">
-
-				   <label  for="cuv">Cuv:</label>                               
-                                  <input type="text" class="form-control" id="cuv" name="cuv" value="0" placeholder="cuv:"  readonly></input>
-                                   
-                                </div>
-
-                                <div class="col-12">
-
-				   <label  for="cuv">Estado:</label>                               
-                                  <input type="text" class="form-control" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="0" placeholder="estadoPasoMinisterio:"  readonly></input>
-                                
-
-                                </div>
-                          
-				<div class="col-12">
-				   <label  for="cuv">RutaJsonFactura:</label>                               
-                                  <input type="text" class="form-control" id="rutaJsonFactura" name="rutaJsonFactura" value="0" placeholder="rutaJsonFactura:"  ></input>
-       
-                                </div>
-
-				<div class="col">
-				   <label  for="cuv">RutaJsonRespuesta:</label>                               
-                                  <input type="text" class="form-control" id="rutaJsonRespuesta" name="rutaJsonRespuesta" value="0" placeholder="rutaJsonRespuesta:"  ></input>
-                                </div>
-
-           
-                                <div class="col-12">
-                               	<label  for="cuv">fechaRegistro:</label>                               
-                                  <input type="text" class="form-control" id="fechaRegistro" name="fechaRegistro" value="0" placeholder="fechaRegistro:"  readonly></input>
-  
-                                </div>
-
-
-
-                                <div class="col-12">
-			     	<label  for="cuv">EstadoRegistro:</label>                               
-                                  <input type="text" class="form-control" id="fechaRegistro" name="estadoReg" value="0" placeholder="estadoReg:"  readonly></input>
-  
-                               </div>
-
-
-                                <div class="col-12">
-
-			     	<label  for="cuv">UsuarioRegistro_id:</label>                               
-                                  <input type="text" class="form-control" id="UsuarioRegistro_id" name="UsuarioRegistro_id" value="0" placeholder="UsuarioRegistro_id:"  readonly></input>
-  
-                                </div>
-
-				<div class="col">
-
-		     	<label  for="cuv">RutaPdf:</label>                               
-                                  <input type="text" class="form-control" id="rutaPdf" name="rutaPdf" value="0" placeholder="rutaPdf:"  ></input>
-                                  </div>
-
-				<div class="col">
-
-				<label  for="cuv">RutaZip:</label>                               
-                                  <input type="text" class="form-control" id="rutaZip" name="rutaZip" value="0" placeholder="rutaZip:"  ></input>
-                               
-                                </div>
-
-
-
-                                <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="saveBtnCrearDetalleRips"   value="create" onclick="GuardarDetalleRips()">Guardar </button>
-                                </div>
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
-
-                            </form>
-                        </div> <!-- CIERRA BODY -->
-                        </div> <!-- CIERRA MODAL CONTENTE -->
-                    </div> <!-- CIERRA MODAL DIALOG -->
-                </div>  <!-- CIERRA MODAL FADE -->
-
-
-
-	<!-- Otra Modal -->
-
-
-            <div class="modal fade" id="crearModelRipsJson" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeadingRipsJson"></h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="alert alert-danger error-msg" style="display:none">
-                                <ul class="mb-0"></ul>
-                            </div>
-                            <form id="postFormRipsJson" name="postFormRipsJsone" class="form-horizontal"
-                                  novalidate>
-							 Id :     <input type="text" name="envioRipsIdJ" id="envioRipsIdJ" readonly>
-        				                 Factura: <input type="text" id="facturaIdJ" name="facturaIdJ"  readonly></input>           
-
-
-				<div class="row row-cols-1" style="height=30px;">
-
-				<div class="col">
-                                    JSON:
-					<textarea id="valorJson" name="valorJson"   cols="80" rows="10"></textarea>
-                                 
-                                </div>
-
-                                <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="cerrarJson" name="cerrarJson"  value="Cerrar" onclick="CerrarModalJson()">Cerrar </button>
-                                </div>
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
-
-                            </form>
-                        </div> <!-- CIERRA BODY -->
-                        </div> <!-- CIERRA MODAL CONTENTE -->
-                    </div> <!-- CIERRA MODAL DIALOG -->
-                </div>  <!-- CIERRA MODAL FADE -->
-
-	<!-- Fin otra Modal -->
-     <!-- FIN Espacio Modales  -->
-
-
-</article>
+	
 
 <article id="GlosaClinica">
 
@@ -653,7 +417,29 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 </article>
 
 
+<article id="RipsHospitalizacion">
 
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsUrgObs">
+
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
+
+<article id="RipsRecienNacido">
+
+		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
+		
+		
+		 </div>
+</article>
 
 <article id="RipsProcedimientos">
 
@@ -810,7 +596,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 				<div class="col-1">
                                     Convenio:
-				<select class="select-css"  id="convenio_idMed"  name="convenio_idMed" disable>
+				<select class="select-css"  id="convenio_idMed"  name="convenio_idMed" disabled>
                                                            {% for convenios in Convenios %}
                                                             <option value="{{convenios.id}}">
 								  {{convenios.nombre}}
@@ -866,11 +652,18 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                
 					 <input type="text" class="form-control form-control-sm" id="usuarioRespuesta_idMed" name="usuarioRespuesta_idMed"  readonly >
                                 </div>
-		<div class="col-1">
-					estadoRadicacion_id:
-                                   	 <label class="visually-hidden" for="estadoRadicacion_idMed">EstRadica:</label>
-                               
-					 <input type="text" class="form-control form-control-sm" id="estadoRadicacion_idMed" name="estadoRadicacion_idMed"  readonly >
+
+
+				<div class="col-1">
+                                    Estado radicacion:
+				<select class="select-css"  id="estadoRadicacion_idMed"  name="estadoRadicacion_idMed">
+                                                           {% for estadosRadicacion in EstadosRadicacion %}
+                                                            <option value="{{estadosRadicacion.id}}">
+                                                                {{estadosRadicacion.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
 
 			<div class="col-1">
@@ -885,6 +678,9 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                                         </select>
                                 </div>
 
+		<div class="col-1">
+			<button type="button" class="btn btn-primary" id="saveBtnGuardarGlosa" onclick="GuardaGlosasEstados()">Grabar!</button> 
+		 </div>
 
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
@@ -1222,6 +1018,9 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
         <li><a href="#RipsTransaccion"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Transaccion </a></li>
         <li><a href="#RipsUsuarios"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Usuarios </a></li>
+        <li><a href="#RipsHospitalizacion"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Hospitalizacion </a></li>
+        <li><a href="#RipsUrgObs"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Urgencias Observacion </a></li>
+        <li><a href="#RipsRecienNacido"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Rips Recien Nacidos </a></li>
         <li><a href="#RipsConsulta"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Rips Consulta</a></li>
         <li><a href="#RipsProcedimientos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Procedimientos </a></li> 
         <li><a href="#RipsMedicamentos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Rips Medicamentos </a></li> 

@@ -241,6 +241,7 @@ urlpatterns = [
     path('load_tablaGlosasMedicamentos/<str:data>', viewsCartera.Load_tablaGlosasMedicamentos,name='load_tablaGlosasMedicamentos'),
     path('consultaGlosasRipsMedicamentos/', viewsCartera.ConsultaGlosasRipsMedicamentos, name='consulta_GlosasRipsMedicamentos'),
     path('guardarGlosasMedicamentos/', viewsCartera.GuardarGlosasMedicamentos,name='guardarGlosasMedicamentos'),
+    path('guardaGlosasEstados/', viewsCartera.GuardaGlosasEstados,name='guardaGlosasEstados'),
 
 
 

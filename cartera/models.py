@@ -169,6 +169,7 @@ class GlosasDetalle(models.Model):
     itemFactura =  models.IntegerField(editable=True, null=True, blank=True)
     ripsDetalle =  models.ForeignKey('rips.RipsDetalle',blank=True,null= True, editable=True, on_delete=models.PROTECT )
     ripsTipos =  models.ForeignKey('rips.RipsTipos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsTipos10')   
+    itemRips =  models.IntegerField(editable=True, null=True, blank=True)
     ripsId    =  models.IntegerField(editable=True, null=True, blank=True)
     motivoGlosa = models.ForeignKey('cartera.MotivosGlosas',blank=True,null= True, editable=True, on_delete=models.PROTECT )
     valorServicio = models.DecimalField( max_digits=15, decimal_places=2)

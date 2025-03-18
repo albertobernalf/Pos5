@@ -1986,6 +1986,29 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo Estado Glosas recepcion
 
 
+    # Combo Estados Glosas Radicacion
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre FROM cartera_estadosglosas c WHERE c.tipo= 'RADICACION'"
+
+    curt.execute(comando)
+    print(comando)
+
+    estadosRadicacion = []
+
+    for id, nombre in curt.fetchall():
+        estadosRadicacion.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(estadosRadicacion)
+
+    context['EstadosRadicacion'] = estadosRadicacion
+
+    # Fin combo Estado Glosas estadosRadicacion
+
 
     return render(request, "cartera/PanelGlosasF.html", context)
 

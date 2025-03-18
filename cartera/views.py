@@ -197,7 +197,7 @@ def Load_tablaGlosasProcedimientos(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsproc.id id, "codPrestador", cast("fechaInicioAtencion" as date), "idMIPRES", "numAutorizacion", ripsproc."numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", ripsproc.consecutivo, ripsproc."fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", ripsproc."tipoDocumentoIdentificacion_id", ripsproc."usuarioRegistro_id", "viaIngresoServicioSalud_id", ripsproc."ripsDetalle_id", "itemFactura", ripsproc."ripsTipos_id", "tipoPagoModerador_id", ripsproc."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra, public.rips_ripsprocedimientos ripsproc WHERE  ripstra."sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'" + ' AND ripstra.id = ripsproc."ripsTransaccion_id"  AND cast(ripstra."numFactura" as numeric) = ' +  str(facturaId)
+    detalle = 'SELECT  ripsproc.id id, "codPrestador", cast(cast("fechaInicioAtencion" as date)  as text), "idMIPRES", "numAutorizacion", ripsproc."numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", ripsproc.consecutivo, ripsproc."fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", ripsproc."tipoDocumentoIdentificacion_id", ripsproc."usuarioRegistro_id", "viaIngresoServicioSalud_id", ripsproc."ripsDetalle_id", "itemFactura", ripsproc."ripsTipos_id", "tipoPagoModerador_id", ripsproc."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra, public.rips_ripsprocedimientos ripsproc WHERE  ripstra."sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'" + ' AND ripstra.id = ripsproc."ripsTransaccion_id"  AND cast(ripstra."numFactura" as numeric) = ' +  str(facturaId)
 
     print ("detalle = ", detalle)
 
@@ -224,6 +224,7 @@ def Load_tablaGlosasProcedimientos(request, data):
     procedimientosRips_converted = [convert_keys_and_values(d) for d in procedimientosRips]
 
     serialized1 = json.dumps(procedimientosRips_converted, default=str)
+    #serialized1 = json.dumps(procedimientosRips_converted)
 
     return HttpResponse(serialized1, content_type='application/json')
 
@@ -459,14 +460,14 @@ def GuardarGlosasMedicamentos(request):
     if (notasCreditoGlosa==''):
         notasCreditoGlosa=0.0
 
-    notasCreditoOtras = float(request.POST['notasCreditoOtrasRipsMed'])
+    notasCreditoOtras = request.POST['notasCreditoOtrasRipsMed']
     print ("notasCreditoOtras=",notasCreditoOtras)
 
 
     if (notasCreditoOtras==''):
         notasCreditoOtras=0.0
 
-    notasDebito = float(request.POST['notasDebitoRipsMed'])
+    notasDebito = request.POST['notasDebitoRipsMed']
     print ("notasDebito=",notasDebito)
 
 
@@ -539,13 +540,111 @@ def GuardarGlosasMedicamentos(request):
     totalGlosadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
 
+    totalAceptado = totalAceptadoMed['totalA'] + totalAceptadoProc['totalA'] + totalAceptadoOtrosServ['totalA'] + totalAceptadoCons['totalA']
+    totalSoportado = totalSoportadoMed['totalS'] + totalSoportadoProc['totalS'] + totalSoportadoOtrosServ['totalS'] + totalSoportadoCons['totalS']
+    totalGlosado = totalGlosadoMed['totalG'] + totalGlosadoProc['totalG'] + totalGlosadoOtrosServ['totalG'] + totalGlosadoCons['totalG']
 
-    # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES
+    print ("totalAceptado = ",totalAceptado)
+    print("totalSoportado = ", totalSoportado)
+    print("totalGlosado = ", totalGlosado)
+
+    saldoFactura = 0
+
+    # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES / PENDIENTE SALDO FACTURA
 
 
-    # TIENE QUE ACTUALIZAR CARTERA_GLOSASDETALLE INSERTAR O UPDATE
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+
+    # TIENE QUE ACTUALIZAR CARTERA_GLOSASDETALLE INSERTAR O UPDATE, NO VOY A METER MAS SIMPOLEMENTE UN QUERY ENTRE TABÑAS
+    # RIPS Y LA FACTURACION PARA MOSTRAR EL NITIDO DETALLE GLOSADO
+
+
+
     # TIENE QUE ACTUALIZAR FACTURACION_FACTURACIONDETALLE INSERTAR O UPDATE DE PRONOT OPCIOPNAL ??
+
     # CREO NO MAS ??
 
-    return JsonResponse({'success': True, 'Error' :'No', 'message': 'Glosa Actualizado satisfactoriamente!'})
+
+    # Aqui voya leer el dato guardado
+
+    glosa = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT id, "valorGlosa", "totalSoportado", "totalAceptado", "saldoFactura", "tipoGlosa_id", "estadoRadicacion_id" , "estadoRecepcion_id"  FROM public.cartera_glosas where id= ' + "'" + str(glosaId) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, valorGlosa, totalSoportado, totalAceptado, saldoFactura, tipoGlosa_id, estadoRadicacion_id, estadoRecepcion_id in curx.fetchall():
+        glosa.append(
+            {"model": "cartera_glosas", "pk": id, "fields":
+                {'id': id, 'valorGlosa': valorGlosa, 'totalSoportado': totalSoportado, 'totalAceptado': totalAceptado,
+                 'saldoFactura': saldoFactura, 'tipoGlosa_id': tipoGlosa_id,
+                 'estadoRadicacion_id': estadoRadicacion_id, 'estadoRecepcion_id': estadoRecepcion_id   }})
+
+    miConexionx.close()
+    print("glosa ", glosa)
+
+    response_data = {}
+    response_data['Data'] = glosa
+    response_data['Error'] = 'No'
+    response_data['success'] = True
+    response_data['message'] = 'Glosa Actualizado satisfactoriamente!'
+
+    print("response_data" ,response_data )
+
+    # serialized1 = json.dumps(medicamentosRipsUnRegistro, default=str)
+    # return HttpResponse(serialized1, content_type='application/json')
+
+
+    return HttpResponse(json.dumps(response_data, default=str))
+
+    #return JsonResponse({'success': True, 'Error' :'No', 'message': 'Glosa Actualizado satisfactoriamente!'})
+
+
+def GuardaGlosasEstados(request):
+
+    print ("Entre Guarda Glosas Estados" )
+
+    sedesClinica_id = request.POST['sedesClinica_id']
+    print("sedesClinica_id =", sedesClinica_id)
+
+    glosaId = request.POST['post_idMedGlo']
+    print ("id =", glosaId)
+
+    tipoGlosa = request.POST["tipoGlosa_idMed"]
+    print ("tipoGlosa =", tipoGlosa)
+
+    estadoRadicacion = request.POST["tipoGlosa_idMed"]
+    print ("estadoRadicacion =", estadoRadicacion)
+
+    estadoRecepcion = request.POST["estadoRecepcion_idMed"]
+    print ("estadoRecepcion =", estadoRecepcion)
+
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'UPDATE cartera_glosas SET "tipoGlosa_id"= ' +"'" + str(tipoGlosa) + "'," + ' "estadoRadicacion_id" = ' + "'" +str(estadoRadicacion) + "'," + '"estadoRecepcion_id" = ' + "'" + str(estadoRecepcion) + "'" + '   WHERE id = ' + str(glosaId)
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Glosa Actualizada satisfactoriamente!'})
 

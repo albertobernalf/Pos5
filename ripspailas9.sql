@@ -12,6 +12,13 @@ UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= '0', "cantidadAceptada" = '0
 	WHERE id = 13
 
 select * from cartera_glosas;
+select * from cartera_motivosglosas;
+
+    totalAceptadoServ = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoServ = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoServ = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+ 
+
 
 select * from rips_ripstransaccion;
 select  sum("valorGlosado"), sum("valorSoportado") , sum("vAceptado") 	FROM public.rips_ripsmedicamentos ripsmed,rips_ripstransaccion ripstra where ripstra.id = ripsmed."ripsTransaccion_id" AND cast(ripstra."numFactura" as float)  = 40 ;
@@ -27,3 +34,5 @@ select sum("valorGlosado"), sum("valorSoportado") , sum("vAceptado") FROM public
 select sum("valorGlosado"), sum("valorSoportado") , sum("vAceptado") 	FROM public.rips_ripsotrosservicios ripsserv 	 where  ripsserv.glosa_id = 6 ;
 
 
+select * from rips_ripsconsultas;
+select * from rips_ripsotrosservicios;

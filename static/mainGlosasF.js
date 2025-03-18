@@ -87,9 +87,7 @@ function arrancaGlosas(valorTabla,valorData)
 
 		{     "render": function ( data, type, row ) {
                         var btn = '';
-             btn = btn + " <input type='radio'  name='glosa'  class='miGlosa form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-
+        		     btn = btn + " <input type='radio' name='glosa' class='miGlosa form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
                        return btn;
                     },
 
@@ -151,7 +149,6 @@ function arrancaGlosas(valorTabla,valorData)
             }
 	        dataTable = $('#tablaGlosas').DataTable(dataTableOptionsGlosas);
 
-       // 	$('#tablaGlosas tbody tr:eq(0) .miGlosa').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
 
 
 
@@ -719,8 +716,7 @@ const initDataTableGlosas = async () => {
 	data['sedesClinica_id'] = sedesClinica_id
 	data['facturaId'] = 1
 
- 	    data = JSON.stringify(data);
-
+        data = JSON.stringify(data);
 
          arrancaGlosas(1,data);
 	 dataTableGlosasInitialized = true;
@@ -730,8 +726,6 @@ const initDataTableGlosas = async () => {
 	 dataTableGlosasUsuariosInitialized = true;
          arrancaGlosas(8,data);
 	 dataTableGlosasProcedimientos = true;
-	
-
 
 }
 
@@ -893,8 +887,6 @@ window.addEventListener('load', async () => {
 
 
 
-
-	
 function GuardarGlosasMedicamentos()
 {
 	
@@ -912,6 +904,8 @@ function GuardarGlosasMedicamentos()
                 dataType: 'json',
                 success: function (data2) {
 
+			alert("Esto llega = " + data2);
+
 
 			if (data2.Error == 'Si' )
 				{
@@ -926,6 +920,14 @@ function GuardarGlosasMedicamentos()
 
 				 $('#postFormMedicamentos').trigger("reset");
 
+		document.getElementById("valorGlosaMed").value = data.valorGlosa;
+		document.getElementById("totalSoportadoMed").value = data.totalSoportado;
+		document.getElementById("totalAceptadoMed").value = data.totalAceptado;
+		document.getElementById("saldoFacturaMed").value = data.saldoFactura;
+		document.getElementById("tipoGlosa_idMed").value = data.tipoGlosa_id;
+		document.getElementById("estadoRadicacion_idMed").value = data.estadoRadicacion_id;
+		document.getElementById("estadoRecepcion_idMed").value = data.estadoRecepcion_id;
+
 		var data =  {}   ;
 	        data['username'] = username;
 		data['username_id'] = username_id;
@@ -938,7 +940,6 @@ function GuardarGlosasMedicamentos()
 		data['facturaId'] = document.getElementById("factura_idMed").value;
 
 	        data = JSON.stringify(data);
-
 	
   		 if  (dataTableGlosasInitialized)  {
 
@@ -957,6 +958,58 @@ function GuardarGlosasMedicamentos()
 
 				}	// Cierra el if		
 
+                },
+            error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+}
+
+
+function GuardaGlosasEstados()
+{
+	
+		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+		alert("Entre Guardar Glosas Estado");
+
+
+            $.ajax({
+                data: $('#postFormGlosasMed').serialize(),
+	        url: "/guardaGlosasEstados/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+
+		var data =  {}   ;
+	        data['username'] = username;
+		data['username_id'] = username_id;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['sedesClinica_id'] = sede;
+
+		var facturaId = document.getElementById("factura_idMed").value;
+		data['facturaId'] = document.getElementById("factura_idMed").value;
+
+	        data = JSON.stringify(data);
+	
+  		 if  (dataTableGlosasInitialized)  {
+		            dataTableC = $("#tablaGlosas").dataTable().fnDestroy();
+                    }
+			 arrancaGlosas(1,data);
+			    dataTableGlosasInitialized = true;
+			 arrancaGlosas(8,data);
+			    dataTableGlosasMedicamentosInitialized = true;
+
+
+		  $("#mensajes").html(data2.message);
                 },
             error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
