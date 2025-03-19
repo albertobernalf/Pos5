@@ -239,6 +239,7 @@ urlpatterns = [
     path('load_tablaGlosasUsuarios/<str:data>', viewsCartera.Load_tablaGlosasUsuarios, name='load_tablaGlosasUsuarios'),
     path('load_tablaGlosasProcedimientos/<str:data>', viewsCartera.Load_tablaGlosasProcedimientos, name='load_tablaGlosasProcedimientos'),
     path('load_tablaGlosasMedicamentos/<str:data>', viewsCartera.Load_tablaGlosasMedicamentos,name='load_tablaGlosasMedicamentos'),
+    path('load_tablaGlosasHospitalizacion/<str:data>', viewsCartera.Load_tablaGlosasHospitalizacion,name='load_tablaGlosasHospitalizacion'),
     path('consultaGlosasDetalle/', viewsCartera.ConsultaGlosasDetalle, name='consulta_GlosasDetalle'),
     path('guardarGlosasDetalle/', viewsCartera.GuardarGlosasDetalle,name='guardarGlosasDetalle'),
     path('guardaGlosasEstados/', viewsCartera.GuardaGlosasEstados,name='guardaGlosasEstados'),

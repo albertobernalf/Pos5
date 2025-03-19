@@ -461,15 +461,15 @@ def GuardarGlosasDetalle(request):
 
     print ("Entre Guardar Glosas Detalle" )
 
-    sedesClinica_id = request.POST['sedesClinica_id']
-    print("sedesClinica_id =", sedesClinica_id)
+    tipoGloDet = request.POST["tipoGloDet"]
+    print("tipoGloDet =", tipoGloDet)
 
-    glosaId = request.POST['glosaGloDet']
-    print ("id =", glosaId)
+    ripsId = request.POST['glosaGloDet']
+    print ("ripsId =", ripsId)
 
+    glosaId = request.POST['post_idGlo']
+    print ("glosaId =", glosaId)
 
-    id = request.POST['post_idGloDet']
-    print ("id =", id)
 
     motivoGlosa_id= request.POST["motivoGlosa_idGloDet"]
     print ("motivoGlosa_id =", motivoGlosa_id)
@@ -520,21 +520,7 @@ def GuardarGlosasDetalle(request):
     if (notasCreditoGlosa==''):
         notasCreditoGlosa=0.0
 
-    notasCreditoOtras = request.POST['notasCreditoOtrasGloDet']
-    print ("notasCreditoOtras=",notasCreditoOtras)
-
-
-    if (notasCreditoOtras==''):
-        notasCreditoOtras=0.0
-
-    notasDebito = request.POST['notasDebitoGloDet']
-    print ("notasDebito=",notasDebito)
-
-
-    if (notasDebito==''):
-        notasDebito=0.0
-
-
+ 
     vrServicioGloDet = float(request.POST['vrServicioGloDet'])
     print ("vrServicioGloDet=", vrServicioGloDet)
 
@@ -573,8 +559,23 @@ def GuardarGlosasDetalle(request):
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
+    if tipoGloDet == 'MEDICAMENTOS' :
 
-    comando = 'UPDATE rips_GloDeticamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras"= ' + "'" + str(notasCreditoOtras) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "', glosa_id = '" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(id)
+        comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+
+    if tipoGloDet == 'PROCEDIMIENTOS' :
+
+        comando = 'UPDATE rips_ripsprocedimientos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+
+    if tipoGloDet == 'CONSULTAS' :
+
+        comando = 'UPDATE rips_ripsconsultas SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+
+    if tipoGloDet == 'OTOS SERVICIOS' :
+
+        comando = 'UPDATE rips_ripsotrosservicios SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+
+
 
     print(comando)
     cur3.execute(comando)
@@ -583,9 +584,9 @@ def GuardarGlosasDetalle(request):
 
 
     # TOTALES
-    totalAceptadoMed = GloDeticamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-    totalSoportadoMed = GloDeticamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-    totalGlosadoMed = GloDeticamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+    totalAceptadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
     totalAceptadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
     totalSoportadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
@@ -680,19 +681,19 @@ def GuardaGlosasEstados(request):
 
     print ("Entre Guarda Glosas Estados" )
 
-    glosaId = request.POST.get('post_idMedGlo')
+    glosaId = request.POST.get('post_idGlo')
     print ("id =", glosaId)
 
-    tipoGlosa = request.POST["tipoGlosa_idMed"]
+    tipoGlosa = request.POST["tipoGlosa_idGlo"]
     print ("tipoGlosa =", tipoGlosa)
 
-    estadoRadicacion = request.POST["estadoRadicacion_idMed"]
+    estadoRadicacion = request.POST["estadoRadicacion_idGlo"]
     print ("estadoRadicacion =", estadoRadicacion)
 
-    estadoRecepcion = request.POST["estadoRecepcion_idMed"]
+    estadoRecepcion = request.POST["estadoRecepcion_idGlo"]
     print ("estadoRecepcion =", estadoRecepcion)
 
-    sedesClinica_id = request.POST["sedesClinica_idMed"]
+    sedesClinica_id = request.POST["sedesClinica_idGlo"]
     print("sedesClinica_id =", sedesClinica_id)
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
@@ -706,4 +707,46 @@ def GuardaGlosasEstados(request):
     miConexion3.close()
 
     return JsonResponse({'success': True, 'message': 'Glosa Actualizada satisfactoriamente!'})
+
+def Load_tablaGlosasHospitalizacion(request, data):
+    print("Entre load_data Hospitalizacion Rips")
+
+    context = {}
+    d = json.loads(data)
+
+    sedesClinica_id = d['sedesClinica_id']
+    print("sedesClinica_id = ", sedesClinica_id)
+
+    facturaId = d['facturaId']
+    print("facturaId = ", facturaId)
+
+    hospitalizacionRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id", env."ripsTiposNotas_id", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripshosp."ripsDetalle_id" AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripshosp."ripsTransaccion_id" '
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  codPrestador, fechaInicioAtencion, numAutorizacion, fechaEgreso, consecutivo, fechaRegistro,  causaMotivoAtencion_id,  codComplicacion_id, codDiagnosticoCausaMuerte_id, codDiagnosticoPrincipal_id , codDiagnosticoPrincipalE_id,  codDiagnosticoRelacionadoE1_id, codDiagnosticoRelacionadoE2_id,        codDiagnosticoRelacionadoE3_id, condicionDestinoUsuarioEgreso_id, usuarioRegistro_id,  viaIngresoServicioSalud_id, ripsDetalle_id, ripsTiposNotas_id, ripsTransaccion_id in curx.fetchall():
+        hospitalizacionRips.append(
+            {"model": "rips.RipsHopsitalizacion", "pk": id, "fields":
+                {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion,  'numAutorizacion':numAutorizacion, 'fechaEgreso':fechaEgreso,'consecutivo':consecutivo,'fechaRegistro':fechaRegistro,'causaMotivoAtencion_id':causaMotivoAtencion_id,
+		'codComplicacion_id':codComplicacion_id, 'codDiagnosticoCausaMuerte_id':codDiagnosticoCausaMuerte_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id, 'codDiagnosticoPrincipalE_id':codDiagnosticoPrincipalE_id,'codDiagnosticoRelacionadoE1_id':codDiagnosticoRelacionadoE1_id,'codDiagnosticoRelacionadoE2_id':codDiagnosticoRelacionadoE2_id,'codDiagnosticoRelacionadoE3_id':codDiagnosticoRelacionadoE3_id,
+                 'condicionDestinoUsuarioEgreso_id':condicionDestinoUsuarioEgreso_id, 'usuarioRegistro_id':usuarioRegistro_id, 'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id, 'ripsDetalle_id':ripsDetalle_id, 'ripsTiposNotas_id':ripsTiposNotas_id,'ripsTransaccion_id':ripsTransaccion_id
+                 }})
+
+
+
+    miConexionx.close()
+    print("hospitalizacionRips "  , hospitalizacionRips)
+    #context['usuariosRips'] = usuariosRips
+
+    serialized1 = json.dumps(hospitalizacionRips,  default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
 

@@ -82,8 +82,14 @@ select 'PROCEDIMIENTOS' tipo, proc.id, proc.consecutivo consec, proc."itemFactur
 	FROM  rips_ripstransaccion ripstra inner join  rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id) inner join clinico_examenes exa on ( exa.id =proc."codProcedimiento_id" ) inner join facturacion_facturaciondetalle det on (det.facturacion_id=cast(ripstra."numFactura" as float) and det."consecutivoFactura" = proc."itemFactura") left join cartera_motivosglosas mot on (mot.id = proc."motivoGlosa_id")
 	where cast(ripstra."numFactura" as float) = 48 
 
-SELECT med.id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",
-	consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",
-	"valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" 
-	FROM public.rips_ripsmedicamentos med, public.rips_ripscums cums
-	where med.id= 40 and cum ="nomTecnologiaSalud"
+	SELECT proc.id, "itemFactura", proc."codProcedimiento_id" , exa.nombre exa, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado","valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa"FROM public.rips_ripsprocedimientos proc, public.clinico_examenes exa 
+	where proc.id=223 and proc."codProcedimiento_id" = exa.id
+
+	select * from rips_ripsconsultas;
+
+
+     SELECT cons.id, "itemFactura", cons."codConsulta_id" , exa.nombre exa, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado","valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa" FROM public.rips_ripsconsultas cons, public.clinico_examenes exa   
+	where cons.id= 223 and cons."codConsulta_id" = exa.id
+
+SELECT serv.id,"itemFactura",serv."nomTecnologiaSalud", cums.nombre cums, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado","valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa" FROM public.rips_ripsotrosservicios serv, public.rips_ripscums cums 
+	where serv.id= 133 and serv."codTecnologiaSalud_id" =  cums.id
