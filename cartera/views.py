@@ -336,7 +336,7 @@ def Load_tablaGlosasMedicamentos(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripsmed.id id,"itemFactura", "nomTecnologiaSalud", ripsmed."idMIPRES",  cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos ripsmed , public.rips_ripscums cums  WHERE   ripstra.id = ripsmed."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
+    detalle = 'SELECT  GloDet.id id,"itemFactura", "nomTecnologiaSalud", GloDet."idMIPRES",  cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripstransaccion ripstra , public.rips_ripsmedicamentos GloDet , public.rips_ripscums cums  WHERE   ripstra.id = GloDet."ripsTransaccion_id" AND cum ="nomTecnologiaSalud" and cast(ripstra."numFactura" as integer) =' +  str(facturaId)
 
     print(detalle)
 
@@ -344,7 +344,7 @@ def Load_tablaGlosasMedicamentos(request, data):
 
     for  id, itemFactura, nomTecnologiaSalud, idMIPRES, cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito in curx.fetchall():
         medicamentosRips.append(
-            {"model": "rips.RipsMedicamentos", "pk": id, "fields":
+            {"model": "rips.GloDeticamentos", "pk": id, "fields":
                 {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud, 'idMIPRES' :idMIPRES, 'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
 		 'vrUnitMedicamento':vrUnitMedicamento, 'vrServicio':vrServicio, 'consecutivo':consecutivo,'tipoMedicamento_id':tipoMedicamento_id,'unidadMedida_id':unidadMedida_id,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'motivoGlosa_id':motivoGlosa_id,'notasCreditoGlosa':notasCreditoGlosa, 'notasCreditoOtras':notasCreditoOtras, 'notasDebito':notasDebito
                  }})
@@ -360,12 +360,58 @@ def Load_tablaGlosasMedicamentos(request, data):
     return HttpResponse(serialized1, content_type='application/json')
 
 
-def ConsultaGlosasRipsMedicamentos(request):
+def Load_tablaGlosasDetalle(request, data):
+    print("Entre  Load_tablaGlosasDetalle")
+
+    context = {}
+    d = json.loads(data)
+
+
+    sedesClinica_id = d['sedesClinica_id']
+    print("sedesClinica_id = ", sedesClinica_id)
+
+    facturaId = d['facturaId']
+    print("facturaId = ", facturaId)
+
+
+    glosasDetalle = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+
+
+    detalle = 'select ' + "'" + str('MEDICAMENTOS') + "'" + ' tipo,med.id, med.consecutivo consec, med."itemFactura",med."nomTecnologiaSalud" codigo,cums.nombre nombre,med."vrServicio",mot.nombre glosaNombre, med."cantidadGlosada",med."cantidadAceptada",med."cantidadSoportado", med."valorGlosado", med."vAceptado", med."valorSoportado",med."notasCreditoGlosa" FROM rips_ripstransaccion ripstra , rips_ripsmedicamentos med, rips_ripscums cums, facturacion_facturaciondetalle det, cartera_motivosglosas mot where  cast(ripstra."numFactura" as float) = ' + str(facturaId) + ' and med."ripsTransaccion_id" = ripstra.id and cast(ripstra."numFactura" as float) = det.facturacion_id and med."nomTecnologiaSalud" =  cums.cum and med."itemFactura" = det."consecutivoFactura" and mot.id = med."motivoGlosa_id" UNION select ' + "'" + str('PROCEDIMIENTOS') + "'" + ' tipo, proc.id, proc.consecutivo consec, proc."itemFactura", cast(proc."codProcedimiento_id" as text) codigo, exa.nombre nombre, proc."vrServicio", mot.nombre glosaNombre, proc."cantidadGlosada", proc."cantidadAceptada", proc."cantidadSoportado", proc."valorGlosado", proc."vAceptado", proc."valorSoportado", proc."notasCreditoGlosa"  FROM  rips_ripstransaccion ripstra inner join  rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id) inner join clinico_examenes exa on ( exa.id =proc."codProcedimiento_id" ) inner join facturacion_facturaciondetalle det on (det.facturacion_id=cast(ripstra."numFactura" as float) and det."consecutivoFactura" = proc."itemFactura") left join cartera_motivosglosas mot on (mot.id = proc."motivoGlosa_id")  where cast(ripstra."numFactura" as float) = ' +  str(facturaId) +  '  UNION select ' + "'"  + str('CONSULTAS') + "'" + ' tipo, cons.id, cons.consecutivo consec, cons."itemFactura", cast(cons."codConsulta_id" as text) codigo, exa.nombre nombre, cons."vrServicio", mot.nombre glosaNombre, cons."cantidadGlosada", cons."cantidadAceptada", cons."cantidadSoportado", cons."valorGlosado", cons."vAceptado", cons."valorSoportado", cons."notasCreditoGlosa" FROM rips_ripstransaccion  ripstra, rips_ripsconsultas cons, clinico_examenes exa, facturacion_facturaciondetalle det, cartera_motivosglosas mot  where cast(ripstra."numFactura" as float) = ' + str(facturaId) + ' and cons."ripsTransaccion_id" = ripstra.id and cast(ripstra."numFactura" as float) = det.facturacion_id and cons. "codConsulta_id" = exa.id and cons."itemFactura" = det."consecutivoFactura" and mot.id = cons."motivoGlosa_id" UNION select '+ "'" + str('OTROS SERVICIOS') + "'" + ' tipo, serv.id, serv.consecutivo consec, serv."itemFactura", serv."nomTecnologiaSalud" codigo, cums.nombre nombre, serv."vrServicio", mot.nombre glosaNombre, serv."cantidadGlosada", serv."cantidadAceptada", serv."cantidadSoportado", serv."valorGlosado", serv."vAceptado", serv."valorSoportado", serv."notasCreditoGlosa" FROM rips_ripstransaccion ripstra, rips_ripsotrosservicios serv, rips_ripscums cums, facturacion_facturaciondetalle  det, cartera_motivosglosas  mot where cast(ripstra."numFactura" as float) = ' + str(facturaId) + ' and serv."ripsTransaccion_id" = ripstra.id and cast(ripstra."numFactura" as float) = det.facturacion_id and serv."codTecnologiaSalud_id" = cums.id and serv."itemFactura" = det."consecutivoFactura" and mot.id = serv."motivoGlosa_id"  order by 4'
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for  tipo, id, consec, itemFactura, codigo, nombre, vrServicio,  glosaNombre, cantidadGlosada , cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , notasCreditoGlosa in curx.fetchall():
+        glosasDetalle.append(
+            {"model": "rips.GlosasDetalle", "pk": id, "fields":
+                {'tipo':tipo, 'id': id, 'consec':consec,  'itemFactura': itemFactura , 'codigo': codigo, 'nombre' :nombre, 'vrServicio':vrServicio,'glosaNombre':glosaNombre,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'notasCreditoGlosa':notasCreditoGlosa}})
+
+
+    miConexionx.close()
+
+
+    serialized1 = json.dumps(glosasDetalle,  default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
+def ConsultaGlosasDetalle(request):
     
-    print("Entre consultaGlosasRipsMedicamentos")
+    print("Entre consultaGlosasDetalle")
 
     id  = request.POST['id']
     print("id  =", id )
+
+    tipo  = request.POST["tipo"]
+    print("tipo  =", tipo )
 
 
     medicamentosRipsUnRegistro = []
@@ -374,17 +420,31 @@ def ConsultaGlosasRipsMedicamentos(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT med.id,"itemFactura", "nomTecnologiaSalud", cums.nombre cums,"concentracionMedicamento", "cantidadMedicamento",  "vrUnitMedicamento", "vrServicio",  consecutivo,  "tipoMedicamento_id", "unidadMedida_id", "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado",	 "valorSoportado","motivoGlosa_id", "notasCreditoGlosa", "notasCreditoOtras", "notasDebito" FROM public.rips_ripsmedicamentos med, public.rips_ripscums cums where med.id= ' + "'" + str(id) + "'" + ' and cum ="nomTecnologiaSalud"'
+    if (tipo == 'MEDICAMENTOS'):
+
+        detalle = 'SELECT ' + "'" + str('MEDICAMENTOS') + "'" + ' tipo, med.id,"itemFactura", "nomTecnologiaSalud" codigo, cums.nombre nombre, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado", "valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa" FROM public.rips_ripsmedicamentos med, public.rips_ripscums cums where med.id= ' + "'" + str(id) + "'" + ' and cum ="nomTecnologiaSalud"'
+
+    if (tipo == 'PROCEDIMIENTOS'):
+
+        detalle = 'SELECT ' + "'" + str('PROCEDIMIENTOS') + "'" + ' tipo, proc.id, "itemFactura", proc."codProcedimiento_id" codigo , exa.nombre nombre, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado","valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa"FROM public.rips_ripsprocedimientos proc, public.clinico_examenes exa   where proc.id= ' + "'" + str(id) + "'" + ' and proc."codProcedimiento_id" = exa.id'
+
+    if (tipo == 'CONSULTAS'):
+        detalle = 'SELECT ' + "'" + str('CONSULTAS') + "'" + ' tipo, cons.id, "itemFactura", cons."codConsulta_id" codigo, exa.nombre nombre, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado","valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa" FROM public.rips_ripsconsultas cons, public.clinico_examenes exa      where cons.id= ' + "'" + str(id) + "'" + ' and cons."codConsulta_id" = exa.id'
+
+    if (tipo == 'OTROS SERVICIOS'):
+
+        detalle = 'SELECT ' + "'" + str('OTROS SERVICIOS') + "'" + ' tipo, serv.id,"itemFactura",serv."nomTecnologiaSalud" codigo , cums.nombre nombre, "vrServicio",	consecutivo,  "cantidadGlosada", "cantidadAceptada", "cantidadSoportado","valorGlosado","vAceptado","valorSoportado","motivoGlosa_id", "notasCreditoGlosa" FROM public.rips_ripsotrosservicios serv, public.rips_ripscums cums  where serv.id= ' + "'" + str(id) + "'" + ' and serv."codTecnologiaSalud_id" =  cums.id'
+
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, itemFactura, nomTecnologiaSalud, cums, concentracionMedicamento, cantidadMedicamento, vrUnitMedicamento, vrServicio,  consecutivo, tipoMedicamento_id, unidadMedida_id, cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa, notasCreditoOtras, notasDebito   in curx.fetchall():
+    for tipo, id, itemFactura, codigo, nombre,  vrServicio,  consecutivo,  cantidadGlosada, cantidadAceptada, cantidadSoportado, valorGlosado,vAceptado, valorSoportado , motivoGlosa_id, notasCreditoGlosa   in curx.fetchall():
      medicamentosRipsUnRegistro.append(
-            {"model": "rips.RipsMedicamentos", "pk": id, "fields":
-                {'id': id, 'itemFactura': itemFactura , 'nomTecnologiaSalud': nomTecnologiaSalud,  'cums':cums,'concentracionMedicamento':concentracionMedicamento,'cantidadMedicamento':cantidadMedicamento,
-		 'vrUnitMedicamento':vrUnitMedicamento, 'vrServicio':vrServicio,'consecutivo':consecutivo,'tipoMedicamento_id':tipoMedicamento_id,'unidadMedida_id':unidadMedida_id,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'motivoGlosa_id':motivoGlosa_id,'notasCreditoGlosa':notasCreditoGlosa, 'notasCreditoOtras':notasCreditoOtras, 'notasDebito':notasDebito
+            {"model": "rips.ripsmedicamentos", "pk": id, "fields":
+                {'tipo':tipo, 'id': id, 'itemFactura': itemFactura , 'codigo': codigo,  'nombre':nombre,
+		  'vrServicio':vrServicio,'consecutivo':consecutivo,'cantidadGlosada':cantidadGlosada,'cantidadAceptada':cantidadAceptada,'cantidadSoportado':cantidadSoportado,'valorGlosado':valorGlosado,'vAceptado':vAceptado,'valorSoportado':valorSoportado,'motivoGlosa_id':motivoGlosa_id,'notasCreditoGlosa':notasCreditoGlosa
                  }})
 
 
@@ -397,25 +457,25 @@ def ConsultaGlosasRipsMedicamentos(request):
 
 
 
-def GuardarGlosasMedicamentos(request):
+def GuardarGlosasDetalle(request):
 
-    print ("Entre Guardar Glosas Medicamentos" )
+    print ("Entre Guardar Glosas Detalle" )
 
     sedesClinica_id = request.POST['sedesClinica_id']
     print("sedesClinica_id =", sedesClinica_id)
 
-    glosaId = request.POST['glosaRipsMed']
+    glosaId = request.POST['glosaGloDet']
     print ("id =", glosaId)
 
 
-    id = request.POST['post_idRipsMed']
+    id = request.POST['post_idGloDet']
     print ("id =", id)
 
-    motivoGlosa_id= request.POST["motivoGlosa_idRipsMed"]
+    motivoGlosa_id= request.POST["motivoGlosa_idGloDet"]
     print ("motivoGlosa_id =", motivoGlosa_id)
 
 
-    cantidadGlosada = request.POST['cantidadGlosadaRipsMed']
+    cantidadGlosada = request.POST['cantidadGlosadaGloDet']
     print ("cantidadGlosada =", cantidadGlosada)
 
     if (cantidadGlosada==''):
@@ -423,51 +483,51 @@ def GuardarGlosasMedicamentos(request):
 
     print ("cantidadGlosada =", cantidadGlosada)
 
-    cantidadAceptada = request.POST['cantidadAceptadaRipsMed']
+    cantidadAceptada = request.POST['cantidadAceptadaGloDet']
     print ("cantidadAceptada =", cantidadAceptada)
 
     if (cantidadAceptada==''):
         cantidadAceptada=0.0
 
-    cantidadSoportado = request.POST['cantidadSoportadoRipsMed']
+    cantidadSoportado = request.POST['cantidadSoportadoGloDet']
     print ("cantidadSoportado =", cantidadSoportado)
 
     if (cantidadSoportado==''):
         cantidadSoportado=0.0
 
 
-    valorGlosado = float(request.POST['valorGlosadoRipsMed'])
+    valorGlosado = float(request.POST['valorGlosadoGloDet'])
     print ("valorGlosado =", valorGlosado)
 
     if (valorGlosado==''):
         valorGlosado=0.0
 
-    vAceptado = float(request.POST['vAceptadoRipsMed'])
+    vAceptado = float(request.POST['vAceptadoGloDet'])
     print ("vAceptado =", vAceptado)
 
     if (vAceptado==''):
         vAceptado=0.0
 
-    valorSoportado = float(request.POST['valorSoportadoRipsMed'])
+    valorSoportado = float(request.POST['valorSoportadoGloDet'])
     print ("valorSoportado=",valorSoportado)
 
     if (valorSoportado==''):
         valorSoportado=0.0
 
-    notasCreditoGlosa = request.POST['notasCreditoGlosaRipsMed']
+    notasCreditoGlosa = request.POST['notasCreditoGlosaGloDet']
     print ("notasCreditoGlosa=",notasCreditoGlosa)
 
     if (notasCreditoGlosa==''):
         notasCreditoGlosa=0.0
 
-    notasCreditoOtras = request.POST['notasCreditoOtrasRipsMed']
+    notasCreditoOtras = request.POST['notasCreditoOtrasGloDet']
     print ("notasCreditoOtras=",notasCreditoOtras)
 
 
     if (notasCreditoOtras==''):
         notasCreditoOtras=0.0
 
-    notasDebito = request.POST['notasDebitoRipsMed']
+    notasDebito = request.POST['notasDebitoGloDet']
     print ("notasDebito=",notasDebito)
 
 
@@ -475,24 +535,24 @@ def GuardarGlosasMedicamentos(request):
         notasDebito=0.0
 
 
-    vrServicioRipsMed = float(request.POST['vrServicioRipsMed'])
-    print ("vrServicioRipsMed=", vrServicioRipsMed)
+    vrServicioGloDet = float(request.POST['vrServicioGloDet'])
+    print ("vrServicioGloDet=", vrServicioGloDet)
 
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
-    if ( valorGlosado > vrServicioRipsMed ):
+    if ( valorGlosado > vrServicioGloDet ):
         print ("Entre 1")
         print("valorGlosado=", valorGlosado)
-        print("vrServicioRipsMed=", vrServicioRipsMed)
+        print("vrServicioGloDet=", vrServicioGloDet)
         return JsonResponse({'success': False, 'Error' :'Si', 'message': 'Valor Glosa mayor que el valor del servicio!'})
 
-    if ( valorSoportado > vrServicioRipsMed ):
+    if ( valorSoportado > vrServicioGloDet ):
         print ("Entre 4")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor Soportado mayor que el valor del servicio!'})
 
-    if ( vAceptado > vrServicioRipsMed ):
+    if ( vAceptado > vrServicioGloDet ):
         print ("Entre 5")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor aceptado mayor que el valor del servicio!'})
 
@@ -505,7 +565,7 @@ def GuardarGlosasMedicamentos(request):
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Cantidad soportada mayor que el valor del glosado!'})
 
 
-    if ( (vAceptado + valorSoportado) > vrServicioRipsMed ):
+    if ( (vAceptado + valorSoportado) > vrServicioGloDet ):
         print ("Entre 3")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor soportado mas valor aceptado mayor que el valor del servicio!'})
 
@@ -514,7 +574,7 @@ def GuardarGlosasMedicamentos(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras"= ' + "'" + str(notasCreditoOtras) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "', glosa_id = '" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(id)
+    comando = 'UPDATE rips_GloDeticamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'," + '"notasCreditoOtras"= ' + "'" + str(notasCreditoOtras) + "'," +  '"notasDebito" = ' + "'" + str(notasDebito) + "', glosa_id = '" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(id)
 
     print(comando)
     cur3.execute(comando)
@@ -523,9 +583,9 @@ def GuardarGlosasMedicamentos(request):
 
 
     # TOTALES
-    totalAceptadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-    totalSoportadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-    totalGlosadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+    totalAceptadoMed = GloDeticamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+    totalSoportadoMed = GloDeticamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+    totalGlosadoMed = GloDeticamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
     totalAceptadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
     totalSoportadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))

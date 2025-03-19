@@ -2010,7 +2010,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     # Fin combo Estado Glosas estadosRadicacion
 
 
-    return render(request, "cartera/PanelGlosasF.html", context)
+    return render(request, "cartera/PanelGlosasFU.html", context)
 
 
 
