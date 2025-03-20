@@ -60,7 +60,8 @@ class RipsDetalle (models.Model):
 
     id = models.AutoField(primary_key=True)
     ripsEnvios =  models.ForeignKey('rips.RipsEnvios', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='Envios01')
-    numeroFactura  =  models.ForeignKey('facturacion.Facturacion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    #numeroFactura  =  models.ForeignKey('facturacion.Facturacion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    numeroFactura  =  models.CharField(max_length=50, blank=True,null= True, editable=True)
     cuv  =  models.CharField(max_length=500, blank=True,null= True, editable=True)
     estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False , choices = TIPO_CHOICES1, default=Enviada)
     ripsEstados = models.ForeignKey('rips.RipsEstados', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'RipsEtados01')
@@ -399,8 +400,8 @@ class RipsHospitalizacion (models.Model):
 
    id = models.AutoField(primary_key=True)
    ripsDetalle =  models.ForeignKey('rips.RipsDetalle', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsDetalle09')
-   #ripsTipos =  models.ForeignKey('rips.RipsTipos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsTipos04')   
-   tipoRips = models.CharField(max_length=10,  blank=True, null=True, editable=False , default='FACTURA')
+   ripsTipos =  models.ForeignKey('rips.RipsTipos', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='RpsTipos04')   
+   #tipoRips = models.CharField(max_length=10,  blank=True, null=True, editable=False , default='FACTURA')
    codPrestador = models.CharField(max_length=12, blank=True,null= True, editable=True)
    viaIngresoServicioSalud = models.ForeignKey('rips.RipsViasIngresoSalud', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='IngresoSal11')
    fechaInicioAtencion = models.DateTimeField(default=now, blank=True, null=True, editable=True)

@@ -275,8 +275,8 @@ function arrancaEnviosRips(valorTabla,valorData)
 		{     "render": function ( data, type, row ) {
                         var btn = '';
 			      btn = btn + " <button class='miDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
-                 	      btn = btn + " <button class='miJson btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
-                 	      btn = btn + " <button class='miBorrar btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+                 	      btn = btn + " <button class='miJson btn-primary  '   data-action='post/" + row.pk + "/miJson' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+                 	      btn = btn + " <button class='miBorrar btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
 
                        return btn;
                     },
@@ -309,7 +309,7 @@ function arrancaEnviosRips(valorTabla,valorData)
             },
             columns: [
 	 { data: "fields.id"},
-                { data: "fields.numeroFactura_id"},
+                { data: "fields.numeroFactura"},
                 { data: "fields.cuv"},
                 { data: "fields.estadoPasoMinisterio"},
                 { data: "fields.rutaJsonRespuesta"},
@@ -917,10 +917,12 @@ window.addEventListener('load', async () => {
 		data['empresaId'] = id_empresa;
 		data['envioRipsId'] = post_id;
 		data['tipoRips'] = tipoRips;
+		data['factura_id'] = dato3.factura_id;
 
 		alert("id_empresa = "  + id_empresa);
 		alert("tipoRips = "  + tipoRips);
 		alert("envioRipsId = "  +  post_id);
+		alert("factura_id = "  +  dato3.factura_id);
 
 	        data = JSON.stringify(data);
 
@@ -1091,12 +1093,14 @@ $('#tablaDetalleRips tbody').on('click', '.miBorrar', function() {
 		    $("#mensajes").html(info);
 
 		  var data =  {}   ;
+		var tipoRips = document.getElementById("tipoRips2").value;
+tipoRips2
 		var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
 	        var username = document.getElementById("username").value;
 	        var nombreSede = document.getElementById("nombreSede").value;
 	    	var sede = document.getElementById("sede").value;
 	        var username_id = document.getElementById("username_id").value;
-
+		var empresaId = document.getElementById("empresaId").value; 
 
 	        data['username'] = username;
 	        data['sedeSeleccionada'] = sedeSeleccionada;
@@ -1105,6 +1109,8 @@ $('#tablaDetalleRips tbody').on('click', '.miBorrar', function() {
 	        data['username_id'] = username_id;
 		data['envioRipsId'] = envioRipsId;
 		data['envioDetalleRipsId'] = envioDetalleRipsId;
+		data['empresaId'] = empresaId;
+		data['tipoRips'] = tipoRips;
 	        data = JSON.stringify(data);
 
   	
@@ -1129,8 +1135,9 @@ $('#tablaDetalleRips tbody').on('click', '.miBorrar', function() {
 /*----------------------------------------
 --------------------------------------------/
 
-
  $('#tablaDetalleRips tbody').on('click', '.miJson', function() {
+	alert("Entre a miJson()");
+
 
 	     var post_id = $(this).data('pk');
 	var envioRipsId = document.getElementById("envioRipsId").value ;

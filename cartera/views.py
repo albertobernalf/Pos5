@@ -720,33 +720,76 @@ def Load_tablaGlosasHospitalizacion(request, data):
     facturaId = d['facturaId']
     print("facturaId = ", facturaId)
 
-    hospitalizacionRips = []
+    hospitalizacionGlosas = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id", env."ripsTiposNotas_id", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp , public.rips_ripsenvios env, rips_ripsdetalle det WHERE  env.id=det."ripsEnvios_id" AND det.id= ripshosp."ripsDetalle_id" AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND  ripstra.id = ripshosp."ripsTransaccion_id" '
+    detalle = 'SELECT  ripshosp.id id, "codPrestador", "fechaInicioAtencion", "numAutorizacion", "fechaEgreso", consecutivo, ripshosp."fechaRegistro", "causaMotivoAtencion_id", "codComplicacion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripshosp."usuarioRegistro_id" usuarioRegistro_id, "viaIngresoServicioSalud_id", "ripsDetalle_id",ripshosp."ripsTipos_id", ripshosp."ripsTransaccion_id"  FROM public.rips_ripstransaccion ripstra , public.rips_ripshospitalizacion ripshosp  WHERE ripstra.id = ripshosp."ripsTransaccion_id" and cast(ripstra."numFactura" as integer) =' + "'" + str(facturaId) + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  codPrestador, fechaInicioAtencion, numAutorizacion, fechaEgreso, consecutivo, fechaRegistro,  causaMotivoAtencion_id,  codComplicacion_id, codDiagnosticoCausaMuerte_id, codDiagnosticoPrincipal_id , codDiagnosticoPrincipalE_id,  codDiagnosticoRelacionadoE1_id, codDiagnosticoRelacionadoE2_id,        codDiagnosticoRelacionadoE3_id, condicionDestinoUsuarioEgreso_id, usuarioRegistro_id,  viaIngresoServicioSalud_id, ripsDetalle_id, ripsTiposNotas_id, ripsTransaccion_id in curx.fetchall():
-        hospitalizacionRips.append(
-            {"model": "rips.RipsHopsitalizacion", "pk": id, "fields":
+    for id,  codPrestador, fechaInicioAtencion, numAutorizacion, fechaEgreso, consecutivo, fechaRegistro,  causaMotivoAtencion_id,  codComplicacion_id, codDiagnosticoCausaMuerte_id, codDiagnosticoPrincipal_id , codDiagnosticoPrincipalE_id,  codDiagnosticoRelacionadoE1_id, codDiagnosticoRelacionadoE2_id,        codDiagnosticoRelacionadoE3_id, condicionDestinoUsuarioEgreso_id, usuarioRegistro_id,  viaIngresoServicioSalud_id, ripsDetalle_id, ripsTipos_id, ripsTransaccion_id in curx.fetchall():
+        hospitalizacionGlosas.append(
+            {"model": "rips.RipsHopitalizacion", "pk": id, "fields":
                 {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion,  'numAutorizacion':numAutorizacion, 'fechaEgreso':fechaEgreso,'consecutivo':consecutivo,'fechaRegistro':fechaRegistro,'causaMotivoAtencion_id':causaMotivoAtencion_id,
 		'codComplicacion_id':codComplicacion_id, 'codDiagnosticoCausaMuerte_id':codDiagnosticoCausaMuerte_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id, 'codDiagnosticoPrincipalE_id':codDiagnosticoPrincipalE_id,'codDiagnosticoRelacionadoE1_id':codDiagnosticoRelacionadoE1_id,'codDiagnosticoRelacionadoE2_id':codDiagnosticoRelacionadoE2_id,'codDiagnosticoRelacionadoE3_id':codDiagnosticoRelacionadoE3_id,
-                 'condicionDestinoUsuarioEgreso_id':condicionDestinoUsuarioEgreso_id, 'usuarioRegistro_id':usuarioRegistro_id, 'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id, 'ripsDetalle_id':ripsDetalle_id, 'ripsTiposNotas_id':ripsTiposNotas_id,'ripsTransaccion_id':ripsTransaccion_id
+                 'condicionDestinoUsuarioEgreso_id':condicionDestinoUsuarioEgreso_id, 'usuarioRegistro_id':usuarioRegistro_id, 'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id, 'ripsDetalle_id':ripsDetalle_id, 'ripsTipos_id':ripsTipos_id,'ripsTransaccion_id':ripsTransaccion_id
                  }})
 
 
 
     miConexionx.close()
-    print("hospitalizacionRips "  , hospitalizacionRips)
+    print("hospitalizacionGlosas "  , hospitalizacionGlosas)
     #context['usuariosRips'] = usuariosRips
 
-    serialized1 = json.dumps(hospitalizacionRips,  default=str)
+    serialized1 = json.dumps(hospitalizacionGlosas,  default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_tablaGlosasUrgencias(request, data):
+    print("Entre load_data Urgencias Rips")
+
+    context = {}
+    d = json.loads(data)
+
+    sedesClinica_id = d['sedesClinica_id']
+    print("sedesClinica_id = ", sedesClinica_id)
+
+    facturaId = d['facturaId']
+    print("facturaId = ", facturaId)
+
+    urgenciasGlosas = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT  ripsurg.id, "codPrestador","fechaInicioAtencion","fechaEgreso",consecutivo,ripsurg."fechaRegistro","causaMotivoAtencion_id","codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id","codDiagnosticoRelacionadoE2_id","codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", ripsurg."usuarioRegistro_id","ripsDetalle_id","ripsTipos_id"  FROM public.rips_ripsurgenciasobservacion ripsurg , public.rips_ripstransaccion ripstra WHERE ripstra.id = ripsurg."ripsTransaccion_id" and cast(ripstra."numFactura" as integer) =' + "'" + str(facturaId) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,  codPrestador, fechaInicioAtencion, fechaEgreso, consecutivo, fechaRegistro,  causaMotivoAtencion_id,   codDiagnosticoCausaMuerte_id, codDiagnosticoPrincipal_id , codDiagnosticoPrincipalE_id,  codDiagnosticoRelacionadoE1_id, codDiagnosticoRelacionadoE2_id,        codDiagnosticoRelacionadoE3_id, condicionDestinoUsuarioEgreso_id, usuarioRegistro_id,  viaIngresoServicioSalud_id, ripsDetalle_id, ripsTipos_id in curx.fetchall():
+        urgenciasGlosas.append(
+            {"model": "rips.RipsUrgenciasObservacion", "pk": id, "fields":
+                {'id': id, 'codPrestador': codPrestador , 'fechaInicioAtencion': fechaInicioAtencion,   'fechaEgreso':fechaEgreso,'consecutivo':consecutivo,'fechaRegistro':fechaRegistro,'causaMotivoAtencion_id':causaMotivoAtencion_id,
+		 'codDiagnosticoCausaMuerte_id':codDiagnosticoCausaMuerte_id, 'codDiagnosticoPrincipal_id':codDiagnosticoPrincipal_id, 'codDiagnosticoPrincipalE_id':codDiagnosticoPrincipalE_id,'codDiagnosticoRelacionadoE1_id':codDiagnosticoRelacionadoE1_id,'codDiagnosticoRelacionadoE2_id':codDiagnosticoRelacionadoE2_id,'codDiagnosticoRelacionadoE3_id':codDiagnosticoRelacionadoE3_id,
+                 'condicionDestinoUsuarioEgreso_id':condicionDestinoUsuarioEgreso_id, 'usuarioRegistro_id':usuarioRegistro_id, 'viaIngresoServicioSalud_id':viaIngresoServicioSalud_id, 'ripsDetalle_id':ripsDetalle_id, 'ripsTipos_id':ripsTipos_id
+                 }})
+
+
+
+    miConexionx.close()
+    print("urgenciasGlosas "  , urgenciasGlosas)
+    #context['usuariosRips'] = usuariosRips
+
+    serialized1 = json.dumps(urgenciasGlosas,  default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 

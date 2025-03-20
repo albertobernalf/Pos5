@@ -88,10 +88,13 @@ div.dataTables_filter input {
 
             <!-- INICIO TABLE DE  EL DATATABLE  -->
 		<div class="container my-2">
-             
-   			   <div class="row">
-				  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGlosas"  name="BtnGlosas" value="Adicionar" onclick= "Glosas()" >				    
 
+		<div align="right" height="15px" width="50px">
+               <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGlosas"  name="BtnGlosas" value="Adicionar" onclick= "Glosas()" >				    
+		</div>
+
+   			   <div class="row">
+				
                                         <table  id= "tablaGlosas" class=" display table table-striped" style="width: 100%";>
                                            <thead>
                                             <tr>    
@@ -865,7 +868,7 @@ div.dataTables_filter input {
                                                 <th>UsuReg </th>
                                                 <th>ViaIngreso </th>
                                                 <th>RipsDetalle_id </th>
-                                                <th>ripsTiposNotas_id </th>
+                                                <th>ripsTipos_id </th>
 						<th>Accion </th>
 						</bold>                                  
 
@@ -895,7 +898,7 @@ div.dataTables_filter input {
                                                 <th>UsuReg </th>
                                                 <th>ViaIngreso </th>
                                                 <th>RipsDetalle_id </th>
-                                                <th>ripsTiposNotas_id </th>
+                                                <th>ripsTipos_id </th>
 						<th>Accion </th>
 						</bold>                                  
 
@@ -913,10 +916,66 @@ div.dataTables_filter input {
 
 <article id="RipsUrgObs">
 
-		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
-		
-		
-		 </div>
+	<div class="container my-2">          
+   			   <div class="row">
+
+					<table id="tablaGlosasUrgencias" class="display table table-striped" style="width:100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                                  
+                                              <th>id</th>
+						<th>codPrestador</th>
+						<th>fechaInicioAtencion</th>
+						<th>fechaEgreso</th>
+						<th>consecutivo</th>
+						<th>fechaRegistro</th>
+						<th>causaMotivoAtencion_id</th>
+						<th>codDiagnosticoCausaMuerte_id</th>
+						<th>codDiagnosticoPrincipal_id</th>
+						<th>codDiagnosticoPrincipalE_id</th>
+						<th>codDiagnosticoRelacionadoE1_id</th>
+						<th>codDiagnosticoRelacionadoE2_id</th>
+						<th>codDiagnosticoRelacionadoE3_id</th>
+						<th>condicionDestinoUsuarioEgreso_id</th>
+						<th>usuarioRegistro_id</th>
+						<th>ripsDetalle_id</th>
+						<th>ripsTipos_id</th>
+						<th>ripsTransaccion_id</th>
+						<th>Accion </th>
+						</bold>                                  
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                           <tfoot>
+                                            <tr>    
+						<bold>                                  
+						<th>codPrestador</th>
+						<th>fechaInicioAtencion</th>
+						<th>fechaEgreso</th>
+						<th>consecutivo</th>
+						<th>fechaRegistro</th>
+						<th>causaMotivoAtencion_id</th>
+						<th>codDiagnosticoCausaMuerte_id</th>
+						<th>codDiagnosticoPrincipal_id</th>
+						<th>codDiagnosticoPrincipalE_id</th>
+						<th>codDiagnosticoRelacionadoE1_id</th>
+						<th>codDiagnosticoRelacionadoE2_id</th>
+						<th>codDiagnosticoRelacionadoE3_id</th>
+						<th>condicionDestinoUsuarioEgreso_id</th>
+						<th>usuarioRegistro_id</th>
+						<th>ripsDetalle_id</th>
+						<th>ripsTipos_id</th>
+						<th>ripsTransaccion_id</th>
+						<th>Accion </th>
+						</bold>                                  
+                                            </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+  
+
 </article>
 
 <article id="RipsRecienNacido">

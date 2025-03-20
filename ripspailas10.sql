@@ -2,12 +2,16 @@ select * from rips_ripsmedicamentos;
 select * from rips_ripsprocedimientos;
 select * from rips_ripscums;
 select * from rips_ripstransaccion;
+select * from rips_ripshospitalizacion;
 select * from facturacion_facturaciondetalle;
 select  * from cartera_motivosglosas;
 select * from clinico_examenes;
 SELECT * FROM rips_ripsconsultas;
 SELECT * FROM rips_ripsOTROSSERVICIOS;
 select * from rips_ripstipos;
+select * from cartera_glosas;
+update cartera_glosas set "estadoRadicacion_id"=4 where id = 6;
+select * from cartera_estadosglosas;
 
 --Query para detalle de glosas basada en RIPS
 
