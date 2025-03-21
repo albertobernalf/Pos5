@@ -555,3 +555,9 @@ $(document).ready(function() {
   3. SEGUIR CLINICO.HTML  NUEVOS DATATABLES
  4. FUNCION GENERARJSON VERIFICAR
   5. SIRVE PROBAR CON LA DATA ACTUAL AUNQUE PRONTO HAY QUE CAMBAIRAL
+
+ojo martes marzo 25.
+Comenzar con prueba inicial crear glosas, crear envios de factura y luegode glos. Probar tpodos los rips al peluche
+-- Probar la funcion que genera los JSON
+-- Es MEJOR primero ver como crea cada RIPS observando de si es FACTURA o GLOSA
+-- ops que pasa si deja crearuna glosa sin rips , PAILANDER , ERROR ??? Averiguar

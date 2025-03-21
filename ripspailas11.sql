@@ -115,11 +115,11 @@ inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id 
 left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id) 
 inner join 	clinico_servicios serv on (serv.nombre = 'HOSPITALIZACION')
 	inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" )
-	inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" )
+	inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id )
 where sed.id = '1' AND env.id = 34
 
 -- URGENCIAS
-
+ 
 INSERT INTO rips_ripsurgenciasobservacion ("codPrestador","fechaInicioAtencion","causaMotivoAtencion_id", 	"codDiagnosticoPrincipal_id", 
 	"codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id",
 	"condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id",
@@ -138,9 +138,9 @@ INSERT INTO rips_ripsurgenciasobservacion ("codPrestador","fechaInicioAtencion",
 	inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and cast(det."numeroFactura" as float) = fac.id ) 
 	inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)) 
 	left join rips_ripsdestinoegreso dest  on (dest.id = i."ripsCondicionDestinoUsuarioEgreso_id") 
-	inner join 	clinico_servicios serv on (serv.nombre = 'URGENCIAS')
+	inner join 	clinico_servicios serv on (serv.nombre = 'URGENCIAS' )
 	inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" )
-	inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" )
+	inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id)
 	where sed.id = '1'  AND env.id = 34
 
    

@@ -88,8 +88,12 @@ div.dataTables_filter input {
             <!-- INICIO TABLE DE  EL DATATABLE  -->
 		<div class="container my-2">
              
+		<div align="right" height="15px" width="50px">
+               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				    
+		</div>
+
    			   <div class="row">
-				  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				    
+				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
 
                                         <table  id= "tablaEnviosRips" class=" display table table-striped" style="width: 100%";>
                                            <thead>
@@ -294,7 +298,8 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             <tr>    
 						<bold>                                  
                                                 <th>id</th>
-                                                <th>Factura/Glosa</th>
+                                                <th>Factura</th>
+                                                <th>Glosa</th>
                                                 <th>Fec Factura/Recepcion </th>
                                                 <th>Paciente</th>
                                                 <th>Valor</th>
@@ -323,6 +328,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 						<bold>                                  
                                                 <th>id</th>
                                                 <th>Factura No</th>
+                                                <th>GlosaId</th>
                                                 <th>Cuv</th>
                                                 <th>EstadoPasoAlMinisterio</th>
                                                 <th>RutaJsonRespuesta</th>
@@ -341,6 +347,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 						<bold>                                  
                                                 <th>id</th>
                                                 <th>Factura No</th>
+                                                <th>GlosaId</th>
                                                 <th>Cuv</th>
                                                 <th>EstadoPasoAlMinisterio</th>
                                                 <th>RutaJsonRespuesta</th>

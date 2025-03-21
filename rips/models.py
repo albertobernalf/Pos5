@@ -60,8 +60,9 @@ class RipsDetalle (models.Model):
 
     id = models.AutoField(primary_key=True)
     ripsEnvios =  models.ForeignKey('rips.RipsEnvios', blank=True, null=True, editable=True, on_delete=models.PROTECT , related_name='Envios01')
-    #numeroFactura  =  models.ForeignKey('facturacion.Facturacion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
-    numeroFactura  =  models.CharField(max_length=50, blank=True,null= True, editable=True)
+    numeroFactura  =  models.ForeignKey('facturacion.Facturacion', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    glosa  =  models.ForeignKey('cartera.Glosas', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    #numeroFactura  =  models.CharField(max_length=50, blank=True,null= True, editable=True)
     cuv  =  models.CharField(max_length=500, blank=True,null= True, editable=True)
     estadoPasoMinisterio=  models.CharField(max_length=10,  editable=False , choices = TIPO_CHOICES1, default=Enviada)
     ripsEstados = models.ForeignKey('rips.RipsEstados', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'RipsEtados01')

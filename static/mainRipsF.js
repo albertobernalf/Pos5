@@ -187,7 +187,7 @@ function arrancaEnviosRips(valorTabla,valorData)
                            btn = btn + " <input type='radio'  class='miFactura form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
                        return btn;
                     },
-                    "targets": 6
+                    "targets": 7
                }
             ],
 	 pageLength: 3,
@@ -217,6 +217,7 @@ function arrancaEnviosRips(valorTabla,valorData)
             columns: [
   		{ data: "fields.id"},
                 { data: "fields.factura"},
+                { data: "fields.glosaId"},
                 { data: "fields.fechaFactura"},
                 { data: "fields.paciente"},
                 { data: "fields.totalFactura"},
@@ -280,7 +281,7 @@ function arrancaEnviosRips(valorTabla,valorData)
 
                        return btn;
                     },
-                    "targets": 9
+                    "targets": 10
                }
             ],
 	 pageLength: 3,
@@ -308,8 +309,9 @@ function arrancaEnviosRips(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
-	 { data: "fields.id"},
+		 { data: "fields.id"},
                 { data: "fields.numeroFactura"},
+                { data: "fields.glosaId"},
                 { data: "fields.cuv"},
                 { data: "fields.estadoPasoMinisterio"},
                 { data: "fields.rutaJsonRespuesta"},
@@ -917,12 +919,12 @@ window.addEventListener('load', async () => {
 		data['empresaId'] = id_empresa;
 		data['envioRipsId'] = post_id;
 		data['tipoRips'] = tipoRips;
-		data['factura_id'] = dato3.factura_id;
+		// data['factura_id'] = dato3.factura_id;
 
 		alert("id_empresa = "  + id_empresa);
 		alert("tipoRips = "  + tipoRips);
 		alert("envioRipsId = "  +  post_id);
-		alert("factura_id = "  +  dato3.factura_id);
+		// alert("factura_id = "  +  dato3.factura_id);
 
 	        data = JSON.stringify(data);
 
@@ -943,8 +945,10 @@ window.addEventListener('load', async () => {
 
 		   arrancaEnviosRips(2,data);
   			dataTableDetalleRipsAdicionarInitialized  = true;
+
 		   arrancaEnviosRips(3,data);
   			dataTableDetalleRipsInitialized  = true;
+
 		   arrancaEnviosRips(4,data);
  			 dataTableRipsTransaccionInitialized= true;
 
@@ -982,13 +986,26 @@ window.addEventListener('load', async () => {
 	var empresaId = document.getElementById("empresaId").value; 
 	var envioRipsId = document.getElementById("envioRipsId").value ;
 	var tipoRips = document.getElementById("tipoRips2").value ;
+	var tipoRips = document.getElementById("tipoRips2").value ;
 
-        var facturaId = post_id;
+	var table = $('#tablaDetalleRipsAdicionar').DataTable();  // Inicializa el DataTable jquery 	      
+        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+        dato1 = Object.values(rowindex);
+	console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+        dato3 = dato1[2];
+	console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	console.log(" fila selecciona de vuelta dato3  glosaId= ",  dato3.glosaId);
+	console.log(" fila selecciona de vuelta dato3 factura = ",  dato3.factura);
+
+
+        var facturaId = dato3.factura;
+        var glosaId = dato3.glosaId;
 
 	$.ajax({
 
 	        url: "/actualizarEmpresaDetalleRips/",
-                data: {'facturaId':facturaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id, 'tipoRips':tipoRips},
+                data: {'facturaId':facturaId, 'glosaId':glosaId, 'empresaId':empresaId,'envioRipsId':envioRipsId, 'username_id':username_id, 'tipoRips':tipoRips},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -1039,7 +1056,7 @@ window.addEventListener('load', async () => {
   	
  				$('#detalleRipsId').val(detalleRipsId);
 				
-  		        	$('#numeroFacturaT').val(info[0].fields.numeroFactura);
+  		        	$('#numeroFacturaT').val(info[0].fields.numeroFactura_id);
         	       	$('#cuv').val(info[0].fields.cuv);
 	                $('#estadoPasoMinisterio').val(info[0].fields.estadoPasoMinisterio);
 	                $('#rutaJsonRespuesta').val(info[0].fields.rutaJsonRespuesta);

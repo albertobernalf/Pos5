@@ -182,7 +182,7 @@ function arrancaGlosas(valorTabla,valorData)
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '230px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -1354,8 +1354,8 @@ function CrearGlosas()
 	        data['sede'] = sede;
 	        data['sedesClinica_id'] = sede;
 
-		var facturaId = document.getElementById("factura_idMed").value;
-		data['facturaId'] = document.getElementById("factura_idMed").value;
+		var facturaId = document.getElementById("factura_idGlo").value;
+		data['facturaId'] = document.getElementById("factura_idGlo").value;
 
 	        data = JSON.stringify(data);
 	
@@ -1371,7 +1371,7 @@ function CrearGlosas()
 
 			 arrancaGlosas(8,data);
 			    dataTableGlosasMedicamentosInitialized = true;
-
+		            $('#crearModelGlosas').modal('hide');
 
 		  $("#mensajes").html(data2.message);
                 },
