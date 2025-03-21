@@ -54,14 +54,35 @@ update facturacion_facturacion set "ripsEnvio_id" =null;
 update cartera_glosas set "ripsEnvio_id" =null;
 delete from rips_ripsdetalle;
 delete from rips_ripsenvios;
-
+DELETE FROM cartera_glosas;
+ 
 select id,convenio_id,* from facturacion_facturacion;
 select * from facturacion_facturaciondetalle;
 select * from contratacion_convenios;
+select * from facturacion_empresas;
+select "tipoDoc_id", documento_id, consec,"dependenciasSalida_id",* from admisiones_ingresos;
+select * from sitios_dependencias;
+-- Querys violentos para hacer TEST DE datos
+select * from sitios_sedesclinica;
+select * from sitios_serviciossedes;
+select * from clinico_servicios;
+select * from usuarios_usuarios;
+ 
 
-select fac.id idFact, fac.convenio_id, conv.id idConvenio, conv.nombre
-from facturacion_facturacion fac, contratacion_convenios conv
-where  fac.convenio_id = conv.id
+select fac.id idFact, fac.convenio_id, conv.id idConvenio, conv.nombre, emp.nombre empresa, emp.id idempresa
+from facturacion_facturacion fac, contratacion_convenios conv, facturacion_empresas emp
+where  fac.convenio_id = conv.id and conv.empresa_id = emp.id
+
+	-- QUERY DURAZO PARA SET DE PRUEBAS
+	
+select fac.id idFact, fac.convenio_id, conv.id idConvenio, conv.nombre, emp.nombre empresa, emp.id idempresa, dep.numero,dep.nombre, serv.nombre, usu.nombre
+from facturacion_facturacion fac, contratacion_convenios conv, facturacion_empresas emp, admisiones_ingresos i, sitios_dependencias dep,
+	  sitios_sedesclinica  sed, sitios_serviciossedes servsed , clinico_servicios serv, usuarios_usuarios usu
+where  fac.convenio_id = conv.id and conv.empresa_id = emp.id and  fac."tipoDoc_id" = i."tipoDoc_id" and fac.documento_id = i.documento_id and 
+	fac."consecAdmision" = i.consec and i."dependenciasSalida_id" = dep.id and sed.id = dep."sedesClinica_id" and dep."serviciosSedes_id" = servsed.id and
+	servsed.servicios_id = serv.id and fac."tipoDoc_id" = usu."tipoDoc_id" and fac.documento_id = usu.id
+
+	
 
 select * from cartera_glosas;
 
@@ -70,3 +91,5 @@ from facturacion_facturacion glo, contratacion_convenios conv
 where  glo.convenio_id = conv.id
 
 delete from cartera_glosas;
+select * from rips_ripshospitalizacion;
+

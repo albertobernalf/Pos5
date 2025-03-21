@@ -559,5 +559,5 @@ $(document).ready(function() {
 ojo martes marzo 25.
 Comenzar con prueba inicial crear glosas, crear envios de factura y luegode glos. Probar tpodos los rips al peluche
 -- Probar la funcion que genera los JSON
--- Es MEJOR primero ver como crea cada RIPS observando de si es FACTURA o GLOSA
+-- Es MEJOR primero ver como crea cada RIPS observando de si es FACTURA o GLOSA OJO EL SCRIPT ripspailas12.sql esta buenisimo para el SET DE PRUEBAS
 -- ops que pasa si deja crearuna glosa sin rips , PAILANDER , ERROR ??? Averiguar
