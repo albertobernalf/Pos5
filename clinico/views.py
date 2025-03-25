@@ -622,7 +622,7 @@ def crearHistoriaClinica(request):
                         consecutivo = consecutivo + 1
                         #codigoCupsId = Examenes.objects.get(codigoCups=cups)
 
-                        a = HistoriaExamenes(tiposExamen_id= tiposExamen_Id ,codigoCups =  cups,consecutivo=consecutivo, cantidad = cantidad, observaciones=observa,estadoReg='A' , estadoExamenes_id= estadoExamenes_id, anulado="N", historia_id=historiaId, usuaroRegistra_id=usuarioRegistro)
+                        a = HistoriaExamenes(tiposExamen_id= tiposExamen_Id ,codigoCups =  cups,consecutivo=consecutivo, cantidad = cantidad, observaciones=observa,estadoReg='A' , estadoExamenes_id= estadoExamenes_id, anulado="N", historia_id=historiaId, usuaroRegistra_id=usuarioRegistro, consecutivoLiquidacion=consecLiquidacion)
                         a.save()
 
                         ## Desde Aqui rutina de Facturacion
@@ -791,7 +791,7 @@ def crearHistoriaClinica(request):
                         b = HistoriaExamenes(tiposExamen_id=tiposExamen_Id, codigoCups=cups,
                                               cantidad=cantidad, consecutivo=consecutivo, observaciones=observa, estadoReg='A',
                                               estadoExamenes_id=estadoExamenes_id, anulado="N",
-                                              historia_id=historiaId, usuaroRegistra_id=usuarioRegistro)
+                                              historia_id=historiaId, usuaroRegistra_id=usuarioRegistro , consecutivoLiquidacion=consecLiquidacion)
                         b.save()
 
                         # Rutiva busca en convenio el valor de la tarifa CUPS
@@ -950,7 +950,7 @@ def crearHistoriaClinica(request):
                                                cantidad=cantidad, consecutivo=consecutivo, observaciones=observa,
                                                estadoReg='A',
                                                estadoExamenes_id=estadoExamenes_id, anulado="N",
-                                                historia_id=historiaId, usuaroRegistra_id=usuarioRegistro)
+                                                historia_id=historiaId, usuaroRegistra_id=usuarioRegistro, consecutivoLiquidacion=consecLiquidacion)
                         c.save()
 
 			## Desde Aqui rutina de Facturacion
@@ -1112,7 +1112,7 @@ def crearHistoriaClinica(request):
                                                cantidad=cantidad, consecutivo=consecutivo, observaciones=observa,
                                                estadoReg='A',
                                                estadoExamenes_id=estadoExamenes_id, anulado="N",
-                                                historia_id=historiaId, usuaroRegistra_id=usuarioRegistro)
+                                                historia_id=historiaId, usuaroRegistra_id=usuarioRegistro, consecutivoLiquidacion=consecLiquidacion)
                           c.save()
 
 
@@ -1531,7 +1531,7 @@ def crearHistoriaClinica(request):
                     if medicamentos != "":
                         i = HistoriaMedicamentos(dosisCantidad=dosis, suministro_id= medicamentos,frecuencia_id=frecuencia,dosisUnidad_id=uMedidaDosis,  
                                                    viaAdministracion_id = vias,  cantidadOrdenada= cantidadMedicamento, diasTratamiento= diasTratamiento,
-                                          historia_id=historiaId,usuarioRegistro_id=usuarioRegistro  , estadoReg='A', fechaRegistro=fechaRegistro )
+                                          historia_id=historiaId,usuarioRegistro_id=usuarioRegistro  , estadoReg='A', fechaRegistro=fechaRegistro , consecutivoLiquidacion=consecLiquidacion)
                         i.save()
 
                         print("Esto grabe de Medicamentos : ", i.id);

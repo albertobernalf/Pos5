@@ -476,7 +476,6 @@ def GenerarJsonRips(request):
 	    return JsonResponse({'success': True, 'message': 'No es posible generar RIPS enviados!'})
 
 
-
     # Primero Borra RIPS USUARIOS
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -539,7 +538,7 @@ def GenerarJsonRips(request):
     miConexionx.close()
 
 
-    # Primero Borra RIPS URGENCIAS
+    # Primero Borra RIPS RECIEN NACIDO
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
@@ -563,7 +562,12 @@ def GenerarJsonRips(request):
     miConexionx.commit()
     miConexionx.close()
 
-    # RIPS TRANSACCION
+
+    ## Aqui big Modificacion, pues tine que crear todos los rips de todas las facturas del Envio
+
+    ## Aqui consigo la cantidad de Facturas del Envio 
+
+    barridoFacturas = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
@@ -571,253 +575,289 @@ def GenerarJsonRips(request):
 
     if (tipoRips == 'Factura'):
 
-        detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado","numFactura",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, 0, now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e  , cartera_tiposnotas tipnot where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id  AND tipnot.nombre = ' + "'" + str('Factura') + "'"
+	    detalle =  'SELECT id, "numeroFactura_id" item from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
+	    curx.execute(detalle)
+
+	    for id, facturaId in curx.fetchall():
+        	barridoFacturas.append(
+	            {"model": "rips_ripsdetalle", "pk": id, "fields":
+        	        {'item': item }})
+
 
     if (tipoRips == 'Glosa'):
 
-        detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id" ,"ripsEnvio_id","sedesClinica_id" ,"glosa_id") select sed.nit,  glo.id, now(), tipnot.id, ' + "'" + str(username_id) + "'" + ', e.id, sed.id , glo.factura_id from sitios_sedesclinica sed, cartera_glosas glo, rips_ripsEnvios e  , rips_ripsdetalle det ,rips_ripstiposnotas tipnot where e.id = ' + "'" + str(envioRipsId) + "'" + ' and e."sedesClinica_id" = sed.id and glo."ripsEnvio_id" = e.id and det."ripsEnvios_id" = e.id and e."ripsTiposNotas_id" = tipnot.id and tipnot.nombre=' + "'" + str('Glosa') + "'"
+
+	    detalle =  'SELECT id, glosa_id item from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
 
 
-    resultado = curx.execute(detalle)
+	    curx.execute(detalle)
 
-    print ("detalle = " , detalle)
-
-    miConexionx.commit()
-
-    miConexionx.close()
-
-    transaccionIdU = RipsTransaccion.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
-    transaccionId = (transaccionIdU['maximo']) + 0
-
-    print ("transaccionId = " , transaccionId )
-
-    # RIPS USUARIOS
-
-    ## OJO FALTA CREAR LA RUTINA SI TIENE O NO INCAPACIDAD
-    ## HACER UN QUERY POR APARTE
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-
-    #detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  SELECT tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id, 	' + "'" + str('NO') + "'" + ' , row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e, rips_ripsdetalle det, usuarios_tiposdocumento tipdoc, usuarios_usuarios u, sitios_paises  pais, sitios_municipios muni, sitios_localidades local, facturacion_facturacion fac, rips_ripstipousuario tipousu, admisiones_ingresos i where i.factura = fac.id and e.id = ' + "'" + str(envioRipsId) + "'" + ' AND e.id = det."ripsEnvios_id"  AND det."numeroFactura_id" = fac.id and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id and u.pais_id = pais.id and u.municipio_id = muni.id and u.localidad_id = local.id and tipousu.id = i."ripsTipoUsuario_id"'
-
-    if (tipoRips == 'Factura'):
-
-        detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  SELECT tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id, 	' + "'" + str('NO') + "'" + ' , row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e	inner join rips_ripsdetalle det on (det."ripsEnvios_id"  = e.id) inner join usuarios_tiposdocumento tipdoc on (1=1) inner join usuarios_usuarios u on (1 =1 ) left join sitios_paises  pais on (pais.id= u.pais_id) 	left join sitios_municipios muni on ( muni.id = u.municipio_id) left join  sitios_localidades local on (local.id = u.localidad_id) left join  facturacion_facturacion fac on (fac.id = det."numeroFactura_id" and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id ) inner join admisiones_ingresos i on (i.factura = fac.id) left join rips_ripstipousuario tipousu on (tipousu.id = i."ripsTipoUsuario_id") where  e.id= ' + "'" + str(envioRipsId) + "'"
-
-    if (tipoRips == 'Glosa'):
-
-        detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad,consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion","ripsDetalle_id", "ripsTransaccion_id") SELECT tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id, ' + "'" + str('NO') + "'" + ', row_number() OVER(ORDER BY det.id) AS consecutivo, now(),muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id,' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e	inner join rips_ripsdetalle det on (det."ripsEnvios_id"=e.id) inner join usuarios_tiposdocumento tipdoc on (1=1)	inner join usuarios_usuarios u on (1 =1 ) left join sitios_paises  pais on (pais.id= u.pais_id) left join sitios_municipios muni on ( muni.id = u.municipio_id) left join  sitios_localidades local on (local.id = u.localidad_id) inner join cartera_glosas glo on (glo.id = cast(det."numeroFactura_id" as float)) left join  facturacion_facturacion fac on (fac.id = glo.factura_id  and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id ) inner join admisiones_ingresos i on (i.factura = fac.id) left join rips_ripstipousuario tipousu on (tipousu.id = i."ripsTipoUsuario_id") 	where  e.id= ' + "'" + str(envioRipsId) + "'"
+	    for id, glosaId in curx.fetchall():
+	        barridoFacturas.append(
+	            {"model": "rips_ripsdetalle", "pk": id, "fields":
+	                {'item': item }})
 
     print ("detalle = ", detalle)
-
-    curx.execute(detalle)
-    miConexionx.commit()
-
-    miConexionx.close()
-
-    # RIPS PROCEDIMIENTOS
-
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-
-    #detalle = 'INSERT INTO rips_ripsprocedimientos ("codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", "tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id", "ripsTransaccion_id") SELECT sed."codigoHabilitacion", facdet."fecha", his.mipres, autdet."numeroAutorizacion", usu.documento, facdet."valorTotal", (select pagos.valor from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where i."tipoDoc_id" = pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)), fac.id, row_number() OVER(ORDER BY facdet.id) AS consecutivo, now(), (select diag4.id from clinico_diagnosticos diag4 where diag4.id = i."dxComplicacion_id"),  (select  diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = histdiag.historia_id and histdiag1."tiposDiagnostico_id" = ' + "'" +  str('2') + "')," + '(select diag3.id from clinico_historialdiagnosticos histdiag3, clinico_diagnosticos diag3 where histdiag3.historia_id = histdiag.historia_id and histdiag3."tiposDiagnostico_id" = ' + "'" +  str('3') + "'" + '), exa.id, serv.id, null, final.id, gru.id, mod.id, tipdocrips.id, ' + "'" + str(username_id) + "'" +' , ingreso.id, detrips.id, facdet."consecutivoFactura", ' +"'" + str('4') + "'" + ' , (select ripsmoderadora.id from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where  i."tipoDoc_id" =  pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)), ' + "'" + str(transaccionId) + "'" + ' FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join  facturacion_facturaciondetalle facdet ON (facdet.facturacion_id = fac.id and facdet."examen_id" is not null) inner join clinico_examenes exa ON (exa.id = facdet."examen_id") inner join admisiones_ingresos i on (i.factura = fac.id and i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id and i.consec = fac."consecAdmision") left join rips_ripsviasingresosalud ingreso ON (ingreso.id = i."ripsViaIngresoServicioSalud_id") left join rips_ripsenvios e ON (e."sedesClinica_id" = sed.id) left join rips_ripsdetalle detrips ON (detrips."ripsEnvios_id" = e.id and detrips."numeroFactura_id" = fac.id) left join rips_ripsmodalidadatencion mod ON (mod.id = i."ripsmodalidadGrupoServicioTecSal_id") left join rips_ripsgruposervicios gru ON (gru.id = i."ripsGrupoServicios_id") left join rips_ripsServicios serv ON (serv.id = i."ripsGrupoServicios_id") left join  rips_ripsfinalidadconsulta final on (final.id = i."ripsFinalidadConsulta_id") left join rips_ripstiposdocumento tipdocrips on (' + "'" + str('1') + "' = " + "'" + str('1') + "')" + ' left join usuarios_tiposdocumento tipdoc ON (tipdoc.id = fac."tipoDoc_id" and tipdoc."tipoDocRips_id" = tipdocrips.id) left join usuarios_usuarios usu ON (usu."tipoDoc_id" = fac."tipoDoc_id" and usu.id = fac.documento_id ) inner join clinico_historia his ON (his."tipoDoc_id" = i."tipoDoc_id" and his.documento_id = i.documento_id and his."consecAdmision" = i.consec ) left join clinico_historialdiagnosticos histdiag on (histdiag.historia_id = his.id and histdiag."tiposDiagnostico_id" = ' + "'" + str('1') + "')" + '  left join autorizaciones_autorizaciones aut on (aut.historia_id = his.id) inner join autorizaciones_autorizacionesdetalle autdet on (autdet.autorizaciones_id = aut.id and autdet.examenes_id = facdet.examen_id) where sed.id = 1 and e.id >= ' + "'" + str(envioRipsId) + "'"
-
-    if (tipoRips == 'Factura'):
-
-        detalle = 'INSERT INTO rips_ripsprocedimientos ("codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", "tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id", "ripsTransaccion_id")   SELECT sed."codigoHabilitacion", facdet."fecha", his.mipres, autdet."numeroAutorizacion", usu.documento, facdet."valorTotal", (select pagos.valor from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where i."tipoDoc_id" = pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)), fac.id, row_number() OVER(ORDER BY facdet.id) AS consecutivo, now(),  (select diag4.id from clinico_diagnosticos diag4 where diag4.id = i."dxComplicacion_id"),  (select  max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "')" + ', (select max(diag3.id) from clinico_historialdiagnosticos histdiag3, clinico_diagnosticos diag3 where histdiag3.historia_id = his.id and histdiag3."tiposDiagnostico_id" = ' + "'" + str('3') + "')" + ', exa.id, serv.id, null, final.id, gru.id, mod.id, tipdocrips.id, ' + "'" + str(username_id) + "'" + ' , ingreso.id, detrips.id, facdet."consecutivoFactura", ' + "'" + str('4') + "'" + ' , (select ripsmoderadora.id from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where  i."tipoDoc_id" =  pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)),  ' + "'" + str(transaccionId) + "'" + 'FROM sitios_sedesclinica sed  inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id)  inner join  facturacion_facturaciondetalle facdet ON (facdet.facturacion_id = fac.id and facdet."examen_id" is not null and facdet."estadoRegistro" = ' + "'" + str('A') + "'" + ')  left join clinico_examenes exa ON (exa.id = facdet."examen_id") inner join admisiones_ingresos i on (i.factura = fac.id and i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id and i.consec = fac."consecAdmision") left join rips_ripsviasingresosalud ingreso ON (ingreso.id = i."ripsViaIngresoServicioSalud_id") left join rips_ripsenvios e ON (e."sedesClinica_id" = sed.id)  inner join rips_ripsdetalle detrips ON (detrips."ripsEnvios_id" = e.id and detrips."numeroFactura_id" = fac.id) left join rips_ripsmodalidadatencion mod ON (mod.id = i."ripsmodalidadGrupoServicioTecSal_id")  left join rips_ripsgruposervicios gru ON (gru.id = i."ripsGrupoServicios_id") left join rips_ripsServicios serv ON (serv.id = i."ripsGrupoServicios_id")  left join  rips_ripsfinalidadconsulta final on (final.id = i."ripsFinalidadConsulta_id") left join rips_ripstiposdocumento tipdocrips on (' + "'" + str('1') + "'" + ' = ' + "'" + str('1') + "')" + '  inner join usuarios_tiposdocumento tipdoc ON (tipdoc.id = fac."tipoDoc_id" and tipdoc."tipoDocRips_id" = tipdocrips.id)  inner join usuarios_usuarios usu ON (usu."tipoDoc_id" = fac."tipoDoc_id" and usu.id = fac.documento_id ) inner join clinico_historia his ON (his."tipoDoc_id" = i."tipoDoc_id" and his.documento_id = i.documento_id and his."consecAdmision" = i.consec )  inner join clinico_historiaexamenes hisexa ON (hisexa.historia_id=his.id and hisexa."codigoCups" = exa."codigoCups") left join autorizaciones_autorizaciones aut on (aut.historia_id = his.id) left join autorizaciones_autorizacionesdetalle autdet on (autdet.autorizaciones_id = aut.id and autdet.examenes_id = facdet.examen_id) where sed.id = 1 and e.id = ' + "'" + str(envioRipsId) + "'"
-
-    if (tipoRips == 'Glosa'):
-
-        pass
-
-
-    print ("detalle = " , detalle)
-
-    curx.execute(detalle)
-    miConexionx.commit()
-
-    miConexionx.close()
-
-    # RIPS HOSPITALIZACION
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-    #detalle = 'INSERT INTO rips_ripshospitalizacion (  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id",	"codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id",	"ripsDetalle_id", "tipoRips", "ripsTransaccion_id",  "fechaRegistro") SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id", cast(i."fechaIngreso" as date),aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 2 and histdiag1.diagnosticos_id = diag1.id), 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 3 and histdiag1.diagnosticos_id = diag1.id), 	(select diag1.id from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = 4 and histdiag1.diagnosticos_id = diag1.id),  i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str('1') + "'" + ' ,det.id,env."ripsEstados_id", 	ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) 	inner join clinico_historia his ON (his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") 	inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" = his."tipoDoc_id" and i.documento_id = his.documento_id AND i.consec = his."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id ) 	inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))	left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id) where sed.id = ' + "'" + str('1') + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'" + ' AND i.factura = det."numeroFactura_id" '
-    detalle = 'INSERT INTO rips_ripshospitalizacion ("codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id",  "fechaRegistro")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id",cast(i."fechaIngreso" as date), aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"),(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),     (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,   (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and cast(det."numeroFactura_id" as float) = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id) inner join 	clinico_servicios serv on (serv.nombre = ' + "'" + str('HOSPITALIZACION') +"')" + ' inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" ) inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id)    where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
-
-    print("detalle = ", detalle)
-
-    curx.execute(detalle)
     miConexionx.commit()
     miConexionx.close()
 
-
-    # HASTA AQUI RIPS HOSPITALIZACION
-
-    # RIPS URGENCIAS
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-    #detalle = 'INSERT INTO rips_ripsurgenciasobservacion ("codPrestador", "fechaInicioAtencion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "ripsTransaccion_id")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id",cast(i."fechaIngreso" as date), aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"),(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),     (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,   (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id)  where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
-    detalle = 'INSERT INTO rips_ripsurgenciasobservacion ("codPrestador", "fechaInicioAtencion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id","codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "ripsDetalle_id",  "ripsTipos_id", "ripsTransaccion_id")  SELECT sed."codigoHabilitacion", cast(i."fechaIngreso" as date) ,cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo  ,now(),i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,  (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + '  and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ),i."ripsCondicionDestinoUsuarioEgreso_id", ' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id ) inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)) 	 left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id)  inner join 	clinico_servicios serv on (serv.nombre = ' + "'" + str('URGENCIAS') +"'" + ' inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" ) inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id)  where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
+    # INICIO BARRIDO DE FOR
 
 
+    for elemento in barridoFacturas[0]['item']:
 
-    print("detalle = ", detalle)
-
-    curx.execute(detalle)
-    miConexionx.commit()
-    miConexionx.close()
-
-    # HASTA AQUI RIPS URGENCIAS
-
-    # RIPS MEDICAMENTOS
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
+        print(elemento)
 
 
-    detalle = 'INSERT INTO rips_ripsmedicamentos ("codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", 	"diasTratamiento",	"numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", "usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "ripsTransaccion_id") SELECT sed."codigoHabilitacion", aut."numeroAutorizacion", historia.mipres, cast(facdet.fecha as timestamp), ripscums.cum, histmed."concentracionMedicamento", histmed."cantidadAplicada", histmed."diasTratamiento",planta.documento, facdet."valorUnitario", facdet."valorTotal", pagos."totalAplicado", fac.id, row_number() OVER(ORDER BY histmed.id), now(), diag1.id, diag2.id, null, null, ripsfarma.id, ripstipdoc.id, tipmed.id, ripsumm.id, ripsupr.id, ' + "'" + str(username_id) + "'" +  ' , det.id, facdet."consecutivoFactura",' + "'" + str('8') + "'" + ', rips_ripstransaccion.id from rips_ripstransaccion left join rips_ripsenvios env on(env."sedesClinica_id" = rips_ripstransaccion."sedesClinica_id" and env.id = rips_ripstransaccion."ripsEnvio_id" ) left join sitios_sedesclinica sed on (sed.id = env."sedesClinica_id" ) left join rips_ripsdetalle det on (det."ripsEnvios_id" = env.id and det."numeroFactura_id" = cast(rips_ripstransaccion."numFactura" as numeric)) left join facturacion_facturacion fac on (fac.id = det."numeroFactura_id" ) inner join facturacion_facturaciondetalle facdet on (facdet."facturacion_id" = fac.id and facdet."cums_id" is not null ) left join clinico_historiamedicamentos histmed on (histmed.id = facdet."historiaMedicamento_id")  left join autorizaciones_autorizaciones aut on (aut.id = histmed.autorizacion_id) left join facturacion_suministros sum on (sum.id = facdet.cums_id) left join rips_ripstipomedicamento tipmed on (tipmed.id = sum."ripsTipoMedicamento_id" ) left join rips_ripscums ripscums  on (ripscums.id = facdet."cums_id") left join rips_ripsumm ripsumm on (ripsumm.id = sum."ripsUnidadMedida_id") left join rips_RipsFormaFarmaceutica ripsfarma on (ripsfarma.id = sum."ripsFormaFarmaceutica_id")  left join rips_ripsunidadupr ripsupr on (ripsupr.id = sum."ripsUnidadUpr_id") left join clinico_historia historia on (historia.id = histmed.historia_id) left join planta_planta planta on (planta.id = historia.planta_id) left join usuarios_tiposdocumento usutipdoc on (usutipdoc.id = planta."tipoDoc_id") left join rips_ripstiposdocumento ripstipdoc on (ripstipdoc.id = usutipdoc."tipoDocRips_id") left join cartera_pagos pagos on (pagos."tipoDoc_id" = fac."tipoDoc_id" and pagos.documento_id = fac.documento_id and pagos.consec = fac."consecAdmision") left join cartera_formaspagos formaspagos on (formaspagos.id = pagos."formaPago_id") left join rips_ripstipospagomoderador ripstipopago  on(cast(ripstipopago."codigoAplicativo" as numeric) = formaspagos.id and cast(ripstipopago."codigoAplicativo" as numeric) in (' + "'" + str('3') + "'" +  ', ' + "'" + str('4') + "'" + '))  left join clinico_historialdiagnosticos histdiag1 on (histdiag1.historia_id = historia.id and histdiag1."tiposDiagnostico_id" = ' + "'"  + str('1') + "')" + ' left join clinico_historialdiagnosticos histdiag2 on (histdiag2.historia_id = historia.id and histdiag2."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ') left join clinico_diagnosticos diag1 on (diag1.id = histdiag1.diagnosticos_id) left join clinico_diagnosticos diag2 on (diag2.id = histdiag2.diagnosticos_id)  where env.id = ' + "'" + str(envioRipsId) + "'" + ' and rips_ripstransaccion."ripsEnvio_id" = env.id  and cast(rips_ripstransaccion."numFactura" as numeric) = fac.id	'
+	    ### RIPS TRANSACCION
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
 
-    print("detalle = ", detalle)
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+            detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado","numFactura",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id"  , "ripsEnvio_id", "sedesClinica_id" ) select sed.nit, fac.id, 0, now(), null ' + ",'" +str(username_id) +"'"  + ', e.id, sed.id from sitios_sedesclinica sed, facturacion_facturacion fac, rips_ripsEnvios e  , cartera_tiposnotas tipnot where e.id = ' + "'" + str(envioRipsId) +"'" +  ' and e."sedesClinica_id" = sed.id and fac."ripsEnvio_id" = e.id  AND tipnot.nombre = ' + "'" + str('Factura') + "' AND fac.id = " + "'" + str(elemento) + "' RETURNING id ;"
+
+            resultado = curx.execute(detalle)
+            transaccionId= curx.fetchone()[0]
+            print ("transaccionId = ", transaccionId)
+
+        if (tipoRips == 'Glosa'):
+
+            detalle = 'INSERT into rips_ripstransaccion ("numDocumentoIdObligado",  "numNota","fechaRegistro", "tipoNota_id","usuarioRegistro_id" ,"ripsEnvio_id","sedesClinica_id" ,"glosa_id") select sed.nit,  glo.id, now(), tipnot.id, ' + "'" + str(username_id) + "'" + ', e.id, sed.id , glo.factura_id from sitios_sedesclinica sed, cartera_glosas glo, rips_ripsEnvios e  , rips_ripsdetalle det ,rips_ripstiposnotas tipnot where e.id = ' + "'" + str(envioRipsId) + "'" + ' and e."sedesClinica_id" = sed.id and glo."ripsEnvio_id" = e.id and det."ripsEnvios_id" = e.id and e."ripsTiposNotas_id" = tipnot.id and tipnot.nombre=' + "'" + str('Glosa') + "' AND glo.id = " + "'" + str(elemento) + "' RETURNING id ;"
+            resultado = curx.execute(detalle)
+            transaccionId = curx.fetchone()[0]
+            print ("transaccionId = ", transaccionId)
+
+        print ("detalle = " , detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+        print ("transaccionId = " , transaccionId )
+
+	    # RIPS USUARIOS
+
+	    ## OJO FALTA CREAR LA RUTINA SI TIENE O NO INCAPACIDAD
+	    ## HACER UN QUERY POR APARTE
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad, consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion", "ripsDetalle_id", "ripsTransaccion_id")  SELECT tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id, 	' + "'" + str('NO') + "'" + ' , row_number() OVER(ORDER BY det.id) AS consecutivo, now(), muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id, ' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e	inner join rips_ripsdetalle det on (det."ripsEnvios_id"  = e.id) inner join usuarios_tiposdocumento tipdoc on (1=1) inner join usuarios_usuarios u on (1 =1 ) left join sitios_paises  pais on (pais.id= u.pais_id) 	left join sitios_municipios muni on ( muni.id = u.municipio_id) left join  sitios_localidades local on (local.id = u.localidad_id) left join  facturacion_facturacion fac on (fac.id = det."numeroFactura_id" and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id ) inner join admisiones_ingresos i on (i.factura = fac.id) left join rips_ripstipousuario tipousu on (tipousu.id = i."ripsTipoUsuario_id") where  e.id= ' + "'" + str(envioRipsId) + "'" + ' AND det."numeroFactura_id"  = '  + "'" + str(elemento) + "'"
+
+        if (tipoRips == 'Glosa'):
+
+            detalle = 'INSERT INTO rips_ripsusuarios ("tipoDocumentoIdentificacion", "tipoUsuario", "fechaNacimiento", "codSexo", "codZonaTerritorialResidencia", incapacidad,consecutivo, "fechaRegistro", "codMunicipioResidencia_id", "codPaisOrigen_id", "codPaisResidencia_id", "usuarioRegistro_id", "numDocumentoIdentificacion","ripsDetalle_id", "ripsTransaccion_id") SELECT tipdoc.abreviatura, tipousu.codigo, u."fechaNacio" , u.genero, local.id, ' + "'" + str('NO') + "'" + ', row_number() OVER(ORDER BY det.id) AS consecutivo, now(),muni.id, pais.id, pais.id, ' + "'" + str(username_id) + "'" + ', u.documento, det.id,' + "'" + str(transaccionId) + "'" + ' from rips_ripsenvios e	inner join rips_ripsdetalle det on (det."ripsEnvios_id"=e.id) inner join usuarios_tiposdocumento tipdoc on (1=1)	inner join usuarios_usuarios u on (1 =1 ) left join sitios_paises  pais on (pais.id= u.pais_id) left join sitios_municipios muni on ( muni.id = u.municipio_id) left join  sitios_localidades local on (local.id = u.localidad_id) inner join cartera_glosas glo on (glo.id = cast(det."numeroFactura_id" as float)) left join  facturacion_facturacion fac on (fac.id = glo.factura_id  and fac."tipoDoc_id" = u."tipoDoc_id" and fac.documento_id = u.id and fac."tipoDoc_id" = tipdoc.id ) inner join admisiones_ingresos i on (i.factura = fac.id) left join rips_ripstipousuario tipousu on (tipousu.id = i."ripsTipoUsuario_id") 	where  e.id= ' + "'" + str(envioRipsId) + "' AND det.glosa_id = " + "'" + str(elemento) + "'"
+
+        print ("detalle = ", detalle)
+        curx.execute(detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+        # RIPS PROCEDIMIENTOS
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'INSERT INTO rips_ripsprocedimientos ("codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id", "grupoServicios_id", "modalidadGrupoServicioTecSal_id", "tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id", "ripsTransaccion_id")   SELECT sed."codigoHabilitacion", facdet."fecha", his.mipres, autdet."numeroAutorizacion", usu.documento, facdet."valorTotal", (select pagos.valor from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where i."tipoDoc_id" = pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)), fac.id, row_number() OVER(ORDER BY facdet.id) AS consecutivo, now(),  (select diag4.id from clinico_diagnosticos diag4 where diag4.id = i."dxComplicacion_id"),  (select  max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "')" + ', (select max(diag3.id) from clinico_historialdiagnosticos histdiag3, clinico_diagnosticos diag3 where histdiag3.historia_id = his.id and histdiag3."tiposDiagnostico_id" = ' + "'" + str('3') + "')" + ', exa.id, serv.id, null, final.id, gru.id, mod.id, tipdocrips.id, ' + "'" + str(username_id) + "'" + ' , ingreso.id, detrips.id, facdet."consecutivoFactura", ' + "'" + str('4') + "'" + ' , (select ripsmoderadora.id from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where  i."tipoDoc_id" =  pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)),  ' + "'" + str(transaccionId) + "'" + 'FROM sitios_sedesclinica sed  inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id)  inner join  facturacion_facturaciondetalle facdet ON (facdet.facturacion_id = fac.id and facdet."examen_id" is not null and facdet."estadoRegistro" = ' + "'" + str('A') + "'" + ')  left join clinico_examenes exa ON (exa.id = facdet."examen_id") inner join admisiones_ingresos i on (i.factura = fac.id and i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id and i.consec = fac."consecAdmision") left join rips_ripsviasingresosalud ingreso ON (ingreso.id = i."ripsViaIngresoServicioSalud_id") left join rips_ripsenvios e ON (e."sedesClinica_id" = sed.id)  inner join rips_ripsdetalle detrips ON (detrips."ripsEnvios_id" = e.id and detrips."numeroFactura_id" = fac.id) left join rips_ripsmodalidadatencion mod ON (mod.id = i."ripsmodalidadGrupoServicioTecSal_id")  left join rips_ripsgruposervicios gru ON (gru.id = i."ripsGrupoServicios_id") left join rips_ripsServicios serv ON (serv.id = i."ripsGrupoServicios_id")  left join  rips_ripsfinalidadconsulta final on (final.id = i."ripsFinalidadConsulta_id") left join rips_ripstiposdocumento tipdocrips on (' + "'" + str('1') + "'" + ' = ' + "'" + str('1') + "')" + '  inner join usuarios_tiposdocumento tipdoc ON (tipdoc.id = fac."tipoDoc_id" and tipdoc."tipoDocRips_id" = tipdocrips.id)  inner join usuarios_usuarios usu ON (usu."tipoDoc_id" = fac."tipoDoc_id" and usu.id = fac.documento_id ) inner join clinico_historia his ON (his."tipoDoc_id" = i."tipoDoc_id" and his.documento_id = i.documento_id and his."consecAdmision" = i.consec )  inner join clinico_historiaexamenes hisexa ON (hisexa.historia_id=his.id and hisexa."codigoCups" = exa."codigoCups") left join autorizaciones_autorizaciones aut on (aut.historia_id = his.id) left join autorizaciones_autorizacionesdetalle autdet on (autdet.autorizaciones_id = aut.id and autdet.examenes_id = facdet.examen_id) where sed.id = 1 and e.id = ' + "'" + str(envioRipsId) + "'"
+
+        if (tipoRips == 'Glosa'):
+
+            pass
+
+        print ("detalle = " , detalle)
+
+        curx.execute(detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+        # RIPS HOSPITALIZACION
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'INSERT INTO rips_ripshospitalizacion ("codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id",  "fechaRegistro")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id",cast(i."fechaIngreso" as date), aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"),(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),     (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,   (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and cast(det."numeroFactura_id" as float) = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id) inner join 	clinico_servicios serv on (serv.nombre = ' + "'" + str('HOSPITALIZACION') +"')" + ' inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" ) inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id)    where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
+
+        if (tipoRips == 'Glosa'):
+            pass
+
+        print("detalle = ", detalle)
+
+        curx.execute(detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+
+	    # HASTA AQUI RIPS HOSPITALIZACION
+
+	    # RIPS URGENCIAS
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",    password="123456")
+
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'INSERT INTO rips_ripsurgenciasobservacion ("codPrestador", "fechaInicioAtencion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id","codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "ripsDetalle_id",  "ripsTipos_id", "ripsTransaccion_id")  SELECT sed."codigoHabilitacion", cast(i."fechaIngreso" as date) ,cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo  ,now(),i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,  (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + '  and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ),i."ripsCondicionDestinoUsuarioEgreso_id", ' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id ) inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text)) 	 left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id)  inner join 	clinico_servicios serv on (serv.nombre = ' + "'" + str('URGENCIAS') +"'" + ' inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" ) inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id)  where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
+
+        if (tipoRips == 'Glosa'):
+
+            pass
+
+
+        print("detalle = ", detalle)
+        curx.execute(detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+	    # HASTA AQUI RIPS URGENCIAS
+        #
+        # RIPS MEDICAMENTOS
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",    password="123456")
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'INSERT INTO rips_ripsmedicamentos ("codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", 	"diasTratamiento",	"numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", "usuarioRegistro_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "ripsTransaccion_id") SELECT sed."codigoHabilitacion", aut."numeroAutorizacion", historia.mipres, cast(facdet.fecha as timestamp), ripscums.cum, histmed."concentracionMedicamento", histmed."cantidadAplicada", histmed."diasTratamiento",planta.documento, facdet."valorUnitario", facdet."valorTotal", pagos."totalAplicado", fac.id, row_number() OVER(ORDER BY histmed.id), now(), diag1.id, diag2.id, null, null, ripsfarma.id, ripstipdoc.id, tipmed.id, ripsumm.id, ripsupr.id, ' + "'" + str(username_id) + "'" +  ' , det.id, facdet."consecutivoFactura",' + "'" + str('8') + "'" + ', rips_ripstransaccion.id from rips_ripstransaccion left join rips_ripsenvios env on(env."sedesClinica_id" = rips_ripstransaccion."sedesClinica_id" and env.id = rips_ripstransaccion."ripsEnvio_id" ) left join sitios_sedesclinica sed on (sed.id = env."sedesClinica_id" ) left join rips_ripsdetalle det on (det."ripsEnvios_id" = env.id and det."numeroFactura_id" = cast(rips_ripstransaccion."numFactura" as numeric)) left join facturacion_facturacion fac on (fac.id = det."numeroFactura_id" ) inner join facturacion_facturaciondetalle facdet on (facdet."facturacion_id" = fac.id and facdet."cums_id" is not null ) left join clinico_historiamedicamentos histmed on (histmed.id = facdet."historiaMedicamento_id")  left join autorizaciones_autorizaciones aut on (aut.id = histmed.autorizacion_id) left join facturacion_suministros sum on (sum.id = facdet.cums_id) left join rips_ripstipomedicamento tipmed on (tipmed.id = sum."ripsTipoMedicamento_id" ) left join rips_ripscums ripscums  on (ripscums.id = facdet."cums_id") left join rips_ripsumm ripsumm on (ripsumm.id = sum."ripsUnidadMedida_id") left join rips_RipsFormaFarmaceutica ripsfarma on (ripsfarma.id = sum."ripsFormaFarmaceutica_id")  left join rips_ripsunidadupr ripsupr on (ripsupr.id = sum."ripsUnidadUpr_id") left join clinico_historia historia on (historia.id = histmed.historia_id) left join planta_planta planta on (planta.id = historia.planta_id) left join usuarios_tiposdocumento usutipdoc on (usutipdoc.id = planta."tipoDoc_id") left join rips_ripstiposdocumento ripstipdoc on (ripstipdoc.id = usutipdoc."tipoDocRips_id") left join cartera_pagos pagos on (pagos."tipoDoc_id" = fac."tipoDoc_id" and pagos.documento_id = fac.documento_id and pagos.consec = fac."consecAdmision") left join cartera_formaspagos formaspagos on (formaspagos.id = pagos."formaPago_id") left join rips_ripstipospagomoderador ripstipopago  on(cast(ripstipopago."codigoAplicativo" as numeric) = formaspagos.id and cast(ripstipopago."codigoAplicativo" as numeric) in (' + "'" + str('3') + "'" +  ', ' + "'" + str('4') + "'" + '))  left join clinico_historialdiagnosticos histdiag1 on (histdiag1.historia_id = historia.id and histdiag1."tiposDiagnostico_id" = ' + "'"  + str('1') + "')" + ' left join clinico_historialdiagnosticos histdiag2 on (histdiag2.historia_id = historia.id and histdiag2."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ') left join clinico_diagnosticos diag1 on (diag1.id = histdiag1.diagnosticos_id) left join clinico_diagnosticos diag2 on (diag2.id = histdiag2.diagnosticos_id)  where env.id = ' + "'" + str(envioRipsId) + "'" + ' and rips_ripstransaccion."ripsEnvio_id" = env.id  and cast(rips_ripstransaccion."numFactura" as numeric) = fac.id	'
+
+        if (tipoRips == 'Glosa'):
+            pass
+
+        print("detalle = ", detalle)
+        curx.execute(detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+
+	    # HASTA AQUI RIPSMedicamentos
+
+	    # RIPS RECIEN NACIDOS
+        #
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",    password="123456")
+
+        curx = miConexionx.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'INSERT INTO rips_ripsreciennacido ("codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", peso, "fechaEgreso", consecutivo, "fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id","tipoDocumentoIdentificacion_id", "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id") SELECT sed."codigoHabilitacion",	usu.documento,	usu."fechaNacio", i."ripsEdadGestacional", i."ripsNumConsultasCPrenatal" ,	usu.genero, i."ripsPesoRecienNacido" ,cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,now(), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('1') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") , dest.id, tipoDoc."tipoDocRips_id", ' + "'" + str(username_id) + "'" + ' ,det.id,' + "'" + str('7') + "'" + ' , ripstra.id	FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision")  inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join rips_ripsdestinoegreso dest  on (dest.id = i."ripsCondicionDestinoUsuarioEgreso_id") inner join usuarios_usuarios usu on (usu."tipoDoc_id" = i."tipoDoc_id" AND usu.id = i.documento_id) inner join usuarios_tiposdocumento tipoDoc on (tipoDoc.id = i."tipoDoc_id") where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
+
+        if (tipoRips == 'Glosa'):
+
+            pass
+
+        print("detalle = ", detalle)
+        curx.execute(detalle)
+        miConexionx.commit()
+        miConexionx.close()
+
+	    # HASTA AQUI RECIEN NACIDOS# ##########################
+
+        # Busco el id del estado Rips PENDIENTE CON JSON GENERADO
+
+        ripsDetalle = RipsDetalle.objects.get(nombre='PENDIENTE CON JSON GENERADO')
+        print ("El estado es = ", ripsDetalle.id )
+
+	    # Aqui generamos los JSON de la Factura
+        #
+        miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+
+        cury = miConexiony.cursor()
+        funcionJson = []
+
+        detalle = 'SELECT generaFacturaJSON(' + str(envioRipsId) + "," + str(elemento) +  ') dato'
+
+        cury.execute(detalle)
+
+        for dato in cury.fetchall():
+
+            funcionJson.append({'dato': dato})
+
+        miConexiony.close()
+
+        if (tipoRips == 'Factura'):
+            print("Factura = ", elemento)
+            archivo = 'Fac' + str(elemento) + '.txt'
+            nombreCarpeta = 'C:\\EntornosPython\\Pos3\\vulner\\JSONCLINICA\\' + str(archivo)
+
+        if (tipoRips == 'Glosa'):
+            print("Glosa = ", elemento)
+            archivo = 'Glo' + str(elemento) + '.txt'
+            nombreCarpeta = 'C:\\EntornosPython\\Pos3\\vulner\\JSONCLINICA\\' + str(archivo)
+
+
+        print("ruta =", nombreCarpeta)
+
+
+        # Aqui crea el archivo
+
+        file = open(nombreCarpeta, "w")
+        file.writelines(funcionJson[0]['dato'])
+        file.close()
+
+        # Aqui Actualiza la ruta en la tabla rips_ripsdetalle
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+
+        curt = miConexiont.cursor()
+
+        if (tipoRips == 'Factura'):
+
+            detalle = 'UPDATE rips_ripsDetalle SET "rutaJsonFactura" = ' + "'" + str(nombreCarpeta) + "', " + ' "ripsEstado_id" = ' + "'" + str(ripsDetalle.id) + "'" +  ' WHERE "ripsEnvios_id" = '  + "'" + str(envioRipsId) + "'" + '  AND "numeroFactura_id" = ' +"'" +str(elemento) + "'"
+
+        if (tipoRips == 'Glosa'):
+
+            detalle = 'UPDATE rips_ripsDetalle SET "rutaJsonFactura" = ' + "'" + str(nombreCarpeta) + "', " + ' "ripsEstado_id" = ' + "'" + str(ripsDetalle.id) + "'" +  ' WHERE "ripsEnvios_id" =  '  + "'" + str(envioRipsId) + "'" + ' AND "glosa_id" = ' +"'" +str(elemento) + "'"
+
+        print ("detalle = ", detalle)
+        curt.execute(detalle)
+        miConexiont.commit()
+        miConexiont.close()
 
 
 
-    curx.execute(detalle)
-    miConexionx.commit()
-    miConexionx.close()
-
-
-    # HASTA AQUI RIPSMedicamentos
-
-    # RIPS RECIEN NACIDOS
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-    detalle = 'INSERT INTO rips_ripsreciennacido ("codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", peso, "fechaEgreso", consecutivo, "fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id","tipoDocumentoIdentificacion_id", "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id") SELECT sed."codigoHabilitacion",	usu.documento,	usu."fechaNacio", i."ripsEdadGestacional", i."ripsNumConsultasCPrenatal" ,	usu.genero, i."ripsPesoRecienNacido" ,cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,now(), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"), (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('1') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") , dest.id, tipoDoc."tipoDocRips_id", ' + "'" + str(username_id) + "'" + ' ,det.id,' + "'" + str('7') + "'" + ' , ripstra.id	FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision")  inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and det."numeroFactura_id" = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join rips_ripsdestinoegreso dest  on (dest.id = i."ripsCondicionDestinoUsuarioEgreso_id") inner join usuarios_usuarios usu on (usu."tipoDoc_id" = i."tipoDoc_id" AND usu.id = i.documento_id) inner join usuarios_tiposdocumento tipoDoc on (tipoDoc.id = i."tipoDoc_id") where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
-
-    print("detalle = ", detalle)
-
-    curx.execute(detalle)
-    miConexionx.commit()
-    miConexionx.close()
-
-
-    # HASTA AQUI RECIEN NACIDOS
-
-
-
-    ### Aqui actualizar cosas de la tabla rips_ripsenvios
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-
-    detalle = 'UPDATE rips_ripsEnvios SET "fechaGeneracionjson" = ' + "'" + str(fechaRegistro) + "'" +', "usuarioGeneraJson_id" = ' + "'" + str(username_id) + "' WHERE id =" + "'" + str(envioRipsId) + "'"
-    curx.execute(detalle)
-    miConexionx.commit()
-
-    miConexionx.close()
-    # Aqui generamos los JSON de cada Factura
-    miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",      password="123456")
+    # Aqui generamos el JSON GLOBAL DE TODOS LOS ELEMENTOS (Facturas o Glosas) DEL ENVIO
+        #
+    miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cury = miConexiony.cursor()
-    facturasJson = []
+    funcionGlobalJson = []
 
-    detalle = 'SELECT "numeroFactura_id" factura FROM rips_ripsdetalle WHERE "ripsEnvios_id" = ' + "'" + str(envioRipsId) + "'"
+    detalle = 'SELECT generaEnvioRipsJSON(' + str(envioRipsId) + ') dato'
     cury.execute(detalle)
 
-    for factura in cury.fetchall():
-            facturasJson.append({'factura': factura})
+    for dato in cury.fetchall():
+            funcionGlobalJson.append({'dato': dato})
 
     miConexiony.close()
+    archivo = 'Env' + str(envioRipsId) + '.txt'
+    nombreCarpeta = 'C:\\EntornosPython\\Pos3\\vulner\\JSONCLINICA\\' + str(archivo)
 
+    for y in funcionGlobalJson[0]['dato']:
 
-    for m in facturasJson[0]['factura']:
+        print("tesxto funcionJson = ", y)
 
-        print ("Texto Factura JSON = ", m )
+        # Aqui crea el archivo
+        #
+        file = open(nombreCarpeta, "w")
+        file.writelines(y)
+        file.close()
 
-        miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        cury = miConexiony.cursor()
-        funcionJson = []
+    totalItems = RipsDetalle.objects.filter(riopsEnvios_id=envioRipsId).count()
 
-        detalle = 'SELECT generaFacturaJSON(' + str(envioRipsId) + "," + str(m) +  ') dato'
-
-        cury.execute(detalle)
-
-        for dato in cury.fetchall():
-            funcionJson.append({'dato': dato})
-
-        miConexiony.close()
-
-        for j in funcionJson[0]['dato']:
-
-            print("texto funcionJson = ", j)
-            print("Factura = ", j)
-            archivo = 'Fac' + str(j) + '.txt'
-            nombreCarpeta = 'C:\\EntornosPython\\Pos3\\vulner\\JSONCLINICA\\' + str(archivo)
-            print("ruta =", nombreCarpeta)
-            # Aqui Actualiza la ruta en la tabla rips_ripsdetalle
-            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-            curt = miConexiont.cursor()
-            detalle = 'UPDATE rips_ripsDetalle SET "rutaJsonFactura" = ' + "'" + str(nombreCarpeta) + "'" + ' WHERE "ripsEnvios_id" = '  + "'" + str(envioRipsId) + "'" + '  AND "numeroFactura_id" = ' +"'" +str(m) + "'"
-            print ("detalle = ", detalle)
-            curt.execute(detalle)
-            miConexiont.commit()
-            miConexiont.close()
-
-
-
-        # Aqui generamos el JSON de la FUNCTION GLOBAL
-
-        miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        cury = miConexiony.cursor()
-        funcionJson = []
-
-        detalle = 'SELECT generaEnvioRipsJSON(' + str(envioRipsId) + ') dato'
-        cury.execute(detalle)
-
-        for dato in cury.fetchall():
-            funcionJson.append({'dato': dato})
-
-        miConexiony.close()
-
-        for y in funcionJson[0]['dato']:
-            print("tesxto funcionJson = ", y)
-
-            # Aqui crea el archivo
-
-            file = open(nombreCarpeta, "w")
-            file.writelines(y)
-            file.close()
-
-            # Aqui grabo la ruta del JSON GLOBAL
-
-            curt = miConexiont.cursor()
-            detalle = 'UPDATE rips_ripsEnvios SET "rutaJson" = ' + "'" + str(nombreCarpeta) + "'" + ' WHERE "ripsEnvios_id" = '  + "'" + str(envioRipsId) + "'"
-            curt.execute(detalle)
-            miConexiont.commit()
-            miConexiont.close()
-
-
-
-        # Aqui FIN JSON de la FUNCTION GLOBAL
-
+    # Aqui grabo la ruta del JSON GLOBAL
+        #
+    curt = miConexiont.cursor()
+    detalle = 'UPDATE rips_ripsEnvios SET "cantidadFacturas" = ' + "'" + str(totalItems) + "'," + ' "fechaGeneracionjson" = ' + "'" + str(fechaRegistro) + "'" +', "usuarioGeneraJson_id" = ' + "'" + str(username_id) + "'" + '"rutaJson" = ' + "'" + str(nombreCarpeta) + "'" + ' WHERE id = '  + "'" + str(envioRipsId) + "'"
+    curt.execute(detalle)
+    miConexiont.commit()
+    miConexiont.close()
 
     return JsonResponse({'success': True, 'message': 'Rips JSON generados satisfactoriamente!'})
 
@@ -927,6 +967,8 @@ def EnviarJsonRips(request):
 
     fechaRegistro = dnow
     print("fechaRegistro = ", fechaRegistro)
+
+
 
     ### Aqui actualizar cosas de la tabla rips_ripsenvios
 
