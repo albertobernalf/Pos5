@@ -485,7 +485,8 @@ class RipsCums (models.Model):
    administracion =    models.CharField(max_length=100, blank=True,null= True, editable=True)
    viaAdministracion =  models.ForeignKey('clinico.ViasAdministracion', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='ViasAdmon10')
    principiosActivos =  models.ForeignKey('clinico.PrincipiosActivos', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='ViasAdmon11')
-
+   ripsUnidadMedida = models.ForeignKey('rips.RipsUmm', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='RipsUnidad12')
+   ripsTipoMedicamento = models.ForeignKey('rips.RipsTipoMedicamento', blank=True,null= True, editable=True, on_delete=models.PROTECT ,  related_name='RipsTipo11')
 
    def __str__(self):
         return self.nombre

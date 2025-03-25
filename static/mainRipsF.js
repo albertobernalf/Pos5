@@ -7,6 +7,7 @@ let dataTableD;
 let dataTableF;
 let dataTableG;
 let dataTableH;
+let dataTableI;
 
 let dataTableEnviosRipsInitialized = false;
 let dataTableEnviosRipsDetalleInitialized = false;
@@ -17,6 +18,7 @@ let dataTableRipsUsuariosInitialized = false;
 let dataTableRipsProcedimientosInitialized = false;
 let dataTableRipsHospitalizacionInitialized = false;
 let dataTableRipsMedicamentosInitialized = false;
+let dataTableRipsUrgenciasObsInitialized = false;
 
 
 $(document).ready(function() {
@@ -857,6 +859,112 @@ function arrancaEnviosRips(valorTabla,valorData)
 	            dataTableRipsMedicamentosInitialized  = true;
       }
 
+
+
+// la nueva
+
+    if (valorTabla == 9)
+    {
+
+        let dataTableOptionsRipsUrgenciasObs  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                          btn = btn + " <input type='radio' class='miUrgenciasObs form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+                       return btn;
+                    },
+                    "targets": 17
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_tablaRipsUrgenciasObs/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+		 { data: "fields.id"},
+                { data: "fields.codPrestador"},
+                { data: "fields.fechaInicioAtencion"},
+                { data: "fields.fechaEgreso"},
+                { data: "fields.consecutivo"},
+                { data: "fields.fechaRegistro"},
+                { data: "fields.causaMotivoAtencion_id"},
+                { data: "fields.codDiagnosticoCausaMuerte_id"},
+                { data: "fields.codDiagnosticoPrincipal_id"},
+                { data: "fields.codDiagnosticoPrincipalE_id"},
+                { data: "fields.codDiagnosticoRelacionadoE1_id"},
+                { data: "fields.codDiagnosticoRelacionadoE2_id"},
+                { data: "fields.codDiagnosticoRelacionadoE3_id"},
+                { data: "fields.condicionDestinoUsuarioEgreso_id"},
+                { data: "fields.usuarioRegistro_id"},
+                { data: "fields.ripsDetalle_id_id"},
+                { data: "fields.ripsTipos_id"},
+                     ]
+            }
+
+            if  (dataTableRipsUrgenciasObsInitialized)  {
+
+		            dataTableG = $("#tablaRipsUrgenciasObs").dataTable().fnDestroy();
+
+                    }
+
+                dataTableG = $('#tablaRipsUrgenciasObs').DataTable(dataTableOptionsRipsUrgenciasObs);
+
+	            dataTableRipsUrgenciasObsInitialized  = true;
+      }
+
+
+
+
 }
 
 const initDataTableEnviosRips = async () => {
@@ -964,6 +1072,10 @@ window.addEventListener('load', async () => {
 
 		   arrancaEnviosRips(8,data);
  			 dataTableRipsMedicamentosInitialized= true;
+
+		   arrancaEnviosRips(9,data);
+ 			 dataTableRipsUrgenciasObsInitialized= true;
+
 
   });
 
