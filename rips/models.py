@@ -317,7 +317,7 @@ class RipsProcedimientos (models.Model):
    codDiagnosticoPrincipal = models.ForeignKey('clinico.Diagnosticos', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='Diagnost10')
    codDiagnosticoRelacionado = models.ForeignKey('clinico.Diagnosticos', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='Diagnost11')
    codComplicacion = models.ForeignKey('clinico.Diagnosticos', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='Diagnost12')
-   vrServicio =  models.DecimalField(max_digits=15, decimal_places=2, editable=True)
+   vrServicio =  models.DecimalField(max_digits=15, decimal_places=2,  blank=True, null=True, editable=True)
    conceptoRecaudo = models.ForeignKey('rips.RipsConceptoRecaudo', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='Recaudo05')
    tipoPagoModerador =  models.ForeignKey('rips.ripstipospagomoderador', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='modera01')
 

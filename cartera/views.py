@@ -496,7 +496,10 @@ def GuardarGlosasDetalle(request):
         cantidadSoportado=0.0
 
 
-    valorGlosado = float(request.POST['valorGlosadoGloDet'])
+    valorGlosado = request.POST['valorGlosadoGloDet']
+    valorGlosado = float(valorGlosado)
+
+
     print ("valorGlosado =", valorGlosado)
 
     if (valorGlosado==''):
@@ -565,7 +568,7 @@ def GuardarGlosasDetalle(request):
 
     if tipoGloDet == 'PROCEDIMIENTOS' :
 
-        comando = 'UPDATE rips_ripsprocedimientos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + str(valorGlosado) + "," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+        comando = 'UPDATE rips_ripsprocedimientos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
 
     if tipoGloDet == 'CONSULTAS' :
 
@@ -617,7 +620,7 @@ def GuardarGlosasDetalle(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
+    comando = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"valorGlosa" = ' + "'" + str(valorGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
 
     print(comando)
     cur3.execute(comando)

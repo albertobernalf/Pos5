@@ -617,7 +617,7 @@ CREATE OR REPLACE FUNCTION generaEnvioRipsJSON(envioRipsId numeric)
   RETURNS character varying  AS
 $BODY$ 
 DECLARE
-	
+	 
 		valorJson character(50000);
 		facturas RECORD; 
 		facturaId integer := 0;
