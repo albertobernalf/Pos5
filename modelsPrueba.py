@@ -561,3 +561,12 @@ Comenzar con prueba inicial crear glosas, crear envios de factura y luegode glos
 -- Probar la funcion que genera los JSON
 -- Es MEJOR primero ver como crea cada RIPS observando de si es FACTURA o GLOSA OJO EL SCRIPT ripspailas12.sql esta buenisimo para el SET DE PRUEBAS
 -- ops que pasa si deja crearuna glosa sin rips , PAILANDER , ERROR ??? Averiguar
+
+-- miercolkes 26
+
+-- hacer el insetr de proced.glosas
+- hacer nva factura traza a los meedicamentos
+-- ver el json archivo d proced, medicamentos
+-- ojo verificar el json global
+-- ojo hacer la rutina cuando son proced o medicamentos MANUALES, ah pero con que solo sean manuales el
+SQL va en un UNION

@@ -277,8 +277,9 @@ function arrancaEnviosRips(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 		{     "render": function ( data, type, row ) {
                         var btn = '';
+			      btn = btn + " <button class='miMinisterio btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
 			      btn = btn + " <button class='miDetalle btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa fa-pencil"></i>' + "</button>";
-                 	      btn = btn + " <button class='miJson btn-primary  '   data-action='post/" + row.pk + "/miJson' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
                  	      btn = btn + " <button class='miBorrar btn-primary  ' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
 
                        return btn;
@@ -1260,27 +1261,28 @@ tipoRips2
 
 
 
-
-/*----------------------------------------
---------------------------------------------/
-
- $('#tablaDetalleRips tbody').on('click', '.miJson', function() {
-	alert("Entre a miJson()");
+$('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 
 
 	     var post_id = $(this).data('pk');
 	var envioRipsId = document.getElementById("envioRipsId").value ;
+	var row = $(this).closest('tr'); // Encuentra la fila
 
 	var table = $('#tablaDetalleRips').DataTable();  // Inicializa el DataTable jquery//
 	
-	var rowindex = table.row(0).node();  // Selecciona la primera fila jquery
+ 	var rowindex = table.row(row).data(); // Obtiene los datos de la fila
        console.log("rowindex= " , rowindex);
 
 	
 	var facturaId = table.row(0).cell(rowindex, 1).data();  // jquery
-       console.log("facturaId = " , facturaId );
-       console.log("otra1 = " , table.row(0).cell(rowindex, 0).data() );
-       console.log("otra2 = " , table.row(0).cell(rowindex, 2).data() );
+
+	      dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "la factura es =  = " , dato3.numeroFactura); 
+
+	var facturaId = dato3.numeroFactura;
 
       
 	$.ajax({
@@ -1295,6 +1297,8 @@ tipoRips2
 
   	
  				$('#valorJson').val(info[0].fields.valorJson);
+				$('#envioRipsIdJ').val(envioRipsId);
+				$('#facturaIdJ').val(facturaId);
 				
 
             $('#modelHeadingRipsJson').html("Detalle Envios Rips");

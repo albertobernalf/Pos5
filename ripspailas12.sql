@@ -4,7 +4,7 @@ delete from rips_ripsdetalle where id=67;
 select * from facturacion_facturacion;
 select * from cartera_glosas;
 update cartera_glosas set "ripsEnvio_id" = null where id=6;
-
+ 
 
 SELECT f.id,  f.id factura,0 glosaId, f."fechaFactura", u.nombre paciente , f."totalFactura", f.estado  
 	FROM public.facturacion_facturacion f, admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c 
@@ -73,7 +73,7 @@ select fac.id idFact, fac.convenio_id, conv.id idConvenio, conv.nombre, emp.nomb
 from facturacion_facturacion fac, contratacion_convenios conv, facturacion_empresas emp
 where  fac.convenio_id = conv.id and conv.empresa_id = emp.id
 
-	-- QUERY DURAZO PARA SET DE PRUEBAS
+	-- QUERY DURAZO PARA SET DE PRUEBAS FACTURACION
 	
 select fac.id idFact, fac.convenio_id, conv.id idConvenio, conv.nombre, emp.nombre empresa, emp.id idempresa, dep.numero,dep.nombre, serv.nombre, usu.nombre
 from facturacion_facturacion fac, contratacion_convenios conv, facturacion_empresas emp, admisiones_ingresos i, sitios_dependencias dep,
@@ -83,13 +83,20 @@ where  fac.convenio_id = conv.id and conv.empresa_id = emp.id and  fac."tipoDoc_
 	servsed.servicios_id = serv.id and fac."tipoDoc_id" = usu."tipoDoc_id" and fac.documento_id = usu.id
 
 	
-
+-- QUERY DURAZO PARA SET DE PRUEBAS GLOSAS - PROCEDIMIENTOS
+	
 select * from cartera_glosas;
+select * from rips_ripsprocedimientos;
+select * from rips_ripstransaccion;
 
-select glo.id idFact, glo.convenio_id, conv.id idConvenio, conv.nombre
-from facturacion_facturacion glo, contratacion_convenios conv
-where  glo.convenio_id = conv.id
-
+select ripstra.id transaccion,glo.id idGlo, glo.convenio_id, conv.id idConvenio, conv.nombre,emp.nombre empresa, emp.id idempresa, fac.id factura, glo."saldoFactura", ripsproc.consecutivo,ripsproc."vrServicio",
+	ripsproc."valorGlosado", ripsproc."vAceptado", ripsproc."notasCreditoGlosa", glo."ripsEnvio_id", glo."valorGlosa"
+from cartera_glosas glo , facturacion_facturacion fac, contratacion_convenios conv, rips_ripsprocedimientos ripsproc,  rips_ripstransaccion ripstra ,
+		facturacion_empresas emp
+where  glo.convenio_id = conv.id and glo.factura_id = fac.id and conv.empresa_id = emp.id and cast(ripstra."numFactura" as float) = fac.id and ripsproc."ripsTransaccion_id" = ripstra.id
+order by ripsproc.consecutivo
+	
 delete from cartera_glosas;
 select * from rips_ripshospitalizacion;
+
 

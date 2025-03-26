@@ -207,7 +207,7 @@ div.dataTables_filter input {
 				  <label class="visually-hidden" for="fechaEnvio">Fecha Envio:</label>
                                    	 <label class="visually-hidden" for="fechaEnvio">FechaEnvio:</label>
                                
-					 <input type="datetime-local"  class="form-control form-control-sm" id="fechaEnvio" name="fechaEnvio" placeholder="fechaEnvio" readonly >
+					 <input type="datetime-local"  class="form-control form-control-sm" id="fechaEnvio" name="fechaEnvio" placeholder="fechaEnvio"  >
                                 </div>
 
 				<div class="col-12">
@@ -291,10 +291,9 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 			     Tipo:     <input type="text" name="tipoRips2" id="tipoRips2" readonly>  
    			   <div class="row">
 		     
-			     		<!--  <table  id= "tablaDetalleRipsAdicionar" class=" display table table-striped" style="width: 100%";> -->
+                                       <table  id= "tablaDetalleRipsAdicionar" class="display nowrap table table table-bordered tablaDetalleRipsAdicionar table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">  
 
-                                        <table  id= "tablaDetalleRipsAdicionar" class="display nowrap table table table-bordered tablaDetalleRipsAdicionar table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">
-                                           <thead>
+  <thead>
                                             <tr>    
 						<bold>                                  
                                                 <th>id</th>
@@ -337,6 +336,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                                 <th>RutaZip</th>
 						<th>UsuarioRegistro</th>
                                                 <th>Action</th>
+
 						</bold>                                  
                                             </tr>
                                             </thead>
@@ -493,7 +493,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                             </div>
                             <form id="postFormRipsJson" name="postFormRipsJsone" class="form-horizontal"
                                   novalidate>
-							 Id :     <input type="text" name="envioRipsIdJ" id="envioRipsIdJ" readonly>
+							 EnvioId :     <input type="text" name="envioRipsIdJ" id="envioRipsIdJ" readonly>
         				                 Factura: <input type="text" id="facturaIdJ" name="facturaIdJ"  readonly></input>           
 
 
@@ -501,7 +501,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 				<div class="col">
                                     JSON:
-					<textarea id="valorJson" name="valorJson"   cols="80" rows="10"></textarea>
+					<textarea id="valorJson" name="valorJson"   cols="120" rows="23"></textarea>
                                  
                                 </div>
 
