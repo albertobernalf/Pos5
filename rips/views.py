@@ -578,8 +578,8 @@ def GenerarJsonRips(request):
 	    detalle =  'SELECT id, "numeroFactura_id" item , "numeroFactura_id" itemOtro from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
 	    curx.execute(detalle)
 
-	    for id, item in curx.fetchall():
-        	barridoFacturas.append({'id':id, 'item': item })
+	    for id, item, itemOtro in curx.fetchall():
+        	barridoFacturas.append({'id':id, 'item': item,'itemOtro':itemOtro })
 
 
     if (tipoRips == 'Glosa'):
@@ -1217,6 +1217,49 @@ def TraerJsonRips(request):
     if (tipoRips == 'Glosa'):
 
         detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(facturaId)  + "'," + "'" + str('GLOSA') + "'" + ') valorJson'
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for valorJson in curx.fetchall():
+        jsonRips.append(
+            {"model": "rips_ripsdetalle", "pk": id, "fields":
+                {'valorJson':valorJson }})
+
+    miConexionx.close()
+    print("jsonRips ", jsonRips)
+    context['JsonRips'] = jsonRips
+
+    serialized1 = json.dumps(jsonRips, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def TraerJsonEnvioRips(request):
+    print("Entre a TraerJsonEnvioRips")
+
+    envioRipsId = request.POST['envioRipsId']
+    print("envioRipsId =", envioRipsId)
+
+    tipoRips = request.POST['tipoRips']
+    print("tipoRips =", tipoRips)
+
+    context = {}
+
+    jsonRips = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    if (tipoRips == 'Factura'):
+
+        detalle = 'select generaEnvioRipsJSON('  + "'" + str(envioRipsId) + "','" + str('FACTURA') + "'" + ') valorJson'
+
+    if (tipoRips == 'Glosa'):
+
+        detalle = 'select generaEnvioRipsJSON('  + "'" + str(envioRipsId) +  "','" + str('GLOSA') + "'" + ') valorJson'
 
     print(detalle)
 

@@ -90,6 +90,7 @@ function arrancaEnviosRips(valorTabla,valorData)
 	    { width: '10%', targets: [9,15] },
 		{     "render": function ( data, type, row ) {
                         var btn = '';
+	     btn = btn + " <button class='miEnvioMinisterio btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
              btn = btn + " <input type='radio' name='miAutorizacion' class='miSol form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
 
@@ -1083,6 +1084,58 @@ window.addEventListener('load', async () => {
 
 
 
+$('#tablaEnviosRips tbody').on('click', '.miEnvioMinisterio', function() {
+
+		alert("ENTRE envio  miniusterio");
+
+	     var post_id = $(this).data('pk');
+	var envioRipsId = document.getElementById("envioRipsId").value ;
+	var row = $(this).closest('tr'); // Encuentra la fila
+
+	// Nop estop toca por el DOM - html traer el valopr d ela columna
+
+
+
+
+	tipoRips =   document.getElementById("tipoRips2").value ;
+	alert("tipoRips = " +  tipoRips);
+
+
+
+     
+	$.ajax({
+
+	        url: "/traerJsonEnvioRips/",
+                data: {'envioRipsId':envioRipsId,'tipoRips':tipoRips},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+            $('#postFormRipsEnvioJson').trigger("reset");
+
+  	
+ 				$('#valorJsonP').val(info[0].fields.valorJson);
+				$('#envioRipsIdP').val(envioRipsId);
+
+
+				
+
+            $('#modelHeadingRipsEnvioJson').html("Detalle Envios Rips");
+            $('#crearModelRipsEnvioJson').modal('show');
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+      
+  });
+
+
+
+
+
+
 // FIN DE LO NUEVO
 
 
@@ -1263,7 +1316,7 @@ tipoRips2
 
 $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 
-		alert("ENTRE");
+		alert("Entre Factura Rips ");
 
 	     var post_id = $(this).data('pk');
 	var envioRipsId = document.getElementById("envioRipsId").value ;
@@ -1286,6 +1339,8 @@ $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 	var facturaId = dato3.numeroFactura;
 		tipoRips =   document.getElementById("tipoRips2").value ;
 	alert("tipoRips = " +  tipoRips);
+	alert("facturaId = " +  facturaId);
+	alert("envioRipsId = " + envioRipsId);
 
      
 	$.ajax({
@@ -1304,7 +1359,7 @@ $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 				$('#facturaIdJ').val(facturaId);
 				
 
-            $('#modelHeadingRipsJson').html("Detalle Envios Rips");
+            $('#modelHeadingRipsJson').html("Detalle Factura Rips");
             $('#crearModelRipsJson').modal('show');
 
                 },
@@ -1522,3 +1577,10 @@ function CerrarModalJson()
 
             $('#crearModelRipsJson').modal('hide');
 }
+
+function CerrarModalEnvioJson()
+{
+
+            $('#crearModelRipsEnvioJson').modal('hide');
+}
+

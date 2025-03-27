@@ -570,3 +570,14 @@ Comenzar con prueba inicial crear glosas, crear envios de factura y luegode glos
 -- ojo verificar el json global
 -- ojo hacer la rutina cuando son proced o medicamentos MANUALES, ah pero con que solo sean manuales el
 SQL va en un UNION
+
+Mañana v( (3 ) AREGLOS
+
+1. EN EL union NO TRAER ITEMS CON valor_glosado is nul, por que son los rips de GLOSAS
+2. En en que crear el ripsprocedimientos de glosas creare un consecutivo nuevo
+3. en generaFacturaJSON () de GLOSA no debe traer los procedimientos con valor_glosado con valor
+  en generaFacturaJSON () de FACTURA  debe traer los procedimientos con valor_glosado con valor O "notasCreditoGlosa" con valor . VALIDAR TODO ESOTO Y BER CUANDO SE PROCESA MAS DE UNA VEZ UN RIPS
+  SI BORRA ADECUADAMENTE .
+
+
+

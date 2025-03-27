@@ -277,6 +277,59 @@ div.dataTables_filter input {
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
 
+
+	<!-- MODAL PARA MOSTRAT EL JSON DEL ENVIO  ->
+
+	<!-- Otra Modal -->
+
+
+            <div class="modal fade" id="crearModelRipsEnvioJson" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="modelHeadingRipsEnvioJson"></h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+                            <form id="postFormRipsEnvioJson" name="postFormRipsEnvioJson" class="form-horizontal"
+                                  novalidate>
+							 EnvioId :     <input type="text" name="envioRipsIdP" id="envioRipsIdP" readonly>
+
+
+				<div class="row row-cols-1" style="height=30px;">
+
+				<div class="col">
+                                    JSON:
+					<textarea id="valorJsonP" name="valorJsonP"   cols="120" rows="23"></textarea>
+                                 
+                                </div>
+
+                                <div class="col-sm-offset-2 col-sm-10 mt-2">
+                                    <button type="button" class="btn btn-primary" id="cerrarJson" name="cerrarJson"  value="Cerrar" onclick="CerrarModalEnvioJson()">Cerrar </button>
+                                </div>
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+                        </div> <!-- CIERRA BODY -->
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+	<!-- Fin otra Modal -->
+     <!-- FIN Espacio Modales  -->
+
+
+
+	<!-- FIN MODAL JSON ENVIO -->
+
+
+
+
+
+
+
      <!-- FIN Espacio Modales  -->
 
         </article>
