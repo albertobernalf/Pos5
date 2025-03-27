@@ -1263,6 +1263,7 @@ tipoRips2
 
 $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 
+		alert("ENTRE");
 
 	     var post_id = $(this).data('pk');
 	var envioRipsId = document.getElementById("envioRipsId").value ;
@@ -1283,12 +1284,14 @@ $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 	        console.log ( "la factura es =  = " , dato3.numeroFactura); 
 
 	var facturaId = dato3.numeroFactura;
+		tipoRips =   document.getElementById("tipoRips2").value ;
+	alert("tipoRips = " +  tipoRips);
 
-      
+     
 	$.ajax({
 
 	        url: "/traerJsonRips/",
-                data: {'envioRipsId':envioRipsId,'facturaId':facturaId},
+                data: {'envioRipsId':envioRipsId,'facturaId':facturaId,'tipoRips':tipoRips},
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {

@@ -575,7 +575,7 @@ def GenerarJsonRips(request):
 
     if (tipoRips == 'Factura'):
 
-	    detalle =  'SELECT id, "numeroFactura_id" item from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
+	    detalle =  'SELECT id, "numeroFactura_id" item , "numeroFactura_id" itemOtro from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
 	    curx.execute(detalle)
 
 	    for id, item in curx.fetchall():
@@ -585,13 +585,13 @@ def GenerarJsonRips(request):
     if (tipoRips == 'Glosa'):
 
 
-	    detalle =  'SELECT id, glosa_id item from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
+	    detalle =  'SELECT id, glosa_id item , "numeroFactura_id" itemOtro from rips_ripsdetalle det where det."ripsEnvios_id"  = ' + "'" + str(envioRipsId) +"'"
 
 
 	    curx.execute(detalle)
 
-	    for id, item in curx.fetchall():
-	        barridoFacturas.append({'id':id, 'item': item })
+	    for id, item, itemOtro in curx.fetchall():
+	        barridoFacturas.append({'id':id, 'item': item ,'itemOtro':itemOtro})
 
     print ("detalle = ", detalle)
     miConexionx.commit()
@@ -606,6 +606,8 @@ def GenerarJsonRips(request):
         print("elementox = " , elementox['item'])
         elemento = elementox['item']
         print("elemento = ", elemento)
+        elementoOtro = elementox['itemOtro']
+
 
 	    ### RIPS TRANSACCION
         #
@@ -688,8 +690,9 @@ def GenerarJsonRips(request):
             detalle = 'INSERT INTO rips_ripshospitalizacion ("codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id",  "fechaRegistro")  SELECT sed."codigoHabilitacion",i."ripsViaIngresoServicioSalud_id",cast(i."fechaIngreso" as date), aut."numeroAutorizacion" , i."ripsCausaMotivoAtencion_id", (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxComplicacion_id"),(select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxIngreso_id"), (select diag1.id from clinico_diagnosticos diag1 where  diag1.id = i."dxSalida_id"),     (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1 , clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('2') + "'" + ' and histdiag1.diagnosticos_id = diag1.id and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" = fac."consecAdmision") ,   (select max(diag1.id)  from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his  where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('3') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision"),  (select max(diag1.id) from clinico_historialdiagnosticos histdiag1, clinico_diagnosticos diag1, clinico_historia his where histdiag1.historia_id = his.id and histdiag1."tiposDiagnostico_id" = ' + "'" + str('4') + "'" + ' and histdiag1.diagnosticos_id = diag1.id  and his."tipoDoc_id" = fac."tipoDoc_id" and his.documento_id = fac.documento_id AND his."consecAdmision" =fac."consecAdmision" ), i."ripsCondicionDestinoUsuarioEgreso_id", null,  cast(i."fechaSalida" as date), row_number() OVER(ORDER BY i.id) AS consecutivo ,' + "'" + str(username_id) + "'" + ' ,det.id,env."ripsEstados_id",  ripstra.id,now() FROM sitios_sedesclinica sed inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) inner join admisiones_ingresos i ON (i."sedesClinica_id" = sed.id and i."tipoDoc_id" =fac."tipoDoc_id" and i.documento_id = fac.documento_id AND i.consec =fac."consecAdmision") inner join rips_ripsenvios env ON (env."sedesClinica_id" = sed.id) inner join rips_ripsdetalle det ON ( det."ripsEnvios_id" = env.id and  det."ripsEnvios_id" = fac."ripsEnvio_id" and cast(det."numeroFactura_id" as float) = fac.id )  inner join rips_ripstransaccion ripstra ON ( ripstra."sedesClinica_id" = sed.id and ripstra."ripsEnvio_id" = env.id and ripstra."numFactura" = cast(fac.id as text))  left join autorizaciones_autorizaciones aut  on (aut.id = i.autorizaciones_id) inner join 	clinico_servicios serv on (serv.nombre = ' + "'" + str('HOSPITALIZACION') +"')" + ' inner join 	sitios_dependencias dep on (dep.id = i."dependenciasSalida_id" ) inner join 	sitios_serviciossedes servsedes on (servsedes.id = dep."serviciosSedes_id" and servsedes.servicios_id= serv.id)    where sed.id = ' + "'" + str(sede) + "'" + ' AND env.id = ' + "'" + str(envioRipsId) + "'"
 
         if (tipoRips == 'Glosa'):
-            detalle = ''
-            pass
+
+            detalle = 'INSERT INTO rips_ripshospitalizacion ("codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id",  "fechaRegistro") SELECT  "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id","condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, ripshosp."usuarioRegistro_id",'  + "'" + str(elementox['id']) + "'" +  ' , "ripsTipos_id",' + "'" + str(transaccionId) + "'" + ',  ripshosp."fechaRegistro"	FROM rips_ripshospitalizacion ripshosp, rips_ripsdetalle det , rips_ripstransaccion ripstra where  ripstra."ripsEnvio_id" = det."ripsEnvios_id" and ripshosp."ripsTransaccion_id" = ripstra.id and ripshosp."ripsDetalle_id" = det.id and cast(ripstra."numFactura" as float) =  det."numeroFactura_id" and cast(ripstra."numFactura" as float) = ' + "'" + str(elementoOtro) + "'"
+
 
         print("detalle = ", detalle)
 
@@ -712,8 +715,8 @@ def GenerarJsonRips(request):
 
         if (tipoRips == 'Glosa'):
 
-            detalle = ''
-            pass
+            detalle = 'INSERT INTO rips_ripsurgenciasobservacion ("codPrestador", "fechaInicioAtencion", "fechaEgreso", consecutivo, "fechaRegistro", "causaMotivoAtencion_id","codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id","codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", "usuarioRegistro_id", "ripsDetalle_id",  "ripsTipos_id", "ripsTransaccion_id") SELECT "codPrestador", "fechaInicioAtencion", "fechaEgreso", consecutivo, ripsobs."fechaRegistro", "causaMotivoAtencion_id","codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id", "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id","codDiagnosticoRelacionadoE3_id", "condicionDestinoUsuarioEgreso_id", ripsobs."usuarioRegistro_id",' + "'" + str(elementox['id']) + "'" + ',  "ripsTipos_id",' + "'" + str(transaccionId) + "'" + ' FROM  rips_ripsurgenciasobservacion ripsobs, rips_ripsdetalle det , rips_ripstransaccion ripstra where  ripstra."ripsEnvio_id" = det."ripsEnvios_id" and  ripsobs."ripsTransaccion_id" = ripstra.id and ripsobs."ripsDetalle_id" = det.id and cast(ripstra."numFactura" as float) =  det."numeroFactura_id" and  cast(ripstra."numFactura" as float) = ' + "'" + str(elementoOtro) + "'"
+
 
 
         print("detalle = ", detalle)
@@ -734,8 +737,9 @@ def GenerarJsonRips(request):
 
 
         if (tipoRips == 'Glosa'):
-            detalle = ''
-            pass
+
+            detalle = 'INSERT INTO rips_ripsmedicamentos ("codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", "diasTratamiento",	"numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador",consecutivo, "fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id","tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", "usuarioRegistro_id", "ripsDetalle_id", "itemFactura","ripsTipos_id", "ripsTransaccion_id") SELECT "codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento", "cantidadMedicamento", "diasTratamiento",	"numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador",consecutivo, "fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", "formaFarmaceutica_id", "tipoDocumentoIdentificacion_id","tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", "usuarioRegistro_id", ' + "'" + str(elementox['id']) + "'" + ' , "itemFactura","ripsTipos_id", ' + "'" + str(transaccionId) + "'" + ' FROM rips_ripsmedicamentos ripsmed where ripsmed.glosa_id = ' + "'" + str(elemento) + "'"
+
 
         print("detalle = ", detalle)
         curx.execute(detalle)
@@ -757,8 +761,8 @@ def GenerarJsonRips(request):
 
         if (tipoRips == 'Glosa'):
 
-            detalle = ''
-            pass
+            detalle = 'INSERT INTO rips_ripsreciennacido ("codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", peso,"fechaEgreso", consecutivo, "fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id","tipoDocumentoIdentificacion_id","usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id") SELECT "codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", peso,"fechaEgreso", consecutivo, ripsnac."fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id","tipoDocumentoIdentificacion_id",ripsnac."usuarioRegistro_id",' + "'" + str(elementox['id']) + "'" + ', "ripsTipos_id", ' + "'" + str(transaccionId) + "'" + ' FROM rips_ripsreciennacido ripsnac, rips_ripsdetalle det, rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = det."ripsEnvios_id" and ripsnac."ripsTransaccion_id" = ripstra.id and ripsnac."ripsDetalle_id" = det.id and cast(ripstra."numFactura" as float) =  det."numeroFactura_id" and cast(ripstra."numFactura" as float) = ' + "'" + str(elementoOtro) + "'"
+
 
         print("detalle = ", detalle)
         curx.execute(detalle)
@@ -779,9 +783,18 @@ def GenerarJsonRips(request):
         cury = miConexiony.cursor()
         funcionJson = []
 
-        detalle = 'SELECT generaFacturaJSON(' + str(envioRipsId) + "," + str(elemento) +  ') dato'
+        if (tipoRips == 'Factura'):
+
+            detalle = 'SELECT generaFacturaJSON(' + str(envioRipsId) + "," + str(elemento) +  ',' + "'" + str('FACTURA') + "'" + ') dato'
+
+        if (tipoRips == 'Glosa'):
+
+            detalle = 'SELECT generaFacturaJSON(' + str(envioRipsId) + "," + str(elemento) +  ',' + "'" + str('GLOSA') + "'" + ') dato'
+
 
         cury.execute(detalle)
+
+        print ('detalle generaJSONFactura= ', detalle)
 
         for dato in cury.fetchall():
 
@@ -821,7 +834,7 @@ def GenerarJsonRips(request):
 
         if (tipoRips == 'Glosa'):
 
-            detalle = 'UPDATE rips_ripsDetalle SET "rutaJsonFactura" = ' + "'" + str(nombreCarpeta) + "', " + ' "ripsEstado_id" = ' + "'" + str(ripsEstados.id) + "'" +  ' WHERE "ripsEnvios_id" =  '  + "'" + str(envioRipsId) + "'" + ' AND "glosa_id" = ' +"'" +str(elemento) + "'"
+            detalle = 'UPDATE rips_ripsDetalle SET "rutaJsonFactura" = ' + "'" + str(nombreCarpeta) + "', " + ' "ripsEstados_id" = ' + "'" + str(ripsEstados.id) + "'" +  ' WHERE "ripsEnvios_id" =  '  + "'" + str(envioRipsId) + "'" + ' AND "glosa_id" = ' +"'" +str(elemento) + "'"
 
         print ("detalle = ", detalle)
         curt.execute(detalle)
@@ -834,9 +847,19 @@ def GenerarJsonRips(request):
         #
     miConexiony = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cury = miConexiony.cursor()
+
     funcionGlobalJson = []
 
-    detalle = 'SELECT generaEnvioRipsJSON(' + str(envioRipsId) + ') dato'
+    if (tipoRips == 'Factura'):
+
+        detalle = 'SELECT generaEnvioRipsJSON(' + str(envioRipsId) + ',' + "'" + str('FACTURA') + "'" + ') dato'
+
+    if (tipoRips == 'Glosa'):
+
+        detalle = 'SELECT generaEnvioRipsJSON(' + str(envioRipsId) + ',' + "'" + str('GLOSA') + "'" + ') dato'
+
+
+
     cury.execute(detalle)
 
     for dato in cury.fetchall():
@@ -861,7 +884,7 @@ def GenerarJsonRips(request):
     print ("totalItems = ", totalItems)
 
     # Aqui grabo la ruta del JSON GLOBAL
-        #
+
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
@@ -1176,6 +1199,9 @@ def TraerJsonRips(request):
     facturaId = request.POST['facturaId']
     print("facturaId =", facturaId)
 
+    tipoRips = request.POST['tipoRips']
+    print("tipoRips =", tipoRips)
+
     context = {}
 
     jsonRips = []
@@ -1184,7 +1210,13 @@ def TraerJsonRips(request):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(facturaId)  + "') valorJson"
+    if (tipoRips == 'Factura'):
+
+        detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(facturaId)  + "'," + "'" + str('FACTURA') + "'" + ') valorJson'
+
+    if (tipoRips == 'Glosa'):
+
+        detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(facturaId)  + "'," + "'" + str('GLOSA') + "'" + ') valorJson'
 
     print(detalle)
 
