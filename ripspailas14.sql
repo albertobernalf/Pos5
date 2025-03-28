@@ -16,27 +16,22 @@ delete from rips_ripsProcedimientos where glosa_id = '12' and "notasCreditoGlosa
 select * FROM rips_ripsProcedimientos 	 where "ripsTransaccion_id" = 141  order by consecutivo
 -- rollback;
 -- commit;
+select * from rips_ripsprocedimientos WHERE "ripsTransaccion_id" = 141;
 
 
- SELECT   "codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "notasCreditoGlosa","valorPagoModerador", "numFEVPagoModerador",
-	consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id","codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", 
-	"conceptoRecaudo_id", "finalidadTecnologiaSalud_id",       "grupoServicios_id", "modalidadGrupoServicioTecSal_id","tipoDocumentoIdentificacion_id","usuarioRegistro_id",
-	"viaIngresoServicioSalud_id",'76', "itemFactura", "ripsTipos_id",    "tipoPagoModerador_id",'149','12'
-	FROM rips_ripsProcedimientos where glosa_id = '12'
+begin transaction;
+delete from rips_ripsprocedimientos where glosa_id = 12 and "ripsTransaccion_id" = 152;
+update rips_ripsprocedimientos set "ripsTransaccion_id" = 152 where glosa_id = 12 and "ripsTransaccion_id" = 141; 
+select * from rips_ripsprocedimientos where glosa_id = 12;
+-- rollback;
+-- commit;
 
-
- -- mañana este seria el query pero arregladola con el nro del rips nuevo de lña glosa, la factura y el risdetaell
-	
-            INSERT INTO rips_ripshospitalizacion ("codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", 
-	"codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id",
-	"condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, "usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id",  
-	"fechaRegistro")  
-	SELECT ripshosp.id, "codPrestador","viaIngresoServicioSalud_id","fechaInicioAtencion", "numAutorizacion","causaMotivoAtencion_id","codComplicacion_id", 
-	"codDiagnosticoPrincipal_id", "codDiagnosticoPrincipalE_id",  "codDiagnosticoRelacionadoE1_id", "codDiagnosticoRelacionadoE2_id", "codDiagnosticoRelacionadoE3_id",
-	"condicionDestinoUsuarioEgreso_id", "codDiagnosticoCausaMuerte_id","fechaEgreso",  consecutivo, ripshosp."usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id",  
-	ripshosp"fechaRegistro"
-	FROM  rips_ripshospitalizacion ripshosp, rips_ripsdetalle det , rips_ripstransaccion ripstra
-	where  ripstra."ripsEnvio_id" = det."ripsEnvios_id" and  
-		ripshosp."ripsTransaccion_id" = ripstra.id and ripshosp."ripsDetalle_id" = det.id and cast(ripstra."numFactura" as float) =  det."numeroFactura_id" and
-        cast(ripstra."numFactura" as float) =  40
-      
+ INSERT INTO rips_ripsreciennacido ("codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", 
+	 peso,"fechaEgreso", consecutivo, "fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id",
+	 "tipoDocumentoIdentificacion_id","usuarioRegistro_id", "ripsDetalle_id", "ripsTipos_id", "ripsTransaccion_id")
+	 SELECT "codPrestador", "numDocumentoIdentificacion", "fechaNacimiento", "edadGestacional", "numConsultasCPrenatal","codSexoBiologico", peso,"fechaEgreso", consecutivo,
+	 ripsnac."fechaRegistro", "codDiagnosticoCausaMuerte_id", "codDiagnosticoPrincipal_id","condicionDestinoUsuarioEgreso_id","tipoDocumentoIdentificacion_id",
+	 ripsnac."usuarioRegistro_id",'76', "ripsTipos_id", '155'
+	 FROM rips_ripsreciennacido ripsnac, rips_ripsdetalle det, rips_ripstransaccion ripstra 
+	 where ripstra."ripsEnvio_id" = det."ripsEnvios_id" and ripsnac."ripsTransaccion_id" = ripstra.id and ripsnac."ripsDetalle_id" = det.id and
+	 cast(ripstra."numFactura" as float) =  det."numeroFactura_id" and cast(ripstra."numFactura" as float) = '42'

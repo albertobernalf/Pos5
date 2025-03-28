@@ -1096,7 +1096,6 @@ $('#tablaEnviosRips tbody').on('click', '.miEnvioMinisterio', function() {
 
 
 
-
 	tipoRips =   document.getElementById("tipoRips2").value ;
 	alert("tipoRips = " +  tipoRips);
 
@@ -1337,26 +1336,43 @@ $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 	        console.log ( "la factura es =  = " , dato3.numeroFactura); 
 
 	var facturaId = dato3.numeroFactura;
+        var glosaId = dato3.glosaId;
+
 		tipoRips =   document.getElementById("tipoRips2").value ;
 	alert("tipoRips = " +  tipoRips);
 	alert("facturaId = " +  facturaId);
 	alert("envioRipsId = " + envioRipsId);
+	alert("glosaId = " + glosaId);
 
      
 	$.ajax({
 
 	        url: "/traerJsonRips/",
-                data: {'envioRipsId':envioRipsId,'facturaId':facturaId,'tipoRips':tipoRips},
+                data: {'envioRipsId':envioRipsId,'facturaId':facturaId,'tipoRips':tipoRips,'glosaId':glosaId},
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
 
             $('#postFormRipsJson').trigger("reset");
 
-  	
+  				
  				$('#valorJson').val(info[0].fields.valorJson);
 				$('#envioRipsIdJ').val(envioRipsId);
-				$('#facturaIdJ').val(facturaId);
+
+			
+
+				if (tipoRips=='Glosa')
+					{
+					alert("Entre glosa");
+
+					$('#facturaIdJ').val(glosaId);
+					}
+				else
+					{
+					$('#facturaIdJ').val(facturaId);
+					}
+
+
 				
 
             $('#modelHeadingRipsJson').html("Detalle Factura Rips");

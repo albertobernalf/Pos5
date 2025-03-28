@@ -670,7 +670,7 @@ def GenerarJsonRips(request):
 
             print ("PASE SOLO UNA VEZ ")
 
-            detalle = 'INSERT INTO rips_ripsprocedimientos("codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "vrServicio","valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id","codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id",	"grupoServicios_id", "modalidadGrupoServicioTecSal_id","tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id", "ripsTransaccion_id", glosa_id) SELECT 	"codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "notasCreditoGlosa","valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id","codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id",	"grupoServicios_id", "modalidadGrupoServicioTecSal_id","tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id",' + "'" + str(elementox['id']) + "'" + ', "itemFactura", "ripsTipos_id", 	"tipoPagoModerador_id",' + "'" +  str(transaccionId) + "',"  + "'" + str(elemento) + "'" + ' FROM rips_ripsProcedimientos where glosa_id = ' + "'" + str(elemento) + "'"
+            detalle = 'INSERT INTO rips_ripsprocedimientos("codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "vrServicio","valorPagoModerador", "numFEVPagoModerador", consecutivo, "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id","codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id",	"grupoServicios_id", "modalidadGrupoServicioTecSal_id","tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id", "ripsDetalle_id", "itemFactura", "ripsTipos_id", "tipoPagoModerador_id", "ripsTransaccion_id", glosa_id) SELECT 	"codPrestador", "fechaInicioAtencion", "idMIPRES", "numAutorizacion","numDocumentoIdentificacion", "notasCreditoGlosa","valorPagoModerador", "numFEVPagoModerador", row_number() OVER(ORDER BY rips_ripsProcedimientos.id) AS consecutivo , "fechaRegistro", "codComplicacion_id", "codDiagnosticoPrincipal_id","codDiagnosticoRelacionado_id", "codProcedimiento_id", "codServicio_id", "conceptoRecaudo_id", "finalidadTecnologiaSalud_id",	"grupoServicios_id", "modalidadGrupoServicioTecSal_id","tipoDocumentoIdentificacion_id","usuarioRegistro_id", "viaIngresoServicioSalud_id",' + "'" + str(elementox['id']) + "'" + ', "itemFactura", "ripsTipos_id", 	"tipoPagoModerador_id",' + "'" +  str(transaccionId) + "',"  + "'" + str(elemento) + "'" + ' FROM rips_ripsProcedimientos where glosa_id = ' + "'" + str(elemento) + "'"
 
 
         print ("detalle = " , detalle)
@@ -1199,6 +1199,10 @@ def TraerJsonRips(request):
     facturaId = request.POST['facturaId']
     print("facturaId =", facturaId)
 
+    glosaId = request.POST['glosaId']
+    print("glosaId =", glosaId)
+
+
     tipoRips = request.POST['tipoRips']
     print("tipoRips =", tipoRips)
 
@@ -1216,7 +1220,7 @@ def TraerJsonRips(request):
 
     if (tipoRips == 'Glosa'):
 
-        detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(facturaId)  + "'," + "'" + str('GLOSA') + "'" + ') valorJson'
+        detalle = 'select generaFacturaJSON('  + "'" + str(envioRipsId) + "','" + str(glosaId)  + "'," + "'" + str('GLOSA') + "'" + ') valorJson'
 
     print(detalle)
 

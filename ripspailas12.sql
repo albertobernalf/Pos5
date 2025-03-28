@@ -85,9 +85,6 @@ where  fac.convenio_id = conv.id and conv.empresa_id = emp.id and  fac."tipoDoc_
 	
 -- QUERY DURAZO PARA SET DE PRUEBAS GLOSAS - PROCEDIMIENTOS
 	
-select * from cartera_glosas;
-select * from rips_ripsprocedimientos;
-select * from rips_ripstransaccion;
 
 select ripstra.id transaccion,glo.id idGlo, glo.convenio_id, conv.id idConvenio, conv.nombre,emp.nombre empresa, emp.id idempresa, fac.id factura, glo."saldoFactura", ripsproc.consecutivo,ripsproc."vrServicio",
 	ripsproc."valorGlosado", ripsproc."vAceptado", ripsproc."notasCreditoGlosa", glo."ripsEnvio_id", glo."valorGlosa"
@@ -97,22 +94,15 @@ where  glo.convenio_id = conv.id and glo.factura_id = fac.id and conv.empresa_id
 order by ripsproc.consecutivo
 	
 delete from cartera_glosas;
+
+SELECT generaFacturaJSON(49,13,'GLOSA')
+	
 select * from rips_ripshospitalizacion;
-
-
+select * from rips_ripsurgenciasobservacion;
 select * from rips_ripsenvios;
 select * from rips_ripsdetalle;
+select * from cartera_glosas;
 select * from rips_ripsprocedimientos;
 select * from rips_ripstransaccion;
 select * from rips_ripsusuarios;
-
-select * from cartera_glosas;
-
-update cartera_glosas set "valorGlosa"= 85000 where id=12;
-
-   SELECT g.id,  g.factura_id factura,g.id glosaId, g."fechaRecepcion" fechaFactura, u.nombre paciente , g."valorGlosa" totalFactura, g."estadoRecepcion_id" estado 
-	   FROM public.cartera_glosas g, facturacion_facturacion f , admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c 
-	   WHERE  g.factura_id  =  f.id and i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   c.empresa_id = '1' 
-	   AND g."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision" and g."valorGlosa" >0
-
 

@@ -53,8 +53,7 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
 
    Para el lunes 16-sept
 
-   1. create facturacion_facturacion, facturacion_facturacionDetalle, involucrar glosas
-   2.   bajar anexosa tecnicos de glosas. Crear carpetasde anexos tecnicos
+   2. bajar anexosa tecnicos de glosas. Crear carpetasde anexos tecnicos
    4. crear historia-clinicos con form . Es el historial como un resumen de historia en pantalla de consulta
    5.que crajop pasa con las fechas-hora
    6. algo pasda con el grid de revsion de sistemas/historia clinica
@@ -64,7 +63,7 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
 --  TRIAGE, ADMISIONES - HISTORIA CLINICA
 -----------------------------------------------------------------------------------------------------------------------
 
-1  probar inser de clinicos
+1  probar insert de clinicos
   cuando grabo se fuel por otra cosa y noreargo la pagina de ingresos clinicos ojop
   ojo No hay una dependencia llave foranea de la historia con el ingreso
 5 ojo no funciona mensajeria cuando actualiza un trige 
@@ -86,7 +85,6 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
 23. Ojo hay un erro al cargar la paginma admisione. es en cambioServico.change se activa pero no hay sede , por cua? no hay sede?
 24. Toca arregalr el tema de los ingresoIDxx, sedexx de acompanantes, responsable y abonos. ORGANIZAR bien
 
-    PARA EL DIA LUNES 30 DE Septiembre . PILAS SEGUIR CON FURIPS Y TODO LO QUE FALTA DE INGRESOS/TRIAGE/HC
 
     No me marca o me selecciona el primer registro de la tabla en admiisones NOSE POR CUA
     Apenas arregle todo esto si crearFURIPs. Se debe crear enarticle copiao de crearadmisiones a bloc de notas , se maquilla con datos FURIPS, se envian combos alarticle y opcion guardar
@@ -99,7 +97,7 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
 
    3. se debe subir la tabla cumm de rips a facturacion_suministros
    4. Es necesario atar los itmes de examens de la HClinica a la facturacion los del sistema. Los demas son ajustes o manuales No se ligan
-   5. OJO PPILAS QUE UD. ESTA TRABAJANDO FURIPS (ya paso el parrentesis de rips , facturacion y glosas) . Hay que terminar primero admisiones-triage-histora clinica , luego si seguir
+   5. OJO PILAS QUE UD. ESTA TRABAJANDO FURIPS (ya paso el parrentesis de rips , facturacion y glosas) . Hay que terminar primero admisiones-triage-histora clinica , luego si seguir
    6. Reorganizar la captura de la admision con los nuevos campos de rips ripsServiciosActual etc
    7. Comenzar a crear tablas cums, cups solidas las dfinitivas
    8. No me desaparecio la ventana  Modal .crear admison desde triage, el query de regreso Nop funciono mostraba en triage aun la persona
@@ -137,11 +135,6 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
         -- ojo en apoyp terapeutico cuando responden hacer la parte de factutracionm crear cabeza detalle con los datos
            que ingresan
 
-
-       Mañana : -- formular a paula, medica, proc qx, etc
-         
-                -- Responder por apoyo teraputico lo uqe se pueda
-                -- crear ventana liquidacion con datatables a liquidacion, liquidaciondetalle
 
   -- Procesos de Calculo para Tarifas (Se debe crear aplicativo, que actualize en tabla Tarifas , LiquidacionHonorarios)
 
@@ -472,20 +465,11 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 
 
 -- ojooooooo OBLIGAR A GUARDAR MUNICIPIO, LOCALIDAD, PAIS DESDE ADMISIONES, TRIAGE  (Ops estop lo veo bien PROBAR DE NUEVO)
--- ojo lunes en ripsenvios --> columna estadopasoministerio --> no funciona PENDIENTE, ENVIADFA Y mostrarla en rips, Ver creo en form de admisiones o model de admisiones como se hace eso
-
 
 -- OJO CREAR CONTROL que borre si el rips esta creado y volverlo a crear
 -- ojo crear control si ya esta ENVIADO EL RIPS , no dejarlos enviar nuevamente
 
--- ojo para ripshospital , falta coddx complicacion y coddxMuerte
---- ojo ellies que pasa en la funcion generafacturarios, con ripsurgenciasobservacion error null y engo el IF crear una urgenciua rips
-   en python crear elinsert a ripsurgenciasoibservacion
--- ojo crear proceso rips reciennacido 
--- ojo crear proceso rips medicamentos
--- ojo arreglar query inserta en ripsprocedimeintos dejarlo como el de hospitalizacion sobre tofo en dx
-
---       --> ojo en facturacion_facturacion Nomuestra nda ver que pasa --- y seguir hasta facturar la malosa con muchos medicamentos y lab, rad, tera, noqx a ver que pasa conrips
+-       --> ojo en facturacion_facturacion Nomuestra nda ver que pasa --- y seguir hasta facturar la malosa con muchos medicamentos y lab, rad, tera, noqx a ver que pasa conrips
 --> ojo hay que volver a revizar eL modulo de cargue  de tarifas a liquidaciondetalle
 --> ojo verificar de nuevo no me gusta ver la empresa por elos conveios de contratacion, deberia ser por admisiones_ingresos en lel campp empresa_id , cambiar esto VERIFICAR
 
@@ -503,8 +487,6 @@ $(primeraFila).find('td input[type="checkbox"]').prop('checked', true);  // Marc
 -- ojazo lunes no se que paso con folio de papa, con fluconazol y terapia. Problema con autorizaiones de medicamento con una terapia junta
 -- ops NO ME MUESTRA NI POR EL CHIRAS EN RIPS LA FACTURA QUE ACABO DE HACER DE ASTRID , DE QUE EMPRESA ES ???
 
--- Marzo 03
-	-- Ojo crear del delete de ripsdetalle
         --  En facturacion_facturacion no funciona los fiultro de busqueda por fecha o por nro de factyra
 	-- Crear boton modificar envio / Borrar envio
 
@@ -548,36 +530,47 @@ $(document).ready(function() {
     });
 });
 
-
-
-
  2. VENTANAS BOOSTRAP MODAL ELEGANTES
   3. SEGUIR CLINICO.HTML  NUEVOS DATATABLES
- 4. FUNCION GENERARJSON VERIFICAR
-  5. SIRVE PROBAR CON LA DATA ACTUAL AUNQUE PRONTO HAY QUE CAMBAIRAL
 
-ojo martes marzo 25.
-Comenzar con prueba inicial crear glosas, crear envios de factura y luegode glos. Probar tpodos los rips al peluche
 -- Probar la funcion que genera los JSON
--- Es MEJOR primero ver como crea cada RIPS observando de si es FACTURA o GLOSA OJO EL SCRIPT ripspailas12.sql esta buenisimo para el SET DE PRUEBAS
 -- ops que pasa si deja crearuna glosa sin rips , PAILANDER , ERROR ??? Averiguar
-
--- miercolkes 26
-
 -- hacer el insetr de proced.glosas
 - hacer nva factura traza a los meedicamentos
 -- ver el json archivo d proced, medicamentos
 -- ojo verificar el json global
 -- ojo hacer la rutina cuando son proced o medicamentos MANUALES, ah pero con que solo sean manuales el
-SQL va en un UNION
-
-Mañana v( (3 ) AREGLOS
-
-1. EN EL union NO TRAER ITEMS CON valor_glosado is nul, por que son los rips de GLOSAS
-2. En en que crear el ripsprocedimientos de glosas creare un consecutivo nuevo
-3. en generaFacturaJSON () de GLOSA no debe traer los procedimientos con valor_glosado con valor
-  en generaFacturaJSON () de FACTURA  debe traer los procedimientos con valor_glosado con valor O "notasCreditoGlosa" con valor . VALIDAR TODO ESOTO Y BER CUANDO SE PROCESA MAS DE UNA VEZ UN RIPS
-  SI BORRA ADECUADAMENTE .
 
 
+---------------------------
+------- tips IMPORTANTE PARA MODULOS DE CONSULTA EXTERNA, AMBULATORIO, INVENTARIOS, FACTURACION------------- LA REUNION FUE BENEFICIOSA PARA MY PROGRAM
+------------------------------
+1. Bodega virtual inventarios
+2. Ingresos citas medicas , ambulatorios. los ingresos son para urgenicas hosp generen estancias
+3. Tarifas: proced, son pocos SOAT, ISS, PARTICULAR LAS DEMAS SON POR PORCEMNTAGES
+
+	    Indsumos -- > condiciones una gsas deopende del tamaño de la factuyra etc
+4.SISTEMA DE ALERTAS son tareas programadas querys que envian mensajes por correo o wwhtasapp cuando se cumple ago. de prnto usarfunciones
+5. descripcion Qx, automatica OPS
+6. Ojo el termino FACTURABLE No FACTURABLE
+7. que es hoja de gasto
+8. oJO RADICAR UN ENVIO es coocar una fecha y yap
+9. COmenzar a visualizar hacia el futuro como va a funcionar la aplicacion en cuianto a velocidad, con datos ociosos no usarlos o volverlos HISTORICOS
+10. Como inactivar tarifarios. Solo trabajar con los activos
+--------------------------------
+---------------------------------
+------------------------------
+
+El lunes 31 de marzo seguir detalle de RIPS
+
+  a) Enviar un rips, colocar usuario y fecha de envio
+  b) Radicar un rips , colocar fecha u usuario de radicacion
+  c) Un rips enviado y radicado No se puede volver a generar RIPS INTOCABLE
+  e) Rips No enviado No es posible glosarlo
+  f) Rips Enviado de glosas No se puede modificar
+
+-- Ojo tocar verificar los LOAD_DATA de rips pero en el cartera modulo glosas
+-- Una vez haber hecho lo anterior, crear un paciente de ceros y hacerle traza completa
+-- OPS creo que me queda faltando algo en generafacturaJSON y envioFacturaJson en cuanto "valorGlosaDo" > 0 en las GLOSAS, algo me late chococlate
+--------------------
 

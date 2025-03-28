@@ -215,6 +215,7 @@ where sed.id = 1 AND env."sedesClinica_id" = sed.id and sed.id = i."sedesClinica
 -- Funcion para leer
 
 select generaJSON(31);	
+ SELECT generaFacturaJSON(49,13,'GLOSA')
 
 drop function generaJSON;
 
@@ -303,8 +304,9 @@ select * from rips_ripsdetalle
 select * from rips_ripstransaccion;
 select * from rips_ripsusuarios;
 select * from generaFacturaJSON(45,46)
-select * from generaFacturaJSON(46,42,'FACTURA')
-	 
+select * from generaFacturaJSON(49,13,'GLOSA')
+	select generaFacturaJSON('48','42','FACTURA')
+ 	 
 
 drop function generaFacturaJSON;
 
@@ -383,10 +385,10 @@ raise notice 'Va esto en el JSON : %s' , valorJson;
 
 if (tipo = 'FACTURA') then 
 	
-	totalProcedimientos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0 ) ;
+	totalProcedimientos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0  AND proc."valorGlosado" > 0 );
 
 	contador = 1;
-	   	FOR tabla IN select * from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0
+	   	FOR tabla IN select * from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0 AND proc."valorGlosado" > 0
 		LOOP 
           consecutivos[contador] := tabla.consecutivo;
           contador := contador + 1;
@@ -431,7 +433,7 @@ if (totalProcedimientos> 0) then
 	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
 	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
 	||'"codComplicacion": '|| '"' ||CASE WHEN trim(cast(proc."codComplicacion_id" as text)) is null THEN 0 ELSE proc."codComplicacion_id"  END   || '",'
-	||'"vrProcedimiento": '|| '"' || proc."vrServicio"  || '",'	
+	||'"vrProcedimiento": '|| '"' || CASE WHEN trim(cast(proc."vrServicio" as text)) is null THEN 0 ELSE proc."notasCreditoGlosa" END  || '",'	
 	||'"tipoPagoModerador": '|| '"' || CASE WHEN trim(cast(proc."tipoPagoModerador_id" as text)) is null THEN 0 ELSE proc."tipoPagoModerador_id"  END  || '",'	
 	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
 	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
@@ -440,7 +442,7 @@ if (totalProcedimientos> 0) then
 	INTO valorProcedimientos
 	from rips_ripstransaccion ripstra
 	inner join rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id)
-	where  ripstra."ripsEnvio_id" = envioRipsId AND proc."ripsTransaccion_id" = ripstra.id AND ripstra."numFactura" = cast(facturaId as text) and proc.consecutivo = consecutivos[contador];
+	where  ripstra."ripsEnvio_id" = envioRipsId AND proc."ripsTransaccion_id" = ripstra.id AND ripstra."numFactura" = cast(facturaId as text) AND proc."valorGlosado" > 0 and proc.consecutivo = consecutivos[contador];
 	contador := contador +1;
 	valorJson = valorJson ||' ' ||  valorProcedimientos;
 	end if;
@@ -458,7 +460,7 @@ if (totalProcedimientos> 0) then
 	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
 	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
 	||'"codComplicacion": '|| '"' ||CASE WHEN trim(cast(proc."codComplicacion_id" as text)) is null THEN 0 ELSE proc."codComplicacion_id"  END   || '",'
-	||'"vrProcedimiento": '|| '"' || proc."notasCreditoGlosa"  || '",'	
+	||'"vrProcedimiento": '|| '"' || CASE WHEN trim(cast(proc."notasCreditoGlosa" as text)) is null THEN 0 ELSE proc."notasCreditoGlosa" END  || '",'	
 	||'"tipoPagoModerador": '|| '"' || CASE WHEN trim(cast(proc."tipoPagoModerador_id" as text)) is null THEN 0 ELSE proc."tipoPagoModerador_id"  END  || '",'	
 	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'			   
 	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
@@ -467,7 +469,7 @@ if (totalProcedimientos> 0) then
 	INTO valorProcedimientos
 	from rips_ripstransaccion ripstra
 	inner join rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id)
-	where  ripstra."ripsEnvio_id" = envioRipsId AND ripstra."ripsEnvio_id" = envioRipsId and ripstra."numNota" = cast(facturaId as text) and proc.consecutivo = consecutivos[contador];
+	where  ripstra."ripsEnvio_id" = envioRipsId AND ripstra."ripsEnvio_id" = envioRipsId and ripstra."numNota" = cast(facturaId as text)   and proc.consecutivo = consecutivos[contador];
 
 	contador := contador +1;
 	valorJson = valorJson ||' ' ||  valorProcedimientos;
@@ -1059,10 +1061,10 @@ raise notice 'Va esto en el JSON : %s' , valorJson;
 
 if (tipo = 'FACTURA') then 
 	
-	totalProcedimientos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0 ) ;
+	totalProcedimientos  = (select count(*) from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0 AND proc."valorGlosado" > 0 ) ;
 
 	contador = 1;
-	   	FOR tabla IN select * from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0
+	   	FOR tabla IN select * from rips_ripstransaccion ripstra, rips_ripsprocedimientos proc where ripstra."ripsEnvio_id" = envioRipsId and ripstra."numFactura" =cast(facturaId as text ) and proc."ripsTransaccion_id" = ripstra.id and cast("numNota" as float)  = 0 AND proc."valorGlosado" > 0
 		LOOP 
           consecutivos[contador] := tabla.consecutivo;
           contador := contador + 1;
@@ -1107,7 +1109,7 @@ if (totalProcedimientos> 0) then
 	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
 	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
 	||'"codComplicacion": '|| '"' ||CASE WHEN trim(cast(proc."codComplicacion_id" as text)) is null THEN 0 ELSE proc."codComplicacion_id"  END   || '",'
-	||'"vrProcedimiento": '|| '"' || proc."vrServicio"  || '",'	
+	||'"vrProcedimiento": '|| '"' || CASE WHEN trim(cast(proc."vrServicio" as text)) is null THEN 0 ELSE proc."notasCreditoGlosa" END  || '",'	
 	||'"tipoPagoModerador": '|| '"' || CASE WHEN trim(cast(proc."tipoPagoModerador_id" as text)) is null THEN 0 ELSE proc."tipoPagoModerador_id"  END  || '",'	
 	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
 	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
@@ -1116,7 +1118,7 @@ if (totalProcedimientos> 0) then
 	INTO valorProcedimientos
 	from rips_ripstransaccion ripstra
 	inner join rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id)
-	where  ripstra."ripsEnvio_id" = envioRipsId AND proc."ripsTransaccion_id" = ripstra.id AND ripstra."numFactura" = cast(facturaId as text) and proc.consecutivo = consecutivos[contador];
+	where  ripstra."ripsEnvio_id" = envioRipsId AND proc."ripsTransaccion_id" = ripstra.id AND ripstra."numFactura" = cast(facturaId as text) and proc."valorGlosado" = 0 and proc.consecutivo = consecutivos[contador];
 	contador := contador +1;
 	valorJson = valorJson ||' ' ||  valorProcedimientos;
 	end if;
@@ -1134,7 +1136,7 @@ if (totalProcedimientos> 0) then
 	||'"codDiagnosticoPrincipal": '|| '"' || CASE WHEN trim(cast(proc."codDiagnosticoPrincipal_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoPrincipal_id"  END || '",'	
 	||'"codDiagnosticoRelacionado": '|| '"' ||  CASE WHEN trim(cast(proc."codDiagnosticoRelacionado_id" as text)) is null THEN 0 ELSE proc."codDiagnosticoRelacionado_id"  END    || '",'	
 	||'"codComplicacion": '|| '"' ||CASE WHEN trim(cast(proc."codComplicacion_id" as text)) is null THEN 0 ELSE proc."codComplicacion_id"  END   || '",'
-	||'"vrProcedimiento": '|| '"' || proc."notasCreditoGlosa"  || '",'	
+	||'"vrProcedimiento": '|| '"' || CASE WHEN trim(cast(proc."notasCreditoGlosa" as text)) is null THEN 0 ELSE proc."notasCreditoGlosa" END  || '",'	
 	||'"tipoPagoModerador": '|| '"' || CASE WHEN trim(cast(proc."tipoPagoModerador_id" as text)) is null THEN 0 ELSE proc."tipoPagoModerador_id"  END  || '",'	
 	||'"valorPagoModerador": '|| '"' ||   CASE WHEN trim(cast(proc."valorPagoModerador" as text)) is null THEN 0 ELSE proc."valorPagoModerador"  END  || '",'	
 	||'"numFEVPagoModerador": '|| '"' || proc."numFEVPagoModerador" || '",'
@@ -1143,7 +1145,7 @@ if (totalProcedimientos> 0) then
 	INTO valorProcedimientos
 	from rips_ripstransaccion ripstra
 	inner join rips_ripsprocedimientos proc on (proc."ripsTransaccion_id" = ripstra.id)
-	where  ripstra."ripsEnvio_id" = envioRipsId AND ripstra."ripsEnvio_id" = envioRipsId and ripstra."numNota" = cast(facturaId as text) and proc.consecutivo = consecutivos[contador];
+	where  ripstra."ripsEnvio_id" = envioRipsId AND ripstra."ripsEnvio_id" = envioRipsId and ripstra."numNota" = cast(facturaId as text)   and proc.consecutivo = consecutivos[contador];
 
 	contador := contador +1;
 
@@ -1600,7 +1602,7 @@ end if;
 	valorJson = valorJson ||' ' || totalRecienNacidos;
 
 end if;
-
+ 
 end if;
 
 raise notice 'Va esto en el JSON RECIEN NACIDOS : %s' , valorJson;
@@ -1625,7 +1627,7 @@ ALTER FUNCTION generaEnvioRipsJSON
 
 
 select * from rips_ripsprocedimientos;
-select * from generaFacturaJSON(31,41)
+select * from generaFacturaJSON(48,42,'FACTURA')
 select * from generaFacturaJSON(38,40)
 select * from generaFacturaJSON(38,48)
 select * from rips_ripstransaccion;
