@@ -46,13 +46,6 @@ class tarifasAdmin(admin.ModelAdmin):
    # Filtrar
    list_filter =("id", "tipoTarifa", "nombre", "codigoHomologado")
 
-@admin.register(TiposTarifa)
-class tiposTarifaAdmin(admin.ModelAdmin):
-
-   list_display = ("id", "nombre")
-   search_fields = ("id", "nombre")
-   # Filtrar
-   list_filter = ("id", "nombre")
 
 @admin.register(GruposQx)
 class gruposQxAdmin(admin.ModelAdmin):

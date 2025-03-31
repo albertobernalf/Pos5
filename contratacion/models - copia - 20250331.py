@@ -18,20 +18,22 @@ class ConveniosProcedimientos(models.Model):
     )
     id = models.AutoField(primary_key=True)
     convenio = models.ForeignKey('contratacion.Convenios', blank=True,null= True, editable=True, on_delete=models.PROTECT)        
-    tarifariosDescripcion = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion01')
-    #tipoTarifa = models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT)    
-    #codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)
-    #concepto = models.ForeignKey('facturacion.Conceptos', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Concepto21')
-    #cups = models.ForeignKey('clinico.Examenes',   blank=True,null= True, editable=True,  on_delete=models.PROTECT,  related_name='Cups206')
-    #valor = models.DecimalField( max_digits=15, decimal_places=2, blank=True,null= True, editable=True)
+    tipoTarifa = models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT)    
+    codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)
+    concepto = models.ForeignKey('facturacion.Conceptos', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Concepto21')
+    cups = models.ForeignKey('clinico.Examenes',   blank=True,null= True, editable=True,  on_delete=models.PROTECT,  related_name='Cups206')
+    valor = models.DecimalField( max_digits=15, decimal_places=2, blank=True,null= True, editable=True)
     fechaRegistro = models.DateTimeField(default=now, editable=False)
     usuarioRegistro = models.ForeignKey('planta.Planta', default=1, on_delete=models.PROTECT, null=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
 
+    class Meta:
+        unique_together = (('convenio', 'tipoTarifa', 'cups'),)
+
 
     def __str__(self):
-            return str(self.tarifariosDescripcion)
+            return self.nombre
 
 
 class Convenios (models.Model):
@@ -64,7 +66,7 @@ class Convenios (models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
     def __str__(self):
-        return str(str(self.empresa) + str(' ') + str(self.nombre)  )
+        return str(self.nombre)
 
 
 class ConveniosTarifasHonorarios (models.Model):
@@ -96,15 +98,17 @@ class ConveniosSuministros(models.Model):
     )
     id = models.AutoField(primary_key=True)
     convenio = models.ForeignKey('contratacion.Convenios', blank=True,null= True, editable=True, on_delete=models.PROTECT)        
-    #tipoTarifa = models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT)    
-    #codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)
-    #concepto = models.ForeignKey('facturacion.Conceptos', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Concepto221')
-    #suministro = models.ForeignKey('facturacion.Suministros',on_delete=models.PROTECT, null= False)
-    #valor = models.DecimalField( max_digits=15, decimal_places=2, blank=True,null= True, editable=True)
+    tipoTarifa = models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT)    
+    codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)
+    concepto = models.ForeignKey('facturacion.Conceptos', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Concepto221')
+    suministro = models.ForeignKey('facturacion.Suministros',on_delete=models.PROTECT, null= False)
+    valor = models.DecimalField( max_digits=15, decimal_places=2, blank=True,null= True, editable=True)
     fechaRegistro = models.DateTimeField(default=now, editable=False)
     usuarioRegistro = models.ForeignKey('planta.Planta', default=1, on_delete=models.PROTECT, null=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
+    class Meta:
+        unique_together = (('convenio','tipoTarifa', 'suministro'),)
 
 
     def __str__(self):

@@ -574,3 +574,15 @@ El lunes 31 de marzo seguir detalle de RIPS
 -- OPS creo que me queda faltando algo en generafacturaJSON y envioFacturaJson en cuanto "valorGlosaDo" > 0 en las GLOSAS, algo me late chococlate
 --------------------
 
+-- OJO quira en los modelos de roips el default = 0 y quitarlos d elas funciones RIPS generaFacturaJSON y generaEnvioJSON(9
+
+-- DATOS DE REUNION CLUB EL NOGAL
+
+	a) INVENTARIOS: bodegas virtuales
+        b) CUPS -INSUMOS : Facturables - No facturable,, Hojas de gasto
+	c) SISTEMA DE ALERTAS : Crear con tareas programadas, whatsapp, correos
+	d) Particionamiento postgresql 12 --> de acuerdo a EXPLAIN si funciona me imagino pues el costo es diferente, supongo que en la transaccionalidad, bloqueos en conjunto velocidad. Por si solo los vi como iguales 
+						a No estar particionado . PROBAR MAS
+	e) Tarifarios nuevo programa
+	f) falta algo mas ???
+

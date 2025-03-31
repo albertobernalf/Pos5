@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'cartera',
     'rips',
     'tarifas',
+    'tarifarios',
 ]
 
 MIDDLEWARE = [
