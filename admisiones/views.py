@@ -1849,10 +1849,10 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     if (escogeModulo == 'TARIFAS'):
         print("ENTRE PERMSISO TARIFAS")
-        ## Aqui contexto para solo Triage
+        ## Aqui contexto para solo Tarifarios
 
         ## FIN CONTEXTO
-        return render(request, "tarifas/Paneltarifas.html", context)
+        return render(request, "tarifarios/PanelTarifariosF.html", context)
 
 
     if (escogeModulo == 'RIPS'):

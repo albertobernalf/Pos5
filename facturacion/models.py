@@ -158,30 +158,20 @@ class Suministros (models.Model):
         #return str(self.nombre)
 
 
-class ConveniosPaciente(models.Model):
-    id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,  on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,  on_delete=models.PROTECT, related_name='DocumentoHistoria')
-    convenio = models.ForeignKey('contratacion.Convenios', blank=True, null=True, editable=True,  on_delete=models.PROTECT)
-    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
-    estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
-    def __str__(self):
-        return str(self.documento)
 
 class ConveniosPacienteIngresos(models.Model):
     id = models.AutoField(primary_key=True)
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoHistoria2')
     consecAdmision = models.IntegerField(default=0)
-    convenio = models.ForeignKey('contratacion.Convenios', blank=True, null=True, editable=True, on_delete=models.PROTECT)
+    convenio = models.ForeignKey('contratacion.Convenios', blank=True, null=True, editable=True, on_delete=models.PROTECT  , related_name='convenios0221')
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     class Meta:
-        unique_together = (('tipoDoc', 'documento','consecAdmision','convenio'),)
+        unique_together = (('tipoDoc', 'documento','consecAdmision'),)
 
     def __str__(self):
         return str(self.id)

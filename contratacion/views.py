@@ -21,7 +21,7 @@ import psycopg2
 import json 
 import datetime
 from decimal import Decimal
-from contratacion.models import ConveniosProcedimientos, ConveniosSuministros, ConveniosLiquidacionTarifasHonorarios
+from contratacion.models import  ConveniosLiquidacionTarifasHonorarios
 
 
 # Create your views here.

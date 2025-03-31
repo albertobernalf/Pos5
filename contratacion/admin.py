@@ -4,15 +4,14 @@ from django.contrib import admin
 
 
 from clinico.models import TiposExamen
-from contratacion.models import  Convenios,  ConveniosTarifasHonorarios,ConveniosLiquidacionTarifasHonorarios, ConveniosProcedimientos, ConveniosSuministros
-
+from contratacion.models import  Convenios,  ConveniosTarifasHonorarios,ConveniosLiquidacionTarifasHonorarios
 @admin.register(Convenios)
 class conveniosAdmin(admin.ModelAdmin):
 
-    list_display = ( "id","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
-    search_fields = ( "id","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
+    list_display = ( "id","tarifariosDescripcion","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
+    search_fields = ( "id","tarifariosDescripcion","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
     # Filtrar
-    list_filter = ( "id","nombre", "descripcion","empresa","vigenciaDesde","vigenciaHasta")
+    list_filter = ( "id","tarifariosDescripcion","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
 
 
 
@@ -24,22 +23,9 @@ class  conveniosTarifasHonorariosAdmin(admin.ModelAdmin):
     # Filtrar
     list_filter =  ( "id","convenio",  "valor")
 
-@admin.register(ConveniosProcedimientos)
-class conveniosProcedimientosAdmin(admin.ModelAdmin):
-
-    list_display = ( "id","convenio","tarifariosDescripcion")
-    search_fields = ( "id","convenio","tarifariosDescripcion")
-    # Filtrar
-    list_filter = ( "id","convenio","tarifariosDescripcion")
 
 
-@admin.register(ConveniosSuministros)
-class conveniosSuministrosAdmin(admin.ModelAdmin):
 
-    list_display = ( "id","convenio")
-    search_fields = ( "id","convenio")
-    # Filtrar
-    list_filter = ( "id","convenio")
 
 
 

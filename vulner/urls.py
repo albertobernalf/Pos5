@@ -34,6 +34,7 @@ from clinico import views as viewsClinico
 from terapeutico import views as viewsApoyoTerapeutico
 from facturacion import views as viewsFacturacion
 from contratacion import views as viewsConvenios
+from tarifarios import views as viewsTarifarios
 from rips import views as viewsRips
 from cartera import views as viewsCartera
 
@@ -248,8 +249,9 @@ urlpatterns = [
     path('guardaGlosasEstados/', viewsCartera.GuardaGlosasEstados,name='guardaGlosasEstados'),
     path('load_tablaGlosasDetalle/<str:data>', viewsCartera.Load_tablaGlosasDetalle,name='load_tablaGlosasDetalle'),
 
-
-
+    # Tarifas
+	
+    path('load_dataTarifariosProcedimientos/<str:data>', viewsTarifarios.Load_dataTarifariosProcedimientos, name='Load_dataTarifariosProcedimientos'),
 
     # Contratacion
     path('load_dataConvenios/<str:data>', viewsConvenios.load_dataConvenios, name='loaddataConvenios'),

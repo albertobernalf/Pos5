@@ -40,7 +40,7 @@ class TarifariosDescripcion (models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
     def __str__(self):
-        return str(self.descripcion)
+        return str(str(self.tiposTarifa) + ' '  + str(self.descripcion))
 
 
 class TarifariosProcedimientos (models.Model):
