@@ -1851,6 +1851,31 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print("ENTRE PERMSISO TARIFAS")
         ## Aqui contexto para solo Tarifarios
 
+   	# Combo TiposTarifa
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT p.id id, p.nombre  nombre FROM  tarifarios_tipostarifa  p where p."tiposTarifaProducto_id" in (select id from tarifarios_tipostarifaProducto where nombre like (' + "'" + str('%PROCED%')  + "'))"
+        print(comando)
+        curt.execute(comando)
+
+
+        tiposTarifa = []
+
+
+        for id, nombre in curt.fetchall():
+            tiposTarifa.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("TiposTarifa", tiposTarifa)
+
+        context['TiposTarifa'] = tiposTarifa
+
+        # Fin combo TiposTarifa
+
+
         ## FIN CONTEXTO
         return render(request, "tarifarios/PanelTarifariosF.html", context)
 
@@ -1866,7 +1891,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsTiposNotas  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsTiposNotas  p "
 
         curt.execute(comando)
         print(comando)

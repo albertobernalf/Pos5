@@ -36,9 +36,57 @@ WHERE usu."tipoDoc_id" = ing."tipoDoc_id" and usu.id = ing.documento_id AND conv
 	order by documento_id,ing."consecAdmision"
 
 select * from tarifarios_TarifariosDescripcion;
+--delete from tarifarios_TarifariosDescripcion where id=14;
 select * from tarifarios_tipostarifa;
 select * from tarifarios_tipostarifaProducto;
-select * from contratacion_ConveniosProcedimientos;
+select * from tarifarios_tarifariosprocedimientos; -- 1749
+select * from tarifarios_tarifariosprocedimientos where "codigoHomologado" = '19729'
+
 select * from contratacion_convenios;
 select * from facturacion_ConveniosPaciente;
+select * from tarifarios_tipostarifa where "tiposTarifaProducto_id" in (select id from tarifarios_tipostarifaProducto where nombre like ('%PROCED%'));
+
+SELECT x.id id, x.nombre  nombre
+	FROM  tarifas_tipostarifa x
+	where x."tiposTarifaProducto_id" in (select id from tarifarios_tipostarifaProducto where nombre like ('%PROCED%'))
+
+select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion
+	from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes
+	where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like ('%PROCE%') 
+	order by tarprod.nombre
+
+-- QUerys valiosos :
+
+-- 1 er Query
+
+select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion
+from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes
+where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarprod.nombre like ('%PROCE%')
+order by tarprod.nombre 
+
+
+-- do Query El detalle
+	
+select tarprod.nombre, tiptar.nombre , tardes.columna, tardes.descripcion , tarproc."codigoHomologado", exa.nombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2"
+from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc,
+	 clinico_examenes exa
+where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id 
+	and tardes.columna='colValorBase' and exa.id = tarproc."codigoCups_id"
+
+-- Query detalle_1
+
+	select tarprod.nombre, tiptar.nombre ,  tarproc."codigoHomologado", exa.nombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2"
+	, tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"	
+from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc,
+	 clinico_examenes exa
+where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id 
+	and tardes.columna='colValorBase' and exa.id = tarproc."codigoCups_id"
+
+-- Otro query	
+
+select tarprod.nombre, tiptar.nombre , tardes.columna, tardes.descripcion , tarproc."codigoHomologado", tarproc."colValorBase",
+	tarproc."colValor1", tarproc."colValor2"
+from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc
+where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id 
+and tardes.columna='colValor1'
 

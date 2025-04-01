@@ -8,10 +8,10 @@ from contratacion.models import  Convenios,  ConveniosTarifasHonorarios,Convenio
 @admin.register(Convenios)
 class conveniosAdmin(admin.ModelAdmin):
 
-    list_display = ( "id","tarifariosDescripcion","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
-    search_fields = ( "id","tarifariosDescripcion","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
+    list_display = ( "id","tarifariosDescripcionProc","tarifariosDescripcionSum","tarifariosDescripcionHono","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
+    search_fields = ( "id","tarifariosDescripcionProc","tarifariosDescripcionSum","tarifariosDescripcionHono","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
     # Filtrar
-    list_filter = ( "id","tarifariosDescripcion","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
+    list_filter = ( "id","tarifariosDescripcionProc","tarifariosDescripcionSum","tarifariosDescripcionHono","nombre","descripcion", "empresa","vigenciaDesde","vigenciaHasta")
 
 
 

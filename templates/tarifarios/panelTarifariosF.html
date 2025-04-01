@@ -18,7 +18,7 @@
 <div class="marco">
     <ul class="tabs">
 
-        <li><a href="#TarifariosProcedimientos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> TarifariosProcedimientos </a></li>
+        <li><a href="#TarifariosDescripcionProcedimientos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> TarifariosProcedimientos </a></li>
         <li><a href="#TarifariosSuministros"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> TarifariosSuministros</a></li>
         <li><a href="#TarifariosHonorarios"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> TarifariosHonorarios</a></li>
 
@@ -52,9 +52,13 @@ div.dataTables_filter input {
 <div class="marco">
     <div class="secciones">
 
-        <article id="TarifariosProcedimientos">
-      
-            <form action="/enviosRips/" method="get" id="FormEnviosRips">
+
+
+
+<article id="TarifariosDescripcionProcedimientos">
+
+
+            <form  method="get" id="FormTarifariosDescripcionProcedimientos">
 
                 <input type="hidden" id="username" name="username" value="{{Username}}">
                 <input type="hidden" id="sedeSeleccionada" name="sedeSeleccionada" value="{{SedeSeleccionada}}">
@@ -78,13 +82,57 @@ div.dataTables_filter input {
                 <input type="hidden" id="consec" name="consec" value="">
                 <input type="hidden" id="tipoIng" name="tipoIng" value="{{tipoIng}}">
 		<input type="hidden" id="convenioId" name="convenioId" value="{{convenioId}}">
- 			<input type="text" id="autorizacionId" name="autorizacionId" value="" readonly> </input>
 	
             </form>
 
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
+        <!-- INICIO TABLE DE  EL DATATABLE  -->
 
  		<div class="container my-2">
+
+				<div class="col-12">
+		        	       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnCrearTarifarioProcedimientos"  name="BtnCrearTarifarioProcedimientos" value="Crear Tarifario Procedimientos" onclick= "CrearTarifarioProcedimientos()" >				    
+		        	       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnCrearDescripcionProcedimiento"  name="BtnCrearDescripcionProcedimiento" value="Adicionar Descripcion" onclick= "ModalDescripcionProcedimiento()" >				    
+				       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAplicarTarifario"  name="BtnAplicarTarifario" value="Aplicar % o Valor" onclick= "ModalAplicarTarifario()" >				    
+                                </div>
+
+   			   <div class="row">
+
+                                        <table  id= "tablaTarifariosDescripcionProcedimientos" class=" display table table-striped" style="width: 100%";>
+                                           <thead>
+                                            <tr >    
+						<bold>                                  
+                                                <th>id</th>
+                                                <th>Tipo</th>
+						<th>Tipo Tarifa</th>
+                                                <th>Columna</th>                                       
+                                                 <th>Descripcion</th>                                 
+	                                        <th>Seleccionar</th> 
+
+						</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody style="vertical-align:bottom; horizontal-align:left">
+                                            </tbody>
+					<tfoot>
+                                            <tr >    
+						<bold>                                  
+						<th>id</th>
+                                                <th>Tipo</th>
+						<th>Tipo Tarifa</th>
+                                                <th>Columna</th>                                       
+                                                 <th>Descripcion</th>                                 
+	                                        <th>Seleccionar</th> 
+
+						</bold>                                  
+
+                                            </tr>
+                                            </tfoot>
+				   </table>
+
+			</div>  <!--  Cierra el row -->
+
+
    			   <div class="row">
 
                                         <table  id= "tablaTarifariosProcedimientos" class=" display table table-striped" style="width: 100%";>
@@ -97,6 +145,7 @@ div.dataTables_filter input {
 				                <th>tiposTarifa_id</th>
 				                <th>codigoCups_id</th>
 				                <th>concepto_id</th>
+				                <th>colValorBase</th>
 				                <th>colValor1</th>
 				                <th>colValor2</th>
 				                <th>colValor3</th>
@@ -126,6 +175,7 @@ div.dataTables_filter input {
 				                <th>tiposTarifa_id</th>
 				                <th>codigoCups_id</th>
 				                <th>concepto_id</th>
+				                <th>colValorBase</th>
 				                <th>colValor1</th>
 				                <th>colValor2</th>
 				                <th>colValor3</th>
@@ -146,354 +196,119 @@ div.dataTables_filter input {
                                             </tfoot>
    </table>
 
-	</div>
-	</div>
+	</div>  <!--  Cierra el row  de la otra tabla -->
 
-	            <!-- Espacio Modales  Autorizaciones-->
 
-            <div class="modal fade" id="crearModelAutorizaciones" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+
+
+
+	</div> <!--  Cierra el Div -->
+
+            <!-- Espacio Modales  Descripcion Procedimientos -->
+
+
+            <div class="modal fade" id="crearModelDescripcionProcedimientos" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeadingEnviosRips"></h4>
+                             <h4 class="modal-title" id="modelHeadingDescripcionProcedimientos"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnDescripcionProcedimientos" onclick="GuardarDescripcionProcedimientos()">Grabar!</button> 
                         </div>
+		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
                                 <ul class="mb-0"></ul>
                             </div>
-                            <form id="postFormAutorizaciones" name="postFormAutorizaciones" class="form-horizontal"
-                                  novalidate>
-                                {% csrf_token %}
+			
+  			  <form id="postFormDescripcionProcedimientos" name="postFormDescripcionProcedimientos">
+
                                 <input type="hidden" name="post_id" id="post_id">
-                     
-				<div class="row row-cols-12" style="height=1px;">
 
-				<div class="col">
-                                    Sede Clinica:
-                                    <input type="text" id="sedesClinica_id" name="sedesClinica_id" value="1" readonly></input>
-                                </div>
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
-				<div class="col">
-                                    Empresa:
-				<select class="select-css"  id="empresa_id"
-                                                                name="empresa_id">
-                                                            {% for empresas in Empresas %}
-                                                            <option value="{{empresas.id}}">
-                                                                {{empresas.nombre}}
+			
+				<select class="select-css"  id="tiposTarifa_id"
+                                                                name="tiposTarifa_id">
+                                                            {% for tiposTarifa in TiposTarifa %}
+                                                            <option value="{{tiposTarifa.id}}">
+                                                                {{tiposTarifa.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
                                 </div>
 
+
                           
-				<div class="col">
-                                   Fecha Envio:
-                               
-					 <input type="datetime-local" id="fechaEnvio" name="fechaEnvio" readonly >
+				<div class="col-12">
+				  <label for="columna">Columna:</label>                              
+
+						<select class="select-css"  id="columna"        name="columna">
+
+							   <option value="colValorBase">Valor Base</option>
+							   <option value="colValor1">Valor1</option>
+							   <option value="colValor2">Valor2</option>
+							   <option value="colValor3">Valor3</option>
+							   <option value="colValor4">Valor4</option>
+							   <option value="colValor5">Valor5</option>
+							   <option value="colValor6">Valor6</option>
+							   <option value="colValor7">Valor7</option>
+							   <option value="colValor8">Valor8</option>
+							   <option value="colValor9">Valor8</option>
+							   <option value="colValor10">Valor10</option>
+
+                                                        </select>			
+
                                 </div>
 
-				<div class="col">
-                                    Fecha Respuesta:
-					 <input type="datetime-local" id="fechaRespuesta" name="fechaRespuesta" readonly>
-                                </div>
 
-				<div class="col">
-                                    CantidadFacturas:
-                                    <input type="text" id="cantidadFacturas" name="cantidadFacturas" value="0" readonly></input>
-                                </div>
-				<div class="col">
-                                    CantidadPasaron:
-                                    <input type="text" id="cantidadPasaron" name="cantidadPasaron" value="0" readonly></input>
-                                </div>
-				<div class="col">
-                                    CantidadRechazadas:
-                                    <input type="text" id="cantidadRechazadas" name="cantidadRechazadas" value="0" readonly></input>
-	                                </div>
-
-
-                                <div class="col">
-                                    EstadoPasoMinisterio:
-                                    <input type="text" id="estadoPasoMinisterio" name="estadoPasoMinisterio" value="PENDIENTE" readonly></input>
-                                </div>
-           
-                                <div class="col">
-                                   
-                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+				<div class="col-12">
+				  <label for="descripcion">Descripcion:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="descripcion" name="descripcion" placeholder="descripcion"  >
                                 </div>
 
 
 
-                                <div class="col">
-                                    EstadoRegistro:
-                                    <input type="text" id="estadoReg" name="estadoReg" value="A"  readonly> </input>
+                                <div class="col-12">
+				 <label  for="estadoReg">EstadoRegistro:</label>
+                                    
+                                    <input type="text" class="form-control form-control-sm" id="estadoReg" name="estadoReg" value="A" placeholder="CantidadRechazadas:"  estadoReg> </input>
                                 </div>
 
 
-
-                                <div class="col">
-                                    UsuarioRegistro_id:
+                                <div class="col-12">
+                                    Usuario:
                                     <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
                                 </div>
 
 
-                                <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="saveBtnCrearAutorizaciones"   value="create" onclick="CrearAutorizaciones()">Guardar </button>
+                                <div class="col-12">
+                                    <center> 
+					<button type="button" class="btn btn-primary" id="saveBtnDescripcionProcedimientos"   value="create" onclick="GuardarDescripcionProcedimientos()">Guardar </button> 
+					</center> 
                                 </div>
+
+
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
-                  
 
-     <!-- FIN Espacio Modales  -->
-
-
-        </article>
-
-
-<article id="TarifariosSuministros">
-                                     
-                              
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
-		<div class="container my-2">
-   			   <div class="row">
-                                        <table  id= "tablaTarifariosSuministros" class="display table table-striped" style="width: 100%">
-                                           <thead>
-                                            <tr>    
-						<bold>   
-					         <th>id</th>
-				                <th>codigoHomologado</th>
-				                <th>tiposTarifa_id</th>
-				                <th>codigoCum_id</th>
-				                <th>concepto_id</th>
-				                <th>colValor1</th>
-				                <th>colValor2</th>
-				                <th>colValor3</th>
-				                <th>colValor4</th>
-				                <th>colValor5</th>
-				                <th>colValor6</th>
-				                <th>colValor7</th>
-				                <th>colValor8</th>
-				                <th>colValor9</th>
-				                <th>colValor10</th>
-					        <th>usuarioRegistro_id</th>
-					        <th>fechaRegistro</th>
-					        <th>estadoReg</th>
-	                                        <th>Seleccionar</th> 
-						</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody style="vertical-align:bottom; horizontal-align:left">
-                                            </tbody>
-					 <tfoot>
-                                            <tr>    
-						<bold>   
-     						    <th>id</th>
-				                <th>codigoHomologado</th>
-				                <th>tiposTarifa_id</th>
-				                <th>codigoCum_id</th>
-				                <th>concepto_id</th>
-				                <th>colValor1</th>
-				                <th>colValor2</th>
-				                <th>colValor3</th>
-				                <th>colValor4</th>
-				                <th>colValor5</th>
-				                <th>colValor6</th>
-				                <th>colValor7</th>
-				                <th>colValor8</th>
-				                <th>colValor9</th>
-				                <th>colValor10</th>
-					        <th>usuarioRegistro_id</th>
-					        <th>fechaRegistro</th>
-					        <th>estadoReg</th>
-	                                        <th>Seleccionar</th> 
-						</bold>                                  
-                                            </tr>
-                                            </tfoot>
-                                        </table>
-                                    </div>
-                                </div>
-
-
-	            <!-- Espacio Modales  AutorizacionesDetalle-->
-
-            <div class="modal fade" id="crearModelAutorizacionesDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modelHeadingAutorizacionesDetalle"></h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="alert alert-danger error-msg" style="display:none">
-                                <ul class="mb-0"></ul>
-                            </div>
-                            <form id="postFormAutorizacionesDetalle" name="postFormAutorizacionesDetalle" class="form-horizontal"
-                                  novalidate>
-                                                                             
-				<div class="row row-cols-14" style="height=1px;">
-				<div class="col">
-   			   <input type="text" id="autorizacionDetalleId" name="autorizacionDetalleId" value=""  readonly> </input>
-                                </div>
-
-				<div class="col">
-				TipoAutorizacion:
-                                    <input type="text" id="tipoTipoExamen" name="tipoTipoExamen"  ></input>
-                                </div>
-	
-				<div class="col">
-		          
-				<select class="select-css"  id="estadoAutorizacion"
-                                                                name="estadoAutorizacion">
-                                                            {% for estadosAutorizacion in EstadosAutorizacion %}
-                                                            <option value="{{estadosAutorizacion.id}}">
-                                                                {{estadosAutorizacion.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                        </select>
-                                </div>
-
-				<div class="col">
-                                    Autorizacion:
-                                    <input type="text" id="numeroAutorizacion" name="numeroAutorizacion"  ></input>
-                                </div>
-
-
-				<div class="col">
-                                    TipoExamen:
-                                    <input type="text" id="tipNombre" name="tipNombre"  value="" ></input>
-                                </div>
-
-				<div class="col">
-                                    ExamenId:
-                                    <input type="text" id="exaNombre" name="exaNombre"  readonly></input>
-                                </div>
-
-
-				<div class="col">
-                                    Examen:
-                                    <input type="text" id="examenes_id" name="examenes_id"  readonly></input>
-                                </div>
-
-				<div class="col">
-                                    CantidadSolicitada:
-                                    <input type="text" id="cantidadSolicitada" name="cantidadSoclicitada" value=""  readonly></input>
-                                </div>
-				<div class="col">
-                                    CantidadAutorizada:
-                                    <input type="text" id="cantidadAutorizada" name="cantidadAutorizada" value=""  ></input>
-                                </div>
-
-				<div class="col">
-                                    ValorSolicitado:
-                                    <input type="text" id="valorSolicitado" name="valorSolicitado" value="" readonly ></input>
-                                </div>
-				<div class="col">
-                                    valorAutorizado:
-                                    <input type="text" id="valorAutorizado" name="valorAutorizado" value=""  ></input>
-                                </div>
-
-           
-                                <div class="col">
-                                   
-                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value=""  > </input>
-                                </div>
-
-				   <div class="col">
-                                   usuarioRegistro
-                                    <input type="text" id="usuarioRegistro2_id" name="usuarioRegistro2_id" value="{{Username_id}}" readonly> </input>
-                                </div>
-
-
-                                <div class="col-sm-offset-2 col-sm-10 mt-2">
-                                    <button type="button" class="btn btn-primary" id="saveBtnActualizarAut"   value="create" onclick="ActualizarAut()">Guardar </button>
-                                </div>
-                                </div> 
-			<!-- CIERRA ROW 8 COLUMNAS  -->
-
-                            </form>
                         </div> <!-- CIERRA BODY -->
+		
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
-                </div>  <!-- CIERRA MODAL FADE -->
+                </div>  <!-- CIERRA MODAL FADE -->                 
 
 
-
-	<!-- Otra Modal -->
      <!-- FIN Espacio Modales  -->
 
+
 </article>
 
+<article id="TarifariosSuministros">
+    </div>
 
 <article id="TarifariosHonorarios">
-        <!-- INICIO TABLE DE  EL DATATABLE  -->
-
- 		<div class="container my-2">
-   			   <div class="row">
-
-                                        <table  id= "tablaTarifarioshonorarios" class=" display table table-striped" style="width: 100%";>
-                                           <thead>
-                                            <tr >    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>SedeId</th>
-  
-                                                <th>Paciente</th>
-                                                <th>Folio</th>                                       
-                                                 <th>FecSolicitad</th>                                 
-                               
-                                                <th>#Aut</th>
-                                                <th>FecAut</th>
-                                                <th>Medico</th>
-                                                <th>Observac</th>
-                                                <th>EstAut</th>
-                                                <th>Solicitud</th>
-						<th>Vigencia</th>
-						<th>EmpId</th>
-						<th>Empresa</th>
-						<th>Ordena</th>
-					        <th>Registra</th> 
-	                                        <th>Seleccionar</th> 
-
-						</bold>                                  
-
-                                            </tr>
-                                            </thead>
-                                            <tbody style="vertical-align:bottom; horizontal-align:left">
-                                            </tbody>
-					<tfoot>
-                                            <tr >    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>SedeId</th>
-
-                                                <th>Paciente</th>
-                                                <th>Folio</th>                                       
-                                                 <th>FecSolicitad</th>                                 
-                            
-                                                <th>#Aut</th>
-                                                <th>FecAut</th>
-                                                <th>Medico</th>
-                                                <th>Observac</th>
-                                                <th>EstAut</th>
-                                                <th>Solicitud</th>
-						<th>Vigencia</th>
-						<th>EmpId</th>
-						<th>Empresa</th>
-						<th>Ordena</th>
-					        <th>Registra</th> 
-
-	                                        <th>Seleccionar	</th> 
-
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
-   </table>
-
-	</div>
-	</div>
-
-
-</article>
+    </div>
 
 
     
