@@ -1875,6 +1875,55 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Fin combo TiposTarifa
 
+   	# Combo Cups
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT p.id id, p.nombre  nombre FROM  clinico_examenes  p '
+        print(comando)
+        curt.execute(comando)
+
+
+        cups = []
+
+
+        for id, nombre in curt.fetchall():
+            cups.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("Cups", cups)
+
+        context['Cups'] = cups
+
+        # Fin combo Cups
+
+   	# Combo Conceptos
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT p.id id, p.nombre  nombre FROM  facturacion_conceptos p'
+        print(comando)
+        curt.execute(comando)
+
+
+        conceptos = []
+
+
+        for id, nombre in curt.fetchall():
+            conceptos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("conceptos", conceptos)
+
+        context['Conceptos'] = conceptos
+
+        # Fin combo Conceptos
+
+
 
         ## FIN CONTEXTO
         return render(request, "tarifarios/PanelTarifariosF.html", context)

@@ -21,9 +21,11 @@ where cups_id != 238 ;
 select count(*) from contratacion_conveniosprocedimientos; -- 1751
 select count(*) from tarifarios_tarifariosprocedimientos; -- 1749
  
-
+ 
 --delete from contratacion_conveniosprocedimientos;
 select *  from contratacion_conveniosprocedimientos;
+
+select * from facturacion_conceptos;
 
 SELECT * FROM CONTRATACION_CONVENIOS;
 select * from facturacion_conveniospacienteingresos
@@ -42,6 +44,8 @@ select * from tarifarios_tipostarifaProducto;
 select * from tarifarios_tarifariosprocedimientos; -- 1749
 select * from tarifarios_tarifariosprocedimientos where "codigoHomologado" = '19729'
 
+
+select * from clinico_examenes;
 select * from contratacion_convenios;
 select * from facturacion_ConveniosPaciente;
 select * from tarifarios_tipostarifa where "tiposTarifaProducto_id" in (select id from tarifarios_tipostarifaProducto where nombre like ('%PROCED%'));
@@ -82,6 +86,17 @@ from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tari
 where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id 
 	and tardes.columna='colValorBase' and exa.id = tarproc."codigoCups_id"
 
+-- Query detalle_2
+
+select tiptar.nombre , tarproc."codigoCups_id" cups, tarproc."codigoHomologado", exa.nombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2"
+	, tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"	
+from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc,
+	 clinico_examenes exa
+where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id 
+	and tardes.columna='colValorBase' and exa.id = tarproc."codigoCups_id"
+
+
+	
 -- Otro query	
 
 select tarprod.nombre, tiptar.nombre , tardes.columna, tardes.descripcion , tarproc."codigoHomologado", tarproc."colValorBase",
@@ -90,3 +105,7 @@ from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tari
 where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id 
 and tardes.columna='colValor1'
 
+-- delete
+
+ delete from tarifarios_tarifariosprocedimientos where "codigoCups_id" = 2692;
+select * from clinico_examenes where id = 2692

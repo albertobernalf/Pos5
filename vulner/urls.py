@@ -254,11 +254,13 @@ urlpatterns = [
     path('load_dataTarifariosProcedimientos/<str:data>', viewsTarifarios.Load_dataTarifariosProcedimientos, name='Load_dataTarifariosProcedimientos'),
     path('load_datatarifariosDescripcionProcedimientos/<str:data>', viewsTarifarios.Load_datatarifariosDescripcionProcedimientos, name='Load_data_tarifariosDescripcionProcedimientos'),
     path('guardarDescripcionProcedimientos/', viewsTarifarios.GuardarDescripcionProcedimientos, name='GuardarDescripcionProcedimientos'),
-    path('crearTarifarioProcedimientoss/', viewsTarifarios.CrearTarifarioProcedimientos,name='CrearTarifario_Procedimientos'),
-
+    path('crearTarifarioProcedimientos/', viewsTarifarios.CrearTarifarioProcedimientos,name='CrearTarifario_Procedimientos'),
+    path('crearItemTarifario/', viewsTarifarios.CrearItemTarifario, name='crearItem_Tarifario'),
+    path('aplicarTarifas/', viewsTarifarios.AplicarTarifas, name='Aplicar_Tarifas'),
 
 
     # Contratacion
+
     path('load_dataConvenios/<str:data>', viewsConvenios.load_dataConvenios, name='loaddataConvenios'),
     path('load_dataConveniosProcedimientos/<str:data>', viewsConvenios.load_dataConveniosProcedimientos, name='loaddataConveniosProcedimientos'),
     path('postConsultaConvenios/', viewsConvenios.PostConsultaConvenios , name='Post_editConvenios'),
