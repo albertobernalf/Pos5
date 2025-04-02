@@ -44,7 +44,7 @@ select * from tarifarios_tipostarifaProducto;
 select * from tarifarios_tarifariosprocedimientos; -- 1749
 select * from tarifarios_tarifariosprocedimientos where "codigoHomologado" = '19729'
 
-
+select * from tarifarios_tarifariosprocedimientos order by "colValor1"; 
 select * from clinico_examenes;
 select * from contratacion_convenios;
 select * from facturacion_ConveniosPaciente;
@@ -58,7 +58,7 @@ select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.colum
 	from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes
 	where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like ('%PROCE%') 
 	order by tarprod.nombre
-
+ 
 -- QUerys valiosos :
 
 -- 1 er Query

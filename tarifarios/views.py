@@ -273,6 +273,11 @@ def AplicarTarifas(request):
     columnaAplicar = request.POST.get('columnaAplicar')
     print ("columnaAplicar =", columnaAplicar)
 
+    codigoCups_id = request.POST.get('codigoCups_id')
+    print ("codigoCups_id =", codigoCups_id)
+
+    codigoCupsHasta_id = request.POST.get('codigoCupsHasta_id')
+    print ("codigoCupsHasta_id =", codigoCupsHasta_id)
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
@@ -282,7 +287,26 @@ def AplicarTarifas(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+    print ("Entre rango de CUPS")
+    if (codigoCups_id != '' and codigoCupsHasta_id != '' and porcentaje != 0):
+
+         comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + "'" + str(columnaAplicar) + "'"  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCups_id" >= ' + "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"
+
+    if (codigoCups_id != '' and codigoCupsHasta_id != '' and valorAplicar != 0):
+
+        comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "' AND " + '"codigoCups_id" >= "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"'
+
+    if (porcentaje != 0):
+
+	    print ("Entre porcentaje")
+	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+
+
+    if (valorAplicar != 0):
+
+	    print ("Entre valor a Aplicar");
+
+	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
     print(comando)
     cur3.execute(comando)
@@ -291,3 +315,107 @@ def AplicarTarifas(request):
 
     return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
 
+def GuardarEditarTarifarioProcedimientos(request):
+
+    print ("Entre GuardarEditarTarifarioProcedimientos" )
+
+    post_id = request.POST.get('post_id')
+    print ("post_id =", post_id)
+
+    username_id = request.POST.get('username_id')
+    print ("username_id =", username_id)
+
+    codigoHomologadoEditar = request.POST.get('codigoHomologadoEditar')
+    print ("codigoHomologadoEditar =", codigoHomologadoEditar)
+
+    colValorBaseEditar = request.POST.get('colValorBaseEditar')
+    print ("colValorBaseEditar =", colValorBaseEditar)
+
+    colValor1Editar = request.POST.get('colValor1Editar')
+    print ("colValor1Editar =", colValor1Editar)
+
+    colValor2Editar = request.POST.get('colValor2Editar')
+    print ("colValor2Editar =", colValor2Editar)
+
+    colValor3Editar = request.POST.get('colValor3Editar')
+    print ("colValor3Editar =", colValor3Editar)
+
+    colValor4Editar = request.POST.get('colValor4Editar')
+    print ("colValor4Editar =", colValor4Editar)
+
+    colValor5Editar = request.POST.get('colValor5Editar')
+    print ("colValor5Editar =", colValor5Editar)
+
+    colValor6Editar = request.POST.get('colValor6Editar')
+    print ("colValor6Editar =", colValor6Editar)
+
+    colValor7Editar = request.POST.get('colValor7Editar')
+    print ("colValor7Editar =", colValor7Editar)
+
+    colValor8Editar = request.POST.get('colValor8Editar')
+    print ("colValor8Editar =", colValor8Editar)
+
+    colValor9Editar = request.POST.get('colValor9Editar')
+    print ("colValor9Editar =", colValor9Editar)
+
+    colValor10Editar = request.POST.get('colValor10Editar')
+    print ("colValor10Editar =", colValor10Editar)
+ 
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET "codigoHomologado" =' + "'" + str(codigoHomologadoEditar ) + "'" + ', "colValorBase" =' + "'" + str(colValorBaseEditar ) + "'" + ',"colValor1" =' + "'" + str(colValor1Editar ) + "'," + '"colValor2" =' + "'" + str(colValor2Editar ) + "'" + ', "colValor3" =' + "'" + str(colValor3Editar ) + "'," + ' "colValor4" =' + '"' + str(colValor4Editar ) + "'," + '"colValor5" =' + '"' + str(colValor5Editar ) + "'," + '"colValor6" =' + '"' + str(colValor6Editar ) + "'," + '"colValor7" =' + '"' + str(colValor7Editar ) + "'," + '"colValor8" =' + '"' + str(colValor8Editar ) + "'," + '"colValor9" =' + '"' + str(colValor9Editar ) + "'," + '"colValor10" =' + '"' + str(colValor10Editar ) + "'," + '"usuarioRegistro_id" =' + '"' + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
+
+
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+
+
+def TraerTarifarioProcedimientos(request):
+    print("Entre TraerTarifarioProcedimientos")
+
+    post_id = request.POST.get('post_id')
+    print("post_id =", post_id)
+
+    tarifariosProcedimientosDetalle = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'select id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id, "tiposTarifa_id", "usuarioRegistro_id" FROM tarifarios_tarifariosprocedimientos WHERE id = ' + "'" + str(post_id) + "'"
+
+    print(comando)
+    curx3execute(comando)
+
+    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10  in cur3.fetchall():
+        tarifariosProcedimientosDetalle.append(
+            {"model": "tarifarios.tarifariosProcedimientos", "pk": id, "fields":
+                {'id': id, 'codigoHomologado': codigoHomologado, 'colValorBase': colValorBase, 'colValor1': colValor1, 'colValor2': colValor2
+                    , 'colValor3': colValor3, 'colValor4': colValor4, 'colValor5': colValor5, 'colValor6': colValor6, 'colValor7': colValor7
+                    , 'colValor8': colValor8, 'colValor9': colValor9, 'colValor10': colValor10, 'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,
+                 'codigoCups_id': codigoCups_id,'concepto_id': concepto_id,'tiposTarifa_id': tiposTarifa_id,'usuarioRegistro_id': usuarioRegistro_id,
+
+                 }})
+
+    miConexion3.close()
+    print(tarifariosProcedimientosDetalle)
+
+    serialized1 = json.dumps(tarifariosProcedimientosDetalle, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
+
+    return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})

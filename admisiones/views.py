@@ -1836,7 +1836,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         ## FIN CONTEXTO
 
-        return render(request, "contratacion/panelConvenios.html", context)
+        return render(request, "contratacion/panelConveniosF.html", context)
 
 
     if (escogeModulo == 'APOYO TERAPEUTICO'):
@@ -1881,12 +1881,14 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT p.id id, p.nombre  nombre FROM  clinico_examenes  p '
+        comando = 'SELECT p.id id, p.nombre  nombre FROM  clinico_examenes  p ORDER BY p.id '
         print(comando)
         curt.execute(comando)
 
 
         cups = []
+
+        cups.append({'id': '', 'nombre': ''})
 
 
         for id, nombre in curt.fetchall():

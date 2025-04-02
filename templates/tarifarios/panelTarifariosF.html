@@ -208,7 +208,7 @@ div.dataTables_filter input {
 			<!--  Hasta Aquip -->
 
 
-   			   <div class="row">
+   			<!--   <div class="row"> -->
 
                                         <table  id= "tablaTarifariosProcedimientos" class=" display table table-striped" style="width: 100%";>
                                            <thead>
@@ -267,7 +267,7 @@ div.dataTables_filter input {
                                             </tfoot>
    </table>
 
-	</div>  <!--  Cierra el row  de la otra tabla -->
+	<!--  </div>   Cierra el row  de la otra tabla -->
 
 
 
@@ -452,7 +452,7 @@ div.dataTables_filter input {
 				H A C I A   T A R I F A :
 
 				<div class="col-12">
-                                    Cups:
+                                    Cups Desde:
 				<select class="select-css"  id="codigoCups_id"
                                                                 name="codigoCups_id">
                                                             {% for cups in Cups %}
@@ -462,6 +462,20 @@ div.dataTables_filter input {
                                                             {% endfor %}
                                                         </select>
                                 </div>
+
+				<div class="col-12">
+                                    Cups Hasta:
+				<select class="select-css"  id="codigoCupsHasta_id"
+                                                                name="codigoCupsHasta_id">
+                                                            {% for cups in Cups %}
+                                                            <option value="{{cups.id}}">
+                                                                {{cups.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+
 
 	
 				<div class="col-12">
@@ -501,6 +515,130 @@ div.dataTables_filter input {
 
 
 		<!-- Fin Otra Modal  -->
+
+		<!--  Otra Modal  crearModelEditarTarifarioProcedimientos -->
+
+         <div class="modal fade" id="crearModelEditarTarifarioProcedimientos" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" modal-lg>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingEditarTarifarioProcedimientos"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnEditarTarifarioProcedimientos" onclick="EditarTarifarioProcedimientos()">Grabar!</button> 
+                        </div>
+		<div style="width:500px; heigth:100px; ">
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormEditarTarifarioProcedimientos" name="postFormEditarTarifarioProcedimientos">
+
+                                <input type="hidden" name="postEditar_id" id="postEditar_id">
+               <input type="hidden" id="username2_id" name="username2_id" value="{{Username_id}}">
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+				<div class="col-12">
+				  <label for="codigoHomologadoEditar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="codigoHomologadoEditar" name="codigoHomologadoEditar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValorBaseEditar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValorBaseEditar" name="colValorBaseEditar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor1Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor1Editar" name="colValor1Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor2Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor2Editar" name="colValor2Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor3Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor3Editar" name="colValor3Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor4Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor4Editar" name="colValor4Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor5Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor5Editar" name="colValor5Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor6Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor6Editar" name="colValor6Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor7Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor7Editar" name="colValor1Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor1Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor7Editar" name="colValor7Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor8Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor8Editar" name="colValor8Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor9Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor9Editar" name="colValor9Editar"   >
+                                </div>
+
+				<div class="col-12">
+
+				  <label for="colValor10Editar">Columna:</label>                              
+					 <input type="text"  class="form-control form-control-sm" id="colValor10Editar" name="colValor10Editar"   >
+                                </div>
+
+
+
+                                <div class="col-12">
+                                    <center> 
+					<button type="button" class="btn btn-primary" id="saveBtnEditarTarifarioProcedimientos"   value="create" onclick="GuardarEditarTarifarioProcedimientos()">Guardar </button> 
+					</center> 
+                                </div>
+
+
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			</div> <!-- CIERRA DIV TAMANO -->			
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->   
+
+
+		<!-- Fin Otra Modal -->
+
+
+
 
 
 

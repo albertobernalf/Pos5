@@ -51,7 +51,7 @@ function arrancaTarifarios(valorTabla,valorData)
 	    { width: '10%', targets: [9,15] },
 		{     "render": function ( data, type, row ) {
                         var btn = '';
-             btn = btn + " <input type='radio' name='miProcedimientos' class='miAutorizacion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+             btn = btn + " <input type='radio' name='miProcedimientos' class='miProcedimientos form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
                        return btn;
                     },
@@ -422,33 +422,62 @@ window.addEventListener('load', async () => {
 
 
 
- $('#tablaProcedimientos tbody').on('click', '.miAutorizacion', function() {
+ $('#tablaTarifariosProcedimientos tbody').on('click', '.miProcedimientos', function() {
 
         var post_id = $(this).data('pk');
-        var autorizacionId = post_id;
-	    var row = $(this).closest('tr'); // Encuentra la fila
+        var row = $(this).closest('tr'); // Encuentra la fila
 
-	    var data =  {}   ;
-	    var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
-        var username = document.getElementById("username").value;
-        var nombreSede = document.getElementById("nombreSede").value;
-    	var sede = document.getElementById("sede").value;
+	alert("Ingrese Modal Editar Procedimiento");
+
+
         var username_id = document.getElementById("username_id").value;
-	document.getElementById("autorizacionId").value = autorizacionId ;
 
-        var data =  {}   ;
-        data['username'] = username;
-        data['sedeSeleccionada'] = sedeSeleccionada;
-        data['nombreSede'] = nombreSede;
-        data['sede'] = sede;
-        data['username_id'] = username_id;
-        data['autorizacionId'] = autorizacionId;
-    	data = JSON.stringify(data);
+            $.ajax({
 
-        arrancaTarifarios(2,data);
+	        url: "/traerTarifarioProcedimientos/",
+
+	    	data: {'post_id': post_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+	
+
+	    $('#post_id').val('');
+            $('#postFormEditarTarifarioProcedimientos').trigger("reset");
+            $('#modelHeadingEditarTarifarioProcedimientos').html("Editar Tarifario Procedimientos");
+
+  		$('#postEditar_id').val(data2.id);
+ 		 $('#codigoHomologadoEditar').val(data2.codigoHomologado);
+ 		 $('#colValorBaseEditar').val(data2.colValorBase);
+ 		 $('#colValor1Editar').val(data2.colValor1);
+ 		 $('#colValor2Editar').val(data2.colValor2);
+ 		 $('#colValor3Editar').val(data2.colValor3);
+ 		 $('#colValor4Editar').val(data2.colValor4);
+ 		 $('#colValor5Editar').val(data2.colValor5);
+ 		 $('#colValor6Editar').val(data2.colValor6);
+ 		 $('#colValor7Editar').val(data2.colValor7);
+ 		 $('#colValor8Editar').val(data2.colValor8);
+ 		 $('#colValor9Editar').val(data2.colValor9);
+ 		 $('#colValor10Editar').val(data2.colValor10);
+
+
+
+            $('#crearModelEditarTarifarioProcedimientos').modal('show');
+
+
+		   $("#mensajes").html(data2.message);
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
 
 
   });
+
+
+
 
 $('#tablaTarifariosDescripcionProcedimientos tbody').on('click', '.miAplicarProcedimientos', function() {
 
@@ -719,10 +748,59 @@ function CrearTarifarioProcedimientos()
 	   	    	}
             });
 
-
-
-
-
 } 
+
+function GuardarEditarTarifarioProcedimientos()
+{
+	alert("Entre GuardarEditarTarifarioProcedimientos");
+
+	var post_id = document.getElementById("postEditar_id").value;
+	var username_id = document.getElementById("username_id").value;
+	var codigoHomologadoEditar = document.getElementById("codigoHomologadoEditar").value;
+	var colValorBaseEditar = document.getElementById("colValorBaseEditar").value;
+	var colValor1Editar = document.getElementById("colValor1Editar").value;
+	var colValor2Editar = document.getElementById("colValor2Editar").value;
+	var colValor3Editar = document.getElementById("colValor3Editar").value;
+	var colValor4Editar = document.getElementById("colValor4Editar").value;
+	var colValor5Editar = document.getElementById("colValor5Editar").value;
+	var colValor6Editar = document.getElementById("colValor6Editar").value;
+	var colValor7Editar = document.getElementById("colValor7Editar").value;
+	var colValor8Editar = document.getElementById("colValor8Editar").value;
+	var colValor9Editar = document.getElementById("colValor9Editar").value;
+	var colValor10Editar = document.getElementById("colValor10Editar").value;
+
+            $.ajax({
+
+	        url: "/guardarEditarTarifarioProcedimientos/",
+    		data: {'post_id':post_id, 'codigoHomologadoEditar':codigoHomologadoEditar,'colValorBaseEditar':colValorBaseEditar,
+				'colValor1Editar':colValor1Editar,'colValor2Editar':colValor2Editar,'colValor3Editar':colValor3Editar,'colValor4Editar':colValor4Editar,
+				'colValor5Editar':colValor5Editar,'colValor6Editar':colValor6Editar,'colValor7Editar':colValor7Editar,'colValor8Editar':colValor8Editar,
+				'colValor9Editar':colValor9Editar,'colValor10Editar':colValor10Editar,'username_id':username_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data = JSON.stringify(data);
+     		  arrancaTarifarios(4,data);
+	    dataTableTarifariosDescripcionProcedimientosInitialized = true;
+     		  arrancaTarifarios(1,data);
+	    dataTableTarifariosProcedimientosInitialized = true;
+
+		   $("#mensajes").html(data2.message);
+ 	  $('#crearModelEditarTarifarioProcedimientos').modal('hide');
+
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+}
 
 

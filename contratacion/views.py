@@ -57,21 +57,25 @@ def load_dataConvenios(request, data):
 
     convenios = []
 
-
-    
+   
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
-    detalle = 'select conv.id id,conv.nombre nombre, "vigenciaDesde" vigenciaDesde, "vigenciaHasta" vigenciaHasta, emp.nombre  empresa from contratacion_convenios conv, facturacion_empresas emp WHERE emp.id = conv.empresa_id '
+    #detalle = 'select conv.id id, emp.nombre empresa, emp.id empresa_id,  conv.nombre nombreConvenio, conv.descripcion,  conv."vigenciaDesde" vigenciaDesde, conv."vigenciaHasta" vigenciaHasta, conv."tarifariosDescripcionProc_id" tarifariosDescripcionProc_id, des1.descripcion tarifariosDescripcionProc,  conv."tarifariosDescripcionSum_id" tarifariosDescripcionSum_id, des2.descripcion tarifariosDescripcionSum ,  conv."tarifariosDescripcionHono_id" tarifariosDescripcionHono_id, des3.descripcion tarifariosDescripcionHono  from contratacion_convenios conv, facturacion_empresas emp , tarifarios_TarifariosDescripcion des1 , tarifarios_TarifariosDescripcion des2, tarifarios_TarifariosDescripcion des3 WHERE emp.id = conv.empresa_id AND conv."tarifariosDescripcionProc_id" = des1.id AND conv."tarifariosDescripcionSum_id" = des2.id AND conv."tarifariosDescripcionHono_id" = des3.id ORDER BY conv.nombre'
+    detalle = '	select conv.id id, emp.nombre empresa, emp.id empresa_id,  conv.nombre nombreConvenio, conv.descripcion,  conv."vigenciaDesde" vigenciaDesde, conv."vigenciaHasta" vigenciaHasta, conv."tarifariosDescripcionProc_id" tarifariosDescripcionProc_id, des1.descripcion tarifariosDescripcionProc,  conv."tarifariosDescripcionSum_id" tarifariosDescripcionSum_id, des2.descripcion tarifariosDescripcionSum ,  conv."tarifariosDescripcionHono_id" tarifariosDescripcionHono_id, des3.descripcion tarifariosDescripcionHono from contratacion_convenios conv INNER JOIN facturacion_empresas emp ON (emp.id = conv.empresa_id) LEFT JOIN tarifarios_TarifariosDescripcion des1 ON (des1.id =conv."tarifariosDescripcionProc_id" ) LEFT JOIN tarifarios_TarifariosDescripcion des2 ON (des2.id =conv."tarifariosDescripcionSum_id") LEFT JOIN tarifarios_TarifariosDescripcion des3 ON (des3.id =conv."tarifariosDescripcionHono_id") ORDER BY conv.nombre'
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, nombre, vigenciaDesde, vigenciaHasta, empresa  in curx.fetchall():
+    for id, empresa, empresa_id,  nombreConvenio, descripcion,  vigenciaDesde, vigenciaHasta, tarifariosDescripcionProc_id, tarifariosDescripcionProc, tarifariosDescripcionSum_id, tarifariosDescripcionSum, tarifariosDescripcionHono_id, tarifariosDescripcionHono  in curx.fetchall():
         convenios.append(
 		{"model":"convenios.convenios","pk":id,"fields":
-			{'id':id, 'nombre': nombre, 'vigenciaDesde': vigenciaDesde, 'vigenciaHasta': vigenciaHasta, 'empresa': empresa,
+			{'id':id, 'empresa':empresa , 'empresa_id': empresa_id, 'nombreConvenio': nombreConvenio,'descripcion':descripcion, 'vigenciaDesde': vigenciaDesde, 'vigenciaHasta': vigenciaHasta,
+             'tarifariosDescripcionProc_id':tarifariosDescripcionProc_id,'tarifariosDescripcionProc':tarifariosDescripcionProc,
+             'tarifariosDescripcionSum_id':tarifariosDescripcionSum_id,
+             'tarifariosDescripcionSum':tarifariosDescripcionSum,
+             'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id, 'tarifariosDescripcionHono':tarifariosDescripcionHono
                          }})
 
     miConexionx.close()
@@ -87,6 +91,53 @@ def load_dataConvenios(request, data):
 
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+
+def TraerConvenio(request):
+
+    print("Entre TraerConvenios")
+
+    convenioId = request.POST.get('post_id')
+    print("post_id =", post_id)
+
+    convenio = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'select id, nombre nombreConvenio, "vigenciaDesde", "vigenciaHasta", "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias, ambulatorio, "consultaExterna", copago, moderadora, tipofactura, agrupada, "facturacionSuministros", "facturacionCups","cuentaContable", requisitos, "fechaRegistro", "estadoReg", empresa_id, "usuarioRegistro_id", descripcion,"tarifariosDescripcionProc_id", "tarifariosDescripcionHono_id", "tarifariosDescripcionSum_id" FROM contratacion_convenios WHERE id = ' + "'" + str(post_id) + "'"
+
+    print(comando)
+    curx3.execute(comando)
+
+    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10  in cur3.fetchall():
+        convenio.append(
+            {"model": "contratacion.convenios", "pk": id, "fields":
+                {'id': id, 'nombreConvenio': nombreConvenio, 'vigenciaDesde': vigenciaDesde, 'vigenciaHasta': vigenciaHasta, 'porcTarifario': porcTarifario
+                    , 'porcSuministros': porcSuministros, 'valorOxigeno': valorOxigeno, 'porcEsterilizacion': porcEsterilizacion, 'porcMaterial': porcMaterial, 'hospitalario': hospitalario
+                    , 'urgencias': urgencias, 'ambulatorio': ambulatorio, 'consultaExterna': consultaExterna, 'copago': copago, 'moderadora': moderadora,
+                 'tipofactura': tipofactura,'agrupada': agrupada,'facturacionSuministros': facturacionSuministros,'facturacionCups': facturacionCups,
+                 'cuentaContable':cuentaContable, 'requisitos':requisitos ,'fechaRegistro': fechaRegistro, 'estadoReg':estadoReg,
+                 'empresa_id':empresa_id ,'usuarioRegistro_id':usuarioRegistro_id ,'descripcion':descripcion, 'tarifariosDescripcionProc_id':tarifariosDescripcionProc_id ,
+                 'tarifariosDescripcionHono_id': tarifariosDescripcionHono_id, 'tarifariosDescripcionSum_id':tarifariosDescripcionSum_id             }})
+
+    miConexion3.close()
+    print(convenio)
+
+    serialized1 = json.dumps(convenio, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
+
+    return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+
+
+
+
 
 
 
