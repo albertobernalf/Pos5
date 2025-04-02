@@ -122,12 +122,12 @@ function arrancaConvenios(valorTabla,valorData)
                 { data: "fields.descripcion"},
                 { data: "fields.vigenciaDesde"},
                 { data: "fields.vigenciaHasta"},
-                { data: "fields.tarifarioProcedimientos_id"},
-                { data: "fields.tarifarioProcedimientos"},
-		        { data: "fields.tarifarioSuministros_id"},
-	        	{ data: "fields.tarifarioSuministros"},
-                { data: "fields.tarifarioHonorarios_id"},
-                { data: "fields.tarifarioHonorarios"},
+                { data: "fields.tarifariosDescripcionProc_id"},
+                { data: "fields.tarifariosDescripcionProc"},
+		        { data: "fields.tarifariosDescripcionSum_id"},
+	        	{ data: "fields.tarifariosDescripcionSum"},
+                { data: "fields.tarifariosDescripcionHono_id"},
+                { data: "fields.tarifariosDescripcionHono"},
                 ]
             }
 
@@ -174,8 +174,6 @@ window.addEventListener('load', async () => {
 
  /* FIN ONLOAD */
 
-
-
 $('#tablaConvenios tbody').on('click', '.editoConvenio', function() {
 
 		alert("ENTRE edito Convenio");
@@ -184,9 +182,6 @@ $('#tablaConvenios tbody').on('click', '.editoConvenio', function() {
 		var row = $(this).closest('tr'); // Encuentra la fila
 	alert("convenioId = " +  post_id );
 
-
-
-     
 	$.ajax({
 
 	        url: "/traerConvenio/",
@@ -198,7 +193,7 @@ $('#tablaConvenios tbody').on('click', '.editoConvenio', function() {
             $('#postFormEditarConvenios').trigger("reset");
 
   	
- 				$('#post_id').val(info[0].fields.id);
+ 				$('#postConvenio_id').val(info[0].fields.id);
 				$('#nombreConvenio').val(info[0].fields.nombreConvenio);
 				$('#vigenciaDesde').val(info[0].fields.vigenciaDesde);
 				$('#vigenciaHasta').val(info[0].fields.vigenciaHasta);
@@ -243,12 +238,12 @@ $('#tarifariosDescripcionSum_id').val(info[0].fields.tarifariosDescripcionSum_id
 
 function EditarGuardarConvenios()
 {
-		alert("ENTRE EditarGuardarConvenios");
 
-	     var post_id = $(this).data('pk');
+	     var post_id = document.getElementById("postConvenio_id").value;
 		var row = $(this).closest('tr'); // Encuentra la fila
-	alert("convenioId = " +  post_id );
+
   	var nombreConvenio = document.getElementById("nombreConvenio").value;
+  	var descripcion = document.getElementById("descripcion").value;
   	var vigenciaDesde = document.getElementById("vigenciaDesde").value;
   	var vigenciaHasta = document.getElementById("vigenciaHasta").value;
   	var porcTarifario = document.getElementById("porcTarifario").value;
@@ -278,7 +273,11 @@ function EditarGuardarConvenios()
 	$.ajax({
 
 	        url: "/editarGuardarConvenios/",
-                data: {'post_id':post_id},
+                data: {'post_id':post_id,'nombreConvenio':nombreConvenio,'descripcion': descripcion, 'vigenciaDesde':vigenciaDesde,'vigenciaHasta':vigenciaHasta,'porcTarifario':porcTarifario, 'porcSuministros':porcSuministros, 'valorOxigeno':valorOxigeno,
+			 'porcEsterilizacion':porcEsterilizacion,'porcMaterial':porcMaterial, 'hospitalario':hospitalario,  'urgencias':urgencias,'ambulatorio':ambulatorio,'consultaExterna':consultaExterna,'copago':copago,
+			'moderadora':moderadora, 'tipofactura':tipofactura, 'facturacionSuministros':facturacionSuministros,'facturacionCups':facturacionCups, 'cuentaContable':cuentaContable, 'requisitos':requisitos,
+			'empresa_id':empresa_id, 'facturacionCups':facturacionCups,'usuarioRegistro_id':usuarioRegistro_id, 'tarifariosDescripcionProc_id':tarifariosDescripcionProc_id, 'tarifariosDescripcionSum_id':tarifariosDescripcionSum_id,
+			'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id },
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
@@ -305,18 +304,15 @@ function EditarGuardarConvenios()
         data['username_id'] = username_id;
  	    data = JSON.stringify(data);
 
-
         arrancaConvenios(1,data);
   dataTableConveniosInitialized = true;
-
 
                 },
                  error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
 	   	    	}
             });
-      
-  });
+}
 
 
 

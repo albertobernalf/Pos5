@@ -1834,6 +1834,82 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print("ENTRE PERMSISO FACTURACION")
         ## Aqui contexto para solo Facturacion
 
+  	# Combo tarifariosDescripcionProc
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT des.id id, des.descripcion  nombre FROM  tarifarios_tarifariosDescripcion  des , tarifarios_tipostarifa tiptar, tarifarios_tipostarifaproducto tipprod WHERE des."tiposTarifa_id" = tiptar.id AND tiptar."tiposTarifaProducto_id" = tipprod.id AND tipprod.nombre like (' + "'%" + str('PROCEDIMIENTO') +"%')"
+
+        curt.execute(comando)
+        print(comando)
+
+        tarifariosDescripcionProc = []
+
+
+        for id, nombre in curt.fetchall():
+            tarifariosDescripcionProc.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tarifariosDescripcionProc", tarifariosDescripcionProc)
+
+        context['TarifariosDescripcionProc'] = tarifariosDescripcionProc
+
+        # Fin combo tarifariosDescripcionProc
+
+ 	# Combo tarifariosDescripcionSum
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT des.id id, des.descripcion  nombre FROM  tarifarios_tarifariosDescripcion  des , tarifarios_tipostarifa tiptar, tarifarios_tipostarifaproducto tipprod WHERE des."tiposTarifa_id" = tiptar.id AND tiptar."tiposTarifaProducto_id" = tipprod.id AND tipprod.nombre like (' + "'%" + str('SUMINISTRO') +"%')"
+
+        curt.execute(comando)
+        print(comando)
+
+        tarifariosDescripcionSum = []
+
+
+        for id, nombre in curt.fetchall():
+            tarifariosDescripcionSum.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tarifariosDescripcionSum", tarifariosDescripcionSum)
+
+        context['TarifariosDescripcionSum'] = tarifariosDescripcionSum
+
+        # Fin combo tarifariosDescripcionSum
+
+
+ 	# Combo tarifariosDescripcionHono
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT des.id id, des.descripcion  nombre FROM  tarifarios_tarifariosDescripcion  des , tarifarios_tipostarifa tiptar, tarifarios_tipostarifaproducto tipprod WHERE des."tiposTarifa_id" = tiptar.id AND tiptar."tiposTarifaProducto_id" = tipprod.id AND tipprod.nombre like (' + "'%" + str('HONORARIO') +"%')"
+
+        curt.execute(comando)
+        print(comando)
+
+        tarifariosDescripcionHono = []
+
+
+        for id, nombre in curt.fetchall():
+            tarifariosDescripcionHono.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tarifariosDescripcionHono", tarifariosDescripcionHono)
+
+        context['TarifariosDescripcionHono'] = tarifariosDescripcionHono
+
+        # Fin combo tarifariosDescripcionHono
+
+
+
+
         ## FIN CONTEXTO
 
         return render(request, "contratacion/panelConveniosF.html", context)

@@ -141,14 +141,14 @@ div.dataTables_wrapper  div.dataTables_filter input {
 			
   			  <form id="postFormEditarConvenios" name="postFormEditarConvenios">
 
-                                <input type="hidden" name="post_id" id="post_id">
+                                <input type="text" name="postConvenio_id" id="postConvenio_id">
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
 				<div class="col-12">
                                     
 				 <label  for="nombreConvenio">Convenio:</label>
-                                    <input type="text" class="form-control form-control-sm" id="nombreConvenio" name="nombreConvenio" value="0" placeholder="nombreConvenio:" readonly></input>
+                                    <input type="text" class="form-control form-control-sm" id="nombreConvenio" name="nombreConvenio" value="0" placeholder="nombreConvenio:" ></input>
                                 </div>
 
 				<div class="col-12">
@@ -271,9 +271,9 @@ div.dataTables_wrapper  div.dataTables_filter input {
                                     Tarifario Procedimientos:
 				<select class="select-css"  id="tarifariosDescripcionProc_id"
                                                                 name="tarifariosDescripcionProc_id">
-                                                            {% for tarifariosDescripcion in TarifariosDescripcion %}
-                                                            <option value="{{tarifariosDescripcion.id}}">
-                                                                {{tarifariosDescripcion.nombre}}
+                                                            {% for tarifariosDescripcionProc in TarifariosDescripcionProc%}
+                                                            <option value="{{tarifariosDescripcionProc.id}}">
+                                                                {{tarifariosDescripcionProc.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
@@ -283,20 +283,21 @@ div.dataTables_wrapper  div.dataTables_filter input {
                                     Tarifario Suministros:
 				<select class="select-css"  id="tarifariosDescripcionSum_id"
                                                                 name="tarifariosDescripcionSum_id">
-                                                            {% for tarifariosDescripcion in TarifariosDescripcion %}
-                                                            <option value="{{tarifariosDescripcion.id}}">
-                                                                {{tarifariosDescripcion.nombre}}
+                                                            {% for tarifariosDescripcionSum in TarifariosDescripcionSum %}
+                                                            <option value="{{tarifariosDescripcionSum.id}}">
+                                                                {{tarifariosDescripcionSum.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
                                 </div>
 
-			<div class="col-12">
-                                    Tarifario Honorarioss"  id="tarifariosDescripcionHono_id"
+				<div class="col-12">
+					    Tarifario Honorarios:
+                	           	<select class="select-css"  id="tarifariosDescripcionHono_id"
                                                                 name="tarifariosDescripcionHono_id">
-                                                            {% for tarifariosDescripcion in TarifariosDescripcion %}
-                                                            <option value="{{tarifariosDescripcion.id}}">
-                                                                {{tarifariosDescripcion.nombre}}
+                                                            {% for tarifariosDescripcionHono in TarifariosDescripcionHono %}
+                                                            <option value="{{tarifariosDescripcionHono.id}}">
+                                                                {{tarifariosDescripcionHono.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>

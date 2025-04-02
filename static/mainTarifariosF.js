@@ -427,7 +427,7 @@ window.addEventListener('load', async () => {
         var post_id = $(this).data('pk');
         var row = $(this).closest('tr'); // Encuentra la fila
 
-	alert("Ingrese Modal Editar Procedimiento");
+	alert("Ingrese Modal Editar Procedimiento" + post_id);
 
 
         var username_id = document.getElementById("username_id").value;
@@ -435,31 +435,32 @@ window.addEventListener('load', async () => {
             $.ajax({
 
 	        url: "/traerTarifarioProcedimientos/",
-
 	    	data: {'post_id': post_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
 
-	
+                  alert("llegue con data = " + data2[0]);
+
+	        alert("llegue con id = " + data2[0].fields.id);
 
 	    $('#post_id').val('');
             $('#postFormEditarTarifarioProcedimientos').trigger("reset");
             $('#modelHeadingEditarTarifarioProcedimientos').html("Editar Tarifario Procedimientos");
 
-  		$('#postEditar_id').val(data2.id);
- 		 $('#codigoHomologadoEditar').val(data2.codigoHomologado);
- 		 $('#colValorBaseEditar').val(data2.colValorBase);
- 		 $('#colValor1Editar').val(data2.colValor1);
- 		 $('#colValor2Editar').val(data2.colValor2);
- 		 $('#colValor3Editar').val(data2.colValor3);
- 		 $('#colValor4Editar').val(data2.colValor4);
- 		 $('#colValor5Editar').val(data2.colValor5);
- 		 $('#colValor6Editar').val(data2.colValor6);
- 		 $('#colValor7Editar').val(data2.colValor7);
- 		 $('#colValor8Editar').val(data2.colValor8);
- 		 $('#colValor9Editar').val(data2.colValor9);
- 		 $('#colValor10Editar').val(data2.colValor10);
+  		 $('#postEditar1_id').val(data2[0].fields.id);
+ 		 $('#codigoHomologadoEditar').val(data2[0].fields.codigoHomologado);
+ 		 $('#colValorBaseEditar').val(data2[0].fields.colValorBase);
+ 		 $('#colValor1Editar').val(data2[0].fields.colValor1);
+ 		 $('#colValor2Editar').val(data2[0].fields.colValor2);
+ 		 $('#colValor3Editar').val(data2[0].fields.colValor3);
+ 		 $('#colValor4Editar').val(data2[0].fields.colValor4);
+ 		 $('#colValor5Editar').val(data2[0].fields.colValor5);
+ 		 $('#colValor6Editar').val(data2[0].fields.colValor6);
+ 		 $('#colValor7Editar').val(data2[0].fields.colValor7);
+ 		 $('#colValor8Editar').val(data2[0].fields.colValor8);
+ 		 $('#colValor9Editar').val(data2[0].fields.colValor9);
+ 		 $('#colValor10Editar').val(data2[0].fields.colValor10);
 
 
 
@@ -754,7 +755,8 @@ function GuardarEditarTarifarioProcedimientos()
 {
 	alert("Entre GuardarEditarTarifarioProcedimientos");
 
-	var post_id = document.getElementById("postEditar_id").value;
+
+	var post_id = document.getElementById("postEditar1_id").value;
 	var username_id = document.getElementById("username_id").value;
 	var codigoHomologadoEditar = document.getElementById("codigoHomologadoEditar").value;
 	var colValorBaseEditar = document.getElementById("colValorBaseEditar").value;

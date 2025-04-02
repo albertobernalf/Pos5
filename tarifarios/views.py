@@ -328,11 +328,21 @@ def GuardarEditarTarifarioProcedimientos(request):
     codigoHomologadoEditar = request.POST.get('codigoHomologadoEditar')
     print ("codigoHomologadoEditar =", codigoHomologadoEditar)
 
+    if (codigoHomologadoEditar == ''):
+        codigoHomologadoEditar='null'
+
     colValorBaseEditar = request.POST.get('colValorBaseEditar')
     print ("colValorBaseEditar =", colValorBaseEditar)
 
+    if (colValorBaseEditar == ''):
+        colValorBaseEditar='null'
+
+
     colValor1Editar = request.POST.get('colValor1Editar')
     print ("colValor1Editar =", colValor1Editar)
+
+    if (colValor1Editar == ''):
+        colValor1Editar='null'
 
     colValor2Editar = request.POST.get('colValor2Editar')
     print ("colValor2Editar =", colValor2Editar)
@@ -360,7 +370,34 @@ def GuardarEditarTarifarioProcedimientos(request):
 
     colValor10Editar = request.POST.get('colValor10Editar')
     print ("colValor10Editar =", colValor10Editar)
- 
+
+    if (colValor2Editar == ''):
+        colValor2Editar='null'
+
+    if (colValor3Editar == ''):
+        colValor3Editar='null'
+
+    if (colValor4Editar == ''):
+        colValor4Editar='null'
+
+    if (colValor5Editar == ''):
+        colValor5Editar='null'
+
+    if (colValor6Editar == ''):
+        colValor6Editar='null'
+
+    if (colValor7Editar == ''):
+        colValor7Editar='null'
+
+    if (colValor8Editar == ''):
+        colValor8Editar='null'
+
+    if (colValor9Editar == ''):
+        colValor9Editar='null'
+
+    if (colValor10Editar == ''):
+        colValor10Editar='null'
+
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
@@ -369,9 +406,7 @@ def GuardarEditarTarifarioProcedimientos(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET "codigoHomologado" =' + "'" + str(codigoHomologadoEditar ) + "'" + ', "colValorBase" =' + "'" + str(colValorBaseEditar ) + "'" + ',"colValor1" =' + "'" + str(colValor1Editar ) + "'," + '"colValor2" =' + "'" + str(colValor2Editar ) + "'" + ', "colValor3" =' + "'" + str(colValor3Editar ) + "'," + ' "colValor4" =' + '"' + str(colValor4Editar ) + "'," + '"colValor5" =' + '"' + str(colValor5Editar ) + "'," + '"colValor6" =' + '"' + str(colValor6Editar ) + "'," + '"colValor7" =' + '"' + str(colValor7Editar ) + "'," + '"colValor8" =' + '"' + str(colValor8Editar ) + "'," + '"colValor9" =' + '"' + str(colValor9Editar ) + "'," + '"colValor10" =' + '"' + str(colValor10Editar ) + "'," + '"usuarioRegistro_id" =' + '"' + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
-
-
+    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
 
     print(comando)
     cur3.execute(comando)
@@ -396,9 +431,9 @@ def TraerTarifarioProcedimientos(request):
     comando = 'select id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id, "tiposTarifa_id", "usuarioRegistro_id" FROM tarifarios_tarifariosprocedimientos WHERE id = ' + "'" + str(post_id) + "'"
 
     print(comando)
-    curx3execute(comando)
+    cur3.execute(comando)
 
-    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10  in cur3.fetchall():
+    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10 ,fechaRegistro , estadoReg , codigoCups_id, concepto_id, tiposTarifa_id, usuarioRegistro_id  in cur3.fetchall():
         tarifariosProcedimientosDetalle.append(
             {"model": "tarifarios.tarifariosProcedimientos", "pk": id, "fields":
                 {'id': id, 'codigoHomologado': codigoHomologado, 'colValorBase': colValorBase, 'colValor1': colValor1, 'colValor2': colValor2
