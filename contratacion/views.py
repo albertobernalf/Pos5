@@ -261,6 +261,134 @@ def EditarGuardarConvenios(request):
     return JsonResponse({'success': True, 'message': 'Tarifa Honorario Creada satisfactoriamente!'})
 
 
+def CrearGuardarConvenios(request):
+
+    print("Entre CrearGuardarConvenios")
+
+    convenioId = request.POST.get('post_id')
+    print("convenioId =", convenioId)
+
+    nombreConvenio = request.POST.get('nombreConvenio')
+    print("nombreConvenio =", nombreConvenio)
+
+    vigenciaDesde = request.POST.get('vigenciaDesde')
+    print("vigenciaDesde =", vigenciaDesde)
+
+    vigenciaHasta = request.POST.get('vigenciaHasta')
+    print("vigenciaHasta =", vigenciaHasta)
+
+    porcTarifario = request.POST.get('porcTarifario')
+    print("porcTarifario =", porcTarifario)
+
+    if (porcTarifario==''):
+        porcTarifario='null'
+
+
+
+
+    porcSuministros = request.POST.get('porcSuministros')
+    print("porcSuministros =", porcSuministros)
+
+    if (porcSuministros==''):
+        porcSuministros='null'
+
+
+    valorOxigeno = request.POST.get('valorOxigeno')
+    print("valorOxigeno =", valorOxigeno)
+
+    if (valorOxigeno == ''):
+        valorOxigeno = 'null'
+
+
+    porcEsterilizacion = request.POST.get('porcEsterilizacion')
+    print("porcEsterilizacion =", porcEsterilizacion)
+
+    if (porcEsterilizacion == ''):
+        porcEsterilizacion = 'null'
+
+
+    porcMaterial = request.POST.get('porcMaterial')
+    print("porcMaterial =", porcMaterial)
+
+    if (porcMaterial == ''):
+        porcMaterial = 'null'
+
+
+    hospitalario = request.POST.get('hospitalario')
+    print("hospitalario =", hospitalario)
+    urgencias = request.POST.get('urgencias')
+    print("urgencias =", urgencias)
+    ambulatorio = request.POST.get('ambulatorio')
+    print("ambulatorio =", ambulatorio)
+    consultaExterna = request.POST.get('consultaExterna')
+    print("consultaExterna =", consultaExterna)
+    copago = request.POST.get('copago')
+    print("copago =", copago)
+    moderadora = request.POST.get('moderadora')
+    print("moderadora =", moderadora)
+    agrupada = request.POST.get('agrupada')
+    print("agrupada =", agrupada)
+
+    tipofactura = request.POST.get('tipofactura')
+    print("tipofactura =", tipofactura)
+    facturacionSuministros = request.POST.get('facturacionSuministros')
+    print("facturacionSuministros =", facturacionSuministros)
+    facturacionCups = request.POST.get('facturacionCups')
+    print("facturacionCups =", facturacionCups)
+    cuentaContable = request.POST.get('cuentaContable')
+    print("cuentaContable =", cuentaContable)
+    facturacionCups = request.POST.get('facturacionCups')
+    print("facturacionCups =", facturacionCups)
+    requisitos = request.POST.get('requisitos')
+    print("requisitos =", requisitos)
+    empresa_id = request.POST.get('empresa_id')
+    print("empresa_id =", empresa_id)
+    usuarioRegistro_id = request.POST.get('usuarioRegistro_id')
+    print("usuarioRegistro_id =", usuarioRegistro_id)
+
+    tarifariosDescripcionProc_id = request.POST.get('tarifariosDescripcionProc_id')
+    print("tarifariosDescripcionProc_id =", tarifariosDescripcionProc_id)
+
+    if (tarifariosDescripcionProc_id == ''):
+        tarifariosDescripcionProc_id = 'null'
+
+    tarifariosDescripcionSum_id = request.POST.get('tarifariosDescripcionSum_id')
+    print("tarifariosDescripcionSum_id =", tarifariosDescripcionSum_id)
+
+    if (tarifariosDescripcionSum_id == ''):
+        tarifariosDescripcionSum_id = 'null'
+
+
+    tarifariosDescripcionHono_id = request.POST.get('tarifariosDescripcionHono_id')
+    print("tarifariosDescripcionHono_id =", tarifariosDescripcionHono_id)
+    if (tarifariosDescripcionHono_id == ''):
+        tarifariosDescripcionHono_id = 'null'
+
+
+    descripcion = request.POST.get('descripcion')
+    print("descripcion =", descripcion)
+
+
+
+    estadoReg = 'A'
+
+    fechaRegistro = datetime.datetime.now()
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+    curt = miConexiont.cursor()
+
+    comando = 'INSERT INTO contratacion_Convenios (nombre, "vigenciaDesde", "vigenciaHasta", "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial", hospitalario, urgencias, ambulatorio, "consultaExterna", copago, moderadora, tipofactura, agrupada, "facturacionSuministros", "facturacionCups", "cuentaContable", requisitos, "fechaRegistro", "estadoReg", empresa_id, "usuarioRegistro_id", descripcion, "tarifariosDescripcionProc_id", "tarifariosDescripcionHono_id", "tarifariosDescripcionSum_id") VALUES (' + "'" + str(nombreConvenio) + "'," + "'" + str(vigenciaDesde) + "','" + str(vigenciaHasta) + "'," + str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + "," + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(ambulatorio) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipofactura) + "','" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "','"  + str(requisitos)   + "'," + "'" +  str(fechaRegistro) + "'," + "'" +  str(estadoReg) + "','" + str(empresa_id) + "',"  + str(usuarioRegistro_id) + ",'" + str(descripcion) + "',"   + str(tarifariosDescripcionProc_id) + "," + str(tarifariosDescripcionSum_id)  +  "," + str(tarifariosDescripcionHono_id) + ')'
+
+    print(comando)
+    curt.execute(comando)
+
+    miConexiont.commit()
+    miConexiont.close()
+
+    return JsonResponse({'success': True, 'message': 'Convenio Creada satisfactoriamente!'})
+
+
 
 def PostConsultaConvenios(request):
     print ("Entre PostConsultaConvenios ")

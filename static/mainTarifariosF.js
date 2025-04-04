@@ -323,7 +323,7 @@ function arrancaTarifarios(valorTabla,valorData)
 		{     "render": function ( data, type, row ) {
                         var btn = '';
  			 btn = btn + " <input type='radio' name='miDescripcionProcedimiento' class='miDescripcionProcedimiento form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-             btn = btn + " <button class='miAplicarProcedimientos btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+          		   btn = btn + " <button class='miAplicarProcedimientos btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
 
                        return btn;
                     },
@@ -395,6 +395,9 @@ const initDataTableTarifariosDescripcionProcedimientos = async () => {
         data['nombreSede'] = nombreSede;
         data['sede'] = sede;
         data['username_id'] = username_id;
+	tiposTarifa_id = 1
+        data['tiposTarifa_id'] = tiposTarifa_id;
+
  	    data = JSON.stringify(data);
 
         arrancaTarifarios(4,data);
@@ -512,6 +515,56 @@ $('#tablaTarifariosDescripcionProcedimientos tbody').on('click', '.miAplicarProc
             $('#crearModelAplicarTarifario').modal('show');
 
   });
+
+$('#tablaTarifariosDescripcionProcedimientos tbody').on('click', '.miDescripcionProcedimiento', function() {
+
+
+        var post_id = $(this).data('pk');
+	    var row = $(this).closest('tr'); // Encuentra la fila
+	    var table = $('#tablaTarifariosDescripcionProcedimientos').DataTable();  // Inicializa el DataTable jquery
+
+	    var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato3 columna = " , dato3.columna);
+	        console.log ( "dato3  descripcion = " , dato3.descripcion);
+	        console.log ( "dato3 = tipoTarifa " , dato3.id);
+
+
+	    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+	         var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data['tiposTarifa_id'] = dato3.id;
+	
+
+
+ 		data = JSON.stringify(data);
+
+   
+
+        arrancaTarifarios(1,data);
+	    dataTableTarifariosProcedimientosInitialized = true;
+
+
+
+
+  });
+
+
+
 
 function CerrarModalJson()
 {
@@ -711,7 +764,7 @@ function CrearTarifarioProcedimientos()
     	var sede = document.getElementById("sede").value;
         var tiposTarifa1_id = document.getElementById("tiposTarifa1_id").value;
 	var usuarioRegistro_id = document.getElementById("usuarioRegistro_id").value;
-    alert( "este es eltiposTarifa1_id =" + tiposTarifa1_id) ;
+	    alert( "este es eltiposTarifa1_id QUE VOY A CREAR  =" + tiposTarifa1_id) ;
 
 
             $.ajax({
@@ -740,7 +793,7 @@ function CrearTarifarioProcedimientos()
 
 
 		   $("#mensajes").html(data2.message);
- 	  $('#crearModelDescripcionProcedimientos').modal('hide');
+ 	  $('#crearModelCrearTarifarioProcedimientos').modal('hide');
 
 
                          },

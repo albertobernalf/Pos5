@@ -107,5 +107,20 @@ and tardes.columna='colValor1'
 
 -- delete
 
- delete from tarifarios_tarifariosprocedimientos where "codigoCups_id" = 2692;
+-- delete from tarifarios_tarifariosprocedimientos where "codigoCups_id" = 2692;
 select * from clinico_examenes where id = 2692
+
+select * from tarifarios_tarifariosprocedimientos order by "codigoCups_id"
+select * from tarifas_tipostarifa;
+
+
+select count(*) from tarifarios_tarifariosprocedimientos -- 3876
+select * from tarifarios_tarifariosdescripcion;
+delete from tarifarios_tarifariosdescripcion
+	where id >= 5;
+select empresa_id,* from contratacion_convenios order by id;
+
+select * from facturacion_conveniospacienteingresos;
+
+UPDATE contratacion_convenios set "tarifariosDescripcionProc_id" = null where id !=1;
+	select * from tarifarios_tipostarifaproducto;

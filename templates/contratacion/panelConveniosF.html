@@ -67,11 +67,11 @@ div.dataTables_wrapper  div.dataTables_filter input {
 		<div class="container my-2">
              
 		<div align="right" height="15px" width="50px">
-               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				    
+               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarConvenio"  name="BtnAdicionarConvenio" value="Adicionar" onclick= "AdicionarConvenio()" >
 		</div>
 
    			   <div class="row">
-				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
+
 
                                         <table  id= "tablaConvenios" class=" display table table-striped" style="width: 100%";>
                                            <thead>
@@ -131,7 +131,7 @@ div.dataTables_wrapper  div.dataTables_filter input {
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingEditarConvenios"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearConvenios" onclick="CrearConvenios()">Grabar!</button> 
+			<button type="button" class="btn btn-primary" id="saveBtnEditarConvenios1" onclick="EditarGuardarConvenios()">Grabar!</button> 
                         </div>
 		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">
@@ -148,7 +148,7 @@ div.dataTables_wrapper  div.dataTables_filter input {
 				<div class="col-12">
                                     
 				 <label  for="nombreConvenio">Convenio:</label>
-                                    <input type="text" class="form-control form-control-sm" id="nombreConvenio" name="nombreConvenio" value="0" placeholder="nombreConvenio:" ></input>
+                                    <input type="text" class="form-control form-control-sm" id="nombreConvenio" name="nombreConvenio" value="0" placeholder="nombreConvenio:" readonly></input>
                                 </div>
 
 				<div class="col-12">
@@ -163,6 +163,45 @@ div.dataTables_wrapper  div.dataTables_filter input {
                                
 					 <input type="datetime-local"  class="form-control form-control-sm" id="vigenciaHasta" name="vigenciaHasta" placeholder="vigenciaHasta"  >
                                 </div>
+
+				<div class="col-12">
+                                    Tarifario Procedimientos:
+				<select class="select-css"  id="tarifariosDescripcionProc_id"
+                                                                name="tarifariosDescripcionProc_id">
+                                                            {% for tarifariosDescripcionProc in TarifariosDescripcionProc%}
+                                                            <option value="{{tarifariosDescripcionProc.id}}">
+                                                                {{tarifariosDescripcionProc.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+				<div class="col-12">
+                                    Tarifario Suministros:
+				<select class="select-css"  id="tarifariosDescripcionSum_id"
+                                                                name="tarifariosDescripcionSum_id">
+                                                            {% for tarifariosDescripcionSum in TarifariosDescripcionSum %}
+                                                            <option value="{{tarifariosDescripcionSum.id}}">
+                                                                {{tarifariosDescripcionSum.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+				<div class="col-12">
+					    Tarifario Honorarios:
+                	           	<select class="select-css"  id="tarifariosDescripcionHono_id"
+                                                                name="tarifariosDescripcionHono_id">
+                                                            {% for tarifariosDescripcionHono in TarifariosDescripcionHono %}
+                                                            <option value="{{tarifariosDescripcionHono.id}}">
+                                                                {{tarifariosDescripcionHono.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+
+
 
 
                			<div class="col-12">
@@ -264,45 +303,8 @@ div.dataTables_wrapper  div.dataTables_filter input {
 
 				<div class="col-12">
 				 <label  for="descripcion">descripcion:</label>
-                                    <input type="text" class="form-control form-control-sm" id="descripcion" name="descripcion" placeholder="descripcion:"></input>
+                                    <input type="text" class="form-control form-control-sm" id="descripcion" name="descripcion" placeholder="descripcion:" readonly></input>
                                 </div>
-
-				<div class="col-12">
-                                    Tarifario Procedimientos:
-				<select class="select-css"  id="tarifariosDescripcionProc_id"
-                                                                name="tarifariosDescripcionProc_id">
-                                                            {% for tarifariosDescripcionProc in TarifariosDescripcionProc%}
-                                                            <option value="{{tarifariosDescripcionProc.id}}">
-                                                                {{tarifariosDescripcionProc.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                        </select>
-                                </div>
-
-				<div class="col-12">
-                                    Tarifario Suministros:
-				<select class="select-css"  id="tarifariosDescripcionSum_id"
-                                                                name="tarifariosDescripcionSum_id">
-                                                            {% for tarifariosDescripcionSum in TarifariosDescripcionSum %}
-                                                            <option value="{{tarifariosDescripcionSum.id}}">
-                                                                {{tarifariosDescripcionSum.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                        </select>
-                                </div>
-
-				<div class="col-12">
-					    Tarifario Honorarios:
-                	           	<select class="select-css"  id="tarifariosDescripcionHono_id"
-                                                                name="tarifariosDescripcionHono_id">
-                                                            {% for tarifariosDescripcionHono in TarifariosDescripcionHono %}
-                                                            <option value="{{tarifariosDescripcionHono.id}}">
-                                                                {{tarifariosDescripcionHono.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                        </select>
-                                </div>
-
 
                                 <div class="col-12">
                                     <center> 
@@ -322,16 +324,229 @@ div.dataTables_wrapper  div.dataTables_filter input {
                 </div>  <!-- CIERRA MODAL FADE -->
 
 
-	<!-- MODAL PARA MOSTRAT EL JSON DEL ENVIO  ->
-
-
-
 
 		<!-- Fin Modal Editar Convenio -->
 
 
 
 		<!-- Modal Crear Convenio -->
+
+
+       <div class="modal fade" id="crearModelConvenios" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" modal-lg>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingCrearConvenios"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearConvenios1" onclick="CrearGuardarConvenios()">Grabar!</button> 
+                        </div>
+		<div style="width:500px; heigth:100px; ">
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormCrearConvenios" name="postFormCrearConvenios">
+
+                                <input type="text" name="postConvenioC_id" id="postConvenioC_id">
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+				<div class="col-12">
+                                    
+				 <label  for="nombreConvenio">Convenio:</label>
+                                    <input type="text" class="form-control form-control-sm" id="nombreConvenioC" name="nombreConvenioC" value="0" placeholder="nombreConvenio:" ></input>
+                                </div>
+
+				<div class="col-12">
+				
+ 				<label  for="vigenciaDesdeC">VigenciaDesde:</label>
+                               
+					 <input type="datetime-local"  class="form-control form-control-sm" id="vigenciaDesdeC" name="vigenciaDesdeC" placeholder="vigenciaDesde"  >
+                                </div>
+				<div class="col-12">
+
+ 				<label  for="vigenciaHastaC">VigenciaHasta:</label>
+                               
+					 <input type="datetime-local"  class="form-control form-control-sm" id="vigenciaHastaC" name="vigenciaHastaC" placeholder="vigenciaHasta"  >
+                                </div>
+
+
+				<div class="col-12">
+                                    Empresa:
+				<select class="select-css"  id="empresaC_id"
+                                                                name="empresaC_id">
+                                                            {% for empresas in Empresas%}
+                                                            <option value="{{empresas.id}}">
+                                                                {{empresas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+
+
+
+				<div class="col-12">
+                                    Tarifario Procedimientos:
+				<select class="select-css"  id="tarifariosDescripcionProcC_id"
+                                                                name="tarifariosDescripcionProcC_id">
+                                                            {% for tarifariosDescripcionProc in TarifariosDescripcionProc%}
+                                                            <option value="{{tarifariosDescripcionProc.id}}">
+                                                                {{tarifariosDescripcionProc.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+				<div class="col-12">
+                                    Tarifario Suministros:
+				<select class="select-css"  id="tarifariosDescripcionSumC_id"
+                                                                name="tarifariosDescripcionSumC_id">
+                                                            {% for tarifariosDescripcionSum in TarifariosDescripcionSum %}
+                                                            <option value="{{tarifariosDescripcionSum.id}}">
+                                                                {{tarifariosDescripcionSum.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+				<div class="col-12">
+					    Tarifario Honorarios:
+                	           	<select class="select-css"  id="tarifariosDescripcionHonoC_id"
+                                                                name="tarifariosDescripcionHonoC_id">
+                                                            {% for tarifariosDescripcionHono in TarifariosDescripcionHono %}
+                                                            <option value="{{tarifariosDescripcionHono.id}}">
+                                                                {{tarifariosDescripcionHono.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+
+
+
+
+               			<div class="col-12">
+				 <label  for="porcTarifarioC">porcTarifario:</label>
+                                    <input type="text" class="form-control form-control-sm" id="porcTarifarioC" name="porcTarifarioC" placeholder="porcTarifario:"></input>
+                                </div>
+				<div class="col-12">               
+				 <label  for="porcSuministrosC">porcSuministros:</label>
+                                    <input type="text" class="form-control form-control-sm" id="porcSuministrosC" name="porcSuministrosC" placeholder="porcSuministros:"></input>
+                                </div>
+				<div class="col-12">
+				 <label  for="valorOxigenoC">valorOxigeno:</label>
+                                    <input type="text" class="form-control form-control-sm" id="valorOxigenoC" name="valorOxigenoC" placeholder="valorOxigeno:"></input>
+                                </div>
+				<div class="col-12">
+				 <label  for="porcEsterilizacionC">porcEsterilizacion:</label>
+                                    <input type="text" class="form-control form-control-sm" id="porcEsterilizacionC" name="porcEsterilizacionC" placeholder="porcEsterilizacion:"></input>
+                                </div>
+				<div class="col-12">
+				 <label  for="porcMaterialC">porcMaterial:</label>
+                                    <input type="text" class="form-control form-control-sm" id="porcMaterialC" name="porcMaterialC" placeholder="porcMaterial:"></input>
+                                </div>
+				<div class="col-12">
+				 <label  for="hospitalarioC">hospitalario:</label>
+                                    <input type="text" class="form-control form-control-sm" id="hospitalarioC" name="hospitalarioC" placeholder="hospitalario:"></input>
+                                </div>
+				<div class="col-12">
+				 <label  for="urgenciasC">urgencias:</label>
+                                    <input type="text" class="form-control form-control-sm" id="urgenciasC" name="urgenciasC" placeholder="urgencias:"></input>
+                                </div>
+				<div class="col-12">
+				 <label  for="ambulatorioC">ambulatorio:</label>
+                                    <input type="text" class="form-control form-control-sm" id="ambulatorioC" name="ambulatorioC" placeholder="ambulatorio:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="consultaExternaC">consultaExterna:</label>
+                                    <input type="text" class="form-control form-control-sm" id="consultaExternaC" name="consultaExternaC" placeholder="consultaExterna:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="copagoC">copago:</label>
+                                    <input type="text" class="form-control form-control-sm" id="copagoC" name="copagoC" placeholder="copago:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="moderadoraC">moderadora:</label>
+                                    <input type="text" class="form-control form-control-sm" id="moderadoraC" name="moderadoraC" placeholder="moderadora:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="tipofacturaC">tipofactura:</label>
+                                    <input type="text" class="form-control form-control-sm" id="tipofacturaC" name="tipofacturaC" placeholder="tipofactura:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="agrupadaC">tipofactura:</label>
+                                    <input type="text" class="form-control form-control-sm" id="agrupadaC" name="agrupadaC" placeholder="agrupada:"></input>
+                                </div>
+
+
+				<div class="col-12">
+				 <label  for="facturacionSuministrosC">facturacionSuministros:</label>
+                                    <input type="text" class="form-control form-control-sm" id="facturacionSuministrosC" name="facturacionSuministrosC" placeholder="facturacionSuministros:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="facturacionCupsC">facturacionCups:</label>
+                                    <input type="text" class="form-control form-control-sm" id="facturacionCupsC" name="facturacionCupsC" placeholder="facturacionCups:"></input>
+                                </div>
+
+				<div class="col-12">
+				 <label  for="cuentaContableC">cuentaContable:</label>
+                                    <input type="text" class="form-control form-control-sm" id="cuentaContableC" name="cuentaContableC" placeholder="cuentaContable:"></input>
+                                </div>
+
+
+				<div class="col-12">
+				 <label  for="requisitosC">requisitos:</label>
+                                    <input type="text" class="form-control form-control-sm" id="requisitosC" name="requisitosC" placeholder="requisitos:"></input>
+                                </div>
+
+
+				<div class="col-12">
+				 <label  for="fechaRegistroC">fechaRegistro:</label>
+                                    <input type="text" class="form-control form-control-sm" id="fechaRegistroC" name="fechaRegistroC" placeholder="fechaRegistro:"></input>
+                                </div>
+
+
+				<div class="col-12">
+				 <label  for="estadoRegC">estadoReg:</label>
+                                    <input type="text" class="form-control form-control-sm" id="estadoRegC" name="estadoRegC" placeholder="estadoReg:"></input>
+                                </div>
+
+	
+				<div class="col-12">
+				 <label  for="usuarioRegistroC_id">usuarioRegistro_id:</label>
+                                    <input type="text" class="form-control form-control-sm" id="usuarioRegistroC_id" name="usuarioRegistroC_id" placeholder="usuarioRegistro_id:"></input>
+                                </div>
+
+
+				<div class="col-12">
+				 <label  for="descripcionC">descripcion:</label>
+                                    <input type="text" class="form-control form-control-sm" id="descripcionC" name="descripcionC" placeholder="descripcion:" ></input>
+                                </div>
+
+                                <div class="col-12">
+                                    <center> 
+					<button type="button" class="btn btn-primary" id="saveBtnCrearConvenios"   value="create" onclick="CrearGuardarConvenios()">Guardar </button> 
+					</center> 
+                                </div>
+
+
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			</div> <!-- CIERRA DIV TAMANO -->			
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
 
 
 		<!-- Modal Crear Convenio -->

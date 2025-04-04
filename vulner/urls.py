@@ -260,11 +260,13 @@ urlpatterns = [
     path('guardarEditarTarifarioProcedimientos/', viewsTarifarios.GuardarEditarTarifarioProcedimientos, name='guardarEditarTarifarioProcedimientos'),
     path('traerTarifarioProcedimientos/', viewsTarifarios.TraerTarifarioProcedimientos,name='traerTarifarioProcedimientos'),
 
+
     # Contratacion
 
     path('load_dataConvenios/<str:data>', viewsConvenios.load_dataConvenios, name='loaddataConvenios'),
     path('traerConvenio/', viewsConvenios.TraerConvenio, name='traer_Convenio'),
     path('editarGuardarConvenios/', viewsConvenios.EditarGuardarConvenios, name='editarGuardarConvenios'),
+    path('crearGuardarConvenios/', viewsConvenios.CrearGuardarConvenios, name='CrearGuardar_Convenios'),
 
 
 

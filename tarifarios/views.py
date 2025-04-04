@@ -56,6 +56,7 @@ def Load_dataTarifariosProcedimientos(request, data):
     username_id = d['username_id']
 
     nombreSede = d['nombreSede']
+    tiposTarifa = d['tiposTarifa_id']
     print ("sede:", sede)
     print ("username:", username)
     print ("username_id:", username_id)
@@ -71,7 +72,7 @@ def Load_dataTarifariosProcedimientos(request, data):
     curx = miConexionx.cursor()
    
     #detalle = 'select id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id, "tiposTarifa_id", "usuarioRegistro_id" from tarifarios_tarifariosprocedimientos'
-    detalle = 'select tarproc.id id, tiptar.nombre tipoTarifa, tarproc."codigoCups_id" cups, tarproc."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2" , tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc, clinico_examenes exa where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str('colValorBase') + "'" + ' and exa.id = tarproc."codigoCups_id"'
+    detalle = 'select tarproc.id id, tiptar.nombre tipoTarifa, tarproc."codigoCups_id" cups, tarproc."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2" , tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc, clinico_examenes exa where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str('colValorBase') + "'" + ' and exa.id = tarproc."codigoCups_id" and tarproc."tiposTarifa_id" =' + "'" + str(tiposTarifa) + "'"
 
 
     print(detalle)
@@ -287,7 +288,8 @@ def AplicarTarifas(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    print ("Entre rango de CUPS")
+    print ("Comenzamos")
+
     if (codigoCups_id != '' and codigoCupsHasta_id != '' and porcentaje != 0):
 
          comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + "'" + str(columnaAplicar) + "'"  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCups_id" >= ' + "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"
@@ -302,7 +304,7 @@ def AplicarTarifas(request):
 	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
 
-    if (valorAplicar != 0):
+    if (valorAplicar != ''):
 
 	    print ("Entre valor a Aplicar");
 

@@ -62,7 +62,7 @@ class tarifariosSuministrosAdmin(admin.ModelAdmin):
 @admin.register(TarifariosProcedimientosHonorarios)
 class tarifariosProcedimientosHonorariosAdmin(admin.ModelAdmin):
 
-   list_display = ("id","tiposTarifa", "codigoCups", "tipoHonorario", "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3","colValor1", "fechaRegistro")
-   search_fields = ("id","tiposTarifa", "codigoCups","tipoHonorario",  "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3","colValor1", "fechaRegistro")
+   list_display = ("id","tiposTarifa", "codigoCups",  "codigoHomologado", "valorHonorarioCirujano", "valorHonorarioAnestesiologo", "valorHonorarioAyudante", "valorHonorarioPerfucionista","valorHonorarioViaAcceso", "fechaRegistro")
+   search_fields = ("id","tiposTarifa", "codigoCups",  "codigoHomologado", "valorHonorarioCirujano", "valorHonorarioAnestesiologo", "valorHonorarioAyudante", "valorHonorarioPerfucionista","valorHonorarioViaAcceso", "fechaRegistro")
    # Filtrar
-   list_filter = ("id","tiposTarifa", "codigoCups", "tipoHonorario", "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3","colValor1", "fechaRegistro")
+   list_filter = ("id","tiposTarifa", "codigoCups",  "codigoHomologado", "valorHonorarioCirujano", "valorHonorarioAnestesiologo", "valorHonorarioAyudante", "valorHonorarioPerfucionista","valorHonorarioViaAcceso", "fechaRegistro")

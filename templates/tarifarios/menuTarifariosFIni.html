@@ -105,6 +105,73 @@
 {% block menu  %}
 <div class="marco">
 
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Clinica Vulnerables</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link active" aria-current="page" href="#">Mision</a>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Admisiones
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mecanicos Pacientes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Manejo cama</a>
+                        <a class="dropdown-item" href="/manejoLuz#">Luz de habitacion</a>
+                        <a class="dropdown-item" href="#">Televisor</a>
+                        <a class="dropdown-item" href="#">Calefaccion</a>
+                        <a class="dropdown-item" href="/ambienteMusical#">Ambientacion Musical</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Informes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Reporte_1</a>
+                        <a class="dropdown-item" href="/manejoLuz#">Reporte_2</a>
+                        <a class="dropdown-item" href="#">Reporte_3</a>
+                        <a class="dropdown-item" href="#">Reporte_4</a>
+                        <a class="dropdown-item" href="/ambienteMusical#">Reporte_5</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+         <li>
+		        <form class="form-inline my-2 my-lg-0">
+         	   <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+	            <a class="nav-link" href="/retornarMen/{{Sede}}, {{Username}}, {{Documento}}, {{NombreSede}}, {{Profesional}}">Retornar</a>
+		        </form>
+
+		    </li>
+            </div>
+        </div>
+    </div>
+   
+</nav>
 </div>
 {% endblock %}
 
@@ -118,11 +185,6 @@
 
 <div class="marco">
     {% block usuarios %}
-
-		        <form class="form-inline my-2 my-lg-0">
-         	   <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
-	            <a class="nav-link" href="/retornarMen/{{Sede}}, {{Username}}, {{Documento}}, {{NombreSede}}, {{Profesional}}">Retornar</a>
-		        </form>
 
             Sede: {{NombreSede}} Colaborador : {{Profesional}} Modulo: {{EscogeModulo}}
 

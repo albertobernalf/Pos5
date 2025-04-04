@@ -1834,7 +1834,29 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print("ENTRE PERMSISO FACTURACION")
         ## Aqui contexto para solo Facturacion
 
-  	# Combo tarifariosDescripcionProc
+
+        # Combo Empresas
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM facturacion_empresas c"
+
+        curt.execute(comando)
+        print(comando)
+
+        empresas = []
+
+        for id, nombre in curt.fetchall():
+            empresas.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(empresas)
+
+        context['Empresas'] = empresas
+
+    # Combo tarifariosDescripcionProc
 
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
@@ -1846,7 +1868,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print(comando)
 
         tarifariosDescripcionProc = []
-
+        tarifariosDescripcionProc.append({'id': '', 'nombre': ''})
 
         for id, nombre in curt.fetchall():
             tarifariosDescripcionProc.append({'id': id, 'nombre': nombre})
@@ -1871,6 +1893,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         tarifariosDescripcionSum = []
 
+        tarifariosDescripcionSum.append({'id': '', 'nombre': ''})
 
         for id, nombre in curt.fetchall():
             tarifariosDescripcionSum.append({'id': id, 'nombre': nombre})
@@ -1895,7 +1918,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print(comando)
 
         tarifariosDescripcionHono = []
-
+        tarifariosDescripcionHono.append({'id': '', 'nombre': ''})
 
         for id, nombre in curt.fetchall():
             tarifariosDescripcionHono.append({'id': id, 'nombre': nombre})

@@ -315,6 +315,107 @@ function EditarGuardarConvenios()
 }
 
 
+function AdicionarConvenio()
+{
+    
+	alert("Entre Adicionar Convenio");
+
+	
+            $('#post_id').val('');
+            $('#postFormCrearConvenios').trigger("reset");
+            $('#modelHeadingCrearConvenios').html("Creacion Envios Rips");
+            $('#crearModelConvenios').modal('show');
+        
+}
+
+
+
+function CrearGuardarConvenios()
+{
+
+	     var post_id = document.getElementById("postConvenioC_id").value;
+		var row = $(this).closest('tr'); // Encuentra la fila
+
+  	var nombreConvenio = document.getElementById("nombreConvenioC").value;
+  	var descripcion = document.getElementById("descripcionC").value;
+  	var vigenciaDesde = document.getElementById("vigenciaDesdeC").value;
+  	var vigenciaHasta = document.getElementById("vigenciaHastaC").value;
+  	var porcTarifario = document.getElementById("porcTarifarioC").value;
+  	var porcSuministros = document.getElementById("porcSuministrosC").value;
+  	var valorOxigeno = document.getElementById("valorOxigenoC").value;
+  	var porcEsterilizacion = document.getElementById("porcEsterilizacionC").value;
+  	var porcMaterial = document.getElementById("porcMaterialC").value;
+  	var hospitalario = document.getElementById("hospitalarioC").value;
+  	var urgencias = document.getElementById("urgenciasC").value;
+  	var ambulatorio = document.getElementById("ambulatorioC").value;
+  	var consultaExterna = document.getElementById("consultaExternaC").value;
+  	var copago = document.getElementById("copagoC").value;
+  	var moderadora = document.getElementById("moderadoraC").value;
+  	var tipofactura = document.getElementById("tipofacturaC").value;
+  	var agrupada = document.getElementById("agrupadaC").value;
+  	var facturacionSuministros = document.getElementById("facturacionSuministrosC").value;     
+  	var facturacionCups = document.getElementById("facturacionCupsC").value;
+  	var cuentaContable = document.getElementById("cuentaContable").value;
+  	var requisitos = document.getElementById("requisitosC").value;
+  	var empresa_id = document.getElementById("empresaC_id").value;
+  	var facturacionCups = document.getElementById("facturacionCupsC").value;
+  	var usuarioRegistro_id = document.getElementById("username_id").value;
+  	var descripcion = document.getElementById("descripcionC").value;
+  	var tarifariosDescripcionProc_id = document.getElementById("tarifariosDescripcionProcC_id").value;
+  	var tarifariosDescripcionSum_id = document.getElementById("tarifariosDescripcionSumC_id").value;
+  	var tarifariosDescripcionHono_id = document.getElementById("tarifariosDescripcionHonoC_id").value;
+
+	$.ajax({
+
+	        url: "/crearGuardarConvenios/",
+                data: {'post_id':post_id,'nombreConvenio':nombreConvenio,'descripcion': descripcion, 'vigenciaDesde':vigenciaDesde,'vigenciaHasta':vigenciaHasta,'porcTarifario':porcTarifario, 'porcSuministros':porcSuministros, 'valorOxigeno':valorOxigeno,
+			 'porcEsterilizacion':porcEsterilizacion,'porcMaterial':porcMaterial, 'hospitalario':hospitalario,  'urgencias':urgencias,'ambulatorio':ambulatorio,'consultaExterna':consultaExterna,'copago':copago,
+			'moderadora':moderadora, 'tipofactura':tipofactura, 'agrupada':agrupada, 'facturacionSuministros':facturacionSuministros,'facturacionCups':facturacionCups, 'cuentaContable':cuentaContable, 'requisitos':requisitos,
+			'empresa_id':empresa_id, 'facturacionCups':facturacionCups,'usuarioRegistro_id':usuarioRegistro_id, 'tarifariosDescripcionProc_id':tarifariosDescripcionProc_id, 'tarifariosDescripcionSum_id':tarifariosDescripcionSum_id,
+			'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id },
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+            $('#postFormCrearConvenios').trigger("reset");
+
+	     arrancaConvenios(1,data);
+
+	    dataTableConveniosInitialized = true;
+
+		
+            $('#crearModelConvenios').modal('hide');
+
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+ 	    data = JSON.stringify(data);
+
+        arrancaConvenios(1,data);
+  dataTableConveniosInitialized = true;
+
+                },
+                 error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+}
+
+
+
+
+
+
+
+
 
 
 

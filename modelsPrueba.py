@@ -586,3 +586,69 @@ El lunes 31 de marzo seguir detalle de RIPS
 	e) Tarifarios nuevo programa
 	f) falta algo mas ???
 
+---------------
+---------- WORK -----
+------------------
+
+-- Honorarios: cups.anestesia,cirujano, instriuentador, vias de acceso etc investigar
+-- INSERT tarifasprocedimientos x programa, desde excel
+-- Crear tarifas variads
+-- Como subir aRCHIVOS A TABLÑAS EXCEL desde ´python a tabla tarifariosprocedimientos etc
+
+import pandas as pd
+import psycopg2
+
+# Leer el archivo Excel
+
+archivo_excel = 'ruta/a/tu/archivo.xlsx'
+df = pd.read_excel(archivo_excel)
+
+# Conectar a PostgreSQL
+conexion = psycopg2.connect(
+    host="localhost",
+    database="tu_basededatos",
+    user="tu_usuario",
+    password="tu_contraseña"
+)
+cursor = conexion.cursor()
+
+# Crear una sentencia INSERT (ajustar según la estructura de la tabla)
+for index, row in df.iterrows():
+    query = "INSERT INTO nombre_tabla (columna1, columna2, columna3) VALUES (%s, %s, %s)"
+    valores = (row['columna1'], row['columna2'], row['columna3'])  # Ajusta las columnas según tu archivo
+    cursor.execute(query, valores)
+
+# Confirmar los cambios
+conexion.commit()
+
+# Cerrar la conexión
+cursor.close()
+conexion.close()
+
+print("Datos subidos correctamente.")
+
+
+-- Ojo en la sabana de creacion de tarifarios---> proc,sum,hono el valorBase debe venr con valñor
+-- Crear contratacion- procedimientos, suministros honorarios de CONSULTA
+-- Crearv tarifario -- suministros, honorarios --> operacion
+-- Tablas  a particionar : factutacion, facturaciondetalle, Farmacia, Enfermeria etc
+-- A arreglar probar pantañña de tarifas sin MENU Tarifas+ + grande  que quepa info.
+
+-- Actualizar pantalla convenio.
+Actualizar SQL FacturacionDetalle  ?? umm cual es este..
+BIBLIOGRAFIA:
+--Postgresql: particionamiento de tablas usando campos de tipos definidos por el usuario
+-- Particion de postgresql    en dyango
+-- postgrtesql particiones en django
+--  Mejorar el rendimiento d ela base de datos:partivcionamiento d etablas en dyango y
+-- django-postgres-extra
+-- crear indices simultaneos en una tabla particionada
+-- Las tabvlas de consulta externa, crean en admisiones_ingresos, el consecutivo = numero de la cita, pasas a liquidacion, liqudaciondetalle, facturacion, facturaciondetalle.
+-- trabajar pantallas convenio en facturacion y admisiones
+--------------------------------------
+------------- FIN WORK ---------------
+--------------------------------------
+
+
+
+
