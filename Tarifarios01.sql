@@ -111,6 +111,7 @@ and tardes.columna='colValor1'
 select * from clinico_examenes where id = 2692
 
 select * from tarifarios_tarifariosprocedimientos order by "codigoCups_id"
+	DELETE FROM tarifarios_tarifariosprocedimientos  WHERE "tiposTarifa_id" = 2;
 select * from tarifas_tipostarifa;
 
 
@@ -123,4 +124,43 @@ select empresa_id,* from contratacion_convenios order by id;
 select * from facturacion_conveniospacienteingresos;
 
 UPDATE contratacion_convenios set "tarifariosDescripcionProc_id" = null where id !=1;
+
+SELECT p.id id, p.nombre  nombre 
+	FROM  tarifarios_tipostarifa  p
+	where p."tiposTarifaProducto_id" in (select id from tarifarios_tipostarifaProducto where nombre like ('%PROCED%'))
+   
 	select * from tarifarios_tipostarifaproducto;
+select * from tarifarios_tarifariosdescripcion; -- tiposTarifa_id
+select * from tarifarios_tipostarifa;
+
+
+select * from tarifarios_tarifariosprocedimientos order by "codigoCups_id", "tiposTarifa_id"
+	select * from tarifarios_tarifariosprocedimientos where "tiposTarifa_id" = 2 order by "codigoCups_id", "tiposTarifa_id" -- 3876
+	
+begin transaction;
+delete from tarifarios_tarifariosprocedimientos where "tiposTarifa_id" = 2 
+	-- rollback;
+	--commit;
+	select * from contratacion_convenios;
+	
+		select * from tarifarios_tarifariosprocedimientos where "tiposTarifa_id" = 1 order by "codigoCups_id", "tiposTarifa_id" -- 3876
+
+	select * from tarifas_TiposHonorarios;
+
+SELECT * FROM contratacion_convenios order by id;
+select  * from tarifarios_tarifariosprocedimientos;
+
+select * from clinico_examenes;
+select * from facturacion_conceptos;
+select * from tarifarios_tipostarifa;
+select * from contratacion_convenios;
+
+select
+codigoHomologado, colValorBase, fechaRegistro, estadoReg  ,exa.id  , concepto,    tiposTarifa_id
+from tarifarios_tarifariosprocedimientos
+where 
+
+select '' codigoHomologado, "colValorBase" colValorBase , now() fechaRegistro, 'A' estadoReg  ,  exa.id codigoCups_id , 4 concepto,    2 tiposTarifa_id
+from clinico_examenes exa, tarifarios_tarifariosprocedimientos tar
+where tar."tiposTarifa_id" = 2 AND tar."codigoCups_id" = exa.id order by exa.id --  3876 registros
+

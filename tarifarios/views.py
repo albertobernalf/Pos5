@@ -199,11 +199,38 @@ def CrearTarifarioProcedimientos(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "'"
+    comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "' RETURNING id"
 
     print(comando)
     cur3.execute(comando)
+
+    tarifariosProcId = curt.fetchone()[0]
+    print("resultado = " , resultado)
     miConexion3.commit()
+    miConexion3.close()
+
+
+    # Aqui Rutina carga archivo Excel
+
+    archivo_excel = 'c:\entornospython\Pos3\vulner\JSONCLINICA\CargaProcedimientos\datos.xlsx'
+    df = pd.read_excel(archivo_excel)
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+
+    # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
+
+    for index, row in df.iterrows():
+        query = "INSERT INTO tarifarios_tarifariosprocedimientos (codigoHomologado, colValorBase, fechaRegistro, estadoReg  ,codigoCups_id  , concepto,    tiposTarifa_id       ) VALUES (%s, %s, %s)"
+        valores = (row['codigoHomologado'], row['colValorBase'], row['fechaRegistro'],row['estadoReg'], row['codigoCups_id'] , row['concepto'] ,  row['tiposTarifa_id'] )  # Ajusta las columnas según tu archivo
+        cursor.execute(query, valores)
+
+    # Confirmar los cambios
+    miConexion3.commit()
+
+    # Cerrar la conexión
+    cur3.close()
     miConexion3.close()
 
     return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})

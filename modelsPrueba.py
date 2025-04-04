@@ -598,9 +598,47 @@ El lunes 31 de marzo seguir detalle de RIPS
 import pandas as pd
 import psycopg2
 
+##############################
+
+
+import pandas as pd
+  # Aqui Rutina carga archivo Excel
+
+    archivo_excel = 'c:\entornospython\Pos3\vulner\JSONCLINICA\CargaProcedimientos\datos1.xlsx'
+    df = pd.read_excel(archivo_excel)
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+
+    # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
+
+    for index, row in df.iterrows():
+        query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+        valores = (row['codigoHomologado'], row['colValorBase'], row['fechaRegistro'],row['estadoReg'], row['codigoCups_id'] , row['concepto'] ,  row['tiposTarifa_id'] )  
+        cur3.execute(query, valores)
+
+
+    # Confirmar los cambios
+    miConexion3.commit()
+
+    # Cerrar la conexión
+    cur3.close()
+    miConexion3.close()
+
+
+
+
+
+
+
+##################################
+
 # Leer el archivo Excel
 
-archivo_excel = 'ruta/a/tu/archivo.xlsx'
+archivo_excel = 'c:\entornospython\Pos3\vulner\JSONCLINICA\CargaProcedimientos\datos.xlsx'
+archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaProcedimientos\\datos1.xlsx'
+
 df = pd.read_excel(archivo_excel)
 
 # Conectar a PostgreSQL
@@ -648,7 +686,10 @@ BIBLIOGRAFIA:
 --------------------------------------
 ------------- FIN WORK ---------------
 --------------------------------------
-
+-- Ojo validar que al borrar de tarifarios_tarifariosprocedimientos no haya un
+   tipostarifa_id relacionado en tarifarios_tarifariosdescripcion
+   -- si esta relacionado Nop dejar borrar por que se pierden los
+      apuntadores de la tabla contratacion_convenios
 
 
 
