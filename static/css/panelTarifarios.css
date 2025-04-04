@@ -196,4 +196,15 @@ ul.tabs li a .tab-text{
     background-color: orange;
 }
 
+/* Reduce vertical spacing */
+
+div.dataTables_wrapper div.dataTables_info {
+  padding-top: 0px;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+  padding: 1px 2px 1px 2px;
+}
+/* End Reduce vertical spacing */
+
 
