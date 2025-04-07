@@ -162,5 +162,5 @@ where
 
 select '' codigoHomologado, "colValorBase" colValorBase , now() fechaRegistro, 'A' estadoReg  ,  exa.id codigoCups_id , 4 concepto,    2 tiposTarifa_id
 from clinico_examenes exa, tarifarios_tarifariosprocedimientos tar
-where tar."tiposTarifa_id" = 2 AND tar."codigoCups_id" = exa.id order by exa.id --  3876 registros
+where tar."tiposTarifa_id" = 1 AND tar."codigoCups_id" = exa.id order by exa.id --  3876 registros
 

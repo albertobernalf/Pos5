@@ -31,6 +31,9 @@ from rips.models import RipsTransaccion, RipsUsuarios, RipsEnvios, RipsDetalle, 
 from tarifarios.models import TiposTarifa, TiposTarifaProducto
 import pickle
 import io
+import pandas as pd
+from django.db import transaction, DatabaseError
+
 
 def decimal_serializer(obj):
     if isinstance(obj, Decimal):
@@ -72,7 +75,7 @@ def Load_dataTarifariosProcedimientos(request, data):
     curx = miConexionx.cursor()
    
     #detalle = 'select id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id, "tiposTarifa_id", "usuarioRegistro_id" from tarifarios_tarifariosprocedimientos'
-    detalle = 'select tarproc.id id, tiptar.nombre tipoTarifa, tarproc."codigoCups_id" cups, tarproc."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2" , tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc, clinico_examenes exa where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str('colValorBase') + "'" + ' and exa.id = tarproc."codigoCups_id" and tarproc."tiposTarifa_id" =' + "'" + str(tiposTarifa) + "'"
+    detalle = 'select tarproc.id id, tiptar.nombre tipoTarifa, exa."codigoCups" cups, tarproc."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2" , tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc, clinico_examenes exa where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str('colValorBase') + "'" + ' and exa.id = tarproc."codigoCups_id" and tarproc."tiposTarifa_id" =' + "'" + str(tiposTarifa) + "'"
 
 
     print(detalle)
@@ -195,24 +198,40 @@ def CrearTarifarioProcedimientos(request):
     fechaRegistro = datetime.datetime.now()
 
     conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
+    productoId = TiposTarifaProducto.objects.get(nombre='PROCEDIMIENTOS')
+    descripcion = TiposTarifa.objects.get(id=tiposTarifa_id ,tiposTarifaProducto_id=productoId.id)
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "' RETURNING id"
+    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
+        'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
+        estadoReg) + "',"  "'" + str(descripcion.id) + "')"
 
     print(comando)
     cur3.execute(comando)
-
-    tarifariosProcId = curt.fetchone()[0]
-    print("resultado = " , resultado)
     miConexion3.commit()
     miConexion3.close()
 
 
+    #miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    #cur3 = miConexion3.cursor()
+
+    #comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "' RETURNING id"
+
+    #print(comando)
+    #cur3.execute(comando)
+
+    #tarifariosProcId = cur3.fetchone()[0]
+    #print("resultado = " , resultado)
+    #miConexion3.commit()
+    #miConexion3.close()
+
+
     # Aqui Rutina carga archivo Excel
 
-    archivo_excel = 'c:\entornospython\Pos3\vulner\JSONCLINICA\CargaProcedimientos\datos.xlsx'
+    archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaProcedimientos\\datos1.xlsx'
     df = pd.read_excel(archivo_excel)
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
@@ -221,18 +240,18 @@ def CrearTarifarioProcedimientos(request):
 
     # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
 
-    for index, row in df.iterrows():
-        query = "INSERT INTO tarifarios_tarifariosprocedimientos (codigoHomologado, colValorBase, fechaRegistro, estadoReg  ,codigoCups_id  , concepto,    tiposTarifa_id       ) VALUES (%s, %s, %s)"
-        valores = (row['codigoHomologado'], row['colValorBase'], row['fechaRegistro'],row['estadoReg'], row['codigoCups_id'] , row['concepto'] ,  row['tiposTarifa_id'] )  # Ajusta las columnas según tu archivo
-        cursor.execute(query, valores)
-
-    # Confirmar los cambios
-    miConexion3.commit()
+    try:
+        for index, row in df.iterrows():
+            query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCups_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
+            cur3.execute(query, valores)
+            miConexion3.commit()
+    except DatabaseError as e:
+        transaction.rollback()
 
     # Cerrar la conexión
     cur3.close()
     miConexion3.close()
-
     return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
 
 
@@ -250,10 +269,7 @@ def CrearItemTarifario(request):
     codigoCupsItem_id = request.POST.get('codigoCupsItem_id')
     print ("codigoCupsItem_id =", codigoCupsItem_id)
 
-    conceptoItem_id = request.POST.get('conceptoItem_id')
-    print ("conceptoItem_id =", conceptoItem_id)
-
-
+    conceptoId = Conceptos.objects.get(nombre='PROCEDIMIENTOS')
 
     colValorBaseItem = request.POST.get('colValorBaseItem')
     print ("colValorBaseItem =", colValorBaseItem)
@@ -269,12 +285,24 @@ def CrearItemTarifario(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoItem_id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
+    comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
 
     print(comando)
-    cur3.execute(comando)
+
+    try:
+        cur3.execute(comando)
+    except psycopg2.Error as e:
+        # get error code
+        error = e.pgcode
+        print ("Entre Error Base de datos" ,  error)
+        transaction.rollback()
+        miConexion3.close()
+        return JsonResponse({'success': True, 'message': 'Tarifa existente !'})
+
     miConexion3.commit()
     miConexion3.close()
+
+
 
     return JsonResponse({'success': True, 'message': 'Item Tarifario creado !'})
 
@@ -304,8 +332,14 @@ def AplicarTarifas(request):
     codigoCups_id = request.POST.get('codigoCups_id')
     print ("codigoCups_id =", codigoCups_id)
 
+    if (codigoCups_id ==''):
+        codigoCups_id='null'
+
     codigoCupsHasta_id = request.POST.get('codigoCupsHasta_id')
     print ("codigoCupsHasta_id =", codigoCupsHasta_id)
+
+    if (codigoCupsHasta_id ==''):
+        codigoCupsHasta_id='null'
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
@@ -317,23 +351,23 @@ def AplicarTarifas(request):
 
     print ("Comenzamos")
 
-    if (codigoCups_id != '' and codigoCupsHasta_id != '' and porcentaje != 0):
+    if (codigoCups_id != '' and codigoCupsHasta_id != '' and porcentaje !='' ):
+        print("Entre porcentaje a Rango de CUPS")
+        comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCups_id" >= ' + "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"
 
-         comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + "'" + str(columnaAplicar) + "'"  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCups_id" >= ' + "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"
+    if (codigoCups_id != '' and codigoCupsHasta_id != '' and valorAplicar != ''):
+        print("Entre Valor a aplicar  en rango de cups")
+        comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "' AND " + '"codigoCups_id" >= ' + "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"
 
-    if (codigoCups_id != '' and codigoCupsHasta_id != '' and valorAplicar != 0):
+    if ( codigoCups_id == '' and codigoCupsHasta_id == '' and porcentaje != ''):
 
-        comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "' AND " + '"codigoCups_id" >= "'" + str(codigoCups_id) + "' AND "  + ' "codigoCups_id" <= ' + "'" + str(codigoCupsHasta_id) + "'"'
-
-    if (porcentaje != 0):
-
-	    print ("Entre porcentaje")
+	    print ("Entre porcentaje Solito")
 	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
 
-    if (valorAplicar != ''):
+    if (codigoCups_id == '' and codigoCupsHasta_id == '' and valorAplicar != ''):
 
-	    print ("Entre valor a Aplicar");
+	    print ("Entre valor a Aplicar Solito");
 
 	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
@@ -442,7 +476,7 @@ def GuardarEditarTarifarioProcedimientos(request):
     miConexion3.commit()
     miConexion3.close()
 
-    return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+    return JsonResponse({'success': True, 'message': 'Tarifario Actualizado !'})
 
 
 def TraerTarifarioProcedimientos(request):
@@ -457,18 +491,18 @@ def TraerTarifarioProcedimientos(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'select id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id, "tiposTarifa_id", "usuarioRegistro_id" FROM tarifarios_tarifariosprocedimientos WHERE id = ' + "'" + str(post_id) + "'"
+    comando = 'select proc.id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", proc."fechaRegistro", proc."estadoReg", "codigoCups_id", exa.nombre exaNombre, exa."codigoCups" codigoCups, proc.concepto_id, "tiposTarifa_id", proc."usuarioRegistro_id" FROM tarifarios_tarifariosprocedimientos proc, clinico_examenes exa WHERE proc.id = ' + "'" + str(post_id) + "'" + ' and exa.id = "codigoCups_id" '
 
     print(comando)
     cur3.execute(comando)
 
-    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10 ,fechaRegistro , estadoReg , codigoCups_id, concepto_id, tiposTarifa_id, usuarioRegistro_id  in cur3.fetchall():
+    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10 ,fechaRegistro , estadoReg , codigoCups_id, exaNombre, codigoCups,  concepto_id, tiposTarifa_id, usuarioRegistro_id  in cur3.fetchall():
         tarifariosProcedimientosDetalle.append(
             {"model": "tarifarios.tarifariosProcedimientos", "pk": id, "fields":
                 {'id': id, 'codigoHomologado': codigoHomologado, 'colValorBase': colValorBase, 'colValor1': colValor1, 'colValor2': colValor2
                     , 'colValor3': colValor3, 'colValor4': colValor4, 'colValor5': colValor5, 'colValor6': colValor6, 'colValor7': colValor7
                     , 'colValor8': colValor8, 'colValor9': colValor9, 'colValor10': colValor10, 'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,
-                 'codigoCups_id': codigoCups_id,'concepto_id': concepto_id,'tiposTarifa_id': tiposTarifa_id,'usuarioRegistro_id': usuarioRegistro_id,
+                 'codigoCups_id': codigoCups_id,'exaNombre':exaNombre, 'codigoCups':codigoCups,    'concepto_id': concepto_id,'tiposTarifa_id': tiposTarifa_id,'usuarioRegistro_id': usuarioRegistro_id,
 
                  }})
 
@@ -483,3 +517,104 @@ def TraerTarifarioProcedimientos(request):
 
 
     return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+
+
+def Load_dataTarifariosSuministros(request, data):
+    print("Entre load_data TarifariosSuministros")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    tiposTarifa = d['tiposTarifaSuministros_id']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    # print("data = ", request.GET('data'))
+
+    tarifariosSuministros = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+
+    detalle = 'select tarsum.id id, tiptar.nombre tipoTarifa, exa.cums cums, tarsum."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarsum."colValorBase", tarsum."colValor1", tarsum."colValor2" , tarsum."colValor3"	, tarsum."colValor4"	, tarsum."colValor5"	, tarsum."colValor6"	, tarsum."colValor7"	, tarsum."colValor8"	, tarsum."colValor9" , tarsum."colValor10" from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariossuministros tarsum, facturacion_suministros exa where tarsum.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarsum."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str(
+        'colValorBase') + "'" + ' and exa.id = tarsum."codigoCum_id" and tarsum."tiposTarifa_id" =' + "'" + str(
+        tiposTarifa) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipoTarifa, cums, codigoHomologado, exanombre, colValorBase, colValor1, colValor2, colValor3, colValor4, colValor5, colValor6, colValor7, colValor8, colValor9, colValor10 in curx.fetchall():
+        tarifariosSuministros.append(
+            {"model": "tarifarios.tarifariosSuministros", "pk": id, "fields":
+                {'id': id, 'tipoTarifa': tipoTarifa, 'cums': cums, 'codigoHomologado': codigoHomologado,
+                 'exaNombre': exanombre, 'colValorBase': colValorBase, 'colValor1': colValor1, 'colValor2': colValor2,
+                 'colValor3': colValor3, 'colValor4': colValor4,
+                 'colValor5': colValor5, 'colValor6': colValor6, 'colValor7': colValor7, 'colValor8': colValor8,
+                 'colValor9': colValor9, 'colValor10': colValor10
+                 }})
+
+    miConexionx.close()
+    print(tarifariosSuministros)
+    # context['Convenios'] = convenios
+    # convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    # convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    # convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    # convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+    serialized1 = json.dumps(tarifariosSuministros, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_datatarifariosDescripcionSuministros(request, data):
+    print("Entre load_datatarifariosDescripcionSuministros")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    tarifariosDescripcionSuministros = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like (' + "'%SUMINI%')" + '  order by tarprod.nombre '
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipo, tipoTarifa, columna, descripcion in curx.fetchall():
+        tarifariosDescripcionSuministros.append(
+            {"model": "tarifarios.tarifariosDescripcion", "pk": id, "fields":
+                {'id': id, 'tipo': tipo, 'tipoTarifa': tipoTarifa, 'columna': columna, 'descripcion': descripcion}})
+
+    miConexionx.close()
+    print(tarifariosDescripcionSuministros)
+    # context['Convenios'] = convenios
+    # convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    # convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    # convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    # convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+    serialized1 = json.dumps(tarifariosDescripcionSuministros, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')

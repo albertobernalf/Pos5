@@ -9,6 +9,7 @@ let dataTableTarifariosSuministrosInitialized = false;
 let dataTableTarifariosDescripcionProcedimientosInitialized = false;
 
 
+
 function arrancaTarifarios(valorTabla,valorData)
 {
     data = {}
@@ -41,7 +42,7 @@ function arrancaTarifarios(valorTabla,valorData)
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '125px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -376,6 +377,105 @@ function arrancaTarifarios(valorTabla,valorData)
 
 
 
+
+    if (valorTabla == 5)
+    {
+        let dataTableOptionsSuministros  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '125px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+	    { width: '10%', targets: [2,3] },
+	    { width: '10%', targets: [9,15] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+             btn = btn + " <input type='radio' name='miSuministros' class='miSuministros form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+                       return btn;
+                    },
+
+                    "targets": 16
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+
+           ajax: {
+                 url:"/load_dataTarifariosSuministros/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+                { data: "fields.id"},
+                { data: "fields.tipoTarifa"},
+                { data: "fields.cums"},
+                { data: "fields.codigoHomologado"},
+                { data: "fields.exaNombre"},
+                { data: "fields.colValorBase"},
+                { data: "fields.colValor1"},
+                { data: "fields.colValor2"},
+                { data: "fields.colValor3"},
+                { data: "fields.colValor4"},
+                { data: "fields.colValor5"},
+                { data: "fields.colValor6"},
+                { data: "fields.colValor7"},
+                { data: "fields.colValor8"},
+                { data: "fields.colValor9"},
+                { data: "fields.colValor10"},
+            ]
+            }
+	        dataTable = $('#tablaTarifariosSuministros').DataTable(dataTableOptionsSuministros);
+
+
+  }
+
+
+
+
 }
 	
 const initDataTableTarifariosDescripcionProcedimientos = async () => {
@@ -397,6 +497,7 @@ const initDataTableTarifariosDescripcionProcedimientos = async () => {
         data['username_id'] = username_id;
 	tiposTarifa_id = 1
         data['tiposTarifa_id'] = tiposTarifa_id;
+        data['tiposTarifaSuministros_id'] = 8;
 
  	    data = JSON.stringify(data);
 
@@ -405,6 +506,12 @@ const initDataTableTarifariosDescripcionProcedimientos = async () => {
 
         arrancaTarifarios(1,data);
 	    dataTableTarifariosProcedimientosInitialized = true;
+
+
+
+   		 arrancaTarifarios(5,data);
+	
+	    dataTableTarifariosSuministrosInitialized = true;
 
 
 
@@ -464,7 +571,9 @@ window.addEventListener('load', async () => {
  		 $('#colValor8Editar').val(data2[0].fields.colValor8);
  		 $('#colValor9Editar').val(data2[0].fields.colValor9);
  		 $('#colValor10Editar').val(data2[0].fields.colValor10);
-
+		$('#codigoCupsU').val(data2[0].fields.codigoCups);
+		$('#exaNombre').val(data2[0].fields.exaNombre);
+		$('#tiposTarifaU').val(data2[0].fields.tiposTarifa_id);
 
 
             $('#crearModelEditarTarifarioProcedimientos').modal('show');
@@ -558,9 +667,6 @@ $('#tablaTarifariosDescripcionProcedimientos tbody').on('click', '.miDescripcion
         arrancaTarifarios(1,data);
 	    dataTableTarifariosProcedimientosInitialized = true;
 
-
-
-
   });
 
 
@@ -586,7 +692,7 @@ function CrearItemTarifario()
  	var codigoHomologadoItem = document.getElementById("codigoHomologadoItem").value;
  	var tiposTarifaItem_id = document.getElementById("tiposTarifaItem_id").value;
  	var codigoCupsItem_id = document.getElementById("codigoCupsItem_id").value;
- 	var conceptoItem_id = document.getElementById("conceptoItem_id").value;
+
  	var colValorBaseItem = document.getElementById("colValorBaseItem").value;
 
 
@@ -597,7 +703,7 @@ function CrearItemTarifario()
 
 	        url: "/crearItemTarifario/",
 
-	    	data: {'codigoHomologadoItem':codigoHomologadoItem , 'tiposTarifaItem_id' :tiposTarifaItem_id, 'codigoCupsItem_id' : codigoCupsItem_id,'conceptoItem_id':conceptoItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id},
+	    	data: {'codigoHomologadoItem':codigoHomologadoItem , 'tiposTarifaItem_id' :tiposTarifaItem_id, 'codigoCupsItem_id' : codigoCupsItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -609,12 +715,22 @@ function CrearItemTarifario()
 	       data['nombreSede'] = nombreSede;
 	      data['sede'] = sede;
 	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifaItem_id;
 	        data = JSON.stringify(data);
-	
-		  var tableA = $('#tablaEnviosRips').DataTable();
-	          tableA.ajax.reload();
+
+     	 arrancaTarifarios(1,data);
+	    dataTableTarifariosProcedimientosInitialized = true;
+
 
 		   $("#mensajes").html(data2.message);
+
+		$('#codigoHomologadoItem').val('');
+		$('#colValorBaseItem').val('0');
+		$('#codigoCupsItem_id').val('');
+
+
+
+
                          },
                error: function (request, status, error) {
 	   			    $("#mensajes").html(" !  Reproduccion  con error !");
@@ -636,6 +752,9 @@ function AplicarTarifario()
 	var porcentaje = document.getElementById("porcentaje").value ;
 	var valorAplicar = document.getElementById("valorAplicar").value ;
 	var columnaAplicar = document.getElementById("columnaAplicar").value ;
+	var codigoCups_id = document.getElementById("codigoCups_id").value ;
+	var codigoCupsHasta_id = document.getElementById("codigoCupsHasta_id").value ;
+
 
 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
@@ -648,7 +767,7 @@ function AplicarTarifario()
 
 	        url: "/aplicarTarifas/",
 		data: {'post_id' : post_id, 'tiposTarifaTarifario_id':tiposTarifaTarifario_id, 'porcentaje':porcentaje,'valorAplicar':valorAplicar,
-		'columnaAplicar':columnaAplicar},
+		'columnaAplicar':columnaAplicar,'codigoCupsHasta_id':codigoCupsHasta_id,'codigoCups_id':codigoCups_id },
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -660,6 +779,7 @@ function AplicarTarifario()
 	       data['nombreSede'] = nombreSede;
 	      data['sede'] = sede;
 	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifaTarifario_id;
 	        data = JSON.stringify(data);
 
 
@@ -782,6 +902,7 @@ function CrearTarifarioProcedimientos()
 	       data['nombreSede'] = nombreSede;
 	      data['sede'] = sede;
 	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifa1_id;
 	        data = JSON.stringify(data);
 
      		  arrancaTarifarios(4,data);
@@ -823,6 +944,7 @@ function GuardarEditarTarifarioProcedimientos()
 	var colValor8Editar = document.getElementById("colValor8Editar").value;
 	var colValor9Editar = document.getElementById("colValor9Editar").value;
 	var colValor10Editar = document.getElementById("colValor10Editar").value;
+	var tiposTarifaU = document.getElementById("tiposTarifaU").value;
 
             $.ajax({
 
@@ -841,10 +963,13 @@ function GuardarEditarTarifarioProcedimientos()
 	       data['nombreSede'] = nombreSede;
 	      data['sede'] = sede;
 	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifaU;
 	        data = JSON.stringify(data);
+
      		  arrancaTarifarios(4,data);
 	    dataTableTarifariosDescripcionProcedimientosInitialized = true;
      		  arrancaTarifarios(1,data);
+	    dataTableTarifariosProcedimientosInitialized = true;
 	    dataTableTarifariosProcedimientosInitialized = true;
 
 		   $("#mensajes").html(data2.message);

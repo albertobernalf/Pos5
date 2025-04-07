@@ -602,9 +602,12 @@ import psycopg2
 
 
 import pandas as pd
+import psycopg2
+from django.db import transaction, DatabaseError
+
   # Aqui Rutina carga archivo Excel
 
-    archivo_excel = 'c:\entornospython\Pos3\vulner\JSONCLINICA\CargaProcedimientos\datos1.xlsx'
+    archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaProcedimientos\\datos1.xlsx'
     df = pd.read_excel(archivo_excel)
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
@@ -613,21 +616,22 @@ import pandas as pd
 
     # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
 
+    try:
     for index, row in df.iterrows():
-        query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-        valores = (row['codigoHomologado'], row['colValorBase'], row['fechaRegistro'],row['estadoReg'], row['codigoCups_id'] , row['concepto'] ,  row['tiposTarifa_id'] )  
+        query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+        valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCups_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )  
         cur3.execute(query, valores)
-
-
-    # Confirmar los cambios
-    miConexion3.commit()
+   	miConexion3.commit()
+    except DatabaseError as e:
+	transaction.rollback()
 
     # Cerrar la conexión
     cur3.close()
     miConexion3.close()
 
+    
 
-
+	for index, row in df.iterrows():
 
 
 
@@ -691,5 +695,6 @@ BIBLIOGRAFIA:
    -- si esta relacionado Nop dejar borrar por que se pierden los
       apuntadores de la tabla contratacion_convenios
 
-
+-- el dia lunes 7 de abril probar subir excel de tarifas
+   -- completar en maintarifariosF y vies de tarifarios y probar tarifario de suministros a
 
