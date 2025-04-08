@@ -719,9 +719,9 @@ div.dataTables_filter input {
                                     TiposTarifa:
 				<select class="select-css"  id="tiposTarifaItemSuministros_id"
                                                                 name="tiposTarifaItemSuministros_id">
-                                                            {% for tiposTarifa in TiposTarifa %}
-                                                            <option value="{{tiposTarifa.id}}">
-                                                                {{tiposTarifa.nombre}}
+                                                            {% for tiposTarifaSuministros in TiposTarifaSuministros %}
+                                                            <option value="{{tiposTarifaSuministros.id}}">
+                                                                {{tiposTarifaSuministros.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
@@ -855,9 +855,9 @@ div.dataTables_filter input {
 				<div class="col-12">			
 				<select class="select-css"  id="tiposTarifaSuministros1_id"
                                                                 name="tiposTarifaSuministros1_id">
-                                                            {% for tiposTarifa in TiposTarifa %}
-                                                            <option value="{{tiposTarifa.id}}">
-                                                                {{tiposTarifa.nombre}}
+                                                            {% for tiposTarifaSuministros in TiposTarifaSuministros %}
+                                                            <option value="{{tiposTarifaSuministros.id}}">
+                                                                {{tiposTarifaSuministros.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
@@ -889,7 +889,7 @@ div.dataTables_filter input {
 
 				<div class="col-12">
 				  <label for="descripcionSuministros">Descripcion:</label>                              
-					 <input type="text"  class="form-control form-control-sm" id="descripcioSuministros" name="descripcionSuministros" placeholder="descripcion"  >
+					 <input type="text"  class="form-control form-control-sm" id="descripcionSuministros" name="descripcionSuministros" placeholder="descripcion"  >
                                 </div>
 
 
@@ -952,9 +952,9 @@ div.dataTables_filter input {
 			
 				<select class="select-css"  id="tiposTarifaSuministros2_id"
                                                                 name="tiposTarifaSuministros2_id">
-                                                            {% for tiposTarifa in TiposTarifa %}
-                                                            <option value="{{tiposTarifa.id}}">
-                                                                {{tiposTarifa.nombre}}
+                                                            {% for tiposTarifaSuministros in TiposTarifaSuministros %}
+                                                            <option value="{{tiposTarifaSuministros.id}}">
+                                                                {{tiposTarifaSuministros.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
@@ -999,8 +999,8 @@ div.dataTables_filter input {
   			  <form id="postFormAplicarTarifarioSuministros" name="postFormAplicarTarifarioSuministros">
 
                                 <input type="text" name="postSuministros4_id" id="postSuministros4_id">
-				<input type="text" name="descripcionTarifario" id="descripcionTarifario">
-				<input type="text" name="tiposTarifaTarifario_id" id="tiposTarifaTarifario_id">
+				<input type="text" name="descripcionTarifarioSuministros" id="descripcionTarifarioSuministros">
+				<input type="text" name="tiposTarifaTarifarioSuministros_id" id="tiposTarifaTarifarioSuministros_id">
 
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
@@ -1012,7 +1012,7 @@ div.dataTables_filter input {
                                     Cums Desde:
 				<select class="select-css"  id="codigoCums_id"
                                                                 name="codigoCums_id">
-                                                            {% for cups in Cups %}
+                                                            {% for cums in Cums %}
                                                             <option value="{{cums.id}}">
                                                                 {{cums.nombre}}
                                                             </option>
@@ -1094,7 +1094,7 @@ div.dataTables_filter input {
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingEditarTarifarioSuministros"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnEditarTarifarioSuministros" onclick="GuardarEditarTarifarioSuministross()">Grabar!</button> 
+			<button type="button" class="btn btn-primary" id="saveBtnEditarTarifarioSuministros" onclick="GuardarEditarTarifarioSuministros()">Grabar!</button> 
                         </div>
 		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">

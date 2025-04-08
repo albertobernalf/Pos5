@@ -262,12 +262,13 @@ urlpatterns = [
 
     path('load_dataTarifariosSuministros/<str:data>', viewsTarifarios.Load_dataTarifariosSuministros,     name='Load_dataTarifariosSuministros'),
     path('load_datatarifariosDescripcionSuministros/<str:data>',   viewsTarifarios.Load_datatarifariosDescripcionSuministros,   name='Load_data_tarifariosDescripcionSuministros'),
-    #path('guardarDescripcionSuministros/', viewsTarifarios.GuardarDescripcionSuministros,  name='GuardarDescripcionSuministros'),
-    #path('crearTarifarioSuministros/', viewsTarifarios.CrearTarifarioSuministros,  name='CrearTarifario_Suministros'),
-    #path('crearItemTarifarioSuministros/', viewsTarifarios.CrearItemTarifarioSuministros, name='crearItem_Tarifario_Suministros'),
-    #path('aplicarTarifasSuministros/', viewsTarifarios.AplicarTarifasSuministros, name='Aplicar_TarifasSuministros'),
-    #path('guardarEditarTarifarioSuministros/', viewsTarifarios.GuardarEditarTarifarioSuministros, name='guardarEditarTarifarioSuministros'),
-    #path('traerTarifarioSuministros/', viewsTarifarios.TraerTarifarioSuministros,  name='traerTarifarioSuministros'),
+    path('guardarDescripcionSuministros/', viewsTarifarios.GuardarDescripcionSuministros,  name='GuardarDescripcionSuministros'),
+
+    path('crearTarifarioSuministros/', viewsTarifarios.CrearTarifarioSuministros,  name='CrearTarifario_Suministros'),
+    path('crearItemTarifarioSuministros/', viewsTarifarios.CrearItemTarifarioSuministros, name='crearItem_Tarifario_Suministros'),
+    path('aplicarTarifasSuministros/', viewsTarifarios.AplicarTarifasSuministros, name='Aplicar_TarifasSuministros'),
+    path('guardarEditarTarifarioSuministros/', viewsTarifarios.GuardarEditarTarifarioSuministros, name='guardarEditarTarifarioSuministros'),
+    path('traerTarifarioSuministros/', viewsTarifarios.TraerTarifarioSuministros,  name='traerTarifarioSuministros'),
 
 
     # Contratacion

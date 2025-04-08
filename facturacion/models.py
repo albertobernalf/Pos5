@@ -171,7 +171,7 @@ class ConveniosPacienteIngresos(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     class Meta:
-        unique_together = (('tipoDoc', 'documento','consecAdmision'),)
+        unique_together = (('tipoDoc', 'documento','consecAdmision','convenio'),)
 
     def __str__(self):
         return str(self.id)

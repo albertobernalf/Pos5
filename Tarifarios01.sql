@@ -1,4 +1,4 @@
-select * from tarifas_tipostarifa;
+select * from tarifarios_tipostarifa;
 select * from contratacion_conveniosprocedimientos;
 SELECT * FROM bak_contratacion_conveniosprocedimientos;
 select * from contratacion_conveniossuministros;
@@ -38,6 +38,7 @@ WHERE usu."tipoDoc_id" = ing."tipoDoc_id" and usu.id = ing.documento_id AND conv
 	order by documento_id,ing."consecAdmision"
 
 select * from tarifarios_TarifariosDescripcion;
+delete from tarifarios_TarifariosDescripcion where id>=25;
 --delete from tarifarios_TarifariosDescripcion where id=14;
 select * from tarifarios_tipostarifa;
 select * from tarifarios_tipostarifaProducto;
@@ -117,7 +118,7 @@ select * from tarifas_tipostarifa;
 
 select count(*) from tarifarios_tarifariosprocedimientos -- 3876
 select * from tarifarios_tarifariosdescripcion;
-delete from tarifarios_tarifariosdescripcion
+-- delete from tarifarios_tarifariosdescripcion
 	where id >= 5;
 select empresa_id,* from contratacion_convenios order by id;
 
@@ -154,13 +155,63 @@ select * from clinico_examenes;
 select * from facturacion_conceptos;
 select * from tarifarios_tipostarifa;
 select * from contratacion_convenios;
+select cums,* from facturacion_suministros order by cums;
+select * from tarifarios_tipostarifa order by "tiposTarifaProducto_id";;
+
+
 
 select
 codigoHomologado, colValorBase, fechaRegistro, estadoReg  ,exa.id  , concepto,    tiposTarifa_id
 from tarifarios_tarifariosprocedimientos
 where 
 
+select * from 	tarifarios_tarifariosprocedimientos;
+select * from 	tarifarios_tarifariossuministros    '555114';
+select * from 	tarifarios_tarifariossuministros  WHERE   '555114';
+select * from 	tarifarios_tarifariossuministros  WHERE  cums = '555115';
+
+select * from facturacion_suministros where cums like ('%S5511%');
+
 select '' codigoHomologado, "colValorBase" colValorBase , now() fechaRegistro, 'A' estadoReg  ,  exa.id codigoCups_id , 4 concepto,    2 tiposTarifa_id
 from clinico_examenes exa, tarifarios_tarifariosprocedimientos tar
 where tar."tiposTarifa_id" = 1 AND tar."codigoCups_id" = exa.id order by exa.id --  3876 registros
 
+select 'xyz-1' codigoHomologado, (row_number() OVER(ORDER BY exa.id) +  200000) colValorBase , now() fechaRegistro, 'A' estadoReg  ,  exa.id codigoCums_id , exa.concepto_id concepto,
+	4 tiposTarifa_id
+from facturacion_suministros exa -- , tarifarios_tarifariossuministros tar
+--where tar."tiposTarifa_id" = 4 AND tar."codigoCum_id" = exa.id
+	order by exa.id
+update tarifarios_TarifariosDescripcion set descripcion = 'I'
+
+		select * from tarifarios_tipostarifaproducto;
+delete  from 	tarifarios_tarifariossuministros where "codigoCum_id"= 613;
+
+select tarsum.id id, tiptar.nombre tipoTarifa, exa.cums cums, tarsum."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarsum."colValorBase", tarsum."colValor1", tarsum."colValor2" , tarsum."colValor3"      , tarsum."colValor4"
+        , tarsum."colValor5"    , tarsum."colValor6"    , tarsum."colValor7"    , tarsum."colValor8"    , tarsum."colValor9" , tarsum."colValor10"
+	from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes,
+	tarifarios_tarifariossuministros tarsum, facturacion_suministros exa 
+	where tiptar.id = tardes."tiposTarifa_id" and tarsum."tiposTarifa_id" = tiptar.id and
+	tardes.columna='colValorBase' and exa.id = tarsum."codigoCum_id" and tarsum."tiposTarifa_id" ='4' and tarprod.id = tiptar."tiposTarifaProducto_id"
+
+
+select * from contratacion_convenios;
+select * from facturacion_conveniospacienteingresos;
+select * from usuarios_usuarios;
+
+insert into facturacion_ConveniosPacienteIngresos ("consecAdmision", "fechaRegistro",  convenio_id, documento_id, "tipoDoc_id" , "usuarioRegistro_id" ,
+	"estadoReg")
+	values ('1' , '2025-04-08 12:11:07.336252', '8'  , '24', '3','1','A');
+
+select convenio_id,* from facturacion_liquidacion;
+select * from tarifarios_tarifariosdescripcion;
+select * from tarifarios_tarifariosprocedimientos;
+select * from clinico_examenes;
+
+SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc.valor tarifaValor 
+	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc,
+	     clinico_examenes exa
+	WHERE conv."tipoDoc_id" = '3' AND conv.documento_id = 24 AND conv."consecAdmision" = 1 and des.id = conv."tarifariosDescripcionProc_id"
+	AND proc."codigoCups_id" = exa.id      And exa."codigoCups" = '903402'         + "'" +  str(codigoCupsId[0].id) + "'"
+
+select "tarifariosDescripcionProc_id",* from contratacion_convenios;	
+                    

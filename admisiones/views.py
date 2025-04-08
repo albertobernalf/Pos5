@@ -1950,6 +1950,32 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print("ENTRE PERMSISO TARIFAS")
         ## Aqui contexto para solo Tarifarios
 
+   	# Combo TiposTarifa Suministros
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT p.id id, p.nombre  nombre FROM  tarifarios_tipostarifa  p where p."tiposTarifaProducto_id" in (select id from tarifarios_tipostarifaProducto where nombre like (' + "'" + str('%SUMIN%')  + "'))"
+        print(comando)
+        curt.execute(comando)
+
+
+        tiposTarifaSuministros = []
+
+
+        for id, nombre in curt.fetchall():
+            tiposTarifaSuministros.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tiposTarifaSuministros", tiposTarifaSuministros)
+
+        context['TiposTarifaSuministros'] = tiposTarifaSuministros
+
+        # Fin combo TiposTarifa Suministros
+
+
+
    	# Combo TiposTarifa
 
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -1999,6 +2025,37 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         context['Cups'] = cups
 
         # Fin combo Cups
+
+
+   	# Combo Cums
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT p.id id, p.nombre  nombre FROM  facturacion_suministros  p ORDER BY p.id '
+        print(comando)
+        curt.execute(comando)
+
+
+        cums = []
+
+        cums.append({'id': '', 'nombre': ''})
+
+
+        for id, nombre in curt.fetchall():
+            cums.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("cums", cums)
+
+        context['Cums'] = cums
+
+        # Fin combo Cums
+
+
+
+
 
    	# Combo Conceptos
 
@@ -5447,19 +5504,19 @@ def GuardaConvenioAdmision(request):
 
     ## Aqui rutina para actualizar el cabezote de facturacion_liquidacion el convenio_id
 
-    liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec ,convenio_id='' )
+    #liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec ,convenio_id='' )
 
-    print ("liquidacionId = ", liquidacionId)
+    #print ("liquidacionId = ", liquidacionId)
 
-    if (liquidacionId.id > 0):
+    #if (liquidacionId.id > 0):
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-        cur3 = miConexion3.cursor()
-        comando = 'UPDATE facturacion_liquidacion SET convenio_id = ' + str(convenio) + ' WHERE id = ' + str(liquidacionId.id)
-        print(comando)
-        cur3.execute(comando)
-        miConexion3.commit()
-        miConexion3.close()
+    #    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    #    cur3 = miConexion3.cursor()
+    #    comando = 'UPDATE facturacion_liquidacion SET convenio_id = ' + str(convenio) + ' WHERE id = ' + str(liquidacionId.id)
+    #    print(comando)
+    #    cur3.execute(comando)
+    #    miConexion3.commit()
+    #    miConexion3.close()
 
     ## Fin RUTINA
 

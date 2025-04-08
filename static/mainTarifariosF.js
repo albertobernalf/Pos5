@@ -7,6 +7,7 @@ let dataTableC;
 let dataTableTarifariosProcedimientosInitialized = false;
 let dataTableTarifariosSuministrosInitialized = false;
 let dataTableTarifariosDescripcionProcedimientosInitialized = false;
+let dataTableTarifariosDescripcionSuministrosInitialized = false;
 
 
 
@@ -474,6 +475,78 @@ function arrancaTarifarios(valorTabla,valorData)
   }
 
 
+    if (valorTabla == 6)
+    {
+
+        let dataTableOptionsDescripcionSuministros  ={
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '120px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+ 			 btn = btn + " <input type='radio' name='miDescripcionSuministro' class='miDescripcionSuministro form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+          		   btn = btn + " <button class='miAplicarSuministro btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+                    },
+                    "targets":5
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_datatarifariosDescripcionSuministros/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	          { data: "fields.id"},
+                { data: "fields.tipo"},
+                { data: "fields.tipoTarifa"},
+                { data: "fields.columna"},
+                { data: "fields.descripcion"},
+                     ]
+            }
+
+            if  (dataTableTarifariosDescripcionSuministrosInitialized)  {
+
+		            dataTableB = $("#tablaTarifariosDescripcionSuministros").dataTable().fnDestroy();
+
+                    }
+
+                dataTableC = $('#tablaTarifariosDescripcionSuministros').DataTable(dataTableOptionsDescripcionSuministros);
+
+	            dataTableTarifariosDescripcionSuministrosInitialized  = true;
+      }
+
+
+
+
+
+
 
 
 }
@@ -513,7 +586,8 @@ const initDataTableTarifariosDescripcionProcedimientos = async () => {
 	
 	    dataTableTarifariosSuministrosInitialized = true;
 
-
+     		  arrancaTarifarios(6,data);
+	    dataTableTarifariosDescripcionSuministrosInitialized = true;
 
 }
 
@@ -983,4 +1057,451 @@ function GuardarEditarTarifarioProcedimientos()
 
 }
 
+function ModalCrearTarifarioSuministros()
+{
 
+	alert("Ingrese Modal Descripcion Suministros");
+
+	    $('#post_id').val('');
+            $('#postFormCrearTarifarioSuministros').trigger("reset");
+            $('#modelHeadingCrearTarifarioSuministros').html("Crear Tarifario sabana Suministros");
+            $('#crearModelCrearTarifarioSuministros').modal('show');
+
+}
+
+
+function CrearTarifarioSuministros()
+{
+
+	alert("Ingrese CrearTarifarioSuministros");
+	    var post_id = $(this).data('pk');
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var username_id = document.getElementById("username2_id").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var tiposTarifa_id = document.getElementById("tiposTarifaSuministros2_id").value;
+	var usuarioRegistro_id = document.getElementById("usuarioRegistro_id").value;
+	    alert( "este es eltiposTarifa_id de Suministros QUE VOY A CREAR  =" + tiposTarifa_id) ;
+
+
+            $.ajax({
+
+	        url: "/crearTarifarioSuministros/",
+    		data: {'tiposTarifa_id':tiposTarifa_id,'username_id':username_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifa_id;
+	        data = JSON.stringify(data);
+
+     		  arrancaTarifarios(6,data);
+	    dataTableTarifariosDescripcionSuministrosInitialized = true;
+	
+     		  arrancaTarifarios(5,data);
+	    dataTableTarifariosSuministrosInitialized = true;
+
+
+
+		   $("#mensajes").html(data2.message);
+ 	  $('#crearModelCrearTarifarioSuministros').modal('hide');
+
+
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+} 
+
+function ModalDescripcionSuministros()
+{
+
+	alert("Ingrese Modal Descripcion Suministros");
+
+	    $('#post_id').val('');
+            $('#postFormDescripcionSuministros').trigger("reset");
+            $('#modelHeadingDescripcionSuministros').html("Descripcion Suministros");
+            $('#crearModelDescripcionSuministros').modal('show');
+
+}
+
+function GuardarDescripcionSuministros()
+{
+	alert("Ingrese GuardarDescripcionSuministros");
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var tiposTarifa_id = document.getElementById("tiposTarifaSuministros1_id").value;
+        var columna = document.getElementById("columna").value;
+        var descripcion = document.getElementById("descripcionSuministros").value;
+
+
+
+            $.ajax({
+
+	        url: "/guardarDescripcionSuministros/",
+		data: {'tiposTarifa_id':tiposTarifa_id,'columna':columna, 'descripcion':descripcion},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifa_id;
+	        data = JSON.stringify(data);
+
+		alert ("Regrese de guardar descripcion suministro");
+
+
+     		  arrancaTarifarios(6,data);
+	    dataTableTarifariosDescripcionSuministrosInitialized = true;
+	
+     		  arrancaTarifarios(5,data);
+	    dataTableTarifariosSuministrosInitialized = true;
+
+
+		   $("#mensajes").html(data2.message);
+ 	  $('#crearModelDescripcionSuministros').modal('hide');
+
+
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+}
+
+
+$('#tablaTarifariosDescripcionSuministros tbody').on('click', '.miAplicarSuministro', function() {
+
+        alert(" Entre miAplicarSuministros ");
+
+        var post_id = $(this).data('pk');
+	    var row = $(this).closest('tr'); // Encuentra la fila
+
+	    var table = $('#tablaTarifariosDescripcionSuministros').DataTable();  // Inicializa el DataTable jquery
+
+	    var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato3 columna = " , dato3.columna);
+	        console.log ( "dato3  descripcion = " , dato3.descripcion);
+	        console.log ( "dato3 = tipoTarifa " , dato3.tipoTarifa);
+            $('#postFormAplicarTarifarioSuministros').trigger("reset");
+
+	        $('#post_id').val(dato3.columna);
+	         $('#columnaAplicarSuministros').val(dato3.columna);
+	          $('#descripcionTarifarioSuministros').val(dato3.descripcion);
+	           $('#tiposTarifaTarifarioSuministros_id').val(dato3.tipoTarifa);
+
+
+            $('#modelHeadingAplicarTarifarioSuministros').html("Aplicar Tarifarios Suministros");
+            $('#crearModelAplicarTarifarioSuministros').modal('show');
+
+  });
+
+$('#tablaTarifariosDescripcionSuministros tbody').on('click', '.miDescripcionSuministro', function() {
+
+	alert("Entre descripcon suministro");
+
+
+        var post_id = $(this).data('pk');
+	    var row = $(this).closest('tr'); // Encuentra la fila
+	    var table = $('#tablaTarifariosDescripcionSuministros').DataTable();  // Inicializa el DataTable jquery
+
+	    var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato3 columna = " , dato3.columna);
+	        console.log ( "dato3  descripcion = " , dato3.descripcion);
+	        console.log ( "dato3 = tipoTarifa " , dato3.id);
+
+
+	    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+	         var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data['tiposTarifa_id'] = dato3.id;
+
+ 		data = JSON.stringify(data);
+
+        arrancaTarifarios(5,data);
+	    dataTableTarifariosSuministrosInitialized = true;
+
+  });
+
+
+
+function AplicarTarifarioSuministros()
+{
+	alert("Ingrese Grabar Tarifario Suministros");
+
+
+	var post_id = document.getElementById("post_id").value ;
+	var tiposTarifaTarifario_id = document.getElementById("tiposTarifaTarifarioSuministros_id").value ;
+
+	var porcentaje = document.getElementById("porcentajeSuministros").value ;
+	var valorAplicar = document.getElementById("valorAplicarSuministros").value ;
+	var columnaAplicar = document.getElementById("columnaAplicarSuministros").value ;
+	var codigoCums_id = document.getElementById("codigoCums_id").value ;
+	var codigoCumsHasta_id = document.getElementById("codigoCumsHasta_id").value ;
+
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+
+
+            $.ajax({
+
+	        url: "/aplicarTarifasSuministros/",
+		data: {'post_id' : post_id, 'tiposTarifaTarifario_id':tiposTarifaTarifario_id, 'porcentaje':porcentaje,'valorAplicar':valorAplicar,
+		'columnaAplicar':columnaAplicar,'codigoCumsHasta_id':codigoCumsHasta_id,'codigoCums_id':codigoCums_id },
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifaTarifario_id;
+	        data = JSON.stringify(data);
+
+
+
+		   $("#mensajes").html(data2.message);
+
+		    	  $('#crearModelAplicarTarifario').modal('hide');
+
+
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+}
+
+function CrearItemTarifarioSuministros()
+{
+	alert("Ingrese crear Item Tarifario Suministros");
+
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+    	var username_id = document.getElementById("username_id").value;
+
+ 	var codigoHomologadoItem = document.getElementById("codigoHomologadoItemSuministros").value;
+ 	var tiposTarifaItem_id = document.getElementById("tiposTarifaItemSuministros_id").value;
+ 	var codigoCumsItem_id = document.getElementById("codigoCumsItem_id").value;
+
+ 	var colValorBaseItem = document.getElementById("colValorBaseItemSuministros").value;
+
+
+
+        var username_id = document.getElementById("username_id").value;
+
+            $.ajax({
+
+	        url: "/crearItemTarifarioSuministros/",
+
+	    	data: {'codigoHomologadoItem':codigoHomologadoItem , 'tiposTarifaItem_id' :tiposTarifaItem_id, 
+			'codigoCumsItem_id' : codigoCumsItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifaItem_id;
+	        data = JSON.stringify(data);
+
+     	 arrancaTarifarios(5,data);
+	    dataTableTarifariosProcedimientosInitialized = true;
+
+
+		   $("#mensajes").html(data2.message);
+
+		$('#codigoHomologadoItemSuministros').val('');
+		$('#colValorBaseItemSuministros').val('0');
+		$('#codigoCupsItemSuministros_id').val('');
+
+
+
+
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+
+}
+
+
+ $('#tablaTarifariosSuministros tbody').on('click', '.miSuministros', function() {
+
+        var post_id = $(this).data('pk');
+        var row = $(this).closest('tr'); // Encuentra la fila
+
+	alert("Ingrese Modal Editar Suministro" + post_id);
+
+
+        var username_id = document.getElementById("username_id").value;
+
+            $.ajax({
+
+	        url: "/traerTarifarioSuministros/",
+	    	data: {'post_id': post_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+
+                  alert("llegue con data = " + data2[0]);
+
+	        alert("llegue con id = " + data2[0].fields.id);
+
+	    $('#post_id').val('');
+            $('#postFormEditarTarifarioSuministros').trigger("reset");
+            $('#modelHeadingEditarTarifarioSuministros').html("Editar Tarifario Suministros");
+
+  		 $('#postEditar1_id').val(data2[0].fields.id);
+ 		 $('#codigoHomologadoEditarSuministros').val(data2[0].fields.codigoHomologado);
+ 		 $('#colValorBaseEditarSuministros').val(data2[0].fields.colValorBase);
+ 		 $('#colValor1EditarSuministros').val(data2[0].fields.colValor1);
+ 		 $('#colValor2EditarSuministros').val(data2[0].fields.colValor2);
+ 		 $('#colValor3EditarSuministros').val(data2[0].fields.colValor3);
+ 		 $('#colValor4EditarSuministros').val(data2[0].fields.colValor4);
+ 		 $('#colValor5EditarSuministros').val(data2[0].fields.colValor5);
+ 		 $('#colValor6EditarSuministros').val(data2[0].fields.colValor6);
+ 		 $('#colValor7EditarSuministros').val(data2[0].fields.colValor7);
+ 		 $('#colValor8EditarSuministros').val(data2[0].fields.colValor8);
+ 		 $('#colValor9EditarSuministros').val(data2[0].fields.colValor9);
+ 		 $('#colValor10EditarSuministros').val(data2[0].fields.colValor10);
+		$('#codigoCumsUSuministros').val(data2[0].fields.codigoCums);
+		$('#exaNombreSuministros').val(data2[0].fields.exaNombre);
+		$('#tiposTarifaUSuministros').val(data2[0].fields.tiposTarifa_id);
+
+
+            $('#crearModelEditarTarifarioSuministros').modal('show');
+
+
+		   $("#mensajes").html(data2.message);
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+
+  });
+
+
+function GuardarEditarTarifarioSuministros()
+{
+	alert("Entre GuardarEditarTarifarioSuministros");
+
+
+	var post_id = document.getElementById("postEditar1_id").value;
+	var username_id = document.getElementById("username_id").value;
+	var codigoHomologadoEditar = document.getElementById("codigoHomologadoEditarSuministros").value;
+	var colValorBaseEditar = document.getElementById("colValorBaseEditarSuministros").value;
+	var colValor1Editar = document.getElementById("colValor1EditarSuministros").value;
+	var colValor2Editar = document.getElementById("colValor2EditarSuministros").value;
+	var colValor3Editar = document.getElementById("colValor3EditarSuministros").value;
+	var colValor4Editar = document.getElementById("colValor4EditarSuministros").value;
+	var colValor5Editar = document.getElementById("colValor5EditarSuministros").value;
+	var colValor6Editar = document.getElementById("colValor6EditarSuministros").value;
+	var colValor7Editar = document.getElementById("colValor7EditarSuministros").value;
+	var colValor8Editar = document.getElementById("colValor8EditarSuministros").value;
+	var colValor9Editar = document.getElementById("colValor9EditarSuministros").value;
+	var colValor10Editar = document.getElementById("colValor10EditarSuministros").value;
+	var tiposTarifaU = document.getElementById("tiposTarifaUSuministros").value;
+
+            $.ajax({
+
+	        url: "/guardarEditarTarifarioSuministros/",
+    		data: {'post_id':post_id, 'codigoHomologadoEditar':codigoHomologadoEditar,'colValorBaseEditar':colValorBaseEditar,
+				'colValor1Editar':colValor1Editar,'colValor2Editar':colValor2Editar,'colValor3Editar':colValor3Editar,'colValor4Editar':colValor4Editar,
+				'colValor5Editar':colValor5Editar,'colValor6Editar':colValor6Editar,'colValor7Editar':colValor7Editar,'colValor8Editar':colValor8Editar,
+				'colValor9Editar':colValor9Editar,'colValor10Editar':colValor10Editar,'username_id':username_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+	
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+		 data['tiposTarifa_id'] = tiposTarifaU;
+	        data = JSON.stringify(data);
+
+
+     		  arrancaTarifarios(6,data);
+	    dataTableTarifariosDescripcionSuministrosInitialized = true;
+     		  arrancaTarifarios(5,data);
+	    dataTableTarifariosSuministrosInitialized = true;
+
+
+		   $("#mensajes").html(data2.message);
+ 	  $('#crearModelEditarTarifarioSuministros').modal('hide');
+
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+
+}

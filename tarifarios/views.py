@@ -530,10 +530,13 @@ def Load_dataTarifariosSuministros(request, data):
     username_id = d['username_id']
 
     nombreSede = d['nombreSede']
-    tiposTarifa = d['tiposTarifaSuministros_id']
+    tiposTarifa = d['tiposTarifa_id']
+
     print("sede:", sede)
     print("username:", username)
     print("username_id:", username_id)
+    print("tiposTarifa:", tiposTarifa)
+
 
     # print("data = ", request.GET('data'))
 
@@ -544,9 +547,7 @@ def Load_dataTarifariosSuministros(request, data):
     curx = miConexionx.cursor()
 
 
-    detalle = 'select tarsum.id id, tiptar.nombre tipoTarifa, exa.cums cums, tarsum."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarsum."colValorBase", tarsum."colValor1", tarsum."colValor2" , tarsum."colValor3"	, tarsum."colValor4"	, tarsum."colValor5"	, tarsum."colValor6"	, tarsum."colValor7"	, tarsum."colValor8"	, tarsum."colValor9" , tarsum."colValor10" from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariossuministros tarsum, facturacion_suministros exa where tarsum.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarsum."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str(
-        'colValorBase') + "'" + ' and exa.id = tarsum."codigoCum_id" and tarsum."tiposTarifa_id" =' + "'" + str(
-        tiposTarifa) + "'"
+    detalle = 'select tarsum.id id, tiptar.nombre tipoTarifa, exa.cums cums, tarsum."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarsum."colValorBase", tarsum."colValor1", tarsum."colValor2" , tarsum."colValor3"	, tarsum."colValor4"	, tarsum."colValor5"	, tarsum."colValor6"	, tarsum."colValor7"	, tarsum."colValor8"	, tarsum."colValor9" , tarsum."colValor10" from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariossuministros tarsum, facturacion_suministros exa where tiptar.id = tardes."tiposTarifa_id" and tarsum."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str('colValorBase') + "'" + ' and exa.id = tarsum."codigoCum_id" and tarsum."tiposTarifa_id" =' + "'" + str(tiposTarifa) + "'" + ' and tarprod.id = tiptar."tiposTarifaProducto_id"'
 
     print(detalle)
 
@@ -616,5 +617,414 @@ def Load_datatarifariosDescripcionSuministros(request, data):
     # convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
 
     serialized1 = json.dumps(tarifariosDescripcionSuministros, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+def CrearTarifarioSuministros(request):
+
+    print ("Entre CrearTarifariSuministros" )
+
+    tiposTarifa_id = request.POST.get('tiposTarifa_id')
+    print ("tiposTarifa_id =", tiposTarifa_id)
+
+    username_id = request.POST.get('username_id')
+    print ("username_id =", username_id)
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    productoId = TiposTarifaProducto.objects.get(nombre='SUMINISTROS')
+    print("productpId = ",productoId )
+    print("productpId.id = ", productoId.id)
+    descripcion = TiposTarifa.objects.get(id=tiposTarifa_id ,tiposTarifaProducto_id=productoId.id)
+    print("descripcion = ", descripcion)
+
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
+        'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
+        estadoReg) + "',"  "'" + str(descripcion.id) + "')"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+    #miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    #cur3 = miConexion3.cursor()
+
+    #comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "' RETURNING id"
+
+    #print(comando)
+    #cur3.execute(comando)
+
+    #tarifariosProcId = cur3.fetchone()[0]
+    #print("resultado = " , resultado)
+    #miConexion3.commit()
+    #miConexion3.close()
+
+
+    # Aqui Rutina carga archivo Excel
+
+    archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaSuministros\\datos2.xlsx'
+    df = pd.read_excel(archivo_excel)
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+
+    # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
+
+    try:
+        for index, row in df.iterrows():
+            query = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCum_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+            valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCum_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
+            cur3.execute(query, valores)
+            miConexion3.commit()
+    except DatabaseError as e:
+        transaction.rollback()
+
+    # Cerrar la conexión
+    cur3.close()
+    miConexion3.close()
+    return JsonResponse({'success': True, 'message': 'Tarifario Sabana Suministros creado !'})
+
+
+def Load_datatarifariosDescripcionSuministros(request, data):
+    print("Entre load_datatarifariosDescripcionSuministros")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    tarifariosDescripcionSuministros = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like (' + "'%SUMI%')" + '  order by tarprod.nombre '
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipo, tipoTarifa, columna, descripcion in curx.fetchall():
+        tarifariosDescripcionSuministros.append(
+            {"model": "tarifarios.tarifariosDescripcion", "pk": id, "fields":
+                {'id': id, 'tipo': tipo, 'tipoTarifa': tipoTarifa, 'columna': columna, 'descripcion': descripcion}})
+
+    miConexionx.close()
+    print(tarifariosDescripcionSuministros)
+    # context['Convenios'] = convenios
+    # convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    # convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    # convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    # convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+    serialized1 = json.dumps(tarifariosDescripcionSuministros, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+def GuardarDescripcionSuministros(request):
+
+    print ("Entre GuardarDescripcionuministros" )
+
+    tiposTarifa_id = request.POST.get('tiposTarifa_id')
+    print ("tiposTarifa_id =", tiposTarifa_id)
+
+    columna = request.POST["columna"]
+    print ("columna =", columna)
+
+    descripcion = request.POST["descripcion"]
+    print ("descripcion =", descripcion)
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "')"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Tarifario Descripcon Suministros Actualizado!'})
+
+
+def AplicarTarifasSuministros(request):
+
+    print ("Entre AplicarTarifas Suministros" )
+
+    post_id = request.POST.get('post_id')
+    print ("post_id =", post_id)
+
+    tiposTarifaTarifario_id = request.POST.get('tiposTarifaTarifario_id')
+    print ("tiposTarifaTarifario_id =", tiposTarifaTarifario_id)
+
+    tiposTarifaProducto = TiposTarifaProducto.objects.get(nombre='SUMINISTROS')
+
+    tipoTarifario = TiposTarifa.objects.get(nombre=tiposTarifaTarifario_id , tiposTarifaProducto_id = tiposTarifaProducto.id)
+
+    porcentaje = request.POST.get('porcentaje')
+    print ("porcentaje =", porcentaje)
+
+    valorAplicar = request.POST.get('valorAplicar')
+    print ("valorAplicar =", valorAplicar)
+
+    columnaAplicar = request.POST.get('columnaAplicar')
+    print ("columnaAplicar =", columnaAplicar)
+
+    codigoCums_id = request.POST.get('codigoCums_id')
+    print ("codigoCums_id =", codigoCums_id)
+
+    if (codigoCums_id ==''):
+        pass
+        #codigoCums_id='null'
+
+    codigoCumsHasta_id = request.POST.get('codigoCumsHasta_id')
+    print ("codigoCumsHasta_id =", codigoCumsHasta_id)
+
+    if (codigoCumsHasta_id ==''):
+        pass
+        #codigoCumsHasta_id='null'
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    conceptoId =  Conceptos.objects.get(nombre='MEDICAMENTOS')
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    print ("Comenzamos")
+
+    if (codigoCums_id != '' and codigoCumsHasta_id != '' and porcentaje !='' ):
+
+        print("Entre porcentaje a Rango de CUMS")
+        comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCum_id" >= ' + str(codigoCums_id) + " AND "  + ' "codigoCum_id" <= ' +  str(codigoCumsHasta_id)
+    if (codigoCums_id != '' and codigoCumsHasta_id != '' and valorAplicar != ''):
+
+        print("Entre Valor a aplicar  en rango de cums")
+        comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "' AND " + '"codigoCum_id" >= ' + str(codigoCums_id) + " AND "  + ' "codigoCum_id" <= '  + str(codigoCumsHasta_id)
+
+    if ( codigoCums_id == '' and codigoCumsHasta_id == '' and porcentaje != ''):
+
+	    print ("Entre porcentaje Solito")
+	    comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+
+
+    if (codigoCums_id == '' and codigoCumsHasta_id == '' and valorAplicar != ''):
+
+	    print ("Entre valor a Aplicar Solito");
+
+	    comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Tarifario Suministro Actualizado !'})
+
+
+def CrearItemTarifarioSuministros(request):
+
+    print ("Entre Crear Item Tarifario Suministros" )
+
+    codigoHomologadoItem = request.POST.get('codigoHomologadoItem')
+    print ("codigoHomologadoItem =", codigoHomologadoItem)
+
+    tiposTarifaItem_id = request.POST.get('tiposTarifaItem_id')
+    print ("tiposTarifaItem_id =", tiposTarifaItem_id)
+
+    codigoCumsItem_id = request.POST.get('codigoCumsItem_id')
+    print ("codigoCumsItem_id =", codigoCumsItem_id)
+
+    conceptoId = Conceptos.objects.get(nombre='MEDICAMENTOS')
+
+    colValorBaseItem = request.POST.get('colValorBaseItem')
+    print ("colValorBaseItem =", colValorBaseItem)
+
+    username_id = request.POST.get('username_id')
+    print ("username_id =", username_id)
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCum_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCumsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
+
+    print(comando)
+
+    try:
+        cur3.execute(comando)
+    except psycopg2.Error as e:
+        # get error code
+        error = e.pgcode
+        print ("Entre Error Base de datos" ,  error)
+        transaction.rollback()
+        miConexion3.close()
+        return JsonResponse({'success': True, 'message': 'Tarifa Suministro existente !'})
+
+    miConexion3.commit()
+    miConexion3.close()
+
+
+
+    return JsonResponse({'success': True, 'message': 'Item Tarifario Suministro creado !'})
+
+
+def GuardarEditarTarifarioSuministros(request):
+
+    print ("Entre GuardarEditarTarifarioSuministros" )
+
+    post_id = request.POST.get('post_id')
+    print ("post_id =", post_id)
+
+    username_id = request.POST.get('username_id')
+    print ("username_id =", username_id)
+
+    codigoHomologadoEditar = request.POST.get('codigoHomologadoEditar')
+    print ("codigoHomologadoEditar =", codigoHomologadoEditar)
+
+    if (codigoHomologadoEditar == ''):
+        codigoHomologadoEditar='null'
+
+    colValorBaseEditar = request.POST.get('colValorBaseEditar')
+    print ("colValorBaseEditar =", colValorBaseEditar)
+
+    if (colValorBaseEditar == ''):
+        colValorBaseEditar='null'
+
+
+    colValor1Editar = request.POST.get('colValor1Editar')
+    print ("colValor1Editar =", colValor1Editar)
+
+    if (colValor1Editar == ''):
+        colValor1Editar='null'
+
+    colValor2Editar = request.POST.get('colValor2Editar')
+    print ("colValor2Editar =", colValor2Editar)
+
+    colValor3Editar = request.POST.get('colValor3Editar')
+    print ("colValor3Editar =", colValor3Editar)
+
+    colValor4Editar = request.POST.get('colValor4Editar')
+    print ("colValor4Editar =", colValor4Editar)
+
+    colValor5Editar = request.POST.get('colValor5Editar')
+    print ("colValor5Editar =", colValor5Editar)
+
+    colValor6Editar = request.POST.get('colValor6Editar')
+    print ("colValor6Editar =", colValor6Editar)
+
+    colValor7Editar = request.POST.get('colValor7Editar')
+    print ("colValor7Editar =", colValor7Editar)
+
+    colValor8Editar = request.POST.get('colValor8Editar')
+    print ("colValor8Editar =", colValor8Editar)
+
+    colValor9Editar = request.POST.get('colValor9Editar')
+    print ("colValor9Editar =", colValor9Editar)
+
+    colValor10Editar = request.POST.get('colValor10Editar')
+    print ("colValor10Editar =", colValor10Editar)
+
+    if (colValor2Editar == ''):
+        colValor2Editar='null'
+
+    if (colValor3Editar == ''):
+        colValor3Editar='null'
+
+    if (colValor4Editar == ''):
+        colValor4Editar='null'
+
+    if (colValor5Editar == ''):
+        colValor5Editar='null'
+
+    if (colValor6Editar == ''):
+        colValor6Editar='null'
+
+    if (colValor7Editar == ''):
+        colValor7Editar='null'
+
+    if (colValor8Editar == ''):
+        colValor8Editar='null'
+
+    if (colValor9Editar == ''):
+        colValor9Editar='null'
+
+    if (colValor10Editar == ''):
+        colValor10Editar='null'
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+    conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'UPDATE tarifarios_tarifariossuministros SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Tarifario Actualizado !'})
+
+def TraerTarifarioSuministros(request):
+    print("Entre TraerTarifarioSuministros")
+
+    post_id = request.POST.get('post_id')
+    print("post_id =", post_id)
+
+    tarifariosSuministrosDetalle = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'select sum.id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", sum."fechaRegistro", sum."estadoReg", "codigoCum_id", exa.nombre exaNombre, exa.cums codigoCums, sum.concepto_id, "tiposTarifa_id", sum."usuarioRegistro_id" FROM tarifarios_tarifariossuministros sum, facturacion_suministros exa WHERE sum.id = ' + "'" + str(post_id) + "'" + ' and exa.id = "codigoCum_id" '
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, codigoHomologado, colValorBase, colValor1, colValor2 , colValor3, colValor4, colValor5, colValor6 , colValor7 ,colValor8,colValor9, colValor10 ,fechaRegistro , estadoReg , codigoCums_id, exaNombre, codigoCums,  concepto_id, tiposTarifa_id, usuarioRegistro_id  in cur3.fetchall():
+        tarifariosSuministrosDetalle.append(
+            {"model": "tarifarios.tarifariosSuministros", "pk": id, "fields":
+                {'id': id, 'codigoHomologado': codigoHomologado, 'colValorBase': colValorBase, 'colValor1': colValor1, 'colValor2': colValor2
+                    , 'colValor3': colValor3, 'colValor4': colValor4, 'colValor5': colValor5, 'colValor6': colValor6, 'colValor7': colValor7
+                    , 'colValor8': colValor8, 'colValor9': colValor9, 'colValor10': colValor10, 'fechaRegistro': fechaRegistro, 'estadoReg': estadoReg,
+                 'codigoCums_id': codigoCums_id,'exaNombre':exaNombre, 'codigoCums':codigoCums,    'concepto_id': concepto_id,'tiposTarifa_id': tiposTarifa_id,'usuarioRegistro_id': usuarioRegistro_id,
+
+                 }})
+
+    miConexion3.close()
+    print(tarifariosSuministrosDetalle)
+
+    serialized1 = json.dumps(tarifariosSuministrosDetalle, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')

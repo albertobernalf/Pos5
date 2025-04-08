@@ -52,5 +52,5 @@ select * from clinico_examenes where "codigoCups" in ('908501','875603')
 
 
 
-
+-- Complementar con Rips, Autorizaciones
 
