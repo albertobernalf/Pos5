@@ -198,20 +198,53 @@ select * from contratacion_convenios;
 select * from facturacion_conveniospacienteingresos;
 select * from usuarios_usuarios;
 
+INSERT INTO facturacion_liquidacion (documento_id,"consecAdmision", fecha,"fechaRegistro","estadoRegistro", convenio_id, "tipoDoc_id", "sedesClinica_id")
+	VALUES ()
+
 insert into facturacion_ConveniosPacienteIngresos ("consecAdmision", "fechaRegistro",  convenio_id, documento_id, "tipoDoc_id" , "usuarioRegistro_id" ,
 	"estadoReg")
 	values ('1' , '2025-04-08 12:11:07.336252', '8'  , '24', '3','1','A');
 
+SELECT * FROM clinico_examenes where 
 select convenio_id,* from facturacion_liquidacion;
+update facturacion_liquidacion set convenio_id=1 where id=120;
 select * from tarifarios_tarifariosdescripcion;
-select * from tarifarios_tarifariosprocedimientos;
-select * from clinico_examenes;
+select * from tarifarios_tarifariosprocedimientos where id in (27235,19012,30647);
+select * from clinico_examenes where "codigoCups" = '903402'; -- 487
 
-SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc.valor tarifaValor 
+-- Este es el qury que trae la tariufa SUPOER QUERY En la tarde trabajarlop
+
+
+SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."colValorBase" tarifaValor , proc."colValor1" colValor1,exa.id, proc.id
 	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc,
-	     clinico_examenes exa
-	WHERE conv."tipoDoc_id" = '3' AND conv.documento_id = 24 AND conv."consecAdmision" = 1 and des.id = conv."tarifariosDescripcionProc_id"
-	AND proc."codigoCups_id" = exa.id      And exa."codigoCups" = '903402'         + "'" +  str(codigoCupsId[0].id) + "'"
+	     clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar
+	WHERE conv."tipoDoc_id" = '3' AND conv.documento_id = 24 AND conv."consecAdmision" = 1 and conv.convenio_id = conv1.id AND
+	des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND proc."codigoCups_id" = exa.id      And exa."codigoCups" = '903402'  
+	and des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id
 
-select "tarifariosDescripcionProc_id",* from contratacion_convenios;	
-                    
+	select * from facturacion_liquidaciondetalle order by fecha;
+	   
+SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."colValorBase" tarifaValor 
+	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc,
+	     clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar
+	WHERE conv."tipoDoc_id" = '3' AND conv.documento_id = 24 AND conv."consecAdmision" = 1 and conv.convenio_id = conv1.id AND
+	des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND proc."codigoCups_id" = exa.id      And exa."codigoCups" = '903402'  
+	and des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id
+
+SELECT * FROM tarifarios_tarifariossuministros WHERE "codigoCum_id" = 616;
+select * from facturacion_suministros where id= 616
+	select * from tarifarios_tipostarifa
+	select * from tarifarios_tipostarifaproducto;
+select * from tarifarios_tarifariosdescripcion;
+
+	
+	select  * from facturacion_ConveniosPacienteIngresos;
+
+SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor ,  tiptar.id,  sum."tiposTarifa_id", tiptar.id
+	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, 
+	facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar, tarifarios_tipostarifaproducto tipprod
+	WHERE conv."tipoDoc_id" = '3' AND conv.documento_id = '24' AND conv."consecAdmision" = '1' AND conv.convenio_id = conv1.id AND
+	des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND sum."codigoCum_id" = exa.id  
+	And exa.id = '616' AND des."tiposTarifa_id" = tiptar.id and tiptar."tiposTarifaProducto_id" = tipprod.id
+	
+	and sum."tiposTarifa_id" = tiptar.id and 

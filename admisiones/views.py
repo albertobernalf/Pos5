@@ -5481,10 +5481,12 @@ def GuardaConvenioAdmision(request):
     print ("Entre GuardaConvenioAdmision" )
 
     ingresoId = request.POST["ingresoId2"]
+
     sede = request.POST["sede2"]
     convenio = request.POST["convenio"]
     print ("ingresoId = ", ingresoId)
     print("sede = ", sede)
+    print("convenio = ", convenio)
 
     fechaRegistro = datetime.datetime.now()
 
@@ -5500,23 +5502,30 @@ def GuardaConvenioAdmision(request):
     miConexion3.commit()
     miConexion3.close()
 
+
+
     #return HttpResponse("Convenio Adicionado", content_type='application/json')
 
     ## Aqui rutina para actualizar el cabezote de facturacion_liquidacion el convenio_id
 
-    #liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec ,convenio_id='' )
+    try:
+        liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec ,convenio_id=convenio )
+    except Liquidacion.DoesNotExist:
 
-    #print ("liquidacionId = ", liquidacionId)
+        liquidacionId = ''
+        print("Entre excepcion")
 
-    #if (liquidacionId.id > 0):
+    print ("liquidacionId = ", liquidacionId)
 
-    #    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    #    cur3 = miConexion3.cursor()
-    #    comando = 'UPDATE facturacion_liquidacion SET convenio_id = ' + str(convenio) + ' WHERE id = ' + str(liquidacionId.id)
-    #    print(comando)
-    #    cur3.execute(comando)
-    #    miConexion3.commit()
-    #    miConexion3.close()
+    if (liquidacionId == ''):
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','"  + str(sede) + "')"
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        miConexion3.close()
 
     ## Fin RUTINA
 
