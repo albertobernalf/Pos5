@@ -101,7 +101,32 @@ function arrancaLiquidacion(valorTabla,valorData)
                 { data: "fields.fechaIngreso"},
         		{ data: "fields.servicioNombreIng"},
                 { data: "fields.camaNombreIng"},
-		         { data: "fields.convenio"},
+                /*  { data: "fields.convenio"}, */
+
+		         {
+		         target : 8,
+			"sWidth": "1%",
+        	           "render": function (data, type, row) {
+                console.log ('data = ', data);
+                console.log ('type = ', type);
+                console.log ('row = ', row);
+
+
+				if ( row['fields']['convenio'] === null)
+                {
+                    return '<i class="far fa-dot-circle" style="color:red" >Sin Convenio</i>';
+					/*  return 'SIN CONVENIO'; */
+					}
+
+			    if ( row['fields']['convenio'] !=  '')
+				{
+                     return  row['fields']['convenio'];
+                    return data;
+                    }
+
+
+	                    }
+			},
     ]
   }
      dataTable = $('#tablaLiquidacion').DataTable(dataTableOptionsLiquidacion);
@@ -513,7 +538,8 @@ window.addEventListener('load', async () => {
 
 	          var post_id = $(this).data('pk');
 
-		alert("pk = " + post_id);
+		// alert("pk = " + post_id);
+		
 
 
         var username_id = document.getElementById("username_id").value;
@@ -529,8 +555,9 @@ window.addEventListener('load', async () => {
 	           dataType : 'json',
 	  		success: function (data) {
 
-			// Colocar Encabezadao
-	  		// aqui debe activar un dataTale para liquidacionDetalle
+
+		var liquidacionId = data.id;
+
 		$('#liquidacionId').val(data.id);
 		$('#liquidacionId1').val(data.id);
 		$('#liquidacionId2').val(data.id);
@@ -648,14 +675,10 @@ window.addEventListener('load', async () => {
 		        data2['nombreSede'] = nombreSede;
 		        data2['sede'] = sede;
 		        data2['username_id'] = username_id;
-
-			 var valor = document.getElementById("liquidacionId").value;
-			 var ingresoId = document.getElementById("ingresoId").value;
-
-
-
-		        data2['valor'] = valor;
+			var ingresoId = document.getElementById("ingresoId").value;
+				
 		        data2['liquidacionId'] = data.id;
+		        
 
 			document.getElementById("tipoIngreso").value = data.tipo;
 
@@ -679,13 +702,14 @@ window.addEventListener('load', async () => {
 
 			   $("#mensajes").html(data.message);
 
+
 		            arrancaLiquidacion(2,data2);
 	  	            dataTableLiquidacionDetalleInitialized = true;
 
-	       		    arrancaLiquidacion(4,data2);
-			    dataTableFacAbonosInitialized = true;
+	       		     arrancaLiquidacion(4,data2);
+			     dataTableFacAbonosInitialized = true;
 
-			    LeerTotales();
+			     LeerTotales();
 
                   },
 	   		    error: function (request, status, error) {

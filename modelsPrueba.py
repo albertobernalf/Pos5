@@ -698,3 +698,7 @@ BIBLIOGRAFIA:
 -- el dia lunes 7 de abril probar subir excel de tarifas
    -- completar en maintarifariosF y vies de tarifarios y probar tarifario de suministros a
 
+-- ojo sanson son diferentes lod querys de admisiones ingresos el que ingresa al que graba una nuevo ingreso OJOOO UNIFICAR
+-- ops en admisiones no sirve crear convenios, me toco salirme y volver  aentrar para acceder al como de convenios ojo
+-- El boton refrescar d efacturaciondetalle estan mal los totales que lee de la cuenta
+-- ojo colocar elegante el nombre de la fporma d epago por ejempl copago, anticipo etc

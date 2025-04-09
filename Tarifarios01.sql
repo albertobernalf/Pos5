@@ -236,15 +236,16 @@ select * from facturacion_suministros where id= 616
 	select * from tarifarios_tipostarifa
 	select * from tarifarios_tipostarifaproducto;
 select * from tarifarios_tarifariosdescripcion;
-
+select * from facturacion_liquidacion;
 	
 	select  * from facturacion_ConveniosPacienteIngresos;
 
-SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor ,  tiptar.id,  sum."tiposTarifa_id", tiptar.id
+SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor ,  tiptar.id
 	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, 
 	facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar, tarifarios_tipostarifaproducto tipprod
 	WHERE conv."tipoDoc_id" = '3' AND conv.documento_id = '24' AND conv."consecAdmision" = '1' AND conv.convenio_id = conv1.id AND
-	des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND sum."codigoCum_id" = exa.id  
-	And exa.id = '616' AND des."tiposTarifa_id" = tiptar.id and tiptar."tiposTarifaProducto_id" = tipprod.id
-	
-	and sum."tiposTarifa_id" = tiptar.id and 
+	des.id = conv1."tarifariosDescripcionSum_id" AND conv1.id = 1 AND sum."codigoCum_id" = exa.id  
+	And exa.id = '616' AND des."tiposTarifa_id" = tiptar.id and tiptar."tiposTarifaProducto_id" = tipprod.id 
+	and sum."tiposTarifa_id" = tiptar.id 
+
+SELECT * FROM autorizaciones_autorizaciones;

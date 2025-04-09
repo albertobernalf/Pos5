@@ -13,6 +13,7 @@ import pyodbc
 import psycopg2
 from datetime import datetime
 from decimal import Decimal
+from django.db.models import Avg, Max, Min, Sum
 
 import pytz
 import tzlocal
@@ -24,8 +25,9 @@ from admisiones.forms import furipsForm
 from sitios.models import  HistorialDependencias, Dependencias, ServiciosSedes, SubServiciosSedes
 from usuarios.models import Usuarios, TiposDocumento
 from planta.models import Planta
-from facturacion.models import ConveniosPacienteIngresos, Liquidacion
+from facturacion.models import ConveniosPacienteIngresos, Liquidacion, LiquidacionDetalle
 from rips.models import  RipsDestinoEgreso
+from cartera.models import FormasPagos
 import datetime
 
 # Create your views here.
@@ -5547,6 +5549,7 @@ def GuardaAbonosAdmision(request):
     descripcion = request.POST['descripcionAbono']
     print ("ingresoId = ", ingresoId)
     print("sede = ", sede)
+    print("formaPago = ", formaPago)
 
     fechaRegistro = datetime.datetime.now()
 
@@ -5563,6 +5566,110 @@ def GuardaAbonosAdmision(request):
     miConexion3.close()
 
     #return HttpResponse("Convenio Adicionado", content_type='application/json')
+
+ ## Aqui rutina para actualizar el cabezote de facturacion_liquidacion el convenio_id
+
+    try:
+        liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec  )
+        convenioId = liquidacionId.convenio_id
+        liquidacionId2 = liquidacionId.id
+    except Liquidacion.DoesNotExist:
+
+        liquidacionId2 = ''
+        convenioId =  ''
+        print("Entre excepcion")
+
+    print ("liquidacionId2 = ", liquidacionId2)
+
+    if (liquidacionId == ''):
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenioId) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','"  + str(sede) + "') RETURNING id"
+        print(comando)
+        cur3.execute(comando)
+        liquidacionId2 = curx.fetchone()[0]
+        print ("transaccionId = ", transaccionId)
+        miConexion3.commit()
+        miConexion3.close()
+
+    ## Fin RUTINA
+
+    ## Vamops a actualizar los totales de la Liquidacion:
+
+    totalSuministros = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).filter(examen_id = None).exclude(estadoRegistro='N').aggregate(totalS=Coalesce(Sum('valorTotal'), 0))
+    totalSuministros = (totalSuministros['totalS']) + 0
+    print("totalSuministros", totalSuministros)
+    totalProcedimientos = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).filter(cums_id = None).exclude(estadoRegistro='N').aggregate(totalP=Coalesce(Sum('valorTotal'), 0))
+    totalProcedimientos = (totalProcedimientos['totalP']) + 0
+    print("totalProcedimientos", totalProcedimientos)
+    registroPago = Liquidacion.objects.get(id=liquidacionId2)
+
+    print ("registroPago totalCopagos = " ,registroPago.totalCopagos )
+
+    if registroPago.totalCopagos==None:
+        totalCopagos=0.0
+    else:
+        totalCopagos=registroPago.totalCopagos
+
+    if registroPago.totalCuotaModeradora==None:
+        totalCuotaModeradora=0.0
+
+    else:
+        totalCuotaModeradora=registroPago.totalCuotaModeradora
+
+    if registroPago.anticipos==None:
+        totalAnticipos=0.0
+    else:
+        totalAnticipos=registroPago.anticipos
+
+    if registroPago.totalAbonos==None:
+        totalAbonos=0.0
+    else:
+        totalAbonos=registroPago.totalAbonos
+
+
+
+    formaPagoCopago = FormasPagos.objects.get(nombre='COPAGO')
+
+    print ("formaPagoCopago.id = ", formaPagoCopago.id)
+
+    if (formaPagoCopago.id == int(formaPago)):
+        print ("Entre copago")
+        totalCopagos = totalCopagos + int(valor)
+
+    formaPagoCuotaModeradora = FormasPagos.objects.get(nombre='CUOTA MODERADORA')
+    if (formaPagoCuotaModeradora.id == int(formaPago)):
+        totalCuotaModeradora = totalCuotaModeradora + int(valor)
+
+    formaPagoAnticipo = FormasPagos.objects.get(nombre='ANTICIPO')
+    if (formaPagoAnticipo.id == int(formaPago)):
+        totalAnticipos = totalAnticipos + int(valor)
+
+    formaPagoAbonos = FormasPagos.objects.get(nombre='ABONO')
+    if (formaPagoAbonos.id == int(formaPago)):
+        totalAbonos = totalAbonos + int(valor)
+
+    print("totalCopagos = ", totalCopagos)
+
+    totalRecibido = totalCopagos + totalCuotaModeradora + totalAnticipos + totalAbonos
+    valorApagar = totalSuministros + totalProcedimientos - totalRecibido
+    totalLiquidacion = totalSuministros + totalProcedimientos
+
+    print ("totalLiquidacion = ",totalLiquidacion )
+    # Actualizo Totales de cabezote
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+    curt = miConexiont.cursor()
+    comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(valorApagar) +  ', "totalRecibido" = ' + str(totalRecibido) +  ' WHERE id =' + "'" + str(liquidacionId) + "'"
+    print("comando = ", comando)
+
+
+    curt.execute(comando)
+    miConexiont.commit()
+    miConexiont.close()
+
+
 
     return JsonResponse({'success': True, 'message': 'Abono Actualizado satisfactoriamente!'})
 

@@ -644,7 +644,7 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' valor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' valor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
                         print("comando = ", comando)
 
                         curt.execute(comando)
@@ -776,6 +776,7 @@ def crearHistoriaClinica(request):
                 # Fin Grabacion Laboratorios
 
                 # Grabacion Radiologia
+                
 
                 radiologia = request.POST["radiologia"]
                 print("radiologia =", radiologia)
