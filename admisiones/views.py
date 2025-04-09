@@ -5559,7 +5559,7 @@ def GuardaAbonosAdmision(request):
     ## falta usuarioRegistro_id
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") + "',0,0,0);"
+    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0);'
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
@@ -5636,19 +5636,18 @@ def GuardaAbonosAdmision(request):
 
     if (formaPagoCopago.id == int(formaPago)):
         print ("Entre copago")
-        totalCopagos = totalCopagos + int(valor)
+        totalCopagos = totalCopagos + 0
 
     formaPagoCuotaModeradora = FormasPagos.objects.get(nombre='CUOTA MODERADORA')
     if (formaPagoCuotaModeradora.id == int(formaPago)):
-        totalCuotaModeradora = totalCuotaModeradora + int(valor)
-
+        totalCuotaModeradora = totalCuotaModeradora + 0
     formaPagoAnticipo = FormasPagos.objects.get(nombre='ANTICIPO')
     if (formaPagoAnticipo.id == int(formaPago)):
-        totalAnticipos = totalAnticipos + int(valor)
+        totalAnticipos = totalAnticipos + 0
 
     formaPagoAbonos = FormasPagos.objects.get(nombre='ABONO')
     if (formaPagoAbonos.id == int(formaPago)):
-        totalAbonos = totalAbonos + int(valor)
+        totalAbonos = totalAbonos + 0
 
     print("totalCopagos = ", totalCopagos)
 
@@ -5661,7 +5660,8 @@ def GuardaAbonosAdmision(request):
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
     curt = miConexiont.cursor()
-    comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(valorApagar) +  ', "totalRecibido" = ' + str(totalRecibido) +  ' WHERE id =' + "'" + str(liquidacionId) + "'"
+    #comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(valorApagar) +  ', "totalRecibido" = ' + str(totalRecibido) +  ' WHERE id =' + "'" + str(liquidacionId) + "'"
+
     print("comando = ", comando)
 
 

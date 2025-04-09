@@ -700,5 +700,8 @@ BIBLIOGRAFIA:
 
 -- ojo sanson son diferentes lod querys de admisiones ingresos el que ingresa al que graba una nuevo ingreso OJOOO UNIFICAR
 -- ops en admisiones no sirve crear convenios, me toco salirme y volver  aentrar para acceder al como de convenios ojo
--- El boton refrescar d efacturaciondetalle estan mal los totales que lee de la cuenta
+-- El boton refrescar d efacturaciondetalle estan mal los totales que lee de la cuenta, NO REFRESCA LOS TOTALES
 -- ojo colocar elegante el nombre de la fporma d epago por ejempl copago, anticipo etc
+-- nO ESTA ANULANDO LOS ABONOS POR EL MODULODE ADMISIONES
+-- Ops ME ESTA DUPLICANDO LÑOS abonos DE CUANDO A CA Y PORTUE
+-- NO ESTACOLOCANDO EL NOMBRE DE MARUJA EN LOS ABONS EN ADMISINES

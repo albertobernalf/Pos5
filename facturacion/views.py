@@ -1546,19 +1546,19 @@ def GuardaApliqueAbonosFacturacion(request):
     if aformaPago == "1":
         print("Entre 1")
         #comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = "anticipos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = ' +   str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+        comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = "anticipos" +  ' +   str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
     if aformaPago == "2":
         print("Entre 2")
         #comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" = "totalAbonos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" = ' +  str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+        comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" =  "totalAbonos" + ' +  str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
     if aformaPago == "3":
         print("Entre 3")
         #comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = "totalCuotaModeradora" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = ' + str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+        comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = "totalCuotaModeradora" + ' + str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
     if aformaPago == "4":
         print ("Entre 4")
         #comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = "totalCopagos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = ' + str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+        comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = "totalCopagos" + ' + str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
 
     print(comando)
     cur3.execute(comando)
@@ -1570,14 +1570,27 @@ def GuardaApliqueAbonosFacturacion(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'UPDATE  facturacion_liquidacion SET "totalRecibido" = "anticipos" +  "totalAbonos" + "totalCuotaModeradora" +  "totalCopagos"  WHERE id = ' + "'" + str(liquidacionId) + "'"
+    comando = 'UPDATE  facturacion_liquidacion SET "totalRecibido" = "anticipos" +  "totalAbonos" + "totalCuotaModeradora" +  "totalCopagos" WHERE id = ' + "'" + str(liquidacionId) + "'"
 
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
 
-    #Pregunta aquip deberia actualizar cabezote la la liquidacion ,en valoEnCurso ?
+    #aQUI EL VALOR A PAGAR
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE  facturacion_liquidacion SET "valorApagar" =   "totalProcedimientos" + "totalSuministros" - "totalRecibido" WHERE id = ' + "'" + str(liquidacionId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+
+
 
 
     return JsonResponse({'success': True, 'message': 'Valor abono en curso guardado satisfactoriamente!'})

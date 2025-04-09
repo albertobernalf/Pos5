@@ -168,7 +168,7 @@ function arrancaLiquidacion(valorTabla,valorData)
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '150px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -538,7 +538,7 @@ window.addEventListener('load', async () => {
 
 	          var post_id = $(this).data('pk');
 
-		// alert("pk = " + post_id);
+		 alert("entre pk = " + post_id);
 		
 
 
@@ -547,6 +547,7 @@ window.addEventListener('load', async () => {
 	document.getElementById("liquidacionId").value = '';
 	document.getElementById("liquidacionId1").value = '';
 	document.getElementById("ingresoId").value = '';
+	document.getElementById("liquidacionIdA").value = '';
 
 	$.ajax({
 	           url: '/postConsultaLiquidacion/',
@@ -555,6 +556,8 @@ window.addEventListener('load', async () => {
 	           dataType : 'json',
 	  		success: function (data) {
 
+			alert("llegue con esta data" + data);
+			alert("llegue con esta data.id" + data.id);
 
 		var liquidacionId = data.id;
 
@@ -562,6 +565,8 @@ window.addEventListener('load', async () => {
 		$('#liquidacionId1').val(data.id);
 		$('#liquidacionId2').val(data.id);
 		$('#liquidacionIdA').val(data.id);
+
+		console.log('liquidacionIdA = ', document.getElementById("liquidacionIdA").value)
 
 		if (data.tipo == 'INGRESO')
 		{
@@ -667,8 +672,6 @@ window.addEventListener('load', async () => {
  	      		      });
 
 
-
-
 			var data2 =  {}   ;
 			data2['username'] = username;
 		        data2['sedeSeleccionada'] = sedeSeleccionada;
@@ -709,7 +712,7 @@ window.addEventListener('load', async () => {
 	       		     arrancaLiquidacion(4,data2);
 			     dataTableFacAbonosInitialized = true;
 
-			     LeerTotales();
+			     // LeerTotales();
 
                   },
 	   		    error: function (request, status, error) {
@@ -800,7 +803,7 @@ window.addEventListener('load', async () => {
                 dataType: 'json',
                 success: function (data) {
 		            $('#post_id').val('');
-		              $('#postFormModalApliqueParcial').trigger("reset");
+		            //  $('#postFormModalApliqueParcial').trigger("reset");
 		         $('#modelHeadingAplique').html("Aplicar abono a Factura");
 			
 			$('#aabonoId').val(data.id);
@@ -859,7 +862,7 @@ window.addEventListener('load', async () => {
                 dataType: 'json',
                 success: function (data) {
 		  $("#mensajes").html(data.message);
-                  $('#postFormModalApliqueParcial').trigger("reset");
+                //  $('#postFormModalApliqueParcial').trigger("reset");
     		  $('#crearAplique').modal('hide');
 
 
@@ -870,12 +873,14 @@ window.addEventListener('load', async () => {
 		        data2['sede'] = sede;
 		        data2['username_id'] = username_id;
 
-			var valor = document.getElementById("liquidacionId").value;
+			var valor = document.getElementById("liquidacionIdA").value;
 			var ingresoId = document.getElementById("ingresoId").value;
 
 		        data2['valor'] = valor;
 		        data2['ingresoId'] = ingresoId;
 			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
+			data2['liquidacionId'] = valor;
+
 
 		        data2 = JSON.stringify(data2);
 

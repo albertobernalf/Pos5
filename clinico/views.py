@@ -542,12 +542,16 @@ def crearHistoriaClinica(request):
                     comando = 'INSERT INTO facturacion_liquidacion ("sedesClinica_id", "tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(sede) + "'," +  "'" + str(
                         tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(
                         fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(
-                        estadoReg) + "'," + str(convenioId) + ',' + "'" + str(usuarioRegistro) + "',0)"
+                        estadoReg) + "'," + str(convenioId) + ',' + "'" + str(usuarioRegistro) + "',0) RETURNING id "
                     curt.execute(comando)
+                    liquidacionId = curt.fetchone()[0]
+
+                    print("resultado liquidacionId = " , liquidacionId)
+
                     miConexiont.commit()
                     miConexiont.close()
-                    liquidacionU = Liquidacion.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
-                    liquidacionId = (liquidacionU['maximo']) + 0
+                    #liquidacionU = Liquidacion.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
+                    #liquidacionId = (liquidacionU['maximo']) + 0
                 else:
                     liquidacionId = cabezoteLiquidacion[0]['id']
                     liquidacionId = str(liquidacionId)
@@ -776,7 +780,7 @@ def crearHistoriaClinica(request):
                 # Fin Grabacion Laboratorios
 
                 # Grabacion Radiologia
-                
+
 
                 radiologia = request.POST["radiologia"]
                 print("radiologia =", radiologia)
@@ -823,7 +827,7 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND  proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
 
                         curt.execute(comando)
                         convenioValor = []
@@ -984,7 +988,7 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
 
                         curt.execute(comando)
                         convenioValor = []
@@ -1146,7 +1150,7 @@ def crearHistoriaClinica(request):
 
                           curt = miConexiont.cursor()
                           #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                          comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND conv1.id = 1 AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                          comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id"  AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
                           curt.execute(comando)
                           convenioValor = []
 
@@ -1578,7 +1582,7 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT convIngreso.convenio_id convenio ,sum.suministro_id sum, sum.valor tarifaValor FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniossuministros sum WHERE convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND convIngreso.convenio_id = sum.convenio_id AND sum.suministro_id = " + "'" +  str(medicamentos) + "'"
-                        comando = 'SELECT conv.convenio_id convenio ,exa.cums cums, sum."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionSum_id" AND conv1.id = 1 AND sum."codigoCum_id" = exa.id  And exa.id = ' + "'" + str(medicamentos) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and sum."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa.cums cums, sum."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionSum_id" AND sum."codigoCum_id" = exa.id  And exa.id = ' + "'" + str(medicamentos) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and sum."tiposTarifa_id" = tiptar.id'
 
                         print ("comando =" , comando)
 
@@ -1690,34 +1694,37 @@ def crearHistoriaClinica(request):
 	            # Fin rutina Facturacion
 
 
-
-
-			# Deberia ser hasta Aqui
-
-
-                totalSuministros = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).aggregate(totalS=Coalesce(Sum('valorTotal'), 0))
+		    ## Vamops a actualizar los totales de la Liquidacion:
+                totalSuministros = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).filter(examen_id = None).exclude(estadoRegistro='N').aggregate(totalS=Coalesce(Sum('valorTotal'), 0))
                 totalSuministros = (totalSuministros['totalS']) + 0
-                print("totalSuministros",totalSuministros )
-                totalProcedimientos = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).aggregate(totalP=Coalesce(Sum('valorTotal'), 0))
+                print("totalSuministros", totalSuministros)
+                totalProcedimientos = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).filter(cums_id = None).exclude(estadoRegistro='N').aggregate(totalP=Coalesce(Sum('valorTotal'), 0))
                 totalProcedimientos = (totalProcedimientos['totalP']) + 0
                 print("totalProcedimientos", totalProcedimientos)
-                totalCopagos = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=4).aggregate(totalC=Coalesce(Sum('valor'), 0))
+                registroPago = Liquidacion.objects.get(id=liquidacionId)
+
+		    # Continua Aqui
+
+
+                totalCopagos = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=4).exclude(estadoReg='N').aggregate(totalC=Coalesce(Sum('valor'), 0))
                 totalCopagos = (totalCopagos['totalC']) + 0
                 print("totalCopagos", totalCopagos)
-                totalCuotaModeradora = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=3).aggregate(totalM=Coalesce(Sum('valor'), 0))
+                totalCuotaModeradora = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=3).exclude(estadoReg='N').aggregate(totalM=Coalesce(Sum('valor'), 0))
                 totalCuotaModeradora = (totalCuotaModeradora['totalM']) + 0
                 print("totalCuotaModeradora", totalCuotaModeradora)
-                totalAnticipos = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=1).aggregate(Anticipos=Coalesce(Sum('valor'), 0))
+                totalAnticipos = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=1).exclude(estadoReg='N').aggregate(Anticipos=Coalesce(Sum('valor'), 0))
                 totalAnticipos = (totalAnticipos['Anticipos']) + 0
                 print("totalAnticipos", totalAnticipos)
-                totalAbonos = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=2).aggregate(totalAb=Coalesce(Sum('valor'), 0))
+                totalAbonos = Pagos.objects.all().filter(tipoDoc_id=tipoDocId.id).filter(documento_id=documentoId.id).filter(consec=ingresoPaciente).filter(formaPago_id=2).exclude(estadoReg='N').aggregate(totalAb=Coalesce(Sum('valor'), 0))
                 totalAbonos = (totalAbonos['totalAb']) + 0
                 #totalAbonos = totalCopagos + totalAnticipos + totalCuotaModeradora
                 print("totalAbonos", totalAbonos)
-                totalLiquidacion =  totalSuministros + totalProcedimientos - totalAbonos
+
+                totalRecibido = totalCopagos + totalCuotaModeradora + totalAnticipos + totalAbonos
+                totalApagar = totalSuministros + totalProcedimientos - totalRecibido
+                totalLiquidacion = totalSuministros + totalProcedimientos
                 print("totalLiquidacion", totalLiquidacion)
-                totalAPagar = totalLiquidacion - totalAbonos
-                print("totalAPagar", totalAPagar)
+                print("totalAPagar", totalApagar)
 
                 # Rutina Guarda en cabezote los totales
 
@@ -1725,7 +1732,7 @@ def crearHistoriaClinica(request):
 
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                 curt = miConexiont.cursor()
-                comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(totalAPagar) + ' WHERE id =' + str(liquidacionId)
+                comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(totalApagar)  + ', "totalRecibido" = ' + str(totalRecibido) + ' WHERE id =' + str(liquidacionId)
                 curt.execute(comando)
                 miConexiont.commit()
                 miConexiont.close()
