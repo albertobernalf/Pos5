@@ -291,7 +291,7 @@ SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor
 	des.id = conv1."tarifariosDescripcionSum_id" AND sum."codigoCum_id" = exa.id  And exa.id = '5651' AND des."tiposTarifa_id" = tiptar.id and
 	sum."tiposTarifa_id" = tiptar.id
 -- 127 y 128
-
+-- rollback
 select * from contratacion_convenios;
 select * from facturacion_liquidaciondetalle where liquidacion_id = 127;
 select * from facturacion_liquidaciondetalle where liquidacion_id = 128;
@@ -324,8 +324,31 @@ from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contrata
 where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
    descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and
 tiptar.id = proc."tiposTarifa_id" and proc."codigoCups_id" = det.examen_id
- 
 
+begin transaction;	
+insert into facturacion_liquidaciondetalle
+( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "fechaRegistro", "estadoRegistro",
+	examen_id,  "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", "tipoRegistro", "historiaMedicamento_id"	)
+select  det.consecutivo, liq.fecha, cantidad,proc."colValor1"    , proc."colValor1" * cantidad, cirugia, "fechaCrea", "fechaModifica", liq.observaciones,
+	liq."fechaRegistro",
+	liq."estadoRegistro", examen_id, "usuarioModifica_id", liq."usuarioRegistro_id", liquidacion_id, "tipoHonorario_id",
+	"tipoRegistro", "historiaMedicamento_id"
+from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,
+	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosProcedimientos proc
+where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
+   descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and
+tiptar.id = proc."tiposTarifa_id" and proc."codigoCups_id" = det.examen_id
+	
+-- rollback;
+
+comando ='INSERT INTO facturacion_liquidaciondetalle ( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "fechaRegistro", "estadoRegistro",examen_id,  "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", "tipoRegistro", "historiaMedicamento_id") select  det.consecutivo, liq.fecha, cantidad, proc."' + str(columna) + "'" + ', proc."' + str(columna) + "'" + ' * cantidad, cirugia, "fechaCrea", "fechaModifica", liq.observaciones, liq."fechaRegistro", liq."estadoRegistro", examen_id, "usuarioModifica_id", liq."usuarioRegistro_id", liquidacion_id, "tipoHonorario_id",	"tipoRegistro", "historiaMedicamento_id" from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosProcedimientos proc where det.liquidacion_id = liq.id and det.liquidacion_id = ' + "'" + str(liquidacionIdHasta) + "'" + ' and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and tiptar.id = proc."tiposTarifa_id" and proc."codigoCups_id" = det.examen_id'
+-- Buscar columna De Procedimientos
+SELECT descrip.columna FROM facturacion_liquidacion liq,contratacion_convenios conv,tarifarios_tarifariosdescripcion descrip
+where liq.id =	127 AND liq.convenio_id = conv.id and descrip.id = conv."tarifariosDescripcionProc_id"
+	
+comando =	'SELECT descrip.columna FROM facturacion_liquidacion liq,contratacion_convenios conv,tarifarios_tarifariosdescripcion descrip where liq.id =	' + "'" + str(liquidacionIdHasta) + "'" + ' AND liq.convenio_id = conv.id and descrip.id = conv."tarifariosDescripcionProc_id"'
+
+	
 -- uery para suministros
 
 -- 5651
@@ -343,23 +366,13 @@ where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_
 tiptar.id = sum."tiposTarifa_id" and sum."codigoCum_id" = det.cums_id
 
 insert into
-("consecutivoFactura", fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "valorGlosado",
-	"valorNotaDebito", "valorAceptado", "valorSoportado", "valorNotaCredito", "fechaOtraNotaCredito", "numeroOtraNotaCredito", "valorOtraNotaCredito", 
-	"observacionOtraNotaCredito", "fechaRegistro", "estadoRegistro", examen_id, cums_id, facturacion_id, "usuarioCrea_id", "usuarioModifica_id",
-	"usuarioRegistro_id", "tipoHonorario_id", "tipoRegistro", glosa_id, "notaCredito_id", "notaDebito_id", "ripsDetalle_id", "ripsId", "ripsTipos_id",
-	"historiaMedicamento_id"
+( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "fechaRegistro", "estadoRegistro", examen_id, cums_id, "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", "tipoRegistro", "historiaMedicamento_id"
+	
 	)
-select "consecutivoFactura", now(), cantidad, sum."colValor1" nuevo ,  cantidad * sum."colValor1"  , cirugia,
-		now(), now() , observaciones,
-	"valorGlosado", "valorNotaDebito", "valorAceptado", "valorSoportado", "valorNotaCredito", "fechaOtraNotaCredito",
-	"numeroOtraNotaCredito", "valorOtraNotaCredito", "observacionOtraNotaCredito", 
-	"fechaRegistro", "estadoRegistro", 
-	examen_id,
-	cums_id, facturacion_id, "usuarioCrea_id", "usuarioModifica_id", "usuarioRegistro_id", "tipoHonorario_id",
-	'SISTEMA', 
-	glosa_id, "notaCredito_id", "notaDebito_id", "ripsDetalle_id", "ripsId", "ripsTipos_id",
-	"historiaMedicamento_id"
-
+select  consecutivo, liq.fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", liq.observaciones, liq."fechaRegistro",
+	liq."estadoRegistro", examen_id, cums_id, "usuarioModifica_id", liq."usuarioRegistro_id", liquidacion_id, "tipoHonorario_id",
+	"tipoRegistro", "historiaMedicamento_id"
+	
 from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,
 	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosSuministros sum
 where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
@@ -367,6 +380,9 @@ where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_
 tiptar.id = sum."tiposTarifa_id" and sum."codigoCum_id" = det.cums_id
 
 
+comando ='INSERT INTO facturacion_liquidaciondetalle ( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "fechaRegistro", "estadoRegistro",cums_id,  "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", "tipoRegistro", "historiaMedicamento_id") select  det.consecutivo, liq.fecha, cantidad, sum."' + str(columnaSuministro) + "'" + ', sum."' + str(columnaSuministro) + "'" + ' * cantidad, cirugia, "fechaCrea", "fechaModifica", liq.observaciones, liq."fechaRegistro", liq."estadoRegistro", cums_id, "usuarioModifica_id", liq."usuarioRegistro_id", liquidacion_id, "tipoHonorario_id",	"tipoRegistro", "historiaMedicamento_id" from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosSuministros sum where det.liquidacion_id = liq.id and det.liquidacion_id = ' + "'" + str(liquidacionIdHasta) + "'" + ' and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and tiptar.id = sum."tiposTarifa_id" and sum."codigoCum_id" = det.cums_id'
+	
 
+-- Busco la columna de suministros
 
-
+comando =	'SELECT descrip.columna FROM facturacion_liquidacion liq,contratacion_convenios conv,tarifarios_tarifariosdescripcion descrip where liq.id =	' + "'" + str(liquidacionIdHasta) + "'" + ' AND liq.convenio_id = conv.id and descrip.id = conv."tarifariosDescripcionSumc_id"'

@@ -11,6 +11,7 @@ let dataTableLiquidacionInitialized = false;
 let dataTableLiquidacionDetalleInitialized = false;
 let dataTableFacturacionInitialized = false;
 let dataTableFacAbonosInitialized = false;
+let dataTableFacturacionDetalleInitialized = false;
 
 
 
@@ -464,6 +465,98 @@ function arrancaLiquidacion(valorTabla,valorData)
       }
 
 
+// La quinta tabla
+
+    if (valorTabla == 5)
+    {
+
+        let dataTableOptionsFacturacionDetalle  ={
+   dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '150px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		  { width: '15%', targets: 0 },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                       return btn;
+                    },
+                    "targets": 9
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataFacturacionDetalle/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+        { data: "fields.consecutivo"},
+                { data: "fields.fecha"},
+                { data: "fields.nombreExamen"},
+                { data: "fields.cantidad"},
+                { data: "fields.valorUnitario"},
+                { data: "fields.valorTotal"},
+                { data: "fields.observaciones"},
+                { data: "fields.tipoRegistro"},
+		{ data: "fields.estadoReg"},
+                     ]
+            }
+
+            if  (dataTableFacturacionDetalleInitialized)  {
+
+		            dataTableC = $("#tablaFacturacionDetalle").dataTable().fnDestroy();
+
+                    }
+
+                dataTableC = $('#tablaFacturacionDetalle').DataTable(dataTableOptionsFacturacionDetalle);
+
+	            dataTableFacturacionDetalleInitialized  = true;
+      }
+
+
 
 
 
@@ -708,6 +801,20 @@ window.addEventListener('load', async () => {
  	      		      });
 
 
+                     const $id882 = document.querySelector("#conveniosPacienteHacia");
+
+ 	      		     $("#conveniosPacienteHacia").empty();
+
+	                 $.each(data['ConveniosPaciente'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id882.appendChild(option);
+ 	      		      });
+
+
+
 			var data2 =  {}   ;
 			data2['username'] = username;
 		        data2['sedeSeleccionada'] = sedeSeleccionada;
@@ -810,8 +917,14 @@ window.addEventListener('load', async () => {
 			data2['tipoIngreso'] = document.getElementById("tipoIngreso").value;
 		        data2['valor'] = valor;
 		        data2['ingresoId'] = ingresoId;
-
+		        data2['liquidacionId'] = post_id;
 		        data2 = JSON.stringify(data2);
+
+
+		  arrancaLiquidacion(5,data2);
+		    dataTableFacturacionDetalleInitialized = true;
+
+
 			   $("#mensajes").html(data.message);
 
                   },

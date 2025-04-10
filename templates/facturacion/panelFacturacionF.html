@@ -150,15 +150,13 @@ div.dataTables_filter input {
 				              <div class="col-sm-4">
 					             <select class="select-css"  id="conveniosPacienteHacia" name="conveniosPacienteHacia">
                                                     {% for conveniosPaciente in ConveniosPaciente %}
-                                                            <option value="{{conveniosPaciente.id}}"> {{conveniosPaciente.nombre}}
+                                                            <option value="{{conveniosPacienteHacia.id}}"> {{conveniosPacienteHacia.nombre}}
                                                             </option>
                                                             {% endfor %}
                                 	            </select>
 				              </div>
 				         </div>
 				 </div>
-
-
 
 				 <div class="col">
 					<div class="form-group row">
@@ -1126,7 +1124,51 @@ div.dataTables_filter input {
 
 </article>
 
+<article id="FacturacionDetalle">
 
+
+			<div class="container my-2">
+             		   <div class="row">
+                                        <table  id= "tablaFacturacionDetalle" class=" display table table-striped" style="width: 100%";>
+                                            <thead>
+                                            <tr>
+                                                <th>Cons</th>
+                                                <th>Fecha</th>
+                                                <th>NombreExamen</th>
+                                                <th>Cantidad</th>
+                                                <th>ValorUnida</th>
+                                                <th>ValorTotal</th>
+                                                <th>Observaciones</th>
+                                                <th>TipoRegistro</th>
+						<th>Estado</th>
+                                               <th>Editar Borrar</th>                                          
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                <th>Cons</th>
+                                                <th>Fecha</th>
+                                                <th>NombreExamen</th>
+                                                <th>Cantidad</th>
+                                                <th>ValorUnida</th>
+                                                <th>ValorTotal</th>
+                                                <th>Observaciones</th>
+                                                <th>TipoRegistro</th>
+						<th>Estado</th>
+                                                <th>Editar Borrar</th>                                         
+                                            </tr>
+                                            </tfoot>
+
+                                        </table>
+
+				</div>
+			</div>
+
+
+
+</article>
      
     </div>
 </div>
@@ -1147,6 +1189,7 @@ div.dataTables_filter input {
 <div class="marco">
     <ul class="tabs">
         <li><a href="#Facturacion"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Facturacion </a></li>
+        <li><a href="#FacturacionDetalle"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Detalle Factura </a></li>      
         <li><a href="#Anulacion"><span  class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Anulacion Facturas </a></li>
         <li><a href="#Refacturar"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Refactura </a></li>      
     </ul>

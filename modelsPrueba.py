@@ -703,5 +703,5 @@ BIBLIOGRAFIA:
 -- ops en admisiones no sirve crear convenios UNA VEZ CREADA UNA ADMISION , me toco salirme y volver  aentrar para acceder al comBo de convenios ojo
 -- Ops ME ESTA DUPLICANDO LÑOS abonos DE CUANDO A CA Y PORTUE
 -- ala hora de facturar crfeo soo es aplicar y yap y verificar toto OJO CUANDO s efactura valorEncurso, total apolicado, saldo ??
-
+ if convenioValor != '':
 

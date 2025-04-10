@@ -186,6 +186,7 @@ urlpatterns = [
 
     path('load_dataLiquidacion/<str:data>', viewsFacturacion.load_dataLiquidacion, name='loaddataLiquidacion'),
     path('load_dataLiquidacionDetalle/<str:data>', viewsFacturacion.load_dataLiquidacionDetalle, name='loaddataLiquidacionDetalle'),
+    path('load_dataFacturacionDetalle/<str:data>', viewsFacturacion.load_dataFacturacionDetalle,name='load_data_FacturacionDetalle'),
     path('postConsultaLiquidacion/', viewsFacturacion.PostConsultaLiquidacion , name='Post_editLiquidacion'),
     path('postConsultaLiquidacionDetalle/', viewsFacturacion.PostConsultaLiquidacionDetalle , name='Post_editLiquidacionDetalle'),
     path('guardaAbonosFacturacion/', viewsFacturacion.GuardaAbonosFacturacion, name='guardaAbonosFacturacion'),

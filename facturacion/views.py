@@ -270,9 +270,28 @@ def PostConsultaLiquidacion(request):
 
        miConexiont.close()
        print(conveniosPaciente)
-
+       #context['ConveniosPaciente'] = conveniosPaciente
 	   # Fin combo convenios Paciente
 	
+       # Combo Convenios PacienteHacia
+       #
+       miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+       curt = miConexiont.cursor()
+       comando = 'SELECT ing.convenio_id id, conv.nombre nombre FROM facturacion_conveniospacienteingresos ing,contratacion_convenios conv where ing.convenio_id = conv.id and ing."tipoDoc_id" = ' + "'" + str(ingresoId.tipoDoc_id) + "'" + ' and ing.documento_id = ' + "'" + str(ingresoId.documento_id) + "'" + ' AND ing."consecAdmision" = ' + "'" + str(ingresoId.consec) + "'" + ' ORDER BY ing."tipoDoc_id", ing.documento_id '
+       curt.execute(comando)
+       print(comando)
+
+       conveniosPacienteHacia = []
+       conveniosPacienteHacia.append({'id': '', 'nombre': ''})
+
+       for id,  nombre in curt.fetchall():
+           conveniosPacienteHacia.append({'id': id,  'nombre': nombre})
+
+       miConexiont.close()
+       print(conveniosPacienteHacia)
+       #context['ConveniosPacienteHacia'] = conveniosPacienteHacia
+	   # Fin combo convenios Paciente
+
 
     else:
 
@@ -1644,23 +1663,24 @@ def TrasladarConvenio(request):
     liquidacionIdDesde = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consecAdmision, convenio_id = convenioId)
     liquidacionIdHasta = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consecAdmision, convenio_id = convenioIdHacia)
 
+    print ("liquidacionIdDesde =", liquidacionIdDesde )
+    print("liquidacionIdHasta", liquidacionIdHasta )
+
+    print ("liquidacionIdDesde.id =", liquidacionIdDesde.id )
+    print("liquidacionIdHasta.id", liquidacionIdHasta.id )
+
+
     ## Se busca de que columna se van a traer los valores
 
     ## Primero se actualiza cabezote Los totales
 
-    print ("Entre Leer Totales" )
-    liquidacionId = request.POST["liquidacionId"]
-    print ("liquidacionId = ", liquidacionId)
-
-    liquidacionId1 = Liquidacion.objects.get(id=liquidacionId)
-
-    totalSuministros = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionIdFinal).filter(examen_id = None).exclude(estadoRegistro='N').aggregate(totalS=Coalesce(Sum('valorTotal'), 0))
+    totalSuministros = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionIdDesde.id).filter(examen_id = None).exclude(estadoRegistro='N').aggregate(totalS=Coalesce(Sum('valorTotal'), 0))
     totalSuministros = (totalSuministros['totalS']) + 0
     print("totalSuministros", totalSuministros)
-    totalProcedimientos = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionIdFinal).filter(cums_id = None).exclude(estadoRegistro='N').aggregate(totalP=Coalesce(Sum('valorTotal'), 0))
+    totalProcedimientos = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionIdDesde.id).filter(cums_id = None).exclude(estadoRegistro='N').aggregate(totalP=Coalesce(Sum('valorTotal'), 0))
     totalProcedimientos = (totalProcedimientos['totalP']) + 0
     print("totalProcedimientos", totalProcedimientos)
-    registroPago = Liquidacion.objects.get(id=liquidacionId)
+    registroPago = Liquidacion.objects.get(id=liquidacionIdDesde.id)
     totalCopagos = registroPago.totalCopagos
     totalCuotaModeradora = registroPago.totalCuotaModeradora
     totalAnticipos = registroPago.anticipos
@@ -1675,7 +1695,7 @@ def TrasladarConvenio(request):
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
     curt = miConexiont.cursor()
-    comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(valorApagar) +  ', "totalRecibido" = ' + str(totalRecibido) +  ' WHERE id =' + str(registroId.liquidacion_id)
+    comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(valorApagar) +  ', "totalRecibido" = ' + str(totalRecibido) +  ' WHERE id =' + str(liquidacionIdHasta.id)
     curt.execute(comando)
     miConexiont.commit()
     miConexiont.close()
@@ -1683,20 +1703,92 @@ def TrasladarConvenio(request):
 
     # Rutina Guarda en cabezote los totales
 
-    ## Segundo busco los Cups desde y los envio Hasta
-    ## Segundo se crean los detalle
+    # Busco la columna de Procedimientos a leer la tarifa
 
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+    comando = 'SELECT descrip.columna columnaProced FROM facturacion_liquidacion liq,contratacion_convenios conv,tarifarios_tarifariosdescripcion descrip where liq.id =	' + "'" + str(liquidacionIdHasta) + "'" + ' AND liq.convenio_id = conv.id and descrip.id = conv."tarifariosDescripcionProc_id"'
+    curt.execute(comando)
+
+    columnaProcedimientos = []
+
+    for columnaProced  in curt.fetchall():
+            columnaProcedimientos.append( {"columnaProced": columnaProced})
+
+    miConexiont.close()
+
+    print ("columnaProcedimientos", columnaProcedimientos[0]['columnaProced'])
+
+    columnaProcedimientos = columnaProcedimientos[0]['columnaProced']
+    columnaProcedimientos = str(columnaProcedimientos)
+
+
+    columnaProcedimientos = columnaProcedimientos.replace("(", ' ')
+    columnaProcedimientos = columnaProcedimientos.replace(")", ' ')
+    columnaProcedimientos = columnaProcedimientos.replace(",", ' ')
+    columnaProcedimientos = columnaProcedimientos.replace("'", '')
+    columnaProcedimientos = columnaProcedimientos.replace(" ", '')
+    print("columnaProcedimientos QUEDO= ", columnaProcedimientos)
+
+    # Busco la columna de Suministros a leer la tarifa
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+    comando = 'SELECT descrip.columna columnaSuminist FROM facturacion_liquidacion liq,contratacion_convenios conv,tarifarios_tarifariosdescripcion descrip where liq.id =	' + "'" + str(liquidacionIdHasta) + "'" + ' AND liq.convenio_id = conv.id and descrip.id = conv."tarifariosDescripcionSum_id"'
+    print("comando = ", comando)
+
+    curt.execute(comando)
+
+    columnaSuministros = []
+
+    for columnaSuminist  in curt.fetchall():
+            columnaSuministros.append( {"columnaSuminist": columnaSuminist})
+
+    miConexiont.close()
+
+    print ("columnaSuministros", columnaSuministros[0]['columnaSuminist'])
+
+    columnaSuministros = columnaSuministros[0]['columnaSuminist']
+    columnaSuministros = str(columnaSuministros)
+
+
+    columnaSuministros = columnaSuministros.replace("(", ' ')
+    columnaSuministros = columnaSuministros.replace(")", ' ')
+    columnaSuministros = columnaSuministros.replace(",", ' ')
+
+    columnaSuministros = columnaSuministros.replace("'", '')
+    columnaSuministros = columnaSuministros.replace(" ", '')
+
+    print("columnaSuministros = ", columnaSuministros)
+
+    ## Segundo busco los Cups desde y los envio Hasta
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = 'INSERT INTO facturacion_liquidaciondetalle ( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "fechaRegistro", "estadoRegistro",examen_id,  "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", "tipoRegistro", "historiaMedicamento_id") select  det.consecutivo, liq.fecha, cantidad, proc."' + str(columnaProcedimientos) + '"' + ', proc."' + str(columnaSuministros) + '"' + ' * cantidad, cirugia, "fechaCrea", "fechaModifica", liq.observaciones, liq."fechaRegistro", liq."estadoRegistro", examen_id, "usuarioModifica_id", liq."usuarioRegistro_id",' + "'" + str(liquidacionIdHasta.id) + "'" + ' , "tipoHonorario_id",	"tipoRegistro", "historiaMedicamento_id" from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosProcedimientos proc where det.liquidacion_id = liq.id and det.liquidacion_id = ' + "'" + str(liquidacionIdDesde.id) + "'" + ' and liq.convenio_id= conv.id and det."estadoRegistro" = ' + "'" + str('A') + "'" + ' and descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and tiptar.id = proc."tiposTarifa_id" and proc."codigoCups_id" = det.examen_id'
+    print("comando = ", comando)
+    curt.execute(comando)
+    miConexiont.commit()
+    miConexiont.close()
 
 
     ## Tercero busco los Cums desde y los envio Hasta
 
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+    comando = 'INSERT INTO facturacion_liquidaciondetalle ( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "fechaRegistro", "estadoRegistro",cums_id,  "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", "tipoRegistro", "historiaMedicamento_id") select  det.consecutivo, liq.fecha, cantidad, sum."' + str(columnaSuministros) + '"' + ', sum."' + str(columnaSuministros) + '"'  + ' * cantidad, cirugia, "fechaCrea", "fechaModifica", liq.observaciones, liq."fechaRegistro", liq."estadoRegistro", cums_id, "usuarioModifica_id", liq."usuarioRegistro_id",' + "'" + str(liquidacionIdHasta.id) + "'" + ' , "tipoHonorario_id",	"tipoRegistro", "historiaMedicamento_id" from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosSuministros sum where det.liquidacion_id = liq.id and det.liquidacion_id = ' + "'" + str(liquidacionIdDesde.id) + "'" + ' and liq.convenio_id= conv.id and det."estadoRegistro" =  ' + "'" + str('A') + "'" + ' and descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and tiptar.id = sum."tiposTarifa_id" and sum."codigoCum_id" = det.cums_id'
+    curt.execute(comando)
+    miConexiont.commit()
+    miConexiont.close()
 
+    # Ops fata Anular todo el detalle de la cuenta donde estaba
 
-
-
-
-
-    # Ops fata Borrar el detalle de la cueta donde estaba
+    guardo = LiquidacionDetalle.objects.filter(id=liquidacionIdDesde.id).update(estadoRegistro='N',fechaRegistro=fechaRegistro)
 
     return JsonResponse({'success': True, 'message': 'Traslado realizado satisfactoriamente!'})
 
@@ -1780,3 +1872,63 @@ def BuscoAbono(request):
 		          'descripcion':abonoPaciente[0]['descripcion'],'estadoReg':abonoPaciente[0]['estadoReg'],'tipoPago_id':abonoPaciente[0]['tipoPago_id'],  'formaPago_id':abonoPaciente[0]['formaPago_id'],
                          'saldo': abonoPaciente[0]['saldo'], 'totalAplicado':abonoPaciente[0]['totalAplicado'] , 'valorEnCurso':abonoPaciente[0]['valorEnCurso'], 'FormasPagos':formasPagos, 'TiposPagos':tiposPagos      })
 
+
+
+def load_dataFacturacionDetalle(request, data):
+    print("Entre load_dataFacturacionDetalle")
+
+    context = {}
+
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+    #valor = d['valor']
+    liquidacionId = d['liquidacionId']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+    print("liquidacionId:",liquidacionId)
+
+
+    # Abro Conexion para la Liquidacion Detalle
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur = miConexionx.cursor()
+
+    comando = 'select liq.id id,"consecutivoFactura" consecutivo ,  cast(date(fecha)||\' \'||to_char(fecha, \'HH:MI:SS\') as text) fecha  ,  liq.cantidad ,  "valorUnitario" ,  "valorTotal" ,  cirugia ,  cast(date("fechaCrea")||\' \'||to_char("fechaCrea", \'HH:MI:SS\') as text)  fechaCrea , liq.observaciones ,  "estadoRegistro" ,  "examen_id" ,  cums_id , exa.nombre  nombreExamen  ,  facturacion_id ,  liq."tipoHonorario_id" ,  "tipoRegistro" , liq."estadoRegistro" estadoReg FROM facturacion_facturaciondetalle liq inner join clinico_examenes exa on (exa.id = liq."examen_id")  where facturacion_id= ' + "'" +  str(liquidacionId) + "'" +  ' UNION select liq.id id,"consecutivoFactura"  consecutivo, cast(date(fecha)||\' \'||to_char(fecha, \'HH:MI:SS\') as text) fecha  ,  liq.cantidad ,  "valorUnitario" ,  "valorTotal" ,  cirugia ,  cast(date("fechaCrea")||\' \'||to_char("fechaCrea", \'HH:MI:SS\') as text)  fechaCrea , liq.observaciones ,  "estadoRegistro" ,  "examen_id" ,  cums_id , sum.nombre  nombreExamen  ,  facturacion_id ,  liq."tipoHonorario_id" ,  "tipoRegistro" , liq."estadoRegistro" estadoReg FROM facturacion_facturaciondetalle liq inner join facturacion_suministros sum on (sum.id = liq.cums_id)  where facturacion_id= '  + "'" +  str(liquidacionId) + "'" + ' order by consecutivo'
+
+    print(comando)
+
+    cur.execute(comando)
+
+    facturacionDetalle = []
+
+    for id, consecutivo, fecha, cantidad, valorUnitario, valorTotal, cirugia, fechaCrea, observaciones, estadoRegistro, examen_id, cums_id, nombreExamen, liquidacion_id, tipoHonorario_id, tipoRegistro, estadoReg in cur.fetchall():
+        facturacionDetalle.append(
+            {"model": "facturacionDetalle.facturacionDetalle", "pk": id, "fields":
+                {"id": id, "consecutivo": consecutivo,
+                 "fecha": fecha,
+                 "cantidad": cantidad,
+                 "valorUnitario": valorUnitario, "valorTotal": valorTotal,
+                 "cirugia": cirugia,
+                 #"fechaCrea": fechaCrea,
+                 "observaciones": observaciones,
+                 "estadoRegistro": estadoRegistro, "examen_id": examen_id,
+                 "cums_id": cums_id, "nombreExamen": nombreExamen,
+                 "liquidacion_id": liquidacion_id, "tipoHonorario_id": tipoHonorario_id,
+                 "tipoRegistro": tipoRegistro, "estadoReg":estadoReg}})
+
+    miConexionx.close()
+    print(facturacionDetalle)
+
+    # Cierro Conexion
+
+    serialized1 = json.dumps(facturacionDetalle, default=decimal_serializer)
+
+
+    return HttpResponse(serialized1, content_type='application/json')
