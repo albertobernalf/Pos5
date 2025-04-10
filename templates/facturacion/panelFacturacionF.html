@@ -97,6 +97,7 @@ div.dataTables_filter input {
                                                 <th>Servicio</th>
                                                 <th>Cama</th>
 						<th>Convenio</th>
+						<th>salida</th>
                                                 <th>Action</th>
                                             </tr>
                                             </thead>
@@ -113,6 +114,7 @@ div.dataTables_filter input {
                                                 <th>Servicio</th>
                                                 <th>Cama</th>
 						<th>Convenio</th>
+						<th>salida</th>
                                                 <th>Action</th>
                                             </tr>
                                             </tfoot>
@@ -130,7 +132,7 @@ div.dataTables_filter input {
 			 <div class="row row-cols-2" style="height=50px;">
 				<div class="col">
 					<div class="form-group row">
-				                <label for="conveniosPaciente" class="col-form-label col-sm-3">Seleccione nuevo convenio para la cuenta:</label>
+				                <label for="conveniosPaciente" class="col-form-label col-sm-3">Seleccione desde cual convenio :</label>
 				              <div class="col-sm-4">
 					             <select class="select-css"  id="conveniosPaciente" name="conveniosPaciente">
                                                     {% for conveniosPaciente in ConveniosPaciente %}
@@ -141,6 +143,22 @@ div.dataTables_filter input {
 				              </div>
 				         </div>
 				 </div>
+
+				<div class="col">
+					<div class="form-group row">
+				                <label for="conveniosPacienteHacia" class="col-form-label col-sm-3">Seleccione el nuevo convenio para la cuenta:</label>
+				              <div class="col-sm-4">
+					             <select class="select-css"  id="conveniosPacienteHacia" name="conveniosPacienteHacia">
+                                                    {% for conveniosPaciente in ConveniosPaciente %}
+                                                            <option value="{{conveniosPaciente.id}}"> {{conveniosPaciente.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                	            </select>
+				              </div>
+				         </div>
+				 </div>
+
+
 
 				 <div class="col">
 					<div class="form-group row">
@@ -1070,6 +1088,24 @@ div.dataTables_filter input {
                                     <input type="text" id="avalorEnCurso" name="avalorEnCurso" value="0" > </input>
 					</div>
                                 </div>
+
+
+				<div class="col">
+					<div class="form-group row">
+                                    
+                                    <span id="mensajesAplique" name="mensajesAplique"></span>
+
+					</div>
+                                </div>
+
+
+				<div class="col">
+					<div class="form-group row">
+                                    
+                                    <input type="hidden" id="aestadoReg" name="aestadoReg" value="0" readonly > </input>
+					</div>
+                                </div>
+
 
 
                                 <div class="col">

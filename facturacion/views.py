@@ -92,19 +92,19 @@ def load_dataLiquidacion(request, data):
     #detalle = 'SELECT ' + "'" + str("INGRESO") + "'||" +  ' tipoIng, i.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else '00' end" + ' id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual , conv.nombre convenio, conv.id convenioId FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd , facturacion_conveniospacienteingresos fac,contratacion_convenios conv WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + 'O' + "'" + ' AND i."salidaDefinitiva" = ' + "'" + 'N' + "'" + ' and tp.id = u."tipoDoc_id" and i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"  AND fac.documento_id = i.documento_id and fac."tipoDoc_id" = i."tipoDoc_id" and fac."consecAdmision" = i.consec and fac.convenio_id = conv.id UNION SELECT ' + "'"  + str("TRIAGE") + "'" + ' tipoIng, t.id'  + "||" +"'" + "-'||conv.id" + ' id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,t.consec consec , t."fechaSolicita" , cast(' + "'" + str('0001-01-01 00:00:00') + "'" + ' as timestamp) fechaSalida,ser.nombre servicioNombreIng, dep.nombre camaNombreIng , ' + "''" + ' dxActual , conv.nombre convenio, conv.id convenioId   FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  ,sitios_serviciosSedes sd, clinico_servicios ser , facturacion_conveniospacienteingresos fac,contratacion_convenios conv WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND t."sedesClinica_id" = ' "'" + str(sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and t."tipoDoc_id" = u."tipoDoc_id" and u.id = t."documento_id"  and ser.id = sd.servicios_id and dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and t."consecAdmision" = 0 and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str('TRIAGE') + "'" + ' AND fac.documento_id = t.documento_id and fac."tipoDoc_id" = t."tipoDoc_id" and fac."consecAdmision" = t.consec and fac.convenio_id = conv.id'
     #detalle = 'SELECT ' + "'" + str("INGRESO") + "'" + "||'-'||" + ' i.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual,conv.nombre convenio, conv.id convenioId FROM admisiones_ingresos i INNER JOIN clinico_servicios ser ON (ser.id = i."serviciosActual_id" ) INNER JOIN sitios_serviciosSedes sd ON (i."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  i."sedesClinica_id" and dep.id = i."dependenciasActual_id"  AND  (dep.disponibilidad= ' + "'" + str('O') + "'" + ' OR (dep.disponibilidad = ' + "'" + str('L') + "'" + ' AND ser.id=3)) AND dep."serviciosSedes_id" = sd.id ) INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") INNER JOIN clinico_Diagnosticos diag ON (diag.id = i."dxActual_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = i."tipoDoc_id" and fac.documento_id = i.documento_id and  fac."consecAdmision" = i.consec )  LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE i."sedesClinica_id" =  ' "'" + str(sede) + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' and i."fechaSalida" is null UNION SELECT ' + "'"  + str("TRIAGE") + "'"+ "||'-'||"  + ' t.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre, t.consec consec , t."fechaSolicita" , cast(' + "'" + str('0001-01-01 00:00:00') + "'" + ' as timestamp) fechaSalida,ser.nombre servicioNombreIng, dep.nombre camaNombreIng , ' + "' '" + ' dxActual , conv.nombre convenio, conv.id convenioId FROM triage_triage t INNER JOIN clinico_servicios ser ON ( ser.nombre = ' + "'" + str('TRIAGE') + "')" + ' INNER JOIN sitios_serviciosSedes sd ON (t."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id and sd.id = t."serviciosSedes_id" ) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  t."sedesClinica_id" and dep.id = t.dependencias_id  AND dep.disponibilidad = ' + "'" + str('O') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and t."consecAdmision" = 0 and dep."documento_id" = t."documento_id") INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = t."tipoDoc_id" and u.id = t."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = t."tipoDoc_id" and fac.documento_id = t.documento_id and  fac."consecAdmision" = t.consec ) LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE  t."sedesClinica_id" = ' + "'" + str(sede) + "'"
 
-    detalle = 'SELECT ' + "'" + str("INGRESO") + "'" + "||'-'||" + ' i.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual,conv.nombre convenio, conv.id convenioId FROM admisiones_ingresos i INNER JOIN clinico_servicios ser ON (ser.id = i."serviciosActual_id" ) INNER JOIN sitios_serviciosSedes sd ON (i."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  i."sedesClinica_id" and dep.id = i."dependenciasActual_id"  AND  (dep.disponibilidad= ' + "'" + str('O') + "'" + ' OR (dep.disponibilidad = ' + "'" + str('L') + "'" + ' AND ser.id=3)) AND dep."serviciosSedes_id" = sd.id ) INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") INNER JOIN clinico_Diagnosticos diag ON (diag.id = i."dxActual_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = i."tipoDoc_id" and fac.documento_id = i.documento_id and  fac."consecAdmision" = i.consec )  LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE i."sedesClinica_id" =  ' "'" + str(sede) + "'" + ' AND ((i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' and i."fechaSalida" is null)  or  (i."fechaSalida" is not null and i."salidaDefinitiva"=' + "'" + str('R') + "'" + ' ))   UNION SELECT ' + "'"  + str("TRIAGE") + "'"+ "||'-'||"  + ' t.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre, t.consec consec , t."fechaSolicita" , cast(' + "'" + str('0001-01-01 00:00:00') + "'" + ' as timestamp) fechaSalida,ser.nombre servicioNombreIng, dep.nombre camaNombreIng , ' + "' '" + ' dxActual , conv.nombre convenio, conv.id convenioId FROM triage_triage t INNER JOIN clinico_servicios ser ON ( ser.nombre = ' + "'" + str('TRIAGE') + "')" + ' INNER JOIN sitios_serviciosSedes sd ON (t."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id and sd.id = t."serviciosSedes_id" ) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  t."sedesClinica_id" and dep.id = t.dependencias_id  AND dep.disponibilidad = ' + "'" + str('O') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and t."consecAdmision" = 0 and dep."documento_id" = t."documento_id") INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = t."tipoDoc_id" and u.id = t."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = t."tipoDoc_id" and fac.documento_id = t.documento_id and  fac."consecAdmision" = t.consec ) LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE  t."sedesClinica_id" = ' + "'" + str(sede) + "'"
+    detalle = 'SELECT ' + "'" + str("INGRESO") + "'" + "||'-'||" + ' i.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual,conv.nombre convenio, conv.id convenioId , i."salidaClinica" salidaClinica FROM admisiones_ingresos i INNER JOIN clinico_servicios ser ON (ser.id = i."serviciosActual_id" ) INNER JOIN sitios_serviciosSedes sd ON (i."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  i."sedesClinica_id" and dep.id = i."dependenciasActual_id"  AND  (dep.disponibilidad= ' + "'" + str('O') + "'" + ' OR (dep.disponibilidad = ' + "'" + str('L') + "'" + ' AND ser.id=3)) AND dep."serviciosSedes_id" = sd.id ) INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") INNER JOIN clinico_Diagnosticos diag ON (diag.id = i."dxActual_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = i."tipoDoc_id" and fac.documento_id = i.documento_id and  fac."consecAdmision" = i.consec )  LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE i."sedesClinica_id" =  ' "'" + str(sede) + "'" + ' AND ((i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' and i."fechaSalida" is null)  or  (i."fechaSalida" is not null and i."salidaDefinitiva"=' + "'" + str('R') + "'" + ' ))   UNION SELECT ' + "'"  + str("TRIAGE") + "'"+ "||'-'||"  + ' t.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre, t.consec consec , t."fechaSolicita" , cast(' + "'" + str('0001-01-01 00:00:00') + "'" + ' as timestamp) fechaSalida,ser.nombre servicioNombreIng, dep.nombre camaNombreIng , ' + "' '" + ' dxActual , conv.nombre convenio, conv.id convenioId , ' + "'" + str('N') + "'" + ' salidaClinica  FROM triage_triage t INNER JOIN clinico_servicios ser ON ( ser.nombre = ' + "'" + str('TRIAGE') + "')" + ' INNER JOIN sitios_serviciosSedes sd ON (t."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id and sd.id = t."serviciosSedes_id" ) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  t."sedesClinica_id" and dep.id = t.dependencias_id  AND dep.disponibilidad = ' + "'" + str('O') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and t."consecAdmision" = 0 and dep."documento_id" = t."documento_id") INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = t."tipoDoc_id" and u.id = t."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = t."tipoDoc_id" and fac.documento_id = t.documento_id and  fac."consecAdmision" = t.consec ) LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE  t."sedesClinica_id" = ' + "'" + str(sede) + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, tipoDoc, documento, nombre, consec, fechaIngreso, fechaSalida, servicioNombreIng, camaNombreIng, dxActual , convenio, convenioId in curx.fetchall():
+    for id, tipoDoc, documento, nombre, consec, fechaIngreso, fechaSalida, servicioNombreIng, camaNombreIng, dxActual , convenio, convenioId, salidaClinica in curx.fetchall():
         liquidacion.append(
 		{"model":"ingresos.ingresos","pk":id,"fields":
 			{ 'id':id, 'tipoDoc': tipoDoc, 'documento': documento, 'nombre': nombre, 'consec': consec,
                          'fechaIngreso': fechaIngreso, 'fechaSalida': fechaSalida,
                          'servicioNombreIng': servicioNombreIng, 'camaNombreIng': camaNombreIng,
-                         'dxActual': dxActual,'convenio':convenio, 'convenioId':convenioId}})
+                         'dxActual': dxActual,'convenio':convenio, 'convenioId':convenioId,'salidaClinica':salidaClinica }})
 
     miConexionx.close()
     print(liquidacion)
@@ -553,6 +553,7 @@ def load_dataLiquidacionDetalle(request, data):
     print("Entre load_data LiquidacionDetalle")
 
     context = {}
+
     d = json.loads(data)
 
     username = d['username']
@@ -774,10 +775,12 @@ def PostDeleteAbonosFacturacion(request):
 
     ## Se debe verificar antes que no haya valor aplicado en PagosFacturas
 
-    #verAplicado = PagosFacturas.objects.get(abono_id=id). Si hay algo aplicado, pailas o algo en curso paila No debe dejar ANULAR
+    valorSaldo = PagosFacturas.objects.get(pago_id=id, estadoReg='A')
+    print ("Saldo = ", valorSaldo.saldo)
 
-    #if verAplicado.id != '':
-    #    return JsonResponse({'success': True, 'message': 'No se puede cancelar Abono. Esta relacionado con la Factura No' + verAplicado. facturaAplicada})
+    if (valorSaldo.saldo > 0):
+
+        return JsonResponse({'success': False, 'message': 'No se puede anular Abono con Facturas relacionadas!'})
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
@@ -1140,16 +1143,16 @@ def FacturarCuenta(request):
 
     # RUTINA ACUMULAR ABONOS RECIBIDOS
 
-
-
     # FIN RUTINA
 
-    #OJO SI E REFACTURA NO REALIZA LOS SIGTES 3 QUERYS Y continua con los de insercion de cabezote/detalle en facturacion_facturacion
+    #OJO SI SE REFACTURA NO REALIZA LOS SIGTES 3 QUERYS Y continua con los de insercion de cabezote/detalle en facturacion_facturacion
 
     ## RUTINA ACTUALIZA DX, SERV , MEDIODE AMBULATORIOS
 
-    if (ingresoId.serviciosIng_id == servicioAmb.id and tipoFactura == 'FACTURA') :
-  
+    if (ingresoId.serviciosIng_id != servicioAmb.id and tipoFactura == 'FACTURA') :
+
+
+       print ("Acumulo Ambulatorio")  
        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
        cur3 = miConexion3.cursor()
        comando = 'UPDATE admisiones_ingresos SET  "dxSalida_id"= "dxActual_id", "medicoSalida_id" = "medicoActual_id",  "serviciosSalida_id" = "serviciosActual_id"  WHERE id =  ' + "'" +  str(ingresoId.id) + "'"
@@ -1194,7 +1197,7 @@ def FacturarCuenta(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO facturacion_facturacion ("sedesClinica_id", documento_id, "consecAdmision", "fechaFactura", "totalCopagos", "totalCuotaModeradora","totalProcedimientos",   "totalSuministros", "totalFactura", "valorApagar", anulado, anticipos, "fechaRegistro", "estadoReg", "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id","usuarioRegistro_id") SELECT ' "'" + str(sede) + "'" + ', documento_id, "consecAdmision", ' + "'" + str(fechaRegistro) + "'" + ' , "totalCopagos", "totalCuotaModeradora", "totalProcedimientos",  "totalSuministros", "totalLiquidacion", "valorApagar", anulado, anticipos, ' + "'" + str(fechaRegistro) + "'" + ' ,  ' + "'" + str('A') + "'" + ' , "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id", ' + "'" + str(username_id) + "'" + ' FROM facturacion_liquidacion WHERE id =  ' + liquidacionId
+    comando = 'INSERT INTO facturacion_facturacion ("sedesClinica_id", documento_id, "consecAdmision", "fechaFactura", "totalCopagos", "totalCuotaModeradora","totalProcedimientos",   "totalSuministros", "totalFactura", "valorApagar", anulado, anticipos, "fechaRegistro", "estadoReg", "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id","usuarioRegistro_id") SELECT ' "'" + str(sede) + "'" + ', documento_id, "consecAdmision", ' + "'" + str(fechaRegistro) + "'" + ' , "totalCopagos", "totalCuotaModeradora", "totalProcedimientos",  "totalSuministros", "totalLiquidacion", "valorApagar", anulado, anticipos, ' + "'" + str(fechaRegistro) + "'" + ' ,  ' + "'" + str('A') + "'" + ' , "fechaAnulacion", observaciones, "fechaCorte",convenio_id, "tipoDoc_id","usuarioAnula_id", ' + "'" + str(username_id) + "'" + ' FROM facturacion_liquidacion WHERE id =  ' + liquidacionId + ' RETURNING id  '
     print(comando)
     cur3.execute(comando)
     facturacionId = curt.fetchone()[0]
@@ -1209,15 +1212,17 @@ def FacturarCuenta(request):
 
     print ("facturacionId = ", facturacionId.id)
 
-    ## COLOCAR EN LA TABLA INGRESOS , LA FECHA DE EGRESO Y EL NUMERO DE LA FACTURA GENERADO
+    ## COLOCAR EN LA TABLA INGRESOS , LA FECHA DE EGRESO Y EL NUMERO DE LA FACTURA GENERADO SI SE FACTURA
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
-    curt = miConexiont.cursor()
-    comando = 'UPDATE admisiones_ingresos SET "fechaSalida" = ' + "'" +  str(fechaRegistro) + "'" + ', factura = ' + str(facturacionId.id)  +  ', "dependenciasSalida_id" = "dependenciasActual_id" ' +  ' WHERE id =' + str(ingresoId.id)
-    curt.execute(comando)
+    if (tipoFactura == 'FACTURA'):
 
-    miConexiont.commit()
-    miConexiont.close()
+	    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+	    curt = miConexiont.cursor()
+	    comando = 'UPDATE admisiones_ingresos SET "fechaSalida" = ' + "'" +  str(fechaRegistro) + "'" + ', factura = ' + str(facturacionId.id)  +  ', "dependenciasSalida_id" = "dependenciasActual_id" ' +  ' WHERE id =' + str(ingresoId.id)
+	    curt.execute(comando)
+
+	    miConexiont.commit()
+	    miConexiont.close()
 
     # AHORA EL DETALLE
 
@@ -1232,28 +1237,31 @@ def FacturarCuenta(request):
 
     #AQUI ACTUALIZAMOS LOS PAGOS DEL PACIENTE
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+
+    if (tipoFactura == 'FACTURA'):
+
+	    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
-    cur3 = miConexion3.cursor()
+	    cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO cartera_pagosFacturas ("valorAplicado", "fechaRegistro","estadoReg", "facturaAplicada_id",pago_id) SELECT "valorEnCurso", ' + "'" + str(fechaRegistro) + "','A'," + str(facturacionId.id) + ', "formaPago_id" FROM cartera_pagos WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id" = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecAdmision) + "'"
+	    comando = 'INSERT INTO cartera_pagosFacturas ("valorAplicado", "fechaRegistro","estadoReg", "facturaAplicada_id",pago_id) SELECT "valorEnCurso", ' + "'" + str(fechaRegistro) + "','A'," + str(facturacionId.id) + ', "formaPago_id" FROM cartera_pagos WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id" = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecAdmision) + "'"
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+	    print(comando)
+	    cur3.execute(comando)
+	    miConexion3.commit()
+	    miConexion3.close()
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+	    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
-    cur3 = miConexion3.cursor()
+	    cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE cartera_pagos SET "totalAplicado" =  "totalAplicado" + "valorEnCurso", saldo  = saldo + "valorEnCurso", "valorEnCurso" = 0 ' + ' WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id" = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecAdmision) + "'"
+	    comando = 'UPDATE cartera_pagos SET "totalAplicado" =  "totalAplicado" + "valorEnCurso", saldo  = valor - "totalAplicado", "valorEnCurso" = 0 ' + ' WHERE documento_id = ' + "'" + str(usuarioId.documento_id) + "'" + ' AND "tipoDoc_id" = ' + "'" + str(usuarioId.tipoDoc_id) + "'" + ' AND consec = ' + "'" + str(usuarioId.consecAdmision) + "'"
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+	    print(comando)
+	    cur3.execute(comando)
+	    miConexion3.commit()
+	    miConexion3.close()
 
     ## AQUI BORRAMOS EL DETALLE DE LA LIQUIDACION
 
@@ -1303,7 +1311,6 @@ def LeerTotales(request):
     totalCuotaModeradora = registroPago.totalCuotaModeradora
     totalAnticipos = registroPago.anticipos
     totalAbonos = registroPago.totalAbonos
-    #valorEnCurso = registroPago.valorEnCurso
     totalRecibido = registroPago.totalRecibido
     totalAnticipos = registroPago.anticipos
     valorApagar = registroPago.valorApagar
@@ -1513,6 +1520,7 @@ def GuardaApliqueAbonosFacturacion(request):
     #formaPago = request.POST['aformaPago']
     valor = request.POST['avalorAbono']
     valorEnCurso = request.POST['avalorEnCurso']
+    saldo = request.POST['aSaldo']
     print ("liquidacionId  = ", liquidacionId )
     abonoId = request.POST["aabonoId"]
     print ("abonoId = ", abonoId)
@@ -1530,14 +1538,16 @@ def GuardaApliqueAbonosFacturacion(request):
     ## falta usuarioRegistro_id
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'UPDATE cartera_Pagos SET saldo = saldo - ' + str(valorEnCurso)  +  ' ,  "valorEnCurso" = ' + str(valorEnCurso) + ' WHERE id = ' + str(abonoId)
+    comando = 'UPDATE cartera_Pagos SET  "valorEnCurso" = ' + str(valorEnCurso) + ' WHERE id = ' + str(abonoId)
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
 
 
-    # Aqui falta Adicionar o actualizar el total de Abonos pero si no hay cabezote ??
+    # Aqui Crear rutina que haga la sumatoria de los valores en curso por forma de pago y luego si actualizar el valor en curso, con estas sumatorias con ORM
+
+    
     # Voy a actualizar el total de Abono, o Moderadora o Anticipo
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
@@ -1545,20 +1555,33 @@ def GuardaApliqueAbonosFacturacion(request):
 
     if aformaPago == "1":
         print("Entre 1")
-        #comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = "anticipos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = "anticipos" +  ' +   str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+
+        sumatoriaAnticipos = Pagos.objects.filter(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consec=registroId.consecAdmision,formaPago_id=aformaPago).exclude(estadoReg='N').aggregate(totalA=Coalesce(Sum('valorEnCurso'), 0))
+        sumatoriaAnticipos = (sumatoriaAnticipos['totalA']) + 0
+        print("sumatoriaAnticipos", sumatoriaAnticipos)
+        comando = 'UPDATE  facturacion_liquidacion SET "anticipos" = ' +   str(sumatoriaAnticipos) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
     if aformaPago == "2":
         print("Entre 2")
-        #comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" = "totalAbonos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" =  "totalAbonos" + ' +  str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+
+        sumatoriaAbonos = Pagos.objects.filter(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consec=registroId.consecAdmision,formaPago_id=aformaPago).exclude(estadoReg='N').aggregate(totalAb=Coalesce(Sum('valorEnCurso'), 0))
+        sumatoriaAbonos = (sumatoriaAbonos['totalAb']) + 0
+        print("sumatoriaAbonos", sumatoriaAbonos)
+
+        comando = 'UPDATE  facturacion_liquidacion SET "totalAbonos" = ' +  str(sumatoriaAbonos) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
     if aformaPago == "3":
         print("Entre 3")
-        #comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = "totalCuotaModeradora" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = "totalCuotaModeradora" + ' + str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+        sumatoriaCuotaModeradora = Pagos.objects.filter(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consec=registroId.consecAdmision,formaPago_id=aformaPago).exclude(estadoReg='N').aggregate(totalM=Coalesce(Sum('valorEnCurso'), 0))
+        sumatoriaCuotaModeradora = (sumatoriaCuotaModeradora['totalM']) + 0
+        print("sumatoriaCuotaModeradora", sumatoriaCuotaModeradora)
+
+        comando = 'UPDATE  facturacion_liquidacion SET "totalCuotaModeradora" = ' + str(sumatoriaCuotaModeradora) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
     if aformaPago == "4":
         print ("Entre 4")
-        #comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = "totalCopagos" + ' + str(valorEnCurso) +  ' WHERE id = ' + "'" + str(liquidacionId) + "'"
-        comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = "totalCopagos" + ' + str(valorEnCurso) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
+
+        sumatoriaCopagos = Pagos.objects.filter(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consec=registroId.consecAdmision,formaPago_id=aformaPago).exclude(estadoReg='N').aggregate(totalC=Coalesce(Sum('valorEnCurso'), 0))
+        sumatoriaCopagos = (sumatoriaCopagos['totalC']) + 0
+        print("sumatoriaCopagos", sumatoriaCopagos)
+        comando = 'UPDATE  facturacion_liquidacion SET "totalCopagos" = ' + str(sumatoriaCopagos) + ' WHERE id = ' + "'" + str(liquidacionId) + "'"
 
     print(comando)
     cur3.execute(comando)
@@ -1582,15 +1605,12 @@ def GuardaApliqueAbonosFacturacion(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'UPDATE  facturacion_liquidacion SET "valorApagar" =   "totalProcedimientos" + "totalSuministros" - "totalRecibido" WHERE id = ' + "'" + str(liquidacionId) + "'"
+    comando = 'UPDATE  facturacion_liquidacion SET "valorApagar" = "totalProcedimientos" + "totalSuministros" - "totalRecibido" WHERE id = ' + "'" + str(liquidacionId) + "'"
 
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
-
-
-
 
 
     return JsonResponse({'success': True, 'message': 'Valor abono en curso guardado satisfactoriamente!'})
@@ -1606,6 +1626,9 @@ def TrasladarConvenio(request):
     print ("liquidacionId = ", liquidacionId)
     print ("convenioId = ", convenioId)
 
+    convenioIdHacia = request.POST['convenioIdHacia']
+    print ("convenioIdHacia = ", convenioIdHacia)
+
     fechaRegistro = datetime.datetime.now()
     estadoReg= 'A'
 
@@ -1616,58 +1639,14 @@ def TrasladarConvenio(request):
 
     ## Primero debo averiguar si existe cabezote para el nuevo convenio. So no existe se crea el cabezote
 
-    # Validacion si existe o No existe CABEZOTE
+    # Busco las liquidacionesId de cada convenio
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+    liquidacionIdDesde = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consecAdmision, convenio_id = convenioId)
+    liquidacionIdHasta = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consecAdmision, convenio_id = convenioIdHacia)
 
-    curt = miConexiont.cursor()
-    comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + "'" + str(registroId.tipoDoc_id) + "' AND documento_id = " + "'" + str(registroId.documento_id) + "'" + ' AND "consecAdmision" = ' + "'" + str(registroId.consecAdmision) + "'" + ' AND convenio_id = ' + str(convenioId)
-    curt.execute(comando)
+    ## Se busca de que columna se van a traer los valores
 
-    cabezoteLiquidacion = []
-
-    for id in curt.fetchall():
-              cabezoteLiquidacion.append({'id': id})
-
-    miConexiont.close()
-
-    if (cabezoteLiquidacion == []):
-    # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",  user="postgres", password="123456")
-        curt = miConexiont.cursor()
-        comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(
-                       registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(registroId.consecAdmision) + "','" + str(
-                        fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(
-                        estadoReg) + "'," + str(convenioId) + ',' + "'" + str(username_id) + "',0)"
-        curt.execute(comando)
-        miConexiont.commit()
-        miConexiont.close()
-        liquidacionU = Liquidacion.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
-        liquidacionIdFinal = (liquidacionU['maximo']) + 1
-    else:
-        liquidacionIdFinal = cabezoteLiquidacion[0]['id']
-        liquidacionIdFinal = str(liquidacionIdFinal)
-        print("liquidacionIdFinal = ", liquidacionIdFinal)
-
-    liquidacionIdFinal = str(liquidacionIdFinal)
-    liquidacionIdFinal = liquidacionIdFinal.replace("(", ' ')
-    liquidacionIdFinal = liquidacionIdFinal.replace(")", ' ')
-    liquidacionIdFinal = liquidacionIdFinal.replace(",", ' ')
-
-                # Fin validacion de Liquidacion cabezote
-
-    ## Segundo apunto el liquidacionIdFinal al nuevo cabezote 
-
-    ## falta usuarioRegistro_id
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-    comando = 'UPDATE facturacion_liquidaciondetalle SET liquidacion_id = ' + str(liquidacionIdFinal) + ' WHERE liquidacion_id = ' + str(liquidacionId)
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
-
-    ## Ops falta actualizar los totales ...
+    ## Primero se actualiza cabezote Los totales
 
     print ("Entre Leer Totales" )
     liquidacionId = request.POST["liquidacionId"]
@@ -1692,8 +1671,6 @@ def TrasladarConvenio(request):
     valorApagar = registroPago.valorApagar
     totalLiquidacion = registroPago.totalLiquidacion
 
-    # Rutina Guarda en cabezote los totales
-
     print ("Voy a grabar el cabezote")
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
@@ -1703,7 +1680,25 @@ def TrasladarConvenio(request):
     miConexiont.commit()
     miConexiont.close()
 
-    return JsonResponse({'success': True, 'message': 'Convenio actualizado satisfactoriamente!'})
+
+    # Rutina Guarda en cabezote los totales
+
+    ## Segundo busco los Cups desde y los envio Hasta
+    ## Segundo se crean los detalle
+
+
+
+    ## Tercero busco los Cums desde y los envio Hasta
+
+
+
+
+
+
+
+    # Ops fata Borrar el detalle de la cueta donde estaba
+
+    return JsonResponse({'success': True, 'message': 'Traslado realizado satisfactoriamente!'})
 
 def BuscoAbono(request):
     print ("Entre a BuscoAbono" )

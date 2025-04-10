@@ -1594,8 +1594,12 @@ def crearHistoriaClinica(request):
 
                         miConexiont.close()
 
-                        print("convenioValor[0]['valor'] = ", convenioValor[0]['valor'])
-                        print("convenioValor[0]['sum'] = ", convenioValor[0]['sum'])
+                        if (convenioValor != []):
+
+                            print("convenioValor[0]['valor'] = ", convenioValor[0]['valor'])
+                            print("convenioValor[0]['sum'] = ", convenioValor[0]['sum'])
+
+
 
 
                         # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
@@ -1657,7 +1661,7 @@ def crearHistoriaClinica(request):
 
                             # Fin tema Autorizaciones
 
-                        if convenioValor != '':
+                        if (convenioValor != []):
 
                             print ("Sum = "  , convenioValor[0]['sum'])
                             tarifaValor = convenioValor[0]['valor']

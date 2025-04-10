@@ -27,7 +27,7 @@ from usuarios.models import Usuarios, TiposDocumento
 from planta.models import Planta
 from facturacion.models import ConveniosPacienteIngresos, Liquidacion, LiquidacionDetalle
 from rips.models import  RipsDestinoEgreso
-from cartera.models import FormasPagos
+from cartera.models import FormasPagos, PagosFacturas
 import datetime
 
 # Create your views here.
@@ -4801,6 +4801,33 @@ def crearAdmisionDef(request):
 
         context['Ocupaciones'] = ocupaciones
 
+
+        # Combo Convenios
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM contratacion_convenios p"
+
+        curt.execute(comando)
+        print(comando)
+
+        convenios = []
+
+        for id, nombre in curt.fetchall():
+            convenios.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("convenios", convenios)
+
+        context['Convenios'] = convenios
+
+        # Fin combo Convenios
+
+
+
         # Fin combo ocupaciones
         # FIN RUTINA ARMADO CONTEXT
 
@@ -5454,16 +5481,16 @@ def load_dataAbonosAdmisiones(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT pag.id id , i."tipoDoc_id" tipoDoc , i.documento_id documentoId ,u.documento documento,u.nombre nombre,i.consec consec , tipdoc.nombre nombreDocumento , cast(date(pag.fecha) as text)  fecha, pag."tipoPago_id" tipoPago , pag."formaPago_id" formaPago, pag.valor valor, pag.descripcion descripcion FROM admisiones_ingresos i, cartera_pagos pag ,usuarios_usuarios u ,usuarios_tiposdocumento tipdoc, cartera_tiposPagos tip, cartera_formasPagos forma WHERE i.id = ' + "'" + str(ingresoId) + "'" + ' and i.documento_id = u.id and i."tipoDoc_id" = pag."tipoDoc_id" and i.documento_id  = pag.documento_id and  i.consec = pag.consec AND tipdoc.id = i."tipoDoc_id" and pag."tipoPago_id" = tip.id and pag."formaPago_id" = forma.id'
+    detalle = 'SELECT pag.id id , i."tipoDoc_id" tipoDoc , i.documento_id documentoId ,u.documento documento,u.nombre nombre,i.consec consec , tipdoc.nombre nombreDocumento , cast(date(pag.fecha) as text)  fecha, pag."tipoPago_id" tipoPago , tip.nombre nombreTipoPago, pag."formaPago_id" formaPago, forma.nombre nombreFormaPago, pag.valor valor, pag.descripcion descripcion FROM admisiones_ingresos i, cartera_pagos pag ,usuarios_usuarios u ,usuarios_tiposdocumento tipdoc, cartera_tiposPagos tip, cartera_formasPagos forma WHERE i.id = ' + "'" + str(ingresoId) + "'" + ' and i.documento_id = u.id and i."tipoDoc_id" = pag."tipoDoc_id" and i.documento_id  = pag.documento_id and  i.consec = pag.consec AND tipdoc.id = i."tipoDoc_id" and pag."tipoPago_id" = tip.id and pag."formaPago_id" = forma.id'
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, tipoDoc, documentoId, documento, nombre, consec, nombreDocumento , fecha, tipoPago, formaPago, valor, descripcion  in curx.fetchall():
+    for id, tipoDoc, documentoId, documento, nombre, consec, nombreDocumento , fecha, tipoPago, nombreTipoPago, formaPago, nombreFormaPago,  valor, descripcion  in curx.fetchall():
         abonos.append(
             {"model": "cartera_pagos.cartera_pagos", "pk": id, "fields":
                 {'id': id, 'tipoDoc': tipoDoc, 'documentoId': documentoId, 'nombre':nombre,'consec':consec,  'nombreDocumento': nombreDocumento,
-                 'fecha': fecha, 'tipoPago': tipoPago, 'formaPago': formaPago, 'valor':valor, 'descripcion':descripcion}})
+                 'fecha': fecha, 'tipoPago': tipoPago, 'nombreTipoPago': nombreTipoPago,'formaPago': formaPago, 'nombreFormaPago':nombreFormaPago, 'valor':valor, 'descripcion':descripcion}})
 
     miConexionx.close()
     print(abonos)
@@ -5694,22 +5721,30 @@ def PostDeleteConveniosAdmision(request):
 
 def PostDeleteAbonosAdmision(request):
 
-    print ("Entre PostDeleteAbonosAdmision" )
+    print ("Entre PostDeleteAbonosFacturacion" )
 
     id = request.POST["id"]
     print ("el id es = ", id)
 
+    ## Se debe verificar antes que no haya valor aplicado en PagosFacturas
+
+    valorSaldo = PagosFacturas.objects.get(pago_id=id, estadoReg='A')
+    print ("Saldo = ", valorSaldo.saldo)
+
+    if (valorSaldo.saldo > 0):
+
+        return JsonResponse({'success': False, 'message': 'No se puede anular Abono con Facturas relacionadas!'})
+
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE carteraPagosSET "estadoReg" = ' + "'" + str('N') + "' WHERE id =  " + id
+    comando = 'UPDATE cartera_Pagos SET "estadoReg" = ' + "'" + str('N') + "' WHERE id =  " + id
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
 
     return JsonResponse({'success': True, 'message': 'Abono Cancelado!'})
-
 
 def GuardarResponsableAdmision(request):
 

@@ -1890,11 +1890,11 @@ function initTableAbonos(data) {
                     "render": function ( data, type, row ) {
                         var btn = '';
                        //   btn = btn + " <button   class='btn btn-primary editPostAbonos' data-pk='" + row.pk + "'>" + "</button>";
-			  btn = btn + " <button class='btn btn-danger deletePost' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+			  btn = btn + " <button class='btn btn-danger deletePostAbonos' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
 
                         return btn;
                     },
-                    "targets": 4
+                    "targets": 6
                }
             ],
             ajax: {
@@ -1905,8 +1905,19 @@ function initTableAbonos(data) {
 
             lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
             columns: [
-                { data: "fields.tipoPago"},
-		{ data: "fields.formaPago"},
+	  /*                { data: "fields.tipoPago"}, */
+		{
+			target: 0,
+			visible: false
+		},
+
+                { data: "fields.nombreTipoPago"},
+	/*	{ data: "fields.formaPago"}, */
+			{
+			target: 2,
+			visible: false
+		},
+                { data: "fields.nombreFormaPago"},
                 { data: "fields.valor"},
                 { data: "fields.descripcion"},
             

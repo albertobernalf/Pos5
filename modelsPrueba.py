@@ -698,10 +698,10 @@ BIBLIOGRAFIA:
 -- el dia lunes 7 de abril probar subir excel de tarifas
    -- completar en maintarifariosF y vies de tarifarios y probar tarifario de suministros a
 
--- ojo sanson son diferentes lod querys de admisiones ingresos el que ingresa al que graba una nuevo ingreso OJOOO UNIFICAR
--- ops en admisiones no sirve crear convenios, me toco salirme y volver  aentrar para acceder al como de convenios ojo
--- El boton refrescar d efacturaciondetalle estan mal los totales que lee de la cuenta, NO REFRESCA LOS TOTALES
--- ojo colocar elegante el nombre de la fporma d epago por ejempl copago, anticipo etc
--- nO ESTA ANULANDO LOS ABONOS POR EL MODULODE ADMISIONES
+
+-- ojo sanson son diferentes lod querys de admisiones ingresos el que ingresa al que graba una nuevo ingreso OJOOO UNIFICAR   -- PENDIENTE
+-- ops en admisiones no sirve crear convenios UNA VEZ CREADA UNA ADMISION , me toco salirme y volver  aentrar para acceder al comBo de convenios ojo
 -- Ops ME ESTA DUPLICANDO LÑOS abonos DE CUANDO A CA Y PORTUE
--- NO ESTACOLOCANDO EL NOMBRE DE MARUJA EN LOS ABONS EN ADMISINES
+-- ala hora de facturar crfeo soo es aplicar y yap y verificar toto OJO CUANDO s efactura valorEncurso, total apolicado, saldo ??
+
+

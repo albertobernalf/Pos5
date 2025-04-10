@@ -238,7 +238,7 @@ select * from facturacion_suministros where id= 616
 select * from tarifarios_tarifariosdescripcion;
 select * from facturacion_liquidacion;
 	
-	select  * from facturacion_ConveniosPacienteIngresos;
+
 
 SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor ,  tiptar.id
 	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, 
@@ -249,3 +249,124 @@ SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor ,  
 	and sum."tiposTarifa_id" = tiptar.id 
 
 SELECT * FROM autorizaciones_autorizaciones;
+
+select documento_id,empresa_id, * from admisiones_ingresos;
+select convenio_id,* from facturacion_liquidacion;
+select * from facturacion_liquidaciondetalle where liquidacion_id=120;
+select * from facturacion_liquidaciondetalle where liquidacion_id=126;
+select * from contratacion_convenios;
+
+select documento_id,* from admisiones_ingresos;
+select * from usuarios_usuarios;
+select * from sitios_dependencias;
+
+select * from contratacion_convenios;
+select convenio_id,* from facturacion_liquidacion;
+
+update facturacion_liquidacion 
+set "totalProcedimientos" = 88000,"totalSuministros" = 0,"totalLiquidacion" = 0,"valorApagar" = 0,"totalCopagos"=0,"totalCuotaModeradora"=0,"totalAbonos"=0,anticipos=0,"totalRecibido"=0
+where id=127
+select * from facturacion_liquidacion  
+	
+	select  * from facturacion_ConveniosPacienteIngresos;
+select * from cartera_pagos;
+delete from cartera_pagos where documento_id=27
+select * from cartera_formaspagos;
+
+select documento_id,  * from cartera_pagos order by documento_id;
+update cartera_pagos set saldo=valor, "valorEnCurso" = 0 where id = 149;
+
+select * from cartera_pagosfacturas;
+select * from facturacion_liquidacion;
+	
+
+select * from facturacion_liquidaciondetalle WHERE liquidacion_id= 127 ;
+update facturacion_liquidacion
+set convenio_id = 1
+where id=120;
+
+SELECT conv.convenio_id convenio ,exa.cums cums, sum."colValor1" tarifaValor
+	FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar 
+	WHERE conv."tipoDoc_id" = '1' AND conv.documento_id = '27' AND conv."consecAdmision" = '1' AND conv.convenio_id = conv1.id AND 
+	des.id = conv1."tarifariosDescripcionSum_id" AND sum."codigoCum_id" = exa.id  And exa.id = '5651' AND des."tiposTarifa_id" = tiptar.id and
+	sum."tiposTarifa_id" = tiptar.id
+-- 127 y 128
+
+select * from contratacion_convenios;
+select * from facturacion_liquidaciondetalle where liquidacion_id = 127;
+select * from facturacion_liquidaciondetalle where liquidacion_id = 128;
+select * from facturacion_liquidacion where id in (127,128)
+
+	
+-- estas son las que voy a pasar:
+
+select liq.convenio_id , conv.nombre,det.examen_id, det.cums_id, det.cantidad
+from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv
+where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A'
+
+
+select liq.convenio_id , conv.nombre,det.examen_id, det.cums_id, det.cantidad, conv."tarifariosDescripcionProc_id", conv."tarifariosDescripcionSum_id"
+from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv
+where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A'
+
+-- Ahora con tarifas nuevas Para procedimientos
+
+	select * from tarifarios_tipostarifa;
+select * from tarifarios_tarifariosdescripcion;
+select * from tarifarios_tarifariosProcedimientos;
+select * from tarifarios_tarifariosSuministros;
+select * from tarifarios_tarifariosProcedimientos where "codigoCups_id"= '2060';
+
+select liq.convenio_id , conv.nombre,det.examen_id, det.cums_id, det.cantidad, conv."tarifariosDescripcionProc_id", conv."tarifariosDescripcionSum_id",
+	 descrip.columna, tiptar.nombre, descrip.descripcion, det."valorUnitario" estaba, proc."colValor1" nuevo
+from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,
+	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosProcedimientos proc
+where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
+   descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and
+tiptar.id = proc."tiposTarifa_id" and proc."codigoCups_id" = det.examen_id
+ 
+
+-- uery para suministros
+
+-- 5651
+
+	select * from tarifarios_tarifariossuministros where "codigoCum_id"= '5651';
+
+-- Ops no tengo tarifa de compensar como soluciono las que no esten con tarifas. Tocaria en ceros OPS mas querys pero toca papa??
+
+select liq.convenio_id , conv.nombre,det.examen_id, det.cums_id, det.cantidad, conv."tarifariosDescripcionProc_id", conv."tarifariosDescripcionSum_id",
+	 descrip.columna, tiptar.nombre, descrip.descripcion, det."valorUnitario" estaba, sum."colValor1" nuevo
+from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,
+	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosSuministros sum
+where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
+   descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and
+tiptar.id = sum."tiposTarifa_id" and sum."codigoCum_id" = det.cums_id
+
+insert into
+("consecutivoFactura", fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica", observaciones, "valorGlosado",
+	"valorNotaDebito", "valorAceptado", "valorSoportado", "valorNotaCredito", "fechaOtraNotaCredito", "numeroOtraNotaCredito", "valorOtraNotaCredito", 
+	"observacionOtraNotaCredito", "fechaRegistro", "estadoRegistro", examen_id, cums_id, facturacion_id, "usuarioCrea_id", "usuarioModifica_id",
+	"usuarioRegistro_id", "tipoHonorario_id", "tipoRegistro", glosa_id, "notaCredito_id", "notaDebito_id", "ripsDetalle_id", "ripsId", "ripsTipos_id",
+	"historiaMedicamento_id"
+	)
+select "consecutivoFactura", now(), cantidad, sum."colValor1" nuevo ,  cantidad * sum."colValor1"  , cirugia,
+		now(), now() , observaciones,
+	"valorGlosado", "valorNotaDebito", "valorAceptado", "valorSoportado", "valorNotaCredito", "fechaOtraNotaCredito",
+	"numeroOtraNotaCredito", "valorOtraNotaCredito", "observacionOtraNotaCredito", 
+	"fechaRegistro", "estadoRegistro", 
+	examen_id,
+	cums_id, facturacion_id, "usuarioCrea_id", "usuarioModifica_id", "usuarioRegistro_id", "tipoHonorario_id",
+	'SISTEMA', 
+	glosa_id, "notaCredito_id", "notaDebito_id", "ripsDetalle_id", "ripsId", "ripsTipos_id",
+	"historiaMedicamento_id"
+
+from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,
+	  tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosSuministros sum
+where det.liquidacion_id = liq.id and det.liquidacion_id = 127 and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
+   descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and
+tiptar.id = sum."tiposTarifa_id" and sum."codigoCum_id" = det.cums_id
+
+
+
+
+

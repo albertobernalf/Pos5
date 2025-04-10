@@ -63,7 +63,7 @@ function arrancaLiquidacion(valorTabla,valorData)
                           btn = btn + " <input type='radio'  name='miLiquidacion' class='form-check-input editPostLiquidacion' data-pk='"  + row.pk + "'>" + "</input>";
                        return btn;
                     },
-                    "targets": 9
+                    "targets": 10
                }
             ],
 	 pageLength: 3,
@@ -127,6 +127,42 @@ function arrancaLiquidacion(valorTabla,valorData)
 
 	                    }
 			},
+
+		/* desde aqui nuevo campo */
+                /*  { data: "fields.salidaClinica"}, */
+
+		         {
+		         target : 9,
+    			"sWidth": "1%",
+        	           "render": function (data, type, row) {
+                console.log ('data = ', data);
+                console.log ('type = ', type);
+                console.log ('row = ', row);
+
+
+				if ( row['fields']['salidaClinica'] === 'S')
+                {
+                    return '<i class="far fa-dot-circle" style="color:red" >Salida Clinica</i>';
+					/*  return 'SIN CONVENIO'; */
+					}
+
+			    if ( row['fields']['salidaClinica'] ==  'N')
+				{
+	                     return  row['fields']['salidaClinica'];
+        	            return data;
+                    }
+	                    }
+			},
+
+
+
+
+		/* hasta aqui nuevo campo */
+
+
+
+
+
     ]
   }
      dataTable = $('#tablaLiquidacion').DataTable(dataTableOptionsLiquidacion);
@@ -835,7 +871,16 @@ window.addEventListener('load', async () => {
 			$('#aformaPago').val(data.formaPago_id);
 
 
+			if ( data.estadoReg =='A')
+			{
 			 $('#crearAplique').modal('show');
+			}
+			else
+			{
+
+			$("#mensajes").html('Abono Anulado !');
+			}
+
                 },
                 error: function (data) {
                         $('.success-msg').css('display','block');
@@ -854,8 +899,19 @@ window.addEventListener('load', async () => {
 	$('#saveBtnApliqueAbonosFacturacion').click(function (e) {
 		e.preventDefault();
 
+			var avalorEnCurso = document.getElementById("avalorEnCurso").value;
+			var avalorAbono = document.getElementById("avalorAbono").value;
+			var aSaldo = document.getElementById("aSaldo").value;
 
-		  $.ajax({
+			if ( avalorEnCurso > aSaldo)
+			{
+
+			 document.getElementById("mensajesAplique").innerHTML = 'No es posible aplicar mas que el Saldo del Abono';
+
+			   return;
+			}
+
+  		  $.ajax({
                 data: $('#postFormModalApliqueParcial').serialize(),
 	        url: "/guardaApliqueAbonosFacturacion/",
                 type: "POST",
@@ -1513,6 +1569,29 @@ function ReFacturar()
 
 function RefrescarLiquidacionDetalle()
 {
+
+			 var liquidacionId = document.getElementById("liquidacionId").value;
+
+
+		$.ajax({
+	           url: '/leerTotales/',
+	            data :
+	            {'liquidacionId':liquidacionId},
+	           type: 'POST',
+	           dataType : 'json',
+	  		success: function (data) {
+
+			$('#totalSuministros').val(data.totalSuministros);
+			$('#totalProcedimientos').val(data.totalProcedimientos);
+			$('#totalCopagos').val(data.totalCopagos);
+			$('#totalCuotaModeradora').val(data.totalCuotaModeradora);
+			$('#anticipos').val(data.totalAnticipos);
+			$('#totalAbonos').val(data.totalAbonos);
+			$('#totalRecibido').val(data.totalRecibido);
+			$('#totalLiquidacion').val(data.totalLiquidacion);
+			$('#valorApagar').val(data.totalAPagar);
+
+
 			 var data2 =  {}   ;
 			data2['username'] = username;
 		        data2['sedeSeleccionada'] = sedeSeleccionada;
@@ -1526,8 +1605,19 @@ function RefrescarLiquidacionDetalle()
 		        data2['liquidacionId'] = valor;
 
 		        data2 = JSON.stringify(data2);
-	      arrancaLiquidacion(2,data);
-	    dataTableLiquidacionDetalleInitialized = true;
+		      arrancaLiquidacion(2,data2);
+		    dataTableLiquidacionDetalleInitialized = true;
+
+			$("#mensajes").html(data.message);
+
+                  },
+	   		    error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+	     });
+
+
+
 
 }
 
@@ -1594,13 +1684,15 @@ function TrasladoConvenio()
 	alert("tipoIng " + tipoIng);
 	var username_id = document.getElementById("username_id").value;
 	var convenioId = document.getElementById("conveniosPaciente").value;
-	alert(" Nuevo convenio = " + convenioId ) 
+	var convenioIdHacia = document.getElementById("conveniosPacienteHacia").value;
+	alert(" Desde convenio = " + convenioId )
+	alert(" Nuevo convenioIdHacia = " + convenioIdHacia )
 
 
 		$.ajax({
 	           url: '/trasladarConvenio/',
 	            data :
-	            {'liquidacionId':liquidacionId, 'tipoIng':tipoIng, 'username_id':username_id, 'convenioId':convenioId},
+	            {'liquidacionId':liquidacionId, 'tipoIng':tipoIng, 'username_id':username_id, 'convenioId':convenioId, 'convenioIdHacia':convenioIdHacia},
 	           type: 'POST',
 	           dataType : 'json',
 	  		success: function (data) {
@@ -1617,10 +1709,14 @@ function TrasladoConvenio()
 		        data2['valor'] = liquidacionId;
 		        data2 = JSON.stringify(data2);
 
+		                arrancaLiquidacion(1,data2);
+            	    dataTableLiquidacionInitialized = true;
+
+		                arrancaLiquidacion(2,data2);
+            	    dataTableLiquidacionDetalleInitialized = true;
+
 			$("#mensajes").html(data.message);
 
-		    tableL= $("#tablaLiquidacion").dataTable().fnDestroy();
-	            initTableLiquidacion(data2);
 
                   },
 	   		    error: function (request, status, error) {
