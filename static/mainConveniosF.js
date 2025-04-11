@@ -3,7 +3,7 @@ console.log('Hola Alberto Hi!')
 let dataTable;
 let dataTableB;
 let dataTableC;
-
+let dataTableD;
 
 let dataTableConveniosInitialized = false;
 let dataTableConveniosProcedimientosInitialized = false;
@@ -134,6 +134,331 @@ function arrancaConvenios(valorTabla,valorData)
 	        dataTable = $('#tablaConvenios').DataTable(dataTableOptionsConvenios);
 
   }
+
+    if (valorTabla == 2)
+    {
+        let dataTableOptionsProcedimientos  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '125px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+	  { width: '10%', targets: [2,3] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+	                       return btn;
+                    },
+
+                    "targets": 5
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+
+           ajax: {
+                 url:"/load_dataTarifariosProcedimientos1/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+                { data: "fields.id"},
+                { data: "fields.tipoTarifa"},
+                { data: "fields.cups"},
+                { data: "fields.codigoHomologado"},
+                { data: "fields.exaNombre"},
+                { data: "fields.valorColumna"},
+            ]
+            }
+		
+	        dataTableD = $('#tablaTarifariosProcedimientos').DataTable(dataTableOptionsProcedimientos);
+
+  }
+
+    if (valorTabla == 3)
+    {
+
+        let dataTableOptionsSuministros  ={
+  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info',
+    },
+  ],
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+
+                       return btn;
+                    },
+                    "targets":18
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_datatarifariosSuministros1/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	          { data: "fields.id"},
+                { data: "fields.codigoHomologado"},
+                { data: "fields.tiposTarifa_id"},
+                { data: "fields.codigoCum_id"},
+                { data: "fields.concepto_id"},
+                { data: "fields.colValor1"},
+                { data: "fields.colValor2"},
+                { data: "fields.colValor3"},
+                { data: "fields.colValor4"},
+                { data: "fields.colValor5"},
+                { data: "fields.colValor6"},
+                { data: "fields.colValor7"},
+                { data: "fields.colValor8"},
+                { data: "fields.colValor9"},
+                { data: "fields.colValor10"},
+                { data: "fields.usuarioRegistro_id"},
+                { data: "fields.fechaRegistro"},
+                { data: "fields.estadoReg"},
+                     ]
+            }
+
+            if  (dataTableTarifariosSuministrosInitialized)  {
+
+		            dataTableB = $("#tablaTarifariosSuministros").dataTable().fnDestroy();
+
+                    }
+
+                dataTableB = $('#tablaTarifariosSuministros').DataTable(dataTableOptionsSuministros);
+
+	            dataTableTarifariosSuministrosInitialized  = true;
+      }
+
+    if (valorTabla == 4)
+    {
+
+        let dataTableOptionsDescripcionProcedimientos  ={
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '120px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+ 			 btn = btn + " <input type='radio' name='miDescripcionProcedimiento' class='miDescripcionProcedimiento form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+          		   btn = btn + " <button class='miAplicarProcedimientos btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+                    },
+                    "targets":5
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_datatarifariosDescripcionProcedimientos1/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	          { data: "fields.id"},
+                { data: "fields.tipo"},
+                { data: "fields.tipoTarifa"},
+                { data: "fields.columna"},
+                { data: "fields.descripcion"},
+                     ]
+            }
+
+            if  (dataTableTarifariosDescripcionProcedimientosInitialized)  {
+
+		            dataTableB = $("#tablaTarifariosDescripcionProcedimientos").dataTable().fnDestroy();
+
+                    }
+
+                dataTableC = $('#tablaTarifariosDescripcionProcedimientos').DataTable(dataTableOptionsDescripcionProcedimientos);
+
+	            dataTableTarifariosDescripcionProcedimientosInitialized  = true;
+      }
+
+
+
+    if (valorTabla == 6)
+    {
+
+        let dataTableOptionsDescripcionSuministros  ={
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '120px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+ 			 btn = btn + " <input type='radio' name='miDescripcionSuministro' class='miDescripcionSuministro form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+          		   btn = btn + " <button class='miAplicarSuministro btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+                    },
+                    "targets":5
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_datatarifariosDescripcionSuministros1/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	          { data: "fields.id"},
+                { data: "fields.tipo"},
+                { data: "fields.tipoTarifa"},
+                { data: "fields.columna"},
+                { data: "fields.descripcion"},
+                     ]
+            }
+
+            if  (dataTableTarifariosDescripcionSuministrosInitialized)  {
+
+		            dataTableB = $("#tablaTarifariosDescripcionSuministros").dataTable().fnDestroy();
+
+                    }
+
+                dataTableC = $('#tablaTarifariosDescripcionSuministros').DataTable(dataTableOptionsDescripcionSuministros);
+
+	            dataTableTarifariosDescripcionSuministrosInitialized  = true;
+      }
+
+
+
+
+
+
+
+
  }
 
 const initDataTableConvenios = async () => {
@@ -410,6 +735,93 @@ function CrearGuardarConvenios()
 }
 
 
+
+$('#tablaConvenios tbody').on('click', '.miConvenio2', function() {
+
+	alert("Entre");
+
+        var post_id = $(this).data('pk');
+	    var row = $(this).closest('tr'); // Encuentra la fila
+	    var table = $('#tablaConvenios').DataTable();  // Inicializa el DataTable jquery
+
+	    var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato3 Proced.descrip = " , dato3.tarifariosDescripcionProc_id);
+	        console.log ( "dato3 suminist.descrip = " , dato3.tarifariosDescripcionSum_id);
+
+
+	    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+	         var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data['tarifariosDescripcionProc_id'] = dato3.tarifariosDescripcionProc_id;
+	        data['tarifariosDescripcionSum_id'] = dato3.tarifariosDescripcionSum_id;
+
+ 		data = JSON.stringify(data);
+  	console.log ( "Voy a cargar " + data);
+
+
+        arrancaConvenios(2,data);
+	    dataTableConveniosProcedimientosInitialized = true;
+  	console.log ( "ya cargue");
+
+  });
+
+
+$('#tablaTarifariosDescripcionSuministros tbody').on('click', '.miDescripcionSuministro', function() {
+
+	alert("Entre descripcon suministro");
+
+
+        var post_id = $(this).data('pk');
+	    var row = $(this).closest('tr'); // Encuentra la fila
+	    var table = $('#tablaTarifariosDescripcionSuministros').DataTable();  // Inicializa el DataTable jquery
+
+	    var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+
+	        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato3 columna = " , dato3.columna);
+	        console.log ( "dato3  descripcion = " , dato3.descripcion);
+	        console.log ( "dato3 = tipoTarifa " , dato3.id);
+
+
+	    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+	         var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data['tiposTarifa_id'] = dato3.id;
+
+ 		data = JSON.stringify(data);
+
+        arrancaConvenios(3,data);
+	    dataTableConveniosSuministrosInitialized = true;
+
+  });
 
 
 

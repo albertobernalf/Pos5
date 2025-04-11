@@ -299,6 +299,14 @@ urlpatterns = [
     path('deleteConveniosHonorarios/', viewsConvenios.DeleteConveniosHonorarios, name='deleteConveniosHonorarios'),
     path('guardarConveniosHonorarios/', viewsConvenios.GuardarConveniosHonorarios, name='guardarConveniosHonorarios'),
 
+
+
+    path('load_dataTarifariosProcedimientos1/<str:data>', viewsConvenios.Load_dataTarifariosProcedimientos1, name='Load_dataTarifariosProcedimientos1'),
+    path('load_datatarifariosDescripcionProcedimientos1/<str:data>', viewsConvenios.Load_datatarifariosDescripcionProcedimientos1, name='Load_data_tarifariosDescripcionProcedimientos1'),
+    path('load_dataTarifariosSuministros1/<str:data>', viewsConvenios.Load_dataTarifariosSuministros1,     name='Load_dataTarifariosSuministros1'),
+    path('load_datatarifariosDescripcionSuministros1/<str:data>',   viewsConvenios.Load_datatarifariosDescripcionSuministros1,   name='Load_data_tarifariosDescripcionSuministros1'),
+
+
     # Citas Medicas
 
     # Usuarios

@@ -22,6 +22,7 @@ import json
 import datetime
 from decimal import Decimal
 from contratacion.models import  ConveniosLiquidacionTarifasHonorarios
+from tarifarios.models import TarifariosDescripcion
 
 
 # Create your views here.
@@ -1487,4 +1488,216 @@ def GuardarConveniosHonorarios( request):
         miConexiont.close()
 
         return JsonResponse({'success': True, 'message': 'Tarifa Honorario Creada satisfactoriamente!'})
+
+
+def Load_dataTarifariosProcedimientos1(request, data):
+    print ("Entre load_data TarifariosProcedimientos1")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    tarifariosDescripcionProc_id = d['tarifariosDescripcionProc_id']
+    print ("sede:", sede)
+    print ("username:", username)
+    print ("username_id:", username_id)
+    
+
+    #print("data = ", request.GET('data'))
+
+    entidadColumna = TarifariosDescripcion.objects.get(id=tarifariosDescripcionProc_id)
+
+    tarifariosProcedimientos = []
+
+
+    
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    curx = miConexionx.cursor()
+
+
+    #detalle = 'select tarproc.id id, tiptar.nombre tipoTarifa, exa."codigoCups" cups, tarproc."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarproc."colValorBase", tarproc."colValor1", tarproc."colValor2" , tarproc."colValor3"	, tarproc."colValor4"	, tarproc."colValor5"	, tarproc."colValor6"	, tarproc."colValor7"	, tarproc."colValor8"	, tarproc."colValor9" , tarproc."colValor10"from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc, clinico_examenes exa , contratacion_convenios conv where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id and exa.id = tarproc."codigoCups_id" and tardes.id =' + "'" + str(tarifariosDescripcionProc_id) + "'" + ' and conv."tarifariosDescripcionProc_id" = tardes.id'
+    detalle = 'select tarproc.id id, tiptar.nombre tipoTarifa, exa."codigoCups" cups, tarproc."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarproc."' + str(entidadColumna.columna) + '" valorColumna' +  ' from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariosprocedimientos tarproc, clinico_examenes exa , contratacion_convenios conv where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id" and tarproc."tiposTarifa_id" = tiptar.id and exa.id = tarproc."codigoCups_id" and tardes.id =' + "'" + str(tarifariosDescripcionProc_id) + "'" + ' and conv."tarifariosDescripcionProc_id" = tardes.id'
+
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipoTarifa, cups, codigoHomologado, exanombre, valorColumna  in curx.fetchall():
+        tarifariosProcedimientos.append(
+		{"model":"tarifarios.tarifariosProcedimientos","pk":id,"fields":
+			{'id':id, 'tipoTarifa':tipoTarifa, 'cups':cups, 'codigoHomologado':codigoHomologado, 'exaNombre':exanombre, 'valorColumna':valorColumna}})
+
+    miConexionx.close()
+    print(tarifariosProcedimientos)
+    #context['Convenios'] = convenios
+    #convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    #convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    #convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    #convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+
+    serialized1 = json.dumps(tarifariosProcedimientos, default=str)
+
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
+def Load_datatarifariosDescripcionProcedimientos1(request, data):
+    print ("Entre load_datatarifariosDescripcionProcedimientos1")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print ("sede:", sede)
+    print ("username:", username)
+    print ("username_id:", username_id)
+    
+
+
+    tarifariosDescripcionProcedimientos = []
+
+
+    
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    curx = miConexionx.cursor()
+   
+    detalle = 'select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like ('  + "'%PROCE%')" + '  order by tarprod.nombre '
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipo, tipoTarifa, columna, descripcion in curx.fetchall():
+        tarifariosDescripcionProcedimientos.append(
+		{"model":"tarifarios.tarifariosDescripcion","pk":id,"fields":
+			{'id':id, 'tipo': tipo, 'tipoTarifa': tipoTarifa, 'columna': columna, 'descripcion':descripcion }})
+
+    miConexionx.close()
+    print(tarifariosDescripcionProcedimientos)
+    #context['Convenios'] = convenios
+    #convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    #convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    #convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    #convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+
+    serialized1 = json.dumps(tarifariosDescripcionProcedimientos, default=str)
+
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_dataTarifariosSuministros1(request, data):
+    print("Entre load_data TarifariosSuministros1")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    tiposTarifa = d['tiposTarifa_id']
+
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+    print("tiposTarifa:", tiposTarifa)
+
+
+    # print("data = ", request.GET('data'))
+
+    tarifariosSuministros = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+
+    detalle = 'select tarsum.id id, tiptar.nombre tipoTarifa, exa.cums cums, tarsum."codigoHomologado" codigoHomologado, exa.nombre exaNombre, tarsum."colValorBase", tarsum."colValor1", tarsum."colValor2" , tarsum."colValor3"	, tarsum."colValor4"	, tarsum."colValor5"	, tarsum."colValor6"	, tarsum."colValor7"	, tarsum."colValor8"	, tarsum."colValor9" , tarsum."colValor10" from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes, tarifarios_tarifariossuministros tarsum, facturacion_suministros exa where tiptar.id = tardes."tiposTarifa_id" and tarsum."tiposTarifa_id" = tiptar.id and tardes.columna=' + "'" + str('colValorBase') + "'" + ' and exa.id = tarsum."codigoCum_id" and tarsum."tiposTarifa_id" =' + "'" + str(tiposTarifa) + "'" + ' and tarprod.id = tiptar."tiposTarifaProducto_id"'
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipoTarifa, cums, codigoHomologado, exanombre, colValorBase, colValor1, colValor2, colValor3, colValor4, colValor5, colValor6, colValor7, colValor8, colValor9, colValor10 in curx.fetchall():
+        tarifariosSuministros.append(
+            {"model": "tarifarios.tarifariosSuministros", "pk": id, "fields":
+                {'id': id, 'tipoTarifa': tipoTarifa, 'cums': cums, 'codigoHomologado': codigoHomologado,
+                 'exaNombre': exanombre, 'colValorBase': colValorBase, 'colValor1': colValor1, 'colValor2': colValor2,
+                 'colValor3': colValor3, 'colValor4': colValor4,
+                 'colValor5': colValor5, 'colValor6': colValor6, 'colValor7': colValor7, 'colValor8': colValor8,
+                 'colValor9': colValor9, 'colValor10': colValor10
+                 }})
+
+    miConexionx.close()
+    print(tarifariosSuministros)
+    # context['Convenios'] = convenios
+    # convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    # convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    # convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    # convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+    serialized1 = json.dumps(tarifariosSuministros, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_datatarifariosDescripcionSuministros1(request, data):
+    print("Entre load_datatarifariosDescripcionSuministros")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    tarifariosDescripcionSuministros = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like (' + "'%SUMINI%')" + '  order by tarprod.nombre '
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipo, tipoTarifa, columna, descripcion in curx.fetchall():
+        tarifariosDescripcionSuministros.append(
+            {"model": "tarifarios.tarifariosDescripcion", "pk": id, "fields":
+                {'id': id, 'tipo': tipo, 'tipoTarifa': tipoTarifa, 'columna': columna, 'descripcion': descripcion}})
+
+    miConexionx.close()
+    print(tarifariosDescripcionSuministros)
+    # context['Convenios'] = convenios
+    # convenios.append({"model":"empresas.empresas","pk":id,"fields":{'Empresas':empresas}})
+    # convenios.append({"model":"tiposTarifa.tiposTarifa","pk":id,"fields":{'TiposTarifa':tiposTarifa}})
+    # convenios.append({"model":"cups.cups","pk":id,"fields":{'Cups':cups}})
+    # convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
+
+    serialized1 = json.dumps(tarifariosDescripcionSuministros, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
 
