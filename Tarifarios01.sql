@@ -386,3 +386,114 @@ comando ='INSERT INTO facturacion_liquidaciondetalle ( consecutivo, fecha, canti
 -- Busco la columna de suministros
 
 comando =	'SELECT descrip.columna FROM facturacion_liquidacion liq,contratacion_convenios conv,tarifarios_tarifariosdescripcion descrip where liq.id =	' + "'" + str(liquidacionIdHasta) + "'" + ' AND liq.convenio_id = conv.id and descrip.id = conv."tarifariosDescripcionSumc_id"'
+
+ 
+select * from tarifarios_tarifariosProcedimientos;
+
+
+begin transaction;
+INSERT INTO facturacion_liquidaciondetalle ( consecutivo, fecha, cantidad, "valorUnitario", "valorTotal", cirugia, "fechaCrea", "fechaModifica",
+	observaciones, "fechaRegistro", "estadoRegistro",examen_id,  "usuarioModifica_id", "usuarioRegistro_id", liquidacion_id, "tipoHonorario_id",
+	"tipoRegistro", "historiaMedicamento_id") 
+
+	select  det.consecutivo, liq.fecha, cantidad, proc."colValor1", proc."colValor1" * cantidad, cirugia, "fechaCrea", "fechaModifica", liq.observaciones, liq."fechaRegistro",
+	liq."estadoRegistro", examen_id, "usuarioModifica_id", liq."usuarioRegistro_id", liquidacion_id, "tipoHonorario_id", 
+	"tipoRegistro", "historiaMedicamento_id" from facturacion_liquidacion liq  , facturacion_liquidaciondetalle det, contratacion_convenios conv,
+	tarifarios_tarifariosdescripcion descrip, tarifarios_tipostarifa tiptar, tarifarios_tarifariosProcedimientos proc
+	where det.liquidacion_id = liq.id and det.liquidacion_id = '128' and liq.convenio_id= conv.id and det."estadoRegistro" = 'A' and
+	descrip.id = conv."tarifariosDescripcionProc_id" and tiptar.id = descrip."tiposTarifa_id" and tiptar.id = proc."tiposTarifa_id" and 
+	proc."codigoCups_id" = det.examen_id
+
+-- rollback;
+
+select * from facturacion_conveniospacienteingresos
+select * from cartera_pagos;
+select * from admisiones_ingresos;
+
+select count(*)  from facturacion_conveniospacienteingresos where "tipoDoc_id" = '1' and documento_id=27 and "consecAdmision"=2
+select count(*) from cartera_pagos where "tipoDoc_id" = '1' and documento_id=27 and consec=1
+
+(select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos
+
+select * from cartera_pagosfacturas;
+
+select * from facturacion_liquidacion where	id in (127,128);
+select * from facturacion_liquidaciondetalle where	liquidacion_id in (127,128); 
+select * from facturacion_liquidaciondetalle where	liquidacion_id in (128); 
+select * from facturacion_liquidaciondetalle where	liquidacion_id in (127);
+select convenio_id,* from facturacion_liquidacion where	id in (127,128); 
+select * from contratacion_convenios;
+
+select * from sitios_dependencias;
+select * from sitios_historialdependencias;; dep=12, doc_id=27 tipodoc 1
+
+	update sitios_dependencias set documento_id=27, "tipoDoc_id"=1, consec=1, disponibilidad='O'
+where id=12
+
+	select * from cartera_pagos
+	select * from cartera_pagosFacturas;
+
+	INSERT INTO cartera_pagosFacturas ("valorAplicado", "fechaRegistro","estadoReg", "facturaAplicada_id",pago_id)
+	
+	SELECT "valorEnCurso", '2025-04-11 10:58:20.706465','A',52, id 
+	FROM cartera_pagos 
+	WHERE documento_id = '25' AND "tipoDoc_id" = '3' AND consec = '1'
+
+		select * from facturacion_facturacion where id=53;
+select * from facturacion_facturaciondetalle where facturacion_id=53;
+select * from facturacion_facturacion where id=53;
+
+	
+
+select * from facturacion_suministros where id=5651;
+select * from tarifarios_tarifariosdescripcion
+select * from tarifarios_tarifariosSuministros where "codigoCum_id"= 5651; -- 4
+select * from tarifarios_tipostarifa;
+select * from admisiones_ingresos where factura=53
+
+SELECT facturas.id id , facturas."fechaFactura" fechaFactura, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec , 
+	i."fechaIngreso" fechaIngreso , i."fechaSalida" fechaSalida, ser.nombre servicioNombreSalida, dep.nombre camaNombreSalida , diag.nombre dxSalida ,
+	conv.nombre convenio, conv.id convenioId , i."salidaClinica" salidaClinica, facturas."estadoReg" estadoReg 
+	FROM admisiones_ingresos i
+	INNER JOIN sitios_serviciosSedes sd ON (sd."sedesClinica_id" = i."sedesClinica_id") 
+	INNER JOIN sitios_dependencias dep ON (dep."sedesClinica_id" = i."sedesClinica_id" AND dep."serviciosSedes_id" = sd.id AND dep.id = i."dependenciasSalida_id") 
+	INNER JOIN sitios_dependenciastipo deptip  ON (deptip.id = dep."dependenciasTipo_id")
+	INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id = i."documento_id" ) 
+	INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") 
+	INNER JOIN clinico_servicios ser  ON ( ser.id  = i."serviciosSalida_id")  
+	INNER JOIN clinico_Diagnosticos diag ON (diag.id = i."dxSalida_id") 
+	INNER JOIN facturacion_facturacion facturas ON (facturas.documento_id = i.documento_id and facturas."tipoDoc_id" = i."tipoDoc_id" and facturas."consecAdmision" = i.consec )
+	LEFT JOIN contratacion_convenios conv  ON (conv.id = facturas.convenio_id )
+	WHERE i."fechaSalida" between '2025-01-01 00:00:00'  and '2025-05-01 23:59:59' AND i."sedesClinica_id" = '1' AND i."fechaSalida" is not null
+
+
+select * from usuarios_usuarios -- 18 paula
+select  documento_id, * from facturacion_liquidacion -- estadoRegistro = 'R'
+select   * from facturacion_liquidaciondetalle where liquidacion_id = 129;
+select * from admisiones_ingresos where factura=40;
+select * from admisiones_ingresos where documento_id = 18;
+
+select * from facturacion_liquidacion;
+select * from facturacion_refacturacion;
+
+update admisiones_ingresos set "salidaDefinitiva"='R' where id= 50101;
+
+-- load_dataloiquidacion
+
+SELECT 'INGRESO',  i.id, conv.id convenioId, tp.nombre tipoDoc,u.documento documento,u.nombre nombre,i.consec consec , i."fechaIngreso" , 
+	i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual,conv.nombre convenio, conv.id convenioId ,
+	i."salidaClinica" salidaClinica 
+	FROM admisiones_ingresos i 
+	INNER JOIN clinico_servicios ser ON (ser.id = i."serviciosActual_id" ) 
+	INNER JOIN sitios_serviciosSedes sd ON (i."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id)
+	INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  i."sedesClinica_id" and dep.id = i."dependenciasActual_id"  AND  (dep.disponibilidad= 'O' OR (dep.disponibilidad = 'L' AND ser.id=3)) AND dep."serviciosSedes_id" = sd.id )
+	INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id")
+	INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" )
+	INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id")
+	INNER JOIN clinico_Diagnosticos diag ON (diag.id = i."dxActual_id") 
+	LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = i."tipoDoc_id" and fac.documento_id = i.documento_id and  fac."consecAdmision" = i.consec ) 
+	LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id)
+	WHERE i."sedesClinica_id" =  '1' AND ((i."salidaDefinitiva" = 'N' and i."fechaSalida" is null)  or  (i."fechaSalida" is not null and i."salidaDefinitiva"='R' )) 
+	
+	UNION
+	SELECT ' + "'"  + str("TRIAGE") + "'"+ "||'-'||"  + ' t.id'  + "||" +"'" + "-'||case when conv.id != 0 then conv.id else " + "'" + str('00') + "'" + ' end id, tp.nombre tipoDoc,u.documento documento,u.nombre nombre, t.consec consec , t."fechaSolicita" , cast(' + "'" + str('0001-01-01 00:00:00') + "'" + ' as timestamp) fechaSalida,ser.nombre servicioNombreIng, dep.nombre camaNombreIng , ' + "' '" + ' dxActual , conv.nombre convenio, conv.id convenioId , ' + "'" + str('N') + "'" + ' salidaClinica  FROM triage_triage t INNER JOIN clinico_servicios ser ON ( ser.nombre = ' + "'" + str('TRIAGE') + "')" + ' INNER JOIN sitios_serviciosSedes sd ON (t."sedesClinica_id" = sd."sedesClinica_id" AND sd.servicios_id  = ser.id and sd.id = t."serviciosSedes_id" ) INNER JOIN  sitios_dependencias dep  ON (dep."sedesClinica_id" =  t."sedesClinica_id" and dep.id = t.dependencias_id  AND dep.disponibilidad = ' + "'" + str('O') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and t."consecAdmision" = 0 and dep."documento_id" = t."documento_id") INNER JOIN sitios_dependenciastipo deptip ON (deptip.id = dep."dependenciasTipo_id") INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" = t."tipoDoc_id" and u.id = t."documento_id" ) INNER JOIN usuarios_tiposDocumento tp ON (tp.id = u."tipoDoc_id") LEFT JOIN facturacion_conveniospacienteingresos fac ON ( fac."tipoDoc_id" = t."tipoDoc_id" and fac.documento_id = t.documento_id and  fac."consecAdmision" = t.consec ) LEFT JOIN contratacion_convenios conv ON (conv.id  = fac.convenio_id) WHERE  t."sedesClinica_id" = ' + "'" + str(sede) + "'"

@@ -546,17 +546,17 @@ $(document).ready(function() {
 ------- tips IMPORTANTE PARA MODULOS DE CONSULTA EXTERNA, AMBULATORIO, INVENTARIOS, FACTURACION------------- LA REUNION FUE BENEFICIOSA PARA MY PROGRAM
 ------------------------------
 1. Bodega virtual inventarios
-2. Ingresos citas medicas , ambulatorios. los ingresos son para urgenicas hosp generen estancias
+2. Ingresos citas medicas , ambulatorios. los ingresos son para urgencias hosp generen estancias
 3. Tarifas: proced, son pocos SOAT, ISS, PARTICULAR LAS DEMAS SON POR PORCEMNTAGES
 
-	    Indsumos -- > condiciones una gsas deopende del tamaño de la factuyra etc
+   Insumos -- > condiciones una gsas deopende del tamaño de la factuyra etc
 4.SISTEMA DE ALERTAS son tareas programadas querys que envian mensajes por correo o wwhtasapp cuando se cumple ago. de prnto usarfunciones
 5. descripcion Qx, automatica OPS
 6. Ojo el termino FACTURABLE No FACTURABLE
 7. que es hoja de gasto
 8. oJO RADICAR UN ENVIO es coocar una fecha y yap
 9. COmenzar a visualizar hacia el futuro como va a funcionar la aplicacion en cuianto a velocidad, con datos ociosos no usarlos o volverlos HISTORICOS
-10. Como inactivar tarifarios. Solo trabajar con los activos
+10. Como inactivar tarifarios. Solo trabajar con los activos. OJOP por la vigencia
 --------------------------------
 ---------------------------------
 ------------------------------
@@ -672,7 +672,7 @@ print("Datos subidos correctamente.")
 
 -- Ojo en la sabana de creacion de tarifarios---> proc,sum,hono el valorBase debe venr con valñor
 -- Crear contratacion- procedimientos, suministros honorarios de CONSULTA
--- Crearv tarifario -- suministros, honorarios --> operacion
+-- Crearv tarifario -- honorarios --> operacion
 -- Tablas  a particionar : factutacion, facturaciondetalle, Farmacia, Enfermeria etc
 -- A arreglar probar pantañña de tarifas sin MENU Tarifas+ + grande  que quepa info.
 
@@ -704,4 +704,22 @@ BIBLIOGRAFIA:
 -- Ops ME ESTA DUPLICANDO LÑOS abonos DE CUANDO A CA Y PORTUE
 -- ala hora de facturar crfeo soo es aplicar y yap y verificar toto OJO CUANDO s efactura valorEncurso, total apolicado, saldo ??
  if convenioValor != '':
+
+
+-- mañana 11 / abril
+-- 1. No acualizo  anular items de liquidacionDetralle al final del traslado
+-- 2. Verificar la nueva cuenta como se ve
+-- 3. Hacer pruebas d etraslados de suministros que no habian para el caso no recuerdo el motivo VERIFICAR.
+-- 4. Todo esto en el supuesto que no hay nada en el nuevo conveio, o sea esta en blmaco. Que pasa si yahay cupscreados allip
+-- 5. Validar facturaciondetalle pagina a ver si es correcto o algo asip
+-- 6. Mañana probar Hacer factura d emaruja y queden bien los abonos. Ops Verificar que en pagofacturas queden registrado los abonos
+-- 7. finalmente ver terminar rips
+-- 8. Creeria borrar todos los datos y comenzar el proceso de ceros. completo
+-- 9. model parametros
+-- 10 alertas: # e abonos y si o No convenio en admisiones
+
+-- Ojo en las consuiltas d efactyuras por fchar o numeros, como va a hacer con tablas particionadas ???
+-- OJO cuando se refactura no lo muestra en la liquiacion, como si no la hubiera activado
+-- Ojo hay que verificar todos los REFESH cuando hace acciones en toda las pantallas
+-- ojo COLOCAR LOS COMODIMTES D ERUTA DEL MODELO PARAMTERO EN : CARGARIPS, CARGAPROCEDIMIENTOS, CARGASUMINISTROS
 

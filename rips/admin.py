@@ -15,10 +15,10 @@ class ripsTiposAdmin(admin.ModelAdmin):
 
 @admin.register(RipsEnvios)
 class ripsEnviosAdmin(admin.ModelAdmin):
-   list_display = ("id",  "fechaEnvio")
-   search_fields =  ("id", "fechaEnvio")
+   list_display = ("id",  "fechaEnvio","fechaRadicacion")
+   search_fields =  ("id",  "fechaEnvio","fechaRadicacion")
    # Filtrar
-   list_filter = ("id",  "fechaEnvio")
+   list_filter = ("id",  "fechaEnvio","fechaRadicacion")
 
 
 @admin.register(RipsDetalle)

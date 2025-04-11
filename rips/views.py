@@ -135,12 +135,10 @@ def GuardaEnviosRips(request):
     tipoRips = request.POST['ripsTiposNotas']
     print("ripsTiposNotas =", tipoRips)
 
-
-
-    fechaEnvio = 'null'
+    fechaEnvio = request.POST['fechaEnvio']
     print ("fechaEnvio =", fechaEnvio)
 
-    fechaRespuesta = 'null'
+    fechaRespuesta = request.POST['fechaRespuesta']
     print ("fechaRespuesta =", fechaRespuesta)
 
     cantidadFacturas = request.POST['cantidadFacturas']
@@ -1333,3 +1331,31 @@ def BorrarDetalleRips(request):
     # Despues tengo que actualizar en la factura el campo enviorips_id a NULL , por ORM
 
     return JsonResponse({'success': True, 'message': 'Detalle de Rips eliminado !'})
+
+
+def GuardarRadicacionRips(request):
+
+    print ("Entre GuardarRadiacionRips" )
+
+    envioRipsId = request.POST['envioRipsId']
+    print ("envioRipsId =", envioRipsId)
+
+    fechaRadicacion = request.POST['fechaRadicacion']
+    print ("fechaRadicacion =", fechaRadicacion)
+
+    usuarioRadicacion= request.POST['username_id']
+    print ("usuarioRegistro_id =", usuarioRegistro_id)
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE rips_ripsEnvios  SET "fechaRadicacion" = ' + "'" +str(fechaRadicacion) + "'," + '"usuarioRadicacion_id" = ' + "'" + str(username_id) + "' WHERE id =" + str(envioRipsId)
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
+
+    return JsonResponse({'success': True, 'message': 'Fecha de radicacion actualizada satisfactoriamente!'})

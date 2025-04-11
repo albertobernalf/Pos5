@@ -253,6 +253,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                             <th>Servicio</th>
                             <th>Dependencia</th>
                             <th>Dx</th>
+                            <th>Convenios</th>
+                            <th>Abonos</th>
                             <th>Editar</th>
 
 
@@ -268,6 +270,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 <td>{{ingresos.servicioNombreIng}}</td>
                                 <td>{{ingresos.camaNombreIng}}</td>
                                 <td>{{ingresos.DxActual}}</td>
+                                <td>{{ingresos.numConvenios}}</td>
+                                <td>{{ingresos.numAbonos}}</td>
                                 <td>
                                     <a href="#" class="btn btn-primary eBtn1" role="button" data-toggle="modal" id="banda1" >
                                       </a>
@@ -481,9 +485,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 
     <article id="CrearAdmision">
-        <center><h3>Creacion Admision</h3></center>
-
-
+        
             <table class="table  " style="height: 50px; background-color:LightGray;  width:90%;">
                 <tr>
                     <td>
@@ -518,7 +520,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                         <label for="busServicio22"
                                                class="col-sm-1 col-form-label col-form-label-sm">Servicio:</label>
                                         <div class="col-sm-8">
-                                            <select class="form-select  h-100 w-100 form-control form-control-sm"
+                                            <select class="select-css"
                                                     aria-label="" id="busServicio22"
                                                     name="busServicio22" required>
                                                 {% for servicios in Servicios %}
@@ -530,7 +532,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     <div class="col">
                                         <label for="busSubServicio22" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SubServicios:</label>
                                         <div class="col-sm-4">
-                                            <select class="form-select  h-100 w-200" aria-label="" id="busSubServicio22"
+                                            <select class="select-css"
                                                     name="busSubServicio22"
                                                     required>
                                                 {% for subServicios in SubServicios %}
@@ -546,7 +548,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                                class="col-sm-1 control-label">Dependencias:</label>
 
                                         <div class="col-sm-8">
-                                            <select class="form-select  h-100 w-200 orm-control form-control-sm"
+                                            <select class="select-css"
                                                     aria-label="" id="dependenciasIngreso22"
                                                     name="dependenciasIngreso22"
                                                     required>
@@ -561,7 +563,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                         <label for="tipoDoc22" class="col-sm-1 control-label">TipoDoc:</label>
                                         <div class="col-sm-8">
-                                            <select class="form-select  h-40 w-100" aria-label="" id="tipoDoc22"
+                                            <select class="select-css"
                                                     name="tipoDoc22" required>
                                                 {% for tiposDocumento in TiposDocumento %}
                                                 <option value="{{tiposDocumento.id}}"> {{tiposDocumento.nombre}}
@@ -626,7 +628,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                         <label for="viasIngreso" class="col-sm-1 control-label">ViasDeIngreso:</label>
                                         <div class="col-sm-4">
-                                            <select class="form-select  h-40 w-150" aria-label="" id="viasIngreso"
+                                            <select class="select-css"
                                                     name="viasIngreso" required>
                                                 {% for viasIngreso in ViasIngreso %}
                                                 <option value="{{viasIngreso.id}}"> {{viasIngreso.nombre}}</option>
@@ -639,6 +641,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 </div>
 
                                 <div class="row row-cols-8 mt-3">
+
+
                                     <div class="col">
                                         <label for="causasExterna" class="col-sm-1 control-label">CausaExterna:
                                         </label>
@@ -653,7 +657,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                             </select>
                                         </div>
 
-                                    </div>
+				</div>
                                     <div class="col">
                                         <label for="regimenes" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Regimen:
                                             &nbsp;&nbsp;&nbsp;</label>
@@ -709,10 +713,10 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                         </div>
 
                                     </div>
-                                </div> <!-- ops cierra un rows-cols -->
 
-				<div>	RIPS: </div>
-                                <div class="row row-cols-8 mt-3">
+				 <div class="col">
+				R I P S
+					</div>
                                     <div class="col">
 
                                                                 <label for="ripsDestinoUsuarioEgresoRecienNacido" class="col-sm-1 col-form-label col-form-label-sm">DestEgreso:
@@ -740,6 +744,12 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 
 
+
+
+                                </div> <!-- ops cierra un rows-cols -->
+
+
+                                <div class="row row-cols-8 mt-3">
                                     <div class="col">
                                           <label for="ripsNumConsultasCPrenatal" class="col-sm-2 col-form-label col-form-label-sm">NumeroConsultaPrenatal:&nbsp;&nbsp;</label>
                                         <div class="col-sm-8">
@@ -863,8 +873,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     </div>
 
                                         <div class="col">
-                                            <input type="submit" id="guardarAdmision" name="guardarAdmision"
-                                               value="Guardar Admision"></input>
+                                            <input type="submit" id="guardarAdmision" name="guardarAdmision" value="Guardar Admision"></input>
                                         <input type="hidden" id="Sede" name="Sede" value="{{Sede}}">
                                         <input type="hidden" id="Servicio" name="Servicio" value="{{Servicio}}">
                                         <input type="hidden" id="Perfil" name="Perfil" value="{{Perfil}}">

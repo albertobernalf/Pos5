@@ -217,7 +217,7 @@ urlpatterns = [
     path('traerJsonEnvioRips/', viewsRips.TraerJsonEnvioRips, name='TraerJsonEnvioRips'),
     path('traerJsonRips/', viewsRips.TraerJsonRips, name='TraerJsonRips'),
     path('borrarDetalleRips/', viewsRips.BorrarDetalleRips, name='borrarDetalleRips'),
-
+    path('guardarRadicacionRips/', viewsRips.GuardarRadicacionRips, name='GuardarRadicacion_Rips'),
     path('generarJsonRips/', viewsRips.GenerarJsonRips, name='generarJsonRips'),
     path('enviarJsonRips/', viewsRips.EnviarJsonRips, name='enviarJsonRips'),
     path('load_tablaRipsTransaccion/<str:data>', viewsRips.Load_tablaRipsTransaccion, name='load_tablaRipsTransaccion'),

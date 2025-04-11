@@ -22,7 +22,7 @@
         <li><a href="#DetalleEnviosRips"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle Envios Rips</a></li>
         <li><a href="#GenerarJsonRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Generar Json Rips </a></li>
         <li><a href="#EnviarRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Enviar Rips </a></li>
-        <li><a href="#RespuestaRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Respuesta Rips </a></li>
+        <li><a href="#RadicacionRips"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Radicacion </a></li>
 
 
     </ul>
@@ -1038,12 +1038,27 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 		 </div>
 </article>
 
-<article id="RespuestaRips">
+<article id="RadicacionRips">
 
-		  <div style="height: 70px;  width:100%; background-color:#EBEBEB;">
-		
-		
-		 </div>
+		 
+		<div class="row row-cols-1" style="height=30px;">
+
+				<div class="col">
+
+				  <span id="EnvioRipsNo" name="EnvioRipsNo"> </span>
+
+				Fecha Radicacion:
+
+                                 <input type="datetime-local"  class="form-control form-control-sm" id="fechaRadicacion" name="fechaRadicacion" placeholder="fechaRadicacion" >
+                                 
+                                </div>
+
+                                <div class="col-sm-offset-2 col-sm-10 mt-2">
+                                    <button type="button" class="btn btn-primary" id="guardarRadicacion" name="guardarRadicacion"  value="Guardar" onclick="GuardarRadicacionRips()"></button>
+                                </div>
+                                </div> 
+
+
 </article>
 
      
@@ -1055,7 +1070,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 {% block mensajeria %}
 <div class="marco">
 <span> ... </span>
-     <span id="mensajes" name="mensajes">. </span>
+     <span style= "color:#ffffff; font-size:18px; line-height:35px; font-family: Calibri;" id="mensajes" name="mensajes"> </span>
 
 </div>
 {% endblock %}

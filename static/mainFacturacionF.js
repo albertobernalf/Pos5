@@ -1403,12 +1403,13 @@ function AFacturar()
  	var liquidacionId = document.getElementById("liquidacionId").value;
  	var username_id = document.getElementById("username_id").value;
 	var tipoFactura = document.getElementById("tipoFactura").value;
+	var sede = document.getElementById("sede").value;
 
 
 		$.ajax({
 	           url: '/facturarCuenta/',
 	            data :
-	            {'liquidacionId':liquidacionId, 'username_id':username_id, 'tipoFactura':tipoFactura},
+	            {'liquidacionId':liquidacionId, 'username_id':username_id, 'tipoFactura':tipoFactura,'sede':sede},
 	           type: 'POST',
 	           dataType : 'json',
 	  		success: function (data) {

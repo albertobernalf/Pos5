@@ -126,3 +126,13 @@ class Archivos(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Parametros(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50)
+    parametro1 = models.CharField(max_length=300, blank=True,null= True, editable=True) 
+    fechaRegistro = models.DateTimeField(default=now, editable=False)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return self.nombre

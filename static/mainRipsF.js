@@ -1051,6 +1051,7 @@ window.addEventListener('load', async () => {
 		document.getElementById("tipoRips3").value = tipoRips;
 
 		 document.getElementById("envioRipsIdJ").value = post_id;
+		 document.getElementById("EnvioRipsNo").value = post_id;
 
 
 		   arrancaEnviosRips(2,data);
@@ -1600,3 +1601,45 @@ function CerrarModalEnvioJson()
             $('#crearModelRipsEnvioJson').modal('hide');
 }
 
+function GuardarRadicacionRips()
+{
+
+	alert("Entre GuardarRadicacionRips");
+
+
+	var envioRipsId = document.getElementById("EnvioRipsNo").value ;
+
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var username_id = document.getElementById("username_id").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+	var fechaRadicacion = document.getElementById("fechaRadicacion").value;
+
+
+        var username_id = document.getElementById("username_id").value;
+
+            $.ajax({
+
+	        url: "/guardarRadicacionRips/",
+		data: {'envioRipsId':envioRipsId, 'sede':sede, 'username_id':username_id,'fechaRadicacion':fechaRadicacion},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		
+		var data =  {}   ;
+	        data['username'] = username;
+	       data['sedeSeleccionada'] = sedeSeleccionada;
+	       data['nombreSede'] = nombreSede;
+	      data['sede'] = sede;
+	        data['username_id'] = username_id;
+	        data = JSON.stringify(data);
+	
+
+		   $("#mensajes").html(data2.message);
+                         },
+               error: function (request, status, error) {
+	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   	    	}
+            });
+}
