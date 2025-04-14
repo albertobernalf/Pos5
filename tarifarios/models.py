@@ -67,6 +67,11 @@ class TarifariosProcedimientos (models.Model):
     class Meta:
         unique_together = (('tiposTarifa', 'codigoCups'),)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['tiposTarifa','codigoCups'], name='tarifProcedTipostarifaIdx'),
+        ]
+
     def __str__(self):
         return str(self.codigoHomologado)
 
@@ -129,6 +134,12 @@ class TarifariosSuministros (models.Model):
 
     class Meta:
         unique_together = (('tiposTarifa', 'codigoCum'),)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['tiposTarifa','codigoCum'], name='tarifSuministTipostarifaIdx'),
+        ]
+
 
     def __str__(self):
         return str(self.codigoHomologado)

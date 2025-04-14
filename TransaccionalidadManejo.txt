@@ -1,0 +1,32 @@
+# Aqui Manejo Transaccionalidad
+
+    miConexion3 = None
+    try:
+
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            cur3 = miConexion3.cursor()
+	
+            print("comando = ", comando)
+            cur3.execute(comando)
+            miConexion3.commit()
+            cur3.close()
+
+            return JsonResponse({'success': True, 'Mensaje': 'Convenio Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        if miConexion3:
+            miConexion3.rollback()
+            return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            miConexion3.close()
+            return JsonResponse({'success': True, 'Mensaje': 'Convenio Actualizado satisfactoriamente!'})
+
+# Aqui Fin Manejo Transaccionalidad
+
+-- Ojo en views de Admisiones faltan (3) Funciones def : por pasar OJOO
+	 <!--   onclick="findOneAdmision( {{ingresos.tipoDoc}} , {{ingresos.Documento}} ,{{ingresos.Nombre}} ,{{Sede}})" -->
+
+falta pais y tipo de usuarios cuando crea usuario por segunda vez

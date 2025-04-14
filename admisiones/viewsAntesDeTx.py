@@ -510,7 +510,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     tiposUsuario = []
-    tiposUsuario.append({'id': '', 'nombre': ''})
     # tiposUsuario.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
@@ -579,7 +578,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT p.id id, p.nombre  nombre FROM clinico_diagnosticos p order by p.nombre"
+    comando = "SELECT p.id id, p.nombre  nombre FROM clinico_diagnosticos p"
 
     curt.execute(comando)
     print(comando)
@@ -632,7 +631,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     departamentos = []
-    departamentos.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         departamentos.append({'id': id, 'nombre': nombre})
@@ -757,7 +755,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     viasIngreso = []
-    viasIngreso.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         viasIngreso.append({'id': id, 'nombre': nombre})
@@ -804,7 +801,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     regimenes = []
-    regimenes.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         regimenes.append({'id': id, 'nombre': nombre})
@@ -852,7 +848,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     municipios = []
-    municipios.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         municipios.append({'id': id, 'nombre': nombre})
@@ -900,7 +895,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     estadoCivil = []
-    estadoCivil.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         estadoCivil.append({'id': id, 'nombre': nombre})
@@ -925,7 +919,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     ocupaciones = []
-    ocupaciones.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         ocupaciones.append({'id': id, 'nombre': nombre})
@@ -974,7 +967,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     empresas = []
-    empresas.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         empresas.append({'id': id, 'nombre': nombre})
@@ -1387,8 +1379,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         print ("total ", total)
 
-        print("YA PASE INDICADORES")
-
         if (total >0):     
 
           print("Indicadores = ", indicadores)
@@ -1413,12 +1403,9 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
 
     # Fin combo Indicadores
-        print ("Listo voy a RENDERIZAR LA PAGINA")
+
 
         ## FIN CONTEXTO solo Admisiones
-
-
-
         return render(request, "admisiones/panelAdmisiones.html", context)
 
     if (escogeModulo == 'HISTORIA CLINICA'):
@@ -3230,7 +3217,6 @@ def buscarAdmision(request):
     print(comando)
 
     centros = []
-    centros.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         centros.append({'id': id, 'nombre': nombre})
@@ -3909,6 +3895,8 @@ def crearAdmisionDef(request):
 
         print("idPacienteFinal", idPacienteFinal)
 
+
+
         consec = Ingresos.objects.all().filter(tipoDoc_id=tipoDoc).filter(documento_id=idPacienteFinal).aggregate(maximo=Coalesce(Max('consec'), 0))
         print("ultimo Ingreso = ", consec)
         consecAdmision = (consec['maximo'] + 1)
@@ -4003,112 +3991,100 @@ def crearAdmisionDef(request):
 
         ripsDestinoUsu1 = RipsDestinoEgreso.objects.get(id= ripsDestinoUsuarioEgresoRecienNacido)
 
-        ## DESDE AQUIP TRANSACCIONALIDAD
+        grabo = Ingresos(
+                         sedesClinica_id=Sede,
+                         tipoDoc_id=tipoDoc,
+                         documento_id=documento_llave.id,
+                         consec=consecAdmision,
+                         fechaIngreso=fechaIngreso,
+                         #fechaSalida=NULL,
+                         factura=factura,
+                         numcita=numcita,
+                         serviciosIng_id=  busServicio2,
+                         dependenciasIngreso_id=dependenciasIngreso,
+                         dxIngreso_id=dxIngreso,
+                         medicoIngreso_id=medicoIngreso,
+                         especialidadesMedicosIngreso_id=especialidadesMedicos,
+                         serviciosActual_id=busServicio2,
+                         dependenciasActual_id=dependenciasIngreso,
+                         dxActual_id = dxIngreso,
+                         medicoActual_id=medicoIngreso,
+                         especialidadesMedicosActual_id=especialidadesMedicos,
+                         #dependenciasSalida_id = dependenciasSalida,
+                         #dxSalida_id = dxSalida,
+                         #medicoSalida_id=medicoSalida,
+                         #especialidadesMedicosSalida_id="",
+                         #estadoSalida_id = estadoSalida,
+                         ViasIngreso_id=viasIngreso,
+                         causasExterna_id=causasExterna,
+                         regimen_id=regimenes,
+                         tiposCotizante_id=tiposCotizante,
+                         #empresa_id=empresaId,
+                         ipsRemite_id=ipsRemite,
+                         numManilla=numManilla,
+                         #contactoAcompañante_id=contactoAcompanante,
+                         #contactoResponsable_id=contactoResponsable,
+                         remitido=remitido,
+                         #salidaClinica=salidaClinica,
+                         #salidaDefinitiva=salidaDefinitiva,
+                         ripsServiciosIng_id = ripsServiciosIng,
+                         ripsServiciosActual_id=ripsServiciosIng,
+                         ripsmodalidadGrupoServicioTecSal_id = ripsmodalidadGrupoServicioTecSal,
+                         ripsViaIngresoServicioSalud_id = ripsViaIngresoServicioSalud,
+                         ripsGrupoServicios_id = ripsGrupoServicios,
+                         ripsCondicionDestinoUsuarioEgreso_id = ripsCondicionDestinoUsuarioEgreso,
+                         ripsCausaMotivoAtencion_id = ripsCausaMotivoAtencion,
+                         ripsRecienNacido = ripsRecienNacido,
+                         ripsPesoRecienNacido = ripsPesoRecienNacido,
+                         ripsNumConsultasCPrenatal = ripsNumConsultasCPrenatal,
+                         ripsEdadGestacional = ripsEdadGestacional,
+                         ripsDestinoUsuarioEgresoRecienNacido =ripsDestinoUsu1,
+                         ripsFinalidadConsulta_id = ripsFinalidadConsulta,
+                         fechaRegistro=fechaRegistro,
+                         usuarioRegistro_id=usernameId.id,
+                         estadoReg=estadoReg,
+        )
+        print("Voy a guardar la INFO")
 
-        try:
+        grabo.save()
+        print("yA grabe 2", grabo.id)
+        grabo.id
+        print("yA grabe" , grabo.id)
 
-                grabo = Ingresos(
-                                 sedesClinica_id=Sede,
-                                 tipoDoc_id=tipoDoc,
-                                 documento_id=documento_llave.id,
-                                 consec=consecAdmision,
-                                 fechaIngreso=fechaIngreso,
-                                 #fechaSalida=NULL,
-                                 factura=factura,
-                                 numcita=numcita,
-                                 serviciosIng_id=  busServicio2,
-                                 dependenciasIngreso_id=dependenciasIngreso,
-                                 dxIngreso_id=dxIngreso,
-                                 medicoIngreso_id=medicoIngreso,
-                                 especialidadesMedicosIngreso_id=especialidadesMedicos,
-                                 serviciosActual_id=busServicio2,
-                                 dependenciasActual_id=dependenciasIngreso,
-                                 dxActual_id = dxIngreso,
-                                 medicoActual_id=medicoIngreso,
-                                 especialidadesMedicosActual_id=especialidadesMedicos,
-                                 #dependenciasSalida_id = dependenciasSalida,
-                                 #dxSalida_id = dxSalida,
-                                 #medicoSalida_id=medicoSalida,
-                                 #especialidadesMedicosSalida_id="",
-                                 #estadoSalida_id = estadoSalida,
-                                 ViasIngreso_id=viasIngreso,
-                                 causasExterna_id=causasExterna,
-                                 regimen_id=regimenes,
-                                 tiposCotizante_id=tiposCotizante,
-                                 #empresa_id=empresaId,
-                                 ipsRemite_id=ipsRemite,
-                                 numManilla=numManilla,
-                                 #contactoAcompañante_id=contactoAcompanante,
-                                 #contactoResponsable_id=contactoResponsable,
-                                 remitido=remitido,
-                                 #salidaClinica=salidaClinica,
-                                 #salidaDefinitiva=salidaDefinitiva,
-                                 ripsServiciosIng_id = ripsServiciosIng,
-                                 ripsServiciosActual_id=ripsServiciosIng,
-                                 ripsmodalidadGrupoServicioTecSal_id = ripsmodalidadGrupoServicioTecSal,
-                                 ripsViaIngresoServicioSalud_id = ripsViaIngresoServicioSalud,
-                                 ripsGrupoServicios_id = ripsGrupoServicios,
-                                 ripsCondicionDestinoUsuarioEgreso_id = ripsCondicionDestinoUsuarioEgreso,
-                                 ripsCausaMotivoAtencion_id = ripsCausaMotivoAtencion,
-                                 ripsRecienNacido = ripsRecienNacido,
-                                 ripsPesoRecienNacido = ripsPesoRecienNacido,
-                                 ripsNumConsultasCPrenatal = ripsNumConsultasCPrenatal,
-                                 ripsEdadGestacional = ripsEdadGestacional,
-                                 ripsDestinoUsuarioEgresoRecienNacido =ripsDestinoUsu1,
-                                 ripsFinalidadConsulta_id = ripsFinalidadConsulta,
-                                 fechaRegistro=fechaRegistro,
-                                 usuarioRegistro_id=usernameId.id,
-                                 estadoReg=estadoReg,
-                )
-                print("Voy a guardar la INFO")
+        # Grabo Dependencias
 
-                grabo.save()
-                print("yA grabe 2", grabo.id)
-                grabo.id
-                print("yA grabe" , grabo.id)
+        print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
+        # ejemplo
+        grabo4 =  Dependencias.objects.filter(id = dependenciasIngreso).update(tipoDoc_id=tipoDoc, documento_id=documento_llave.id, consec=consecAdmision, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaRegistro)
 
-                # Grabo Dependencias
+        print("Grabe HISTPRICO DEPENDENCIAS")
 
-                print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
-                # ejemplo
-                grabo4 =  Dependencias.objects.filter(id = dependenciasIngreso).update(tipoDoc_id=tipoDoc, documento_id=documento_llave.id, consec=consecAdmision, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaRegistro)
+        # Grabo Dependencia Historico
 
-                print("Grabe HISTPRICO DEPENDENCIAS")
+        print("Voy a guardar HISTORICO dependencias ")
 
-                # Grabo Dependencia Historico
+        grabo2 = HistorialDependencias(
+            tipoDoc_id=tipoDoc,
+            documento_id=documento_llave.id,
+            consec=consecAdmision,
+            dependencias_id=dependenciasIngreso,
+            disponibilidad='O',
+            fechaRegistro=fechaRegistro,
+            usuarioRegistro_id=usernameId.id,
+            #fechaLiberacion=NULL,
+            fechaOcupacion=fechaRegistro,
+            estadoReg=estadoReg
 
-                print("Voy a guardar HISTORICO dependencias ")
+        )
+        grabo2.save()
+        print("yA grabe dependencias historico", grabo2.id)
 
-                grabo2 = HistorialDependencias(
-                    tipoDoc_id=tipoDoc,
-                    documento_id=documento_llave.id,
-                    consec=consecAdmision,
-                    dependencias_id=dependenciasIngreso,
-                    disponibilidad='O',
-                    fechaRegistro=fechaRegistro,
-                    usuarioRegistro_id=usernameId.id,
-                    fechaOcupacion=fechaRegistro,
-                    estadoReg=estadoReg
-
-                )
-                grabo2.save()
-                print("yA grabe dependencias historico", grabo2.id)
-
-                print("Grabe HISTPRICO DEPENDENCIAS")
-
-        except psycopg2.DatabaseError as error:
-            print(error)
-        finally:
-            pass
-
-        # HASTA AQUIP TRANSACCIONALIDAD
-
-
+        print("Grabe HISTPRICO DEPENDENCIAS")
 
         # RUTINA ARMADO CONTEXT
-        #
-        #
+
         ingresos = []
+
 
         miConexionx =  psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
         curx = miConexionx.cursor()
@@ -4460,31 +4436,6 @@ def crearAdmisionDef(request):
         context['TiposDocumento'] = tiposDocumento
 
         # Fin combo TiposDocumento
-
-        # Combo ips
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_ips c"
-
-        curt.execute(comando)
-        print(comando)
-
-        ips = []
-        ips.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ips.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print(ips)
-
-        context['Ips'] = ips
-
-        # Fin combo ips
-
 
         # Combo Centros
 
@@ -4875,198 +4826,9 @@ def crearAdmisionDef(request):
 
         # Fin combo Convenios
 
-        # Combo ripsServiciosIng
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsServicios  p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsServiciosIng = []
-        ripsServiciosIng.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ripsServiciosIng.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsServiciosIng", ripsServiciosIng)
-
-        context['RipsServiciosIng'] = ripsServiciosIng
-
-        # Fin combo ripsServiciosIng
-
-        # Combo ripsmodalidadGrupoServicioTecSal
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsModalidadAtencion   p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsmodalidadGrupoServicioTecSal = []
-        ripsmodalidadGrupoServicioTecSal.append({'id': '', 'nombre': ''})
-
-
-        for id, nombre in curt.fetchall():
-            ripsmodalidadGrupoServicioTecSal.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsmodalidadGrupoServicioTecSal", ripsmodalidadGrupoServicioTecSal)
-
-        context['RipsmodalidadGrupoServicioTecSal'] = ripsmodalidadGrupoServicioTecSal
-
-        # Fin combo ripsmodalidadGrupoServicioTecSal
-
-        # Combo ripsViaIngresoServicioSalud
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsviasingresosalud  p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsViaIngresoServicioSalud = []
-        ripsViaIngresoServicioSalud.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ripsViaIngresoServicioSalud.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsViaIngresoServicioSalud", ripsViaIngresoServicioSalud)
-
-        context['RipsViaIngresoServicioSalud'] = ripsViaIngresoServicioSalud
-
-        # Fin combo ripsViaIngresoServicioSalud
-
-        # Combo ripsGrupoServicios
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsGrupoServicios  p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsGrupoServicios = []
-        ripsGrupoServicios.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ripsGrupoServicios.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsGrupoServicios", ripsGrupoServicios)
-
-        context['RipsGrupoServicios'] = ripsGrupoServicios
-
-        # Fin combo ripsGrupoServicios
-
-        # Combo ripsCondicionDestinoUsuarioEgreso
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsCondicionDestinoUsuarioEgreso = []
-        ripsCondicionDestinoUsuarioEgreso.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ripsCondicionDestinoUsuarioEgreso.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsCondicionDestinoUsuarioEgreso", ripsCondicionDestinoUsuarioEgreso)
-
-        context['RipsCondicionDestinoUsuarioEgreso'] = ripsCondicionDestinoUsuarioEgreso
-
-        # Fin combo ripsCondicionDestinoUsuarioEgreso
-
-        # Combo ripsCausaMotivoAtencion
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripscausaexterna  p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsCausaMotivoAtencion = []
-        ripsCausaMotivoAtencion.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ripsCausaMotivoAtencion.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsCausaMotivoAtencion", ripsCausaMotivoAtencion)
-
-        context['RipsCausaMotivoAtencion'] = ripsCausaMotivoAtencion
-
-        # Fin combo ripsCausaMotivoAtencion
-
-        # Combo ripsDestinoUsuarioEgresoRecienNacido
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsDestinoUsuarioEgresoRecienNacido = []
-        ripsDestinoUsuarioEgresoRecienNacido.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            ripsDestinoUsuarioEgresoRecienNacido.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("ripsDestinoUsuarioEgresoRecienNacido", ripsDestinoUsuarioEgresoRecienNacido)
-
-        context['RipsDestinoUsuarioEgresoRecienNacido'] = ripsDestinoUsuarioEgresoRecienNacido
-
-        # Fin combo ripsDestinoUsuarioEgresoRecienNacido
-
-        # Combo ripsFinalidadConsulta
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c"
-
-        curt.execute(comando)
-        print(comando)
-
-        ripsFinalidadConsulta = []
-
-        for id, codigo, nombre in curt.fetchall():
-            ripsFinalidadConsulta.append({'id': id, 'codigo': codigo, 'nombre': nombre})
-
-        miConexiont.close()
-        print(ripsFinalidadConsulta)
-
-        context['RipsFinalidadConsulta'] = ripsFinalidadConsulta
-
-        # Fin combo ripsFinalidadConsulta
-
+        # Fin combo ocupaciones
         # FIN RUTINA ARMADO CONTEXT
 
 
@@ -5177,50 +4939,33 @@ def guardarUsuariosModal(request):
 
     fechaRegistro = datetime.datetime.now()
 
-    print ("Usuarios = ", Usuarios)
+
+    if Usuarios == []:
+
+         print("Entre a crear")
+
+         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+         cur3 = miConexion3.cursor()
+         comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio", pais_id,  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", municipio_id, localidad_id, "estadoCivil_id", ocupacion_id, correo ,"fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" +  ', ' + "'" + str(pais) + "'" + ', ' + "'" + str(departamento) + "'" +  '  , ' + "'" +  str(ciudad) + "'" + '  , ' + "'" +  str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosc_id) + "'" +  ', ' + "'" + str(tipoDoc_id) + "'" + ', ' + "'" + str(tiposUsuario_id) + "' , " + "'" + str(municipio) + "'" +   ', ' + "'" + str(localidad) + "'" + ", " + "'" + str(estadoCivil) + "'" + ", " + "'" + str(ocupacion) + "'" + ", " + "'" + str(correo) + "', " +  "'"  + str(fechaRegistro) + "'"  +  ", 'A'"  +      ')'
+         print(comando)
+         cur3.execute(comando)
+         miConexion3.commit()
+         miConexion3.close()
+         return HttpResponse("Usuario Creado ! ")
+    else:
+        print("Entre a actualizar")
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosc_id) + "'" + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario_id) + "' , "   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= ' + "'" + str(estadoCivil) + "'" + ', ocupacion_id = ' + "'" + str(ocupacion) + "'"  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
+
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
 
 
-    miConexion3 = None
-    try:
-
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-            cur3 = miConexion3.cursor()
-
-            if Usuarios == []:
-
-                 print("Entre a crear")
-                 comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio", pais_id,  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", municipio_id, localidad_id, "estadoCivil_id", ocupacion_id, correo ,"fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" +  ', ' + "'" + str(pais) + "'" + ', ' + "'" + str(departamento) + "'" +  '  , ' + "'" +  str(ciudad) + "'" + '  , ' + "'" +  str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosc_id) + "'" +  ', ' + "'" + str(tipoDoc_id) + "'" + ', ' + "'" + str(tiposUsuario_id) + "' , " + "'" + str(municipio) + "'" +   ', ' + "'" + str(localidad) + "'" + ", " + "'" + str(estadoCivil) + "'" + ", " + "'" + str(ocupacion) + "'" + ", " + "'" + str(correo) + "', " +  "'"  + str(fechaRegistro) + "'"  +  ", 'A'"  +      ')'
-                 print(comando)
-
-            else:
-                print("Entre a actualizar")
-                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosc_id) + "'" + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario_id) + "' , "   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= ' + "'" + str(estadoCivil) + "'" + ', ocupacion_id = ' + "'" + str(ocupacion) + "'"  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
-                print(comando)
-
-            cur3.execute(comando)
-            miConexion3.commit()
-            cur3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Paciente Actualizado !'})
-
-    except psycopg2.DatabaseError as error:
-        print ("Entre por rollback" , error)
-        if miConexion3:
-            print("Entro ha hacer el Rollback")
-            miConexion3.rollback()
-
-        datos = {'Mensaje': error}
-        print ("Voy a hacer el jsonresponde")
-
-        #return JsonResponse(datos, safe=False)
-        return JsonResponse({'success': False, 'Mensaje': error})
-
-    finally:
-        print("Finally")
-        if miConexion3:
-            miConexion3.close()
-            print("Cerre conexion")
-
-
+        miConexion3.close()
+        return HttpResponse("Usuario Actualizado ! ")
 
 def encuentraAdmisionModal(request) : #, tipoDoc, documento, consec, sede):
 
@@ -5468,6 +5213,8 @@ def guardaCambioServicio(request):
     dependenciaFin = request.POST["dependenciaCambio"]
     fechaOcupacion = datetime.datetime.now()
     fechaRegistro= fechaOcupacion
+
+
 
     CambioServicio['TipoDocx'] = tipoDoc
     CambioServicio['Documentox'] = documento
@@ -5776,42 +5523,45 @@ def GuardaConvenioAdmision(request):
     print  ("registroId documento =" , registroId.documento_id)
 
     ## falta usuarioRegistro_id
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'insert into facturacion_ConveniosPacienteIngresos ("consecAdmision", "fechaRegistro",  convenio_id, documento_id, "tipoDoc_id" , "usuarioRegistro_id" ,"estadoReg") values (' + "'" + str(registroId.consec) + "'" + ' , ' + "'" + str(fechaRegistro) + "'" + ', ' + "'" + str(convenio) + "'" + '  , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.tipoDoc_id) + "',"  + "'" + str("1") + "'," + "'" +  str("A") + "');"
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
 
-    ## Desde Aquip Transaccionalidad
 
 
-    miConexion3 = None
+    #return HttpResponse("Convenio Adicionado", content_type='application/json')
+
+    ## Aqui rutina para actualizar el cabezote de facturacion_liquidacion el convenio_id
+
     try:
+        liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec ,convenio_id=convenio )
+    except Liquidacion.DoesNotExist:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-            cur3 = miConexion3.cursor()
-            comando1 = 'insert into facturacion_ConveniosPacienteIngresos ("consecAdmision", "fechaRegistro",  convenio_id, documento_id, "tipoDoc_id" , "usuarioRegistro_id" ,"estadoReg") values (' + "'" + str(registroId.consec) + "'" + ' , ' + "'" + str(fechaRegistro) + "'" + ', ' + "'" + str(convenio) + "'" + '  , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.tipoDoc_id) + "'," + "'" + str("1") + "'," + "'" + str("A") + "');"
-            print(comando1)
-            liquidacionId = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id,  consecAdmision=registroId.consec, convenio_id=convenio)
+        liquidacionId = ''
+        print("Entre excepcion")
 
-            if (liquidacionId == ''):
+    print ("liquidacionId = ", liquidacionId)
 
-                comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
-                print(comando)
-                print("comando2= ", comando2)
+    if (liquidacionId == ''):
 
-            cur3.execute(comando1)
-            cur3.execute(comando2)
-            miConexion3.commit()
-            cur3.close()
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','"  + str(sede) + "')"
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        miConexion3.close()
 
-            return JsonResponse({'success': True, 'Mensaje': 'Convenio Actualizado satisfactoriamente!'})
+    ## Fin RUTINA
 
 
-    except psycopg2.DatabaseError as error:
-        if miConexion3:
-            miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
 
-    finally:
-        if miConexion3:
-            miConexion3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Convenio Actualizado satisfactoriamente!'})
+    return JsonResponse({'success': True, 'message': 'Convenio Actualizado satisfactoriamente!'})
+
 
 
 def GuardaAbonosAdmision(request):
@@ -5933,7 +5683,6 @@ def GuardaAbonosAdmision(request):
     totalLiquidacion = totalSuministros + totalProcedimientos
 
     print ("totalLiquidacion = ",totalLiquidacion )
-
     # Actualizo Totales de cabezote
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
@@ -5947,7 +5696,12 @@ def GuardaAbonosAdmision(request):
     miConexiont.commit()
     miConexiont.close()
 
+
+
     return JsonResponse({'success': True, 'message': 'Abono Actualizado satisfactoriamente!'})
+
+
+
 
 
 def PostDeleteConveniosAdmision(request):
@@ -5957,27 +5711,12 @@ def PostDeleteConveniosAdmision(request):
 
     id = request.POST["id"]
     print ("el id es = ", id)
-    # Aqui Manejo Transaccionalidad
 
-    miConexion3 = None
-    try:
 
-        post = ConveniosPacienteIngresos.objects.get(id=id)
-        post.delete()
-
-        return JsonResponse({'success': True, 'message': 'Convenio borrado!'})
-
-    except psycopg2.DatabaseError as error:
-        if miConexion3:
-            miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
-
-    finally:
-        if miConexion3:
-            miConexion3.close()
-            return JsonResponse({'success': True, 'message': 'Convenio borrado!'})
-
-    # Aqui Fin Manejo Transaccionalidad
+    post = ConveniosPacienteIngresos.objects.get(id=id)
+    post.delete()
+    #return HttpResponseRedirect(reverse('index'))
+    return JsonResponse({'success': True, 'message': 'Convenio borrado!'})
 
 
 def PostDeleteAbonosAdmision(request):
@@ -5996,34 +5735,16 @@ def PostDeleteAbonosAdmision(request):
 
         return JsonResponse({'success': False, 'message': 'No se puede anular Abono con Facturas relacionadas!'})
 
-        # Aqui Manejo Transaccionalidad
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
 
-    miConexion3 = None
-    try:
+    comando = 'UPDATE cartera_Pagos SET "estadoReg" = ' + "'" + str('N') + "' WHERE id =  " + id
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-            cur3 = miConexion3.cursor()
-            comando = 'UPDATE cartera_Pagos SET "estadoReg" = ' + "'" + str('N') + "' WHERE id =  " + id
-            print("comando = ", comando)
-            cur3.execute(comando)
-            miConexion3.commit()
-            cur3.close()
-
-            return JsonResponse({'success': True, 'message': 'Abono Cancelado!'})
-
-
-    except psycopg2.DatabaseError as error:
-            if miConexion3:
-                miConexion3.rollback()
-                return JsonResponse({'success': False, 'Mensaje': error})
-
-    finally:
-            if miConexion3:
-                miConexion3.close()
-                return JsonResponse({'success': True, 'message': 'Abono Cancelado!'})
-
-    # Aqui Fin Manejo Transaccionalidad
-
+    return JsonResponse({'success': True, 'message': 'Abono Cancelado!'})
 
 def GuardarResponsableAdmision(request):
 
@@ -6037,35 +5758,16 @@ def GuardarResponsableAdmision(request):
     registroId = Ingresos.objects.get(id=ingresoId)
     print  ("registroId documento =" , registroId.documento_id)
 
-    # Aqui Manejo Transaccionalidad
+    ## falta usuarioRegistro_id
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE admisiones_ingresos set "contactoResponsable_id" = ' + "'" + str(responsable) + "' WHERE id = " + "'" + str(ingresoId) +"'"
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
 
-    miConexion3 = None
-    try:
-
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        cur3 = miConexion3.cursor()
-        comando = 'UPDATE admisiones_ingresos set "contactoResponsable_id" = ' + "'" + str(responsable) + "' WHERE id = " + "'" + str(ingresoId) + "'"
-        print("comando = ", comando)
-        cur3.execute(comando)
-        miConexion3.commit()
-        cur3.close()
-
-        return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
-
-
-    except psycopg2.DatabaseError as error:
-        if miConexion3:
-            miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
-
-    finally:
-        if miConexion3:
-            miConexion3.close()
-            return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
-
-    # Aqui Fin Manejo Transaccionalidad
-
-
+    return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
 
 def GuardarAcompananteAdmision(request):
 
@@ -6079,33 +5781,16 @@ def GuardarAcompananteAdmision(request):
     registroId = Ingresos.objects.get(id=ingresoId)
     print  ("registroId documento =" , registroId.documento_id)
 
-    # Aqui Manejo Transaccionalidad
+    ## falta usuarioRegistro_id
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'UPDATE admisiones_ingresos set "contactoAcompañante_id" = ' + "'" + str(acompanante) + "' WHERE id = " + "'" + str(ingresoId) +"'"
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
 
-    miConexion3 = None
-    try:
-
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        cur3 = miConexion3.cursor()
-        comando = 'UPDATE admisiones_ingresos set "contactoAcompañante_id" = ' + "'" + str(acompanante) + "' WHERE id = " + "'" + str(ingresoId) + "'"
-        print("comando = ", comando)
-        cur3.execute(comando)
-        miConexion3.commit()
-        cur3.close()
-
-        return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
-
-
-    except psycopg2.DatabaseError as error:
-        if miConexion3:
-            miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
-
-    finally:
-        if miConexion3:
-            miConexion3.close()
-            return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
-
-    # Aqui Fin Manejo Transaccionalidad
+    return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
 
 
 def GuardaFurips(request):
@@ -6132,35 +5817,14 @@ def GuardaFurips(request):
     print ("numeroFactura = ", numeroFactura)
     primerNombreVictima = request.POST["primerNombreVictima"]
     print ("primerNombreVictima = ", primerNombreVictima)
+    
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    cur3 = miConexion3.cursor()
+    comando = 'insert into admisiones_furips (documento_id,  "tipoDoc_id" , consec , "numeroRadicacion", "fechaRadicado" , "primerNombreVictima", "primerApellidoVictima" , "fechaRegistro" ,"estadoReg") values (' + "'" + str(registroId.documento_id) + "',"   + "'" + str(registroId.tipoDoc_id) + "'," +  "'" + str(registroId.consec) + "'" + ' , ' + "'" + str(numeroRadicacion) + "'" + '  , ' + "'" + str(fechaRadicado) + "'" + ', ' + "'" + str(primerNombreVictima) + "',"   + "'" + str(primerApellidoVictima) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") + "');"
+    print(comando)
+    cur3.execute(comando)
+    miConexion3.commit()
+    miConexion3.close()
 
-    # Aqui Manejo Transaccionalidad
-
-    miConexion3 = None
-    try:
-
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        cur3 = miConexion3.cursor()
-        comando = 'insert into admisiones_furips (documento_id,  "tipoDoc_id" , consec , "numeroRadicacion", "fechaRadicado" , "primerNombreVictima", "primerApellidoVictima" , "fechaRegistro" ,"estadoReg") values (' + "'" + str(registroId.documento_id) + "'," + "'" + str(registroId.tipoDoc_id) + "'," + "'" + str(registroId.consec) + "'" + ' , ' + "'" + str(numeroRadicacion) + "'" + '  , ' + "'" + str(fechaRadicado) + "'" + ', ' + "'" + str(primerNombreVictima) + "'," + "'" + str(primerApellidoVictima) + "','" + str(fechaRegistro) + "'," + "'" + str("A") + "');"
-        print("comando = ", comando)
-        cur3.execute(comando)
-        miConexion3.commit()
-        cur3.close()
-
-        return JsonResponse({'success': True,  'Mensaje':'Furips Actualizado satisfactoriamente!'})
-
-
-    except psycopg2.DatabaseError as error:
-        if miConexion3:
-            miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
-
-    finally:
-        if miConexion3:
-            miConexion3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Furips Actualizado satisfactoriamente!'})
-
-    # Aqui Fin Manejo Transaccionalidad
-
-
-
+    return JsonResponse({'success': True, 'message': 'Furips Actualizado satisfactoriamente!'})
 

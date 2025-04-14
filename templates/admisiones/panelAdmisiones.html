@@ -275,9 +275,11 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 <td>
                                     <a href="#" class="btn btn-primary eBtn1" role="button" data-toggle="modal" id="banda1" >
                                       </a>
-			 <!--   onclick="findOneAdmision( {{ingresos.tipoDoc}} , {{ingresos.Documento}} ,{{ingresos.Nombre}} ,{{Sede}})" -->
+						</td>
                                 </td>
-				                <td><input id="ingresoId" name="ingresoId" type="radio" value="{{ingresos.id}}" /></td>
+				                <td>
+					<input type="radio" id="ingresoId" name="ingresoId" value=""></input>
+				</td>
                             </tr>
                             {% endfor %}
                             <tbody>
@@ -532,7 +534,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     <div class="col">
                                         <label for="busSubServicio22" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SubServicios:</label>
                                         <div class="col-sm-4">
-                                            <select class="select-css"
+                                            <select class="select-css" id="busSubServicio22"
                                                     name="busSubServicio22"
                                                     required>
                                                 {% for subServicios in SubServicios %}
@@ -563,7 +565,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                         <label for="tipoDoc22" class="col-sm-1 control-label">TipoDoc:</label>
                                         <div class="col-sm-8">
-                                            <select class="select-css"
+                                            <select class="select-css" id="tipoDoc22" 
                                                     name="tipoDoc22" required>
                                                 {% for tiposDocumento in TiposDocumento %}
                                                 <option value="{{tiposDocumento.id}}"> {{tiposDocumento.nombre}}
@@ -1120,6 +1122,10 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                     </div>
                                     <div class="modal-footer">
+
+					  <span id="mensajesErrorModalUsuario" name="mensajesErrorModalUsuario" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
+
+
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"
                                                 onclick="CierraModal()">Close
                                         </button>
@@ -2069,7 +2075,7 @@ function cargarTablaAbonosPaciente()
                     </td>
                 <tr>
             </table>
-					  <span id="mensajes" name="mensajes" style="color=blue">Aqui mensajes :  </span>
+
          </div>
      
     </article>
@@ -2300,8 +2306,9 @@ function cargarTablaAbonosPaciente()
 
 {% block mensajeria %}
 <div class="marco">
-<span> Avisos ... </span>
-     <span id="mensajes" name="mensajes">xxxx </span>
+
+        <span id="mensajes" name="mensajes" style= "color:blue; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
+     <span id="mensajesError" name="mensajesError" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
 
 </div>
 {% endblock %}

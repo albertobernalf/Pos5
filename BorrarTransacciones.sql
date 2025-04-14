@@ -61,5 +61,8 @@ delete from clinico_historiarevisionsistemas; -- ok 0
 delete from clinico_historiasignosvitales; -- ok 0
 
 
+select * from sitios_dependencias;
 
+UPDATE sitios_dependencias
+set disponibilidad='L', documento_id=null,"fechaLiberacion" = null, "fechaOcupacion"=null,"tipoDoc_id" = null;
 

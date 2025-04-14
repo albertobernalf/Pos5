@@ -153,6 +153,11 @@ class Suministros (models.Model):
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['nombre'], name='suministrosNombreIdx'),
+        ]
+
     def __str__(self):
         return '%s %s' % (self.nombre , self.cums)
         #return str(self.nombre)

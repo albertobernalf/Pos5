@@ -14,6 +14,9 @@ console.log(form2)
 
 $(document).ready(function () {
 
+
+	alert("Listo ya cargue CONTEXT Me demore ?");
+
 	  var data =  {}   ;
 
           $('input[name="ingresoId"]').prop('checked', true);
@@ -21,29 +24,37 @@ $(document).ready(function () {
          var valor = $('input[name="ingresoId"]:checked').val();
 	 var sede = document.getElementById("sede").value;
 
+	 alert("valor = "  + valor)
+	 if (valor== "undefined")
+		{
+		alert("Entre Indefinido");
+		valor=0;
+			}
+
 	 document.getElementById("ingresoIdGlobal").value = valor;
 	 document.getElementById("ingresoId22").value = valor;
-	 document.getElementById("ingresoId").value = valor;
+
 	 document.getElementById("ingresoId1").value = valor;
 	 document.getElementById("ingresoId2").value = valor;
 	 document.getElementById("ingresoId4").value = valor;
 	 document.getElementById("ingresoId5").value = valor;
 	 document.getElementById("ingresoId6").value = valor;
 	 document.getElementById("ingresoIdF").value = valor;
-
+	
 
           var sede = document.getElementById("sede1").value;
           data['sede'] = sede;
           var ingresoId= document.getElementById("ingresoId1").value;
+
           data['ingresoId'] = valor  // ingresoId;
 
           data = JSON.stringify(data);
 
-
+/*
     initTableConvenios(data);
     initTableAbonos(data);
 
-/*
+
     tableActions();
 */
 
@@ -304,7 +315,7 @@ function clickEvent() {
 
      document.getElementById("ingresoIdGlobal").value = valor;
 	 document.getElementById("ingresoId22").value = valor;
-	 document.getElementById("ingresoId").value = valor;
+
 	 document.getElementById("ingresoId1").value = valor;
 	 document.getElementById("ingresoId2").value = valor;
 	 document.getElementById("ingresoId4").value = valor;
@@ -573,9 +584,11 @@ function AUsuario()
 
 		success: function (respuesta) {
 
+		alert("DE TODAS FORMAS ME DEVOLVI" +  respuesta)
+
 			$('#usuariosModal').modal().hide();
  
-                $('#mensajes').html('<span> respuesta</span>');
+                $('#mensajes').html(respuesta.Mensaje);
 	               // $('#usuariosModal').modal().hide();
 
 			$('#usuariosModal').modal('hide');   
@@ -583,6 +596,16 @@ function AUsuario()
 
                     },
 	   		    error: function (request, status, error) {
+				alert("Entre por rollback" +  error)
+				alert("request" +  request)
+				
+				alert("status" +  JSON.stringify(status))
+				alert("status" +  status.Mensaje)
+
+				alert("Entre por rollback" +  error.Mensaje)
+
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = error
+
 	   	    	}
 	});
 };

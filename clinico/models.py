@@ -225,6 +225,12 @@ class Examenes(models.Model):
     class Meta:
         unique_together = (('codigoCups'),)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['nombre'], name='examenesNombreIdx'),
+        ]
+
+
     def __str__(self):
         return '%s %s' % (self.nombre , self.codigoCups)
         #return self.nombre
