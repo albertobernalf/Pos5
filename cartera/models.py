@@ -32,6 +32,7 @@ class Pagos(models.Model):
     totalAplicado = models.DecimalField( max_digits=20, decimal_places=2 , blank=True, null=True, editable=True , default=0.0)
     valorEnCurso = models.DecimalField( max_digits=20, decimal_places=2 , blank=True, null=True, editable=True , default=0.0)
     saldo = models.DecimalField( max_digits=20, decimal_places=2, default=0.0)
+    convenio = models.ForeignKey('contratacion.Convenios', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     #facturaAplicada  =  models.ForeignKey('facturacion.facturacion',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     fechaRegistro = models.DateTimeField(default=now, blank=True, null=True, editable=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)

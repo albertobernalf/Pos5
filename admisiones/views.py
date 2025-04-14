@@ -511,7 +511,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     tiposUsuario = []
     tiposUsuario.append({'id': '', 'nombre': ''})
-    # tiposUsuario.append({'id': '', 'nombre': ''})
+
 
     for id, nombre in curt.fetchall():
         tiposUsuario.append({'id': id, 'nombre': nombre})
@@ -562,6 +562,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print(comando)
 
     centros = []
+    centros.append({'id': '', 'nombre': ''})
 
     for id, nombre in curt.fetchall():
         centros.append({'id': id, 'nombre': nombre})
@@ -4097,7 +4098,16 @@ def crearAdmisionDef(request):
                 print("Grabe HISTPRICO DEPENDENCIAS")
 
         except psycopg2.DatabaseError as error:
-            print(error)
+            print (error)
+            pass
+        #    print("Entre por rollback", error)
+        #    if miConexion3:
+        #        print("Entro ha hacer el Rollback")
+        #        miConexion3.rollback()
+
+        #   print("Voy a hacer el jsonresponde")
+        #   return JsonResponse({'success': False, 'Mensaje': error})
+
         finally:
             pass
 
@@ -5140,22 +5150,41 @@ def guardarUsuariosModal(request):
     direccion = request.POST["direccion"]
     telefono = request.POST["telefono"]
     contacto = request.POST["contacto"]
-    #centrosc_id = request.POST["centrosc"]
+    centrosc_id = request.POST["centrosC_id"]
     #quemado por el momento mientras encuentor que pasa
-    centrosc_id = 1
     tiposUsuario_id = request.POST["tiposUsuario"]
     print("DIRECCION = ", direccion)
     print("telefono = ", telefono)
     print("contacto = ", contacto)
+    print("centrosc_id = ", centrosc_id)
     municipio  = request.POST['municipios']
     localidad  = request.POST['localidades']
     estadoCivil  = request.POST['estadoCivil']
+    ocupaciones  = request.POST['ocupaciones']
+
+    if estadoCivil == '':
+           estadoCivil="null"
+
+    if tiposUsuario_id == '':
+           tiposUsuario_id="null"
+
+
+    if tiposUsuario_id == '':
+           tiposUsuario_id="null"
+
+    if centrosc_id == '':
+           centrosc_id="null"
+
+    if ocupaciones == '':
+           ocupaciones="null"
+
+
     ocupacion = request.POST['ocupaciones']
     correo = request.POST["correo"]
 
     correo = request.POST["correo"]
 
-    print("centrosc_id = ", centrosc_id)
+
 
     print(documento)
     print(tipoDoc_id)
@@ -5189,18 +5218,22 @@ def guardarUsuariosModal(request):
             if Usuarios == []:
 
                  print("Entre a crear")
-                 comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio", pais_id,  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", municipio_id, localidad_id, "estadoCivil_id", ocupacion_id, correo ,"fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" +  ', ' + "'" + str(pais) + "'" + ', ' + "'" + str(departamento) + "'" +  '  , ' + "'" +  str(ciudad) + "'" + '  , ' + "'" +  str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosc_id) + "'" +  ', ' + "'" + str(tipoDoc_id) + "'" + ', ' + "'" + str(tiposUsuario_id) + "' , " + "'" + str(municipio) + "'" +   ', ' + "'" + str(localidad) + "'" + ", " + "'" + str(estadoCivil) + "'" + ", " + "'" + str(ocupacion) + "'" + ", " + "'" + str(correo) + "', " +  "'"  + str(fechaRegistro) + "'"  +  ", 'A'"  +      ')'
+                 comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio", pais_id,  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", municipio_id, localidad_id, "estadoCivil_id", ocupacion_id, correo ,"fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" +  ', ' + "'" + str(pais) + "'" + ', ' + "'" + str(departamento) + "'" +  '  , ' + "'" +  str(ciudad) + "'" + '  , ' + "'" +  str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' +  str(centrosc_id) +  ', ' + "'" + str(tipoDoc_id) + "'" + ', ' + str(tiposUsuario_id) + " , " + "'" + str(municipio) + "'" +   ', ' + "'" + str(localidad) + "'" + ", " + str(estadoCivil)  + ", " + str(ocupaciones) + ", " + "'" + str(correo) + "', " +  "'"  + str(fechaRegistro) + "'"  +  ", 'A'"  +      ')'
                  print(comando)
 
             else:
                 print("Entre a actualizar")
-                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosc_id) + "'" + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario_id) + "' , "   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= ' + "'" + str(estadoCivil) + "'" + ', ocupacion_id = ' + "'" + str(ocupacion) + "'"  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
+                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + str(centrosc_id)  + ', "tiposUsuario_id" = ' + str(tiposUsuario_id) + ","   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= '  + str(estadoCivil)  + ', ocupacion_id = ' + str(ocupaciones)  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
                 print(comando)
 
             cur3.execute(comando)
             miConexion3.commit()
             cur3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Paciente Actualizado !'})
+
+            if Usuarios == []:
+                return JsonResponse({'success': True, 'Mensaje': 'Paciente Creado !'})
+            else:
+                return JsonResponse({'success': True, 'Mensaje': 'Paciente Actualizado !'})
 
     except psycopg2.DatabaseError as error:
         print ("Entre por rollback" , error)
@@ -5208,10 +5241,7 @@ def guardarUsuariosModal(request):
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
 
-        datos = {'Mensaje': error}
         print ("Voy a hacer el jsonresponde")
-
-        #return JsonResponse(datos, safe=False)
         return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
@@ -5237,6 +5267,32 @@ def encuentraAdmisionModal(request) : #, tipoDoc, documento, consec, sede):
         print("Sede = ", sede)
         print("consec = ", consec)
 
+        # Combo Convenios Pacienmte
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'SELECT p.convenio_id id, conv.nombre  nombre FROM facturacion_conveniospacienteingresos p , contratacion_convenios conv where conv.id = p.convenio_id AND  p."tipoDoc_id"  = '  + "'" +str(tipoDoc) + "' AND documento_id = " + "'" + str(documento) + "'" + '"consecAdmision" =' +"'" + str(consec) + "'"
+
+        curt.execute(comando)
+        print(comando)
+
+        conveniosPaciente = []
+
+
+        for id, nombre in curt.fetchall():
+            conveniosPaciente.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("conveniosPaciente", conveniosPaciente)
+
+        context['ConveniosPaciente'] = conveniosPaciente
+
+        # Fin combo Convenios
+
+
         tipoDoc1 = TiposDocumento.objects.get(nombre=tipoDoc)
         print("tipodoc1 = ", tipoDoc1.id)
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -5260,6 +5316,8 @@ def encuentraAdmisionModal(request) : #, tipoDoc, documento, consec, sede):
 
         miConexiont.close()
         print(Usuarios)
+
+        Usuarios['ConveniosPaciente'] =  conveniosPaciente
 
         if Usuarios == '[]':
             datos = {'Mensaje': 'Usuario No existe'}
@@ -5785,15 +5843,13 @@ def GuardaConvenioAdmision(request):
 
             miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
+
             comando1 = 'insert into facturacion_ConveniosPacienteIngresos ("consecAdmision", "fechaRegistro",  convenio_id, documento_id, "tipoDoc_id" , "usuarioRegistro_id" ,"estadoReg") values (' + "'" + str(registroId.consec) + "'" + ' , ' + "'" + str(fechaRegistro) + "'" + ', ' + "'" + str(convenio) + "'" + '  , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.tipoDoc_id) + "'," + "'" + str("1") + "'," + "'" + str("A") + "');"
             print(comando1)
-            liquidacionId = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id,  consecAdmision=registroId.consec, convenio_id=convenio)
 
-            if (liquidacionId == ''):
-
-                comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
-                print(comando)
-                print("comando2= ", comando2)
+            comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
+            print("comando1= ", comando1)
+            print("comando2= ", comando2)
 
             cur3.execute(comando1)
             cur3.execute(comando2)
@@ -5804,14 +5860,18 @@ def GuardaConvenioAdmision(request):
 
 
     except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
         if miConexion3:
+            print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
             miConexion3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Convenio Actualizado satisfactoriamente!'})
+
 
 
 def GuardaAbonosAdmision(request):
@@ -5827,6 +5887,9 @@ def GuardaAbonosAdmision(request):
     print ("ingresoId = ", ingresoId)
     print("sede = ", sede)
     print("formaPago = ", formaPago)
+    convenioPaciente = request.POST['convenioPaciente']
+    print ("convenioPaciente = ", convenioPaciente)
+
 
     fechaRegistro = datetime.datetime.now()
 
@@ -5836,7 +5899,7 @@ def GuardaAbonosAdmision(request):
     ## falta usuarioRegistro_id
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0);'
+    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso", convenio values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0, ' + "'" + str(convenioPaciente) + "')"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
@@ -5905,14 +5968,12 @@ def GuardaAbonosAdmision(request):
     else:
         totalAbonos=registroPago.totalAbonos
 
-
-
     formaPagoCopago = FormasPagos.objects.get(nombre='COPAGO')
 
     print ("formaPagoCopago.id = ", formaPagoCopago.id)
 
     if (formaPagoCopago.id == int(formaPago)):
-        print ("Entre copago")
+        print ("Entre formaPagoCopago")
         totalCopagos = totalCopagos + 0
 
     formaPagoCuotaModeradora = FormasPagos.objects.get(nombre='CUOTA MODERADORA')
@@ -5929,6 +5990,10 @@ def GuardaAbonosAdmision(request):
     print("totalCopagos = ", totalCopagos)
 
     totalRecibido = totalCopagos + totalCuotaModeradora + totalAnticipos + totalAbonos
+    if totalRecibido==None:
+        totalRecibido=0.0
+
+    print("total recibido = ", totalRecibido )
     valorApagar = totalSuministros + totalProcedimientos - totalRecibido
     totalLiquidacion = totalSuministros + totalProcedimientos
 
@@ -5967,15 +6032,21 @@ def PostDeleteConveniosAdmision(request):
 
         return JsonResponse({'success': True, 'message': 'Convenio borrado!'})
 
+
     except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
         if miConexion3:
+            print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
 
     finally:
         if miConexion3:
             miConexion3.close()
-            return JsonResponse({'success': True, 'message': 'Convenio borrado!'})
+
 
     # Aqui Fin Manejo Transaccionalidad
 
@@ -6011,16 +6082,19 @@ def PostDeleteAbonosAdmision(request):
 
             return JsonResponse({'success': True, 'message': 'Abono Cancelado!'})
 
-
     except psycopg2.DatabaseError as error:
-            if miConexion3:
-                miConexion3.rollback()
-                return JsonResponse({'success': False, 'Mensaje': error})
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
             if miConexion3:
                 miConexion3.close()
-                return JsonResponse({'success': True, 'message': 'Abono Cancelado!'})
+
 
     # Aqui Fin Manejo Transaccionalidad
 
@@ -6052,16 +6126,21 @@ def GuardarResponsableAdmision(request):
 
         return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
 
-
     except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
         if miConexion3:
+            print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+
 
     finally:
         if miConexion3:
             miConexion3.close()
-            return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
+
 
     # Aqui Fin Manejo Transaccionalidad
 
@@ -6094,16 +6173,21 @@ def GuardarAcompananteAdmision(request):
 
         return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
 
-
     except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
         if miConexion3:
+            print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+
 
     finally:
         if miConexion3:
             miConexion3.close()
-            return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
+
 
     # Aqui Fin Manejo Transaccionalidad
 
@@ -6148,16 +6232,19 @@ def GuardaFurips(request):
 
         return JsonResponse({'success': True,  'Mensaje':'Furips Actualizado satisfactoriamente!'})
 
-
     except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
         if miConexion3:
+            print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
             miConexion3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Furips Actualizado satisfactoriamente!'})
+
 
     # Aqui Fin Manejo Transaccionalidad
 

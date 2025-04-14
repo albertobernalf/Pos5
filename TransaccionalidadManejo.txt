@@ -26,7 +26,4 @@
 
 # Aqui Fin Manejo Transaccionalidad
 
--- Ojo en views de Admisiones faltan (3) Funciones def : por pasar OJOO
-	 <!--   onclick="findOneAdmision( {{ingresos.tipoDoc}} , {{ingresos.Documento}} ,{{ingresos.Nombre}} ,{{Sede}})" -->
 
-falta pais y tipo de usuarios cuando crea usuario por segunda vez

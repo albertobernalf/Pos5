@@ -50,11 +50,11 @@ $(document).ready(function () {
 
           data = JSON.stringify(data);
 
-/*
+
     initTableConvenios(data);
     initTableAbonos(data);
 
-
+/*
     tableActions();
 */
 
@@ -165,8 +165,7 @@ $(document).ready(function () {
 
                         //  $("input[name='description']").val('');
                         $('#crearConvenioModel').modal('hide');
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.message);
+      
                     }else{
                         printErrorMsg(data.error)
                     }
@@ -175,15 +174,18 @@ $(document).ready(function () {
 	          table.ajax.reload();
 
                 },
-                error: function (data) {
-			alert("VENGO CON ERRORES :" , printErrorMsg(data.error));
-                   // $('#saveBtnCrearConvenio').html('NOT Save Changes');
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
+
+
+	   		    error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				 alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesErrorModalConvenio").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 
 		  var table = $('#tablaConveniosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 	          table.ajax.reload();
-                }
+
+	   	    	}
             });
         });
 
@@ -255,9 +257,15 @@ $(document).ready(function () {
 			            var table = $('#tablaConveniosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 		                table.ajax.reload();
                     },
-	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   		    error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
 	   	    	}
+
+
 	           });
 	});
 
@@ -286,9 +294,15 @@ $(document).ready(function () {
 			            var table = $('#tablaConveniosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 		                table.ajax.reload();
                     },
-	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   		    error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
 	   	    	}
+
+
 	           });
 	});
 	const get = document.getElementById('dispara');
@@ -392,8 +406,14 @@ function clickEvent() {
                      // Hasta Aqui FURIPS
 
                     },
-	   		    error: function (request, status, error) {
+	   		    error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
 	   	    	}
+
 	}); 
 
 //	alert("Regreso de click Event");
@@ -404,11 +424,12 @@ function clickEvent() {
 
 $(document).on('change', '#ingresoId', function(event) {
 
-    var valor = $('input[name="ingresoId"]:checked').val();
+	alert("Entre por cambio en el radio IngresoId");
 
-//	alert("Entre cambio de fila NUEVO VALOR DE FILA = " + valor);
+	    var valor=   $(this).val()
+	  alert (" Entre Seleciono fila con valor = " + valor);	
 
-  
+
            document.getElementById("mensajes").innerText="";
            document.getElementById("tipoDocx").value="";
            document.getElementById("documentox").value="";
@@ -427,6 +448,7 @@ $(document).on('change', '#ingresoId', function(event) {
    	    document.getElementById("ingresoId").value = valor;
 	    document.getElementById("ingresoId1").value = valor;
 	    document.getElementById("ingresoId2").value = valor;
+
 	    document.getElementById("ingresoId4").value = valor;
 	    document.getElementById("ingresoId5").value = valor;
 	    document.getElementById("ingresoId6").value = valor;
@@ -473,12 +495,10 @@ $(document).on('change', '#ingresoId', function(event) {
 		$('#convPaciente').val(cambioServicio['Usuarios'].paciente);		
 		 $('#convConsec').val(cambioServicio['Usuarios'].consec);
 
-
 		$('#convTipoDocA').val(cambioServicio['Usuarios'].tipoDoc);
 		 $('#convNumdocA').val(cambioServicio['Usuarios'].documento);
 		 $('#convPacienteA').val(cambioServicio['Usuarios'].paciente);
 		 $('#convConsecA').val(cambioServicio['Usuarios'].consec);
-
 
 
 		 $('#responsablesC').val(cambioServicio['Usuarios'].responsable);
@@ -497,8 +517,6 @@ $(document).on('change', '#ingresoId', function(event) {
 		  $('#tipoDocVictima').val(cambioServicio['Furips'].tipoDocVictima);
 
 
-
-
                      // Hasta Aqui FURIPS
 
 
@@ -511,12 +529,7 @@ $(document).on('change', '#ingresoId', function(event) {
 
 	// Sera que aquip le colocamos el ajax de los FURIPS
 
-
-
 	// FIN ajax de furips
-
-
-
 
 });
 
@@ -584,27 +597,19 @@ function AUsuario()
 
 		success: function (respuesta) {
 
-		alert("DE TODAS FORMAS ME DEVOLVI" +  respuesta)
-
 			$('#usuariosModal').modal().hide();
  
-                $('#mensajes').html(respuesta.Mensaje);
-	               // $('#usuariosModal').modal().hide();
+	                $('#mensajes').html(respuesta.Mensaje);
 
 			$('#usuariosModal').modal('hide');   
 
 
                     },
-	   		    error: function (request, status, error) {
-				alert("Entre por rollback" +  error)
-				alert("request" +  request)
-				
-				alert("status" +  JSON.stringify(status))
-				alert("status" +  status.Mensaje)
+	   		    error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
 
-				alert("Entre por rollback" +  error.Mensaje)
-
-				document.getElementById("mensajesErrorModalUsuario").innerHTML = error
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 
 	   	    	}
 	});
@@ -1005,13 +1010,11 @@ function findOneUsuario1()
 
 
 
-
-
-
 $('#tablaDatos tbody td').click(function(){
       var rowIndex = $(this).parent().index('#tablaDatos tbody tr');
       var tdIndex = $(this).index('#tablaDatos tbody tr:eq('+rowIndex+') td');
-   //   alert('Row Number: '+(rowIndex+1)+'\nColumn Number: '+(tdIndex+1));
+  //     alert('Row Number: '+(rowIndex+1)+'\nColumn Number: '+(tdIndex+1));
+	alert("Entre por click a la tabla " + (rowIndex+1));
 
       tipoDoc=$(this).parents("tr").find("td").eq(0).html();
       documento=$(this).parents("tr").find("td").eq(1).html();
@@ -1054,7 +1057,9 @@ $('#tablaDatos tbody td').click(function(){
     			    $('#numManillaP').val(Usuarios.numManilla);
 
 
-    			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 		 	   
+    			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
+
+			alert("Estos son los conveniosPaciente " + Usuarios['ConveniosPaciente']);	 	   
 
 
  
@@ -1267,11 +1272,13 @@ $(document).on('change', '#tiposAntecedente', function(event) {
  	      		      });
 
                     },
-	   		    error: function (request, status, error) {
+		 error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
-	   	    	}
+				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 
+	   	    	}            
 	     });
 });
 
@@ -1836,8 +1843,13 @@ function guardaCambioServicio()
 
 
                     },
-	   		    error: function (request, status, error) {
-	   	    	}
+		 error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
+	   	    	}            
 	});
 };
 
@@ -1986,13 +1998,14 @@ $(document).on('click', '#Convenios', function(event) {
 
 
                 },
-                error: function (data) {
-			alert("VENGO CON ERRORES :" , printErrorMsg(data.error));
+		 error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
 
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
-                }
-            });
+				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
+	   	    	}            
+});
         });
 
 
@@ -2020,11 +2033,14 @@ $(document).on('click', '#Convenios', function(event) {
 					  $("#mensajes").html(data['message']);
 
                 },
-                error: function (data) {
-			alert("VENGO CON ERRORES :" , printErrorMsg(data.error));
+		 error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
 
+				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 
-                }
+	   	    	}
+
             });
         });
 
@@ -2072,9 +2088,13 @@ var valor = $('input[name="ingresoId"]:checked').val();
 		 $("#mensajes").html(" !  Registro Actualizado !");
 
                     },
-	   		    error: function (request, status, error) {
-	   	    	}
-	});
+			 error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
+	   	    	}	});
 
            // Fin FURPS
 

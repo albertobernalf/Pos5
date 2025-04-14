@@ -278,7 +278,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 						</td>
                                 </td>
 				                <td>
-					<input type="radio" id="ingresoId" name="ingresoId" value=""></input>
+					<input type="radio" id="ingresoId" name="ingresoId" value="{{ingresos.id}}"></input>
 				</td>
                             </tr>
                             {% endfor %}
@@ -1112,8 +1112,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                             <select class="form-select  h-40 w-10" id="tiposUsuario"
                                                     name="tiposUsuario">
-                                                {% for ripsTipoUsuario in RipsTipoUsuario %}
-                                                <option value="{{ripsTipoUsuario.id}}"> {{ripsTipoUsuario.nombre}}</option>
+                                                {% for tiposUsuario in TiposUsuario %}
+                                                <option value="{{tiposUsuario.id}}"> {{tiposUsuario.nombre}}</option>
                                                 {% endfor %}
                                             </select>
 
@@ -1718,6 +1718,11 @@ function cargarTablaConmveniosPaciente()
                                 {% endfor %}
                             </select>
 			</div>
+			<div class="form-group">
+			  <span id="mensajesErrorModalConvenio" name="mensajesErrorModalConvenio" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
+			</div>
+
+
                     <div class="col-sm-offset-2 col-sm-10 mt-2">
                         <button type="submit" class="btn btn-primary" id="saveBtnCrearConvenio" value="create">Guardar
                         </button>
@@ -1885,6 +1890,20 @@ function cargarTablaAbonosPaciente()
                                 {% endfor %}
                             </select>
    			</div>
+
+
+			<div class="col">
+				<label for="convenioPaciente" class="col-sm-2 control-label">Forma Pago:</label>
+                            <select class="form-select  h-100 w-200" aria-label="" id="convenioPaciente"
+                                    name="convenioPaciente">
+                                {% for conveniosPaciente in ConveniosPaciente %}
+                                <option value="{{convenios.id}}"> {{convenios.nombre}}</option>
+                                {% endfor %}
+                            </select>
+   			</div>
+
+
+
 			<div class="col">
 				Valor:
 			       <input type="text" id="valorAbono" name="valorAbono" value = "0"></input>

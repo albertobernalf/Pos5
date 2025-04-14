@@ -730,3 +730,4 @@ BIBLIOGRAFIA:
 falta pais y tipo de usuarios cuando crea usuario por segunda vez
 OJO POR QUE SE DEMORA EN CARGHAR LA ADMSION Y CUANDO GRABA una admision si lo hace rapidito
 -- contemplar cargar desde AJAX combos a ver si mejora la velocidad
+
