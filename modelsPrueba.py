@@ -695,31 +695,29 @@ BIBLIOGRAFIA:
    -- si esta relacionado Nop dejar borrar por que se pierden los
       apuntadores de la tabla contratacion_convenios
 
--- el dia lunes 7 de abril probar subir excel de tarifas
-   -- completar en maintarifariosF y vies de tarifarios y probar tarifario de suministros a
-
 
 -- ojo sanson son diferentes lod querys de admisiones ingresos el que ingresa al que graba una nuevo ingreso OJOOO UNIFICAR   -- PENDIENTE
 -- ops en admisiones no sirve crear convenios UNA VEZ CREADA UNA ADMISION , me toco salirme y volver  aentrar para acceder al comBo de convenios ojo
 -- Ops ME ESTA DUPLICANDO LÑOS abonos DE CUANDO A CA Y PORTUE
--- ala hora de facturar crfeo soo es aplicar y yap y verificar toto OJO CUANDO s efactura valorEncurso, total apolicado, saldo ??
- if convenioValor != '':
 
 
 -- mañana 11 / abril
 -- 1. No acualizo  anular items de liquidacionDetralle al final del traslado
--- 2. Verificar la nueva cuenta como se ve
 -- 3. Hacer pruebas d etraslados de suministros que no habian para el caso no recuerdo el motivo VERIFICAR.
 -- 4. Todo esto en el supuesto que no hay nada en el nuevo conveio, o sea esta en blmaco. Que pasa si yahay cupscreados allip
--- 5. Validar facturaciondetalle pagina a ver si es correcto o algo asip
--- 6. Mañana probar Hacer factura d emaruja y queden bien los abonos. Ops Verificar que en pagofacturas queden registrado los abonos
--- 7. finalmente ver terminar rips
--- 8. Creeria borrar todos los datos y comenzar el proceso de ceros. completo
--- 9. model parametros
+-- 7. finalmente ver terminar rips PROBAR 
 -- 10 alertas: # e abonos y si o No convenio en admisiones
 
 -- Ojo en las consuiltas d efactyuras por fchar o numeros, como va a hacer con tablas particionadas ???
--- OJO cuando se refactura no lo muestra en la liquiacion, como si no la hubiera activado
 -- Ojo hay que verificar todos los REFESH cuando hace acciones en toda las pantallas
 -- ojo COLOCAR LOS COMODIMTES D ERUTA DEL MODELO PARAMTERO EN : CARGARIPS, CARGAPROCEDIMIENTOS, CARGASUMINISTROS
 
+-- OPPS LUES DESPUES DE SEMANA SANTA
+   - ME mamo gallo y no sep portque en contratacion datatble procprocedimeitnos displaya MAL el valor y5 columnas que pasa weys
+  -- ya borre todas las tablas LISTO PARA PRUEBAS MAS COMPLEJAS
+       Ver el global comportamiento , corregir errores pequeños q pero que son vistosos
+      Recuerda facturacionbusquedas-- tablas particionados no por rango de faturas
+     - Hay pantallas que estan por vers mas bonitas, pero pailas por mi conocimeintos .css bootsprtyrap html, dejarasi seguir adelante
+    -- OJO como el nivel es mas alto, los datos siendo supervisados por 9 modulos. Anton implementar solucines. No machete. Mas robustas si se puede, mas maco. EVALUAR
+    -- Esto va muy bien si lo ves desde todo el software andando 1000000 de instrucciones por segundo. A lo mejor a mi me parece mas o menos pero No es asi. Vas
+       -- RE_BIEN. Adelante
