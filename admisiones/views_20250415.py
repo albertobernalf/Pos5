@@ -987,6 +987,53 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # Fin combo empresas
 
+    # Combo Acompanantes
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = 'SELECT c.id id,c.nombre nombre FROM usuarios_usuarioscontacto c, basicas_tiposcontacto t where  c."tiposContacto_id" = t.id and t.nombre like (' + "'" + str('%ACOMPA%') + "')"
+
+    curt.execute(comando)
+    print(comando)
+
+    acompanantes = []
+    acompanantes.append({'id': '', 'nombre': ''})
+
+    for id, nombre in curt.fetchall():
+        acompanantes.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(acompanantes)
+
+    context['Acompanantes'] = acompanantes
+
+    # Fin combo Acompanantes
+
+    # Combo responsables
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = 'SELECT c.id id,c.nombre nombre FROM usuarios_usuarioscontacto c, basicas_tiposcontacto t where  c."tiposContacto_id" = t.id and t.nombre like (' + "'" + str('%RESPONSA%') + "')"
+
+    curt.execute(comando)
+    print(comando)
+
+    responsables = []
+    responsables.append({'id': '', 'nombre': ''})
+
+    for id, nombre in curt.fetchall():
+        responsables.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(responsables)
+
+    context['Responsables'] = responsables
+
+    # Fin combo responsables
 
 
     # Combo ripstipousuario
@@ -1043,56 +1090,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     if (escogeModulo == 'ADMISIONES'):
         print ("ENTRE ADMISIONES 4")
         print("escogeModulo = ", escogeModulo)
-
-        # Combo Acompanantes
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = 'SELECT c.id id,c.nombre nombre FROM usuarios_usuarioscontacto c, basicas_tiposcontacto t where  c."tiposContacto_id" = t.id and t.nombre like (' + "'" + str(
-            '%ACOMPA%') + "')"
-
-        curt.execute(comando)
-        print(comando)
-
-        acompanantes = []
-        acompanantes.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            acompanantes.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print(acompanantes)
-
-        context['Acompanantes'] = acompanantes
-
-        # Fin combo Acompanantes
-
-        # Combo responsables
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = 'SELECT c.id id,c.nombre nombre FROM usuarios_usuarioscontacto c, basicas_tiposcontacto t where  c."tiposContacto_id" = t.id and t.nombre like (' + "'" + str(
-            '%RESPONSA%') + "')"
-
-        curt.execute(comando)
-        print(comando)
-
-        responsables = []
-        responsables.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            responsables.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print(responsables)
-
-        context['Responsables'] = responsables
-
-        # Fin combo responsables
 
         # Combo Convenios
 
@@ -1338,6 +1335,27 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         ## Aqui contexto para solo admisiones
 
+        ingresos = []
+
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curx = miConexionx.cursor()
+
+        detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos  FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
+            Sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + 'O' + "'" + ' AND i."salidaDefinitiva" = ' + "'" + 'N' + "'" + ' and tp.id = u."tipoDoc_id" and i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and ser.nombre != ' + "'" + str('TRIAGE') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"'
+        print(detalle)
+
+        curx.execute(detalle)
+
+        for id, tipoDoc, documento, nombre, consec, fechaIngreso, fechaSalida, servicioNombreIng, camaNombreIng, dxActual, numConvenios, numPagos in curx.fetchall():
+            ingresos.append({'id':id, 'tipoDoc': tipoDoc, 'Documento': documento, 'Nombre': nombre, 'Consec': consec,
+                             'FechaIngreso': fechaIngreso, 'FechaSalida': fechaSalida,
+                             'servicioNombreIng': servicioNombreIng, 'camaNombreIng': camaNombreIng,
+                             'DxActual': dxActual,'numConvenios':numConvenios,'numPagos':numPagos})
+
+        miConexionx.close()
+        print(ingresos)
+        context['Ingresos'] = ingresos
 
         ## Para los froms FURIPS
 
@@ -5696,6 +5714,7 @@ def load_dataConvenioAdmisiones(request, data):
     print ("ingresoId:", ingresoId)
 
 
+    #print("data = ", request.GET('data'))
 
     conveniosPacienteIngresos = []
 
@@ -5853,14 +5872,120 @@ def GuardaAbonosAdmision(request):
     ## falta usuarioRegistro_id
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
-    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso", convenio_id) values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0, ' + "'" + str(convenioPaciente) + "')"
+    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso", convenio values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0, ' + "'" + str(convenioPaciente) + "')"
     print(comando)
     cur3.execute(comando)
     miConexion3.commit()
     miConexion3.close()
 
+    #return HttpResponse("Convenio Adicionado", content_type='application/json')
 
-    return JsonResponse({'success': True, 'message': 'Abono Creado satisfactoriamente!'})
+ ## Aqui rutina para actualizar el cabezote de facturacion_liquidacion el convenio_id
+
+    try:
+        liquidacionId =  Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision = registroId.consec  )
+        convenioId = liquidacionId.convenio_id
+        liquidacionId2 = liquidacionId.id
+    except Liquidacion.DoesNotExist:
+
+        liquidacionId2 = ''
+        convenioId =  ''
+        print("Entre excepcion")
+
+    print ("liquidacionId2 = ", liquidacionId2)
+
+    if (liquidacionId == ''):
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenioId) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','"  + str(sede) + "') RETURNING id"
+        print(comando)
+        cur3.execute(comando)
+        liquidacionId2 = curx.fetchone()[0]
+        print ("transaccionId = ", transaccionId)
+        miConexion3.commit()
+        miConexion3.close()
+
+    ## Fin RUTINA
+
+    ## Vamops a actualizar los totales de la Liquidacion:
+
+    totalSuministros = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).filter(examen_id = None).exclude(estadoRegistro='N').aggregate(totalS=Coalesce(Sum('valorTotal'), 0))
+    totalSuministros = (totalSuministros['totalS']) + 0
+    print("totalSuministros", totalSuministros)
+    totalProcedimientos = LiquidacionDetalle.objects.all().filter(liquidacion_id=liquidacionId).filter(cums_id = None).exclude(estadoRegistro='N').aggregate(totalP=Coalesce(Sum('valorTotal'), 0))
+    totalProcedimientos = (totalProcedimientos['totalP']) + 0
+    print("totalProcedimientos", totalProcedimientos)
+    registroPago = Liquidacion.objects.get(id=liquidacionId2)
+
+    print ("registroPago totalCopagos = " ,registroPago.totalCopagos )
+
+    if registroPago.totalCopagos==None:
+        totalCopagos=0.0
+    else:
+        totalCopagos=registroPago.totalCopagos
+
+    if registroPago.totalCuotaModeradora==None:
+        totalCuotaModeradora=0.0
+
+    else:
+        totalCuotaModeradora=registroPago.totalCuotaModeradora
+
+    if registroPago.anticipos==None:
+        totalAnticipos=0.0
+    else:
+        totalAnticipos=registroPago.anticipos
+
+    if registroPago.totalAbonos==None:
+        totalAbonos=0.0
+    else:
+        totalAbonos=registroPago.totalAbonos
+
+    formaPagoCopago = FormasPagos.objects.get(nombre='COPAGO')
+
+    print ("formaPagoCopago.id = ", formaPagoCopago.id)
+
+    if (formaPagoCopago.id == int(formaPago)):
+        print ("Entre formaPagoCopago")
+        totalCopagos = totalCopagos + 0
+
+    formaPagoCuotaModeradora = FormasPagos.objects.get(nombre='CUOTA MODERADORA')
+    if (formaPagoCuotaModeradora.id == int(formaPago)):
+        totalCuotaModeradora = totalCuotaModeradora + 0
+    formaPagoAnticipo = FormasPagos.objects.get(nombre='ANTICIPO')
+    if (formaPagoAnticipo.id == int(formaPago)):
+        totalAnticipos = totalAnticipos + 0
+
+    formaPagoAbonos = FormasPagos.objects.get(nombre='ABONO')
+    if (formaPagoAbonos.id == int(formaPago)):
+        totalAbonos = totalAbonos + 0
+
+    print("totalCopagos = ", totalCopagos)
+
+    totalRecibido = totalCopagos + totalCuotaModeradora + totalAnticipos + totalAbonos
+    if totalRecibido==None:
+        totalRecibido=0.0
+
+    print("total recibido = ", totalRecibido )
+    valorApagar = totalSuministros + totalProcedimientos - totalRecibido
+    totalLiquidacion = totalSuministros + totalProcedimientos
+
+    print ("totalLiquidacion = ",totalLiquidacion )
+
+    # Actualizo Totales de cabezote
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+    curt = miConexiont.cursor()
+    #comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(valorApagar) +  ', "totalRecibido" = ' + str(totalRecibido) +  ' WHERE id =' + "'" + str(liquidacionId) + "'"
+
+    print("comando = ", comando)
+
+
+    curt.execute(comando)
+    miConexiont.commit()
+    miConexiont.close()
+
+    return JsonResponse({'success': True, 'message': 'Abono Actualizado satisfactoriamente!'})
 
 
 def PostDeleteConveniosAdmision(request):
@@ -6103,74 +6228,37 @@ def load_dataAdmisiones(request, data):
     context = {}
     d = json.loads(data)
 
-    Sede = d['sede']
-    print("sede = ", Sede)
+    ingresoId = d['ingresoId']
+    print("ingresoId = ", ingresoId)
 
-    ingresos = []
+    detalleRipsAdicion = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
+                                   password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos  FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
-            Sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + 'O' + "'" + ' AND i."salidaDefinitiva" = ' + "'" + 'N' + "'" + ' and tp.id = u."tipoDoc_id" and i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and ser.nombre != ' + "'" + str('TRIAGE') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"'
-    print(detalle)
+    if (tipoRips == 'Factura'):
+
+        detalle = 'SELECT f.id,  f.id factura,0 as glosaId, f."fechaFactura", u.nombre paciente , f."totalFactura", f.estado  FROM public.facturacion_facturacion f, admisiones_ingresos i, usuarios_usuarios u  , contratacion_convenios c WHERE  i."tipoDoc_id" = f."tipoDoc_id" AND i.documento_id = f.documento_id AND f.convenio_id =  c.id AND   c.empresa_id = ' + "'" + str(empresaId) + "'" + ' AND f."ripsEnvio_id" IS NULL AND i."tipoDoc_id" = u."tipoDoc_id" AND i.documento_id = u.id AND i.consec = f."consecAdmision"'
+
+
+
+    print("DETALLE DE RIPSADICIONAR = ", detalle)
 
     curx.execute(detalle)
 
-    for id, tipoDoc, documento, nombre, consec, fechaIngreso, fechaSalida, servicioNombreIng, camaNombreIng, dxActual, numConvenios, numPagos in curx.fetchall():
-            ingresos.append({"model": "ingresos.ingresos", "pk": id, "fields":
-                {'id': id, 'tipoDoc': tipoDoc, 'Documento': documento, 'Nombre': nombre,
-                 'Consec': consec, 'FechaIngreso': fechaIngreso, 'FechaSalida': fechaSalida,
-                  'servicioNombreIng': servicioNombreIng, 'camaNombreIng': camaNombreIng,
-                   'DxActual': dxActual,'numConvenios':numConvenios,'numPagos':numPagos}})
+    for id,  factura, glosaId, fechaFactura, paciente,totalFactura,estado in curx.fetchall():
+        detalleRipsAdicion.append(
+            {"model": "facturacion_facturacion", "pk": id, "fields":
+                {'id': id, 'factura': factura ,'glosaId': glosaId,  'fechaFactura': fechaFactura, 'paciente': paciente, 'totalFactura':totalFactura, 'estado':estado
+                }})
 
     miConexionx.close()
-    print("ingresos = " , ingresos)
-    context['Ingresos'] = ingresos
+    print("detalleRipsAdicion "  , detalleRipsAdicion)
+    context['DetalleRipsAdicion'] = detalleRipsAdicion
 
-
-    serialized1 = json.dumps(ingresos, default=str)
+    serialized1 = json.dumps(detalleRipsAdicion, default=str)
+    #serialized1 = json.dumps(detalleRipsAdicion)
 
     return HttpResponse(serialized1, content_type='application/json')
-
-
-def BuscaConveniosAbonoAdmision(request):
-
-        print("Entre a buscar una Admision Modal")
-        ingresoId = request.POST["ingresoId"]
-
-        print("ingresoId = ", ingresoId)
-
-        registroId = Ingresos.objects.get(id=ingresoId)
-
-        # Combo Convenios Pacienmte
-
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-
-        comando = 'SELECT p.convenio_id id, conv.nombre  nombre FROM facturacion_conveniospacienteingresos p , contratacion_convenios conv where conv.id = p.convenio_id AND  p."tipoDoc_id"  = '  + "'" +str(registroId.tipoDoc_id) + "' AND documento_id = " + "'" + str(registroId.documento_id) + "' AND " + '"consecAdmision" =' +"'" + str(registroId.consec) + "'"
-
-        curt.execute(comando)
-        print(comando)
-
-        conveniosPaciente = []
-
-
-        for id, nombre in curt.fetchall():
-            conveniosPaciente.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print("conveniosPaciente", conveniosPaciente)
-
-
-        # Fin combo Convenios
-
-        serialized1 = json.dumps(conveniosPaciente, default=str)
-
-        return HttpResponse(serialized1, content_type='application/json')
-
-
 

@@ -27,3 +27,21 @@
 # Aqui Fin Manejo Transaccionalidad
 
 
+## transaccionalidad django rollback
+
+try:
+        with transaction.atomic():
+            obj = MyModel.objects.create(name="Ejemplo")
+            if algo_malo:
+                raise ValueError("Algo salió mal")
+            otra_funcion()
+    except Exception as e:
+        # Aquí ya se hizo rollback automáticamente
+        print("Se hizo rollback por:", e)
+
+
+funciones transaccionar
+
+guardarabonoisadmisn
+guardarcvambiosserviios
+y crtear admisiondef

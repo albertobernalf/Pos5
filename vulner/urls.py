@@ -146,6 +146,9 @@ urlpatterns = [
     path('guardaCambioServicio/', viewsAdmisiones.guardaCambioServicio),
     path('load_dataConvenioAdmisiones/<str:data>', viewsAdmisiones.load_dataConvenioAdmisiones, name='loaddataAdmisiones'),
     path('guardaConvenioAdmision/', viewsAdmisiones.GuardaConvenioAdmision, name='guardaConvenioAdmision'),
+    path('buscaConveniosAbonoAdmision/', viewsAdmisiones.BuscaConveniosAbonoAdmision, name='buscaConveniosAbono_Admision'),
+
+
     path('postDeleteConveniosAdmision/', viewsAdmisiones.PostDeleteConveniosAdmision, name='postDeleteConveniosAdmision'),
     path('guardarResponsableAdmision/', viewsAdmisiones.GuardarResponsableAdmision, name='guardarResponsableAdmision'),
     path('guardarAcompananteAdmision/', viewsAdmisiones.GuardarAcompananteAdmision, name='guardarAcompananteAdmision'),
@@ -155,6 +158,7 @@ urlpatterns = [
     path('guardaFurips/', viewsAdmisiones.GuardaFurips, name='guardaFurips'),
     #path('encuentraAdmisionModal/<str:tipoDoc> , <str:documento> , <str:consec> , <str:sede>/', viewsAdmisiones.encuentraAdmisionModal, name='encuentraAdmisionModal'),
     path('encuentraAdmisionModal/', viewsAdmisiones.encuentraAdmisionModal),
+    path('load_dataAdmisiones/<str:data>', viewsAdmisiones.load_dataAdmisiones,   name='loaddata_Admisiones'),
 
     # Triage
 

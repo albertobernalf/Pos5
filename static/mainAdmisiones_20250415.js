@@ -1,4 +1,4 @@
-
+var $ = jQuery;
 console.log('Hola Alberto Hi!')
 var datavta;
 
@@ -10,332 +10,26 @@ const form = document.getElementById('formHistoria')
 const form2 = document.getElementById('formClinicos')
 console.log(form)
 console.log(form2)
-let dataTable;
-let dataTableB;
-let dataTableC;
-let dataTableAdmisionesInitialized = false;
-let dataTableAdmisionesConvenios = false;
-let dataTableAbonosAdmisionesInitialized =false;
 
 
-$(document).ready(function() {
-    var table = $('#tablaDatos').DataTable();
-    
-       $('#search').on('keyup', function() {
-        var searchValue = this.value.split(' '); // Supongamos que los términos de búsqueda están separados por espacios
-        
-        // Aplica la búsqueda en diferentes columnas
-        table
-            .columns([3]) // Filtra en la primera columna
-            .search(searchValue[0]) // Primer término de búsqueda
-            .draw();
-
-	  table
-            .columns([9]) // Filtra en la segunda columna
-            .search(searchValue[1]) // Segundo término de búsqueda
-            .draw();
+$(document).ready(function () {
 
 
-        
-        table
-            .columns([14]) // Filtra en la segunda columna
-            .search(searchValue[1]) // Segundo término de búsqueda
-            .draw();
-    });
-});
+	alert("Listo ya cargue CONTEXT Me demore ?");
 
-function arrancaAdmisiones(valorTabla,valorData)
-{
-    data = {}
-    data = valorData;
-
-    if (valorTabla == 1)
-    {
-        let dataTableOptionsAdmisiones  ={
-  dom: 'Bfrtilp',
-  buttons: [
-    {
-      extend: 'excelHtml5',
-      text: '<i class="fas fa-file-excel"></i> ',
-      titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
-    },
-    {
-      extend: 'pdfHtml5',
-      text: '<i class="fas fa-file-pdf"></i> ',
-      titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
-    },
-    {
-      extend: 'print',
-      text: '<i class="fa fa-print"></i> ',
-      titleAttr: 'Imprimir',
-      className: 'btn btn-info',
-    },
-  ],
-  lengthMenu: [2, 4, 15],
-           processing: true,
-            serverSide: false,
-            scrollY: '275px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-	    { width: '10%', targets: [2,3] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-	        btn = btn + " <button class='miEditaAdmision btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
-              btn = btn + " <input type='radio'  name='ingresoId' class='miIngresoId form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-
-                       return btn;
-                    },
-
-                    "targets": 12
-               }
-            ],
-	 pageLength: 3,
-	  destroy: true,
-	  language: {
-		    processing: 'Procesando...',
-		    lengthMenu: 'Mostrar _MENU_ registros',
-		    zeroRecords: 'No se encontraron resultados',
-		    emptyTable: 'Ningún dato disponible en esta tabla',
-		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
-		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
-		    search: 'Buscar:',
-		    infoThousands: ',',
-		    loadingRecords: 'Cargando...',
-		    paginate: {
-			      first: 'Primero',
-			      last: 'Último',
-			      next: 'Siguiente',
-			      previous: 'Anterior',
-		    }
-			},
-           ajax: {
-                 url:"/load_dataAdmisiones/" +  data,
-                 type: "POST",
-                 dataSrc: ""
-            },
-            columns: [
-                 { data: "fields.id"},
-                { data: "fields.tipoDoc"},
-                { data: "fields.Documento"},
-                { data: "fields.Nombre"},
-                { data: "fields.Consec"},
-                { data: "fields.FechaIngreso"},
-                { data: "fields.FechaSalida"},
-                { data: "fields.servicioNombreIng"},
-                { data: "fields.camaNombreIng"},
-		        { data: "fields.DxActual"},
-                { data: "fields.numConvenios"},
-		        { data: "fields.numPagos"},
-            ]
-             }
-
-	        dataTable = $('#tablaDatos').DataTable(dataTableOptionsAdmisiones);
-
-       // 	$('#tablaAutorizaciones tbody tr:eq(0) .miSol').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
-
-
-
-  }
-
-      if (valorTabla == 2)
-    {
-        let dataTableOptionsConvenios  ={
-  dom: 'Bfrtilp',
-  buttons: [
-    {
-      extend: 'excelHtml5',
-      text: '<i class="fas fa-file-excel"></i> ',
-      titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
-    },
-    {
-      extend: 'pdfHtml5',
-      text: '<i class="fas fa-file-pdf"></i> ',
-      titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
-    },
-    {
-      extend: 'print',
-      text: '<i class="fa fa-print"></i> ',
-      titleAttr: 'Imprimir',
-      className: 'btn btn-info',
-    },
-  ],
-  lengthMenu: [2, 4, 15],
-           processing: true,
-            serverSide: false,
-            scrollY: '275px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-	    { width: '10%', targets: [2,3] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-			  btn = btn + " <button class='btn btn-danger deletePostConvenios' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
-                       return btn;
-                    },
-
-                    "targets": 5
-               }
-            ],
-	 pageLength: 3,
-	  destroy: true,
-	  language: {
-		    processing: 'Procesando...',
-		    lengthMenu: 'Mostrar _MENU_ registros',
-		    zeroRecords: 'No se encontraron resultados',
-		    emptyTable: 'Ningún dato disponible en esta tabla',
-		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
-		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
-		    search: 'Buscar:',
-		    infoThousands: ',',
-		    loadingRecords: 'Cargando...',
-		    paginate: {
-			      first: 'Primero',
-			      last: 'Último',
-			      next: 'Siguiente',
-			      previous: 'Anterior',
-		    }
-			},
-           ajax: {
-                 url:"/load_dataConvenioAdmisiones/" +  data,
-                 type: "POST",
-                 dataSrc: ""
-            },
-            columns: [
-                 { data: "fields.id"},
-                { data: "fields.nombreDocumento"},
-                { data: "fields.nombre"},
-                { data: "fields.consec"},
-                { data: "fields.convenio"},
-            ]
-             }
-
-	        dataTable = $('#tablaConveniosAdmisiones').DataTable(dataTableOptionsConvenios);
-
-  }
-
-      if (valorTabla == 3)
-    {
-        let dataTableOptionsAbonosAdmisiones  ={
-  dom: 'Bfrtilp',
-  buttons: [
-    {
-      extend: 'excelHtml5',
-      text: '<i class="fas fa-file-excel"></i> ',
-      titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
-    },
-    {
-      extend: 'pdfHtml5',
-      text: '<i class="fas fa-file-pdf"></i> ',
-      titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
-    },
-    {
-      extend: 'print',
-      text: '<i class="fa fa-print"></i> ',
-      titleAttr: 'Imprimir',
-      className: 'btn btn-info',
-    },
-  ],
-  lengthMenu: [2, 4, 15],
-           processing: true,
-            serverSide: false,
-            scrollY: '275px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-	    { width: '10%', targets: [2] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-			  btn = btn + " <button class='btn btn-danger deletePostAbonos' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
-                       return btn;
-                    },
-
-                    "targets": 6
-               }
-            ],
-	 pageLength: 3,
-	  destroy: true,
-	  language: {
-		    processing: 'Procesando...',
-		    lengthMenu: 'Mostrar _MENU_ registros',
-		    zeroRecords: 'No se encontraron resultados',
-		    emptyTable: 'Ningún dato disponible en esta tabla',
-		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
-		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
-		    search: 'Buscar:',
-		    infoThousands: ',',
-		    loadingRecords: 'Cargando...',
-		    paginate: {
-			      first: 'Primero',
-			      last: 'Último',
-			      next: 'Siguiente',
-			      previous: 'Anterior',
-		    }
-			},
-           ajax: {
-                 url:"/load_dataAbonosAdmisiones/" +  data,
-                 type: "POST",
-                 dataSrc: ""
-            },
-            columns: [
-	  /*                { data: "fields.tipoPago"}, */
-		{
-			target: 0,
-			visible: false
-		},
-
-                { data: "fields.nombreTipoPago"},
-	/*	{ data: "fields.formaPago"}, */
-			{
-			target: 2,
-			visible: false
-		},
-                { data: "fields.nombreFormaPago"},
-                { data: "fields.valor"},
-                { data: "fields.descripcion"},
-            ]
-             }
-
-	        dataTable = $('#tablaAbonosAdmisiones').DataTable(dataTableOptionsAbonosAdmisiones);
-  }
-}
-
-
-const initDataTableAdmisiones = async () => {
-	if  (dataTableAdmisionesInitialized)  {
-		dataTable.destroy();
-
-}
-    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
-        var username = document.getElementById("username").value;
-        var nombreSede = document.getElementById("nombreSede").value;
-    	var sede = document.getElementById("sede").value;
-        var username_id = document.getElementById("username_id").value;
-         var data =  {}   ;
-        data['username'] = username;
-        data['sedeSeleccionada'] = sedeSeleccionada;
-        data['nombreSede'] = nombreSede;
-        data['sede'] = sede;
-        data['username_id'] = username_id;
+	  var data =  {}   ;
 
           $('input[name="ingresoId"]').prop('checked', true);
 
          var valor = $('input[name="ingresoId"]:checked').val();
-
 	 var sede = document.getElementById("sede").value;
+
+	 alert("valor = "  + valor)
+	 if (valor== "undefined")
+		{
+		alert("Entre Indefinido");
+		valor=0;
+			}
 
 	 document.getElementById("ingresoIdGlobal").value = valor;
 	 document.getElementById("ingresoId22").value = valor;
@@ -346,30 +40,23 @@ const initDataTableAdmisiones = async () => {
 	 document.getElementById("ingresoId5").value = valor;
 	 document.getElementById("ingresoId6").value = valor;
 	 document.getElementById("ingresoIdF").value = valor;
+	
 
           var sede = document.getElementById("sede1").value;
           data['sede'] = sede;
           var ingresoId= document.getElementById("ingresoId1").value;
 
- 	    data = JSON.stringify(data);
+          data['ingresoId'] = valor  // ingresoId;
 
-        arrancaAdmisiones(1,data);
-	    dataTableAdmisionesInitialized = true;
-
+          data = JSON.stringify(data);
 
 
-}
+    initTableConvenios(data);
+    initTableAbonos(data);
 
- // COMIENZA ONLOAD
-
-window.addEventListener('load', async () => {
-    await  initDataTableAdmisiones();
-//	 $('#tablaDatos tbody tr:eq(0) .miIngresoId').prop('checked', true);  // Checkprimera fila el checkbox creo solo javascript
-
-});
-
-
- /* FIN ONLOAD */
+/*
+    tableActions();
+*/
 
 
     	/*------------------------------------------
@@ -436,45 +123,11 @@ window.addEventListener('load', async () => {
 	    var ingresoId= document.getElementById("ingresoId1").value;
 	    document.getElementById("ingresoId2").value = ingresoId;
 
-        // Tiene que hace run ajax para leer los convenios del paciente
-
-		   $.ajax({
-	           url: '/buscaConveniosAbonoAdmision/' ,
-	            data : {'ingresoId':ingresoId},
-	           type: 'POST',
-	           dataType : 'json',
-	  		success: function (data2) {
-	  		alert("llegue con : " + JSON.stringify(data2));
-
-	  	    var options = '<option value="=================="></option>';
-	  		//var dato = JSON.parse(data2);
-            const $id2 = document.querySelector("#convenioPaciente");
- 	      	$("#convenioPaciente").empty();
-			alert("voy a llenar combo conveniospaciente");
-	                 $.each(data2, function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id2.appendChild(option);
- 	      		      });
-
             $('#saveBtnCrearAbonos').val("Create Post");
             $('#post_id').val('');
             $('#postFormCrearAbonos').trigger("reset");
             $('#modelHeading').html("Creacion Abonos en admision");
             $('#crearAbonosModel').modal('show');
-                    },
-	   		    error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
-
-				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
-	   	    	}
-
-	           });
-
-
         });
 
 
@@ -654,25 +307,127 @@ window.addEventListener('load', async () => {
 	});
 	const get = document.getElementById('dispara');
 
+     clickEvent();
+
+
+// get.addEventListener('click', e => {});
+// get.dispatchEvent(new Event('click'));
+});  //// AQUI cierra el document.ready
 
 
 
-$('#tablaDatos tbody').on('change', '.miIngresoId', function() {
 
 
-    var row = $(this).closest('tr'); // Encuentra la fila
+function clickEvent() {  
+    var $ = jQuery;
+    console.log("The required event is triggered ") ;
+
+	$('input[name="ingresoId"]').prop('checked', true);
+
+	var valor = $('input[name="ingresoId"]:checked').val();
+	var sede = document.getElementById("sede").value;
+
+     document.getElementById("ingresoIdGlobal").value = valor;
+	 document.getElementById("ingresoId22").value = valor;
+
+	 document.getElementById("ingresoId1").value = valor;
+	 document.getElementById("ingresoId2").value = valor;
+	 document.getElementById("ingresoId4").value = valor;
+	 document.getElementById("ingresoId5").value = valor;
+	 document.getElementById("ingresoId6").value = valor;
+	 document.getElementById("ingresoIdF").value = valor;
+
+
+	    table = $("#tablaConveniosAdmisiones").dataTable().fnDestroy();
+
+	   	  var data =  {}   ;
+          var sede = document.getElementById("sede1").value;
+          data['sede'] = sede;
+
+          data['ingresoId'] = valor  // ingresoId;
+          data = JSON.stringify(data);
+
+           initTableConvenios(data);
+
+	    tableA = $("#tablaAbonosAdmisiones").dataTable().fnDestroy();
+           initTableAbonos(data);
+
+//           alert(" YA ACTIVE CONVEION Y PAGOS");
+
+	$.ajax({
+		type: 'POST',
+    		url: '/cambioServicio/',
+		data: {'valor' : valor, 'sede': sede},
+		dataType : 'json',
+		success: function (cambioServicio) {
+
+               //   alert("llegue MODAL cambio Servicio = " + cambioServicio['Usuarios'].tipoDocId);
+
+		 $('#tipoDocx').val(cambioServicio['Usuarios'].tipoDoc);
+		 $('#documentox').val(cambioServicio['Usuarios'].documento);
+		 $('#pacientex').val(cambioServicio['Usuarios'].paciente);
+		 $('#consecx').val(cambioServicio['Usuarios'].consec);
+		$('#servicioActual').val(cambioServicio['DependenciasActual'].servicio);
+		$('#subServicioActual').val(cambioServicio['DependenciasActual'].subServicio);
+		$('#dependenciaActual').val(cambioServicio['DependenciasActual'].depNombre);
+		$('#fechaOcupacion').val(cambioServicio['DependenciasActual'].ocupacion);
+		 $('#servicioCambio').val(cambioServicio['Servicios']);
+		 $('#subServicioCambio').val(cambioServicio['SubServicios']);
+		 $('#dependenciaCambio').val(cambioServicio['DependenciasActual'].habitaciones);
+
+		$('#convTipoDoc').val(cambioServicio['Usuarios'].tipoDoc);
+		 $('#convNumdoc').val(cambioServicio['Usuarios'].documento);
+		 $('#convPaciente').val(cambioServicio['Usuarios'].paciente);
+		 $('#convConsec').val(cambioServicio['Usuarios'].consec);
+
+		$('#convTipoDocA').val(cambioServicio['Usuarios'].tipoDoc);
+		 $('#convNumdocA').val(cambioServicio['Usuarios'].documento);
+		 $('#convPacienteA').val(cambioServicio['Usuarios'].paciente);
+		 $('#convConsecA').val(cambioServicio['Usuarios'].consec);
+
+
+
+		 $('#responsablesC').val(cambioServicio['Usuarios'].responsable);
+		  $('#acompananteC').val(cambioServicio['Usuarios'].acompanante);
+
+                     // Desde aquip FURIPS
+		  $('#fechaRadicado').val(cambioServicio['Furips'].fechaRadicado);
+		  $('#numeroRadicacion').val(cambioServicio['Furips'].numeroRadicacion);
+		  $('#numeroFactura').val(cambioServicio['Furips'].numeroFactura);
+		  $('#primerNombreVictima').val(cambioServicio['Furips'].primerNombreVictima);
+		  $('#segundoNombreVictima').val(cambioServicio['Furips'].segundoNombreVictima);
+		  $('#primerApellidoVictima').val(cambioServicio['Furips'].primerApellidoVictima);
+		$('#segundoApellidoVictima').val(cambioServicio['Furips'].segundoApellidoVictima);
+		  $('#tipoDocVictima').val(cambioServicio['Furips'].tipoDocVictima);
+
+
+
+
+                     // Hasta Aqui FURIPS
+
+                    },
+	   		    error: function (xhr, status, error) {
+				//alert("Error Ajax" + errorThrown)
+				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
+	   	    	}
+
+	}); 
+
+//	alert("Regreso de click Event");
+
+
+} 
+
+
+$(document).on('change', '#ingresoId', function(event) {
+
+	alert("Entre por cambio en el radio IngresoId");
+
 	    var valor=   $(this).val()
-
-	  var table = $('#tablaDatos').DataTable();  // Inicializa el DataTable jquery
-        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
-
-	        dato1 = Object.values(rowindex);
-		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
-	        dato3 = dato1[2];
-		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
-
-		var ingresoId = dato3.id;  // jquery
-		var valor = ingresoId;
+	  alert (" Entre Seleciono fila con valor = " + valor);	
 
 
            document.getElementById("mensajes").innerText="";
@@ -690,29 +445,26 @@ $('#tablaDatos tbody').on('change', '.miIngresoId', function() {
 
            document.getElementById("ingresoIdGlobal").value = valor;
      	   document.getElementById("ingresoId22").value = valor;
-	       document.getElementById("ingresoId1").value = valor;
-	       document.getElementById("ingresoId2").value = valor;
+   	    document.getElementById("ingresoId").value = valor;
+	    document.getElementById("ingresoId1").value = valor;
+	    document.getElementById("ingresoId2").value = valor;
 
-	        document.getElementById("ingresoId4").value = valor;
-	        document.getElementById("ingresoId5").value = valor;
-	          document.getElementById("ingresoId6").value = valor;
+	    document.getElementById("ingresoId4").value = valor;
+	    document.getElementById("ingresoId5").value = valor;
+	    document.getElementById("ingresoId6").value = valor;
             document.getElementById("ingresoIdF").value = valor;
 
 	       var data =  {}   ;
      	   var sede = document.getElementById("sede").value;   
            data['sede'] = sede;
-           data['ingresoId'] = ingresoId;
-
+           data['ingresoId'] = valor;
            data = JSON.stringify(data);
 
+	   table = $("#tablaConveniosAdmisiones").dataTable().fnDestroy();
+           initTableConvenios(data);
 
-
-	       arrancaAdmisiones(2,data);
-	    dataTableAdmisionesConveniosInitialized = true;
-
-         arrancaAdmisiones(3,data);
-	    dataTableAbonosAdmisionesInitialized = true;
-
+	   tableA = $("#tablaAbonosAdmisiones").dataTable().fnDestroy();
+           initTableAbonos(data);
 
 	$.ajax({
 		type: 'POST',
@@ -721,6 +473,10 @@ $('#tablaDatos tbody').on('change', '.miIngresoId', function() {
 		dataType : 'json',
 		success: function (cambioServicio) {
 
+                  alert("llegue MODAL cambio Servicio = " + cambioServicio['Usuarios'].tipoDocId);
+                  alert("llegue MODAL cambio Servicio = " + cambioServicio['Usuarios'].documento);
+                     alert("servicio = " + cambioServicio['DependenciasActual'].servicio);
+                      alert("Subservicioio = " + cambioServicio['DependenciasActual'].subServicio);
 		 $('#tipoDocx').val(cambioServicio['Usuarios'].tipoDoc);
 		 $('#documentox').val(cambioServicio['Usuarios'].documento);
 		 $('#pacientex').val(cambioServicio['Usuarios'].paciente);
@@ -1254,11 +1010,7 @@ function findOneUsuario1()
 
 
 
-$('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
-
-// $('#tablaDatos tbody td').click(function(){
-     alert("Entre click en la tabla para Editar la admision");
-
+$('#tablaDatos tbody td').click(function(){
       var rowIndex = $(this).parent().index('#tablaDatos tbody tr');
       var tdIndex = $(this).index('#tablaDatos tbody tr:eq('+rowIndex+') td');
   //     alert('Row Number: '+(rowIndex+1)+'\nColumn Number: '+(tdIndex+1));
@@ -1277,7 +1029,7 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
   //    alert("El valor del botón seleccionado es: " + $(this).find('input:first').val());
   
 
-      if ((tdIndex+1)=='12')
+      if ((tdIndex+1)=='10')
       {
       alert("Entre a Editar AJAX");
 
@@ -1324,7 +1076,7 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
       if ((tdIndex+1)=='11')
       {
 
-    alert("Entre columna 11");
+
 
       var ingresoId = $('input[name="ingresoId"]:checked').val();
 
@@ -2111,6 +1863,105 @@ article.addEventListener('click', event => {
 
 
 
+function initTableConvenios(data) {
+ 
+    return new DataTable('.tablaConveniosAdmisiones', {
+          "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    },
+            processing: true,
+            serverSide: false,
+            scrollY: '130px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+                {
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+                       //   btn = btn + " <button   class='btn btn-primary editPostConvenios' data-pk='" + row.pk + "'>" + "</button>";
+			  btn = btn + " <button class='btn btn-danger deletePostConvenios' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+
+                        return btn;
+                    },
+                    "targets": 5
+               }
+            ],
+            ajax: {
+                 url:"/load_dataConvenioAdmisiones/" + data,
+                 type: "POST",
+                dataSrc: ""
+            },
+
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+            columns: [
+                { data: "fields.id"},
+                { data: "fields.nombreDocumento"},
+                { data: "fields.nombre"},
+                { data: "fields.consec"},
+                { data: "fields.convenio"},
+            ]
+    });
+
+}
+
+
+function initTableAbonos(data) {
+ 
+    return new DataTable('.tablaAbonosAdmisiones', {
+          "language": {
+                  "lengthMenu": "Display _MENU_ registros",
+                   "search": "Filtrar registros:",
+                    },
+            processing: true,
+            serverSide: false,
+            scrollY: '130px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+                {
+                    "render": function ( data, type, row ) {
+                        var btn = '';
+                       //   btn = btn + " <button   class='btn btn-primary editPostAbonos' data-pk='" + row.pk + "'>" + "</button>";
+			  btn = btn + " <button class='btn btn-danger deletePostAbonos' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+
+                        return btn;
+                    },
+                    "targets": 6
+               }
+            ],
+            ajax: {
+                 url:"/load_dataAbonosAdmisiones/" + data,
+                 type: "POST",
+                dataSrc: ""
+            },
+
+            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
+            columns: [
+	  /*                { data: "fields.tipoPago"}, */
+		{
+			target: 0,
+			visible: false
+		},
+
+                { data: "fields.nombreTipoPago"},
+	/*	{ data: "fields.formaPago"}, */
+			{
+			target: 2,
+			visible: false
+		},
+                { data: "fields.nombreFormaPago"},
+                { data: "fields.valor"},
+                { data: "fields.descripcion"},
+            
+            ]
+    });
+
+}
+
+
  function tableActions() {
    var table = initTableConvenios();
    var tableA = initTableAbonos();
@@ -2132,10 +1983,7 @@ $(document).on('click', '#Convenios', function(event) {
             e.preventDefault();
             $(this).html('Sending..');
 
-	     // var ingresoId = $('input[name="ingresoId"]:checked').val();
-	      var ingresoId = document.getElementById("ingresoId1").value;
-	      alert("ingreso = " + ingresoId);
-
+	      var ingresoId = $('input[name="ingresoId"]:checked').val();
 	     var selectx = document.getElementById("responsablesC");
               var responsable = selectx.options[selectx.selectedIndex].value;
 
@@ -2171,10 +2019,7 @@ $(document).on('click', '#Convenios', function(event) {
             e.preventDefault();
             $(this).html('Sending..');
 
-      var ingresoId = document.getElementById("ingresoId1").value;
-	      alert("ingreso = " + ingresoId);
-
-
+	      var ingresoId = $('input[name="ingresoId"]:checked').val();
 	     var selectx = document.getElementById("acompananteC");
               var acompanante = selectx.options[selectx.selectedIndex].value;
 

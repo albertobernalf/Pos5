@@ -70,9 +70,16 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 <div class="secciones">
     <article id="Ingresos">
         <!-- Inicio Table -->
+        <center><h4>Ingresos Pacientes</h4></center>
 
-           <input type="hidden" id="ingresoIdGlobal" name="ingresoIdGlobal" value = ""></input>
 
+           <input type="text" id="ingresoIdGlobal" name="ingresoIdGlobal" value = ""></input>
+
+            <div class="row justify-content-center">
+
+                <div class="col-lg-11" style="background-color:LightGray;">
+                    <div class="card-block">
+                        <div style="height: 100px; ">
                     
                             <form class="form-inline" action="/buscarAdmision/" method="post" id="FormBuscar"><input
                                     type="hidden"
@@ -101,70 +108,189 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
 
 
+                                <div class="row justify-content-center">
+                                    <div class="form-group">
+
+                                        <label for="busServicio" class="col-sm-1 control-label">Serv:</label>
+                                        <div class="col-sm-1">
+                                            <select class="form-select  h-100 w-100" aria-label="" id="busServicio"
+                                                    name="busServicio">
+                                                {% for servicios in Servicios %}
+                                                <option value="{{servicios.id}}"> {{servicios.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label for="busSubServicio" class="col-sm-1 control-label">SubServ:</label>
+                                        <div class="col-sm-1">
+                                            <select class="form-select  h-100 w-100" aria-label="" id="busSubServicio"
+                                                    name="busSubServicio">
+                                                {% for subServicios in SubServicios %}
+                                                <option value="{{subServicios.id}}"> {{subServicios.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label for="busHabitacion" class="col-sm-1 control-label">Hab:</label>
+                                        <div class="col-sm-1">
+                                            <select class="form-select  h-100 w-100" aria-label="" id="busHabitacion"
+                                                    name="busHabitacion">
+                                                {% for habitaciones in Habitaciones %}
+                                                <option value="{{habitaciones.id}}"> {{habitaciones.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label for="busTipoDoc" class="col-sm-1 control-label">&nbsp;TipoDoc:</label>
+                                        <div class="col-sm-1">
+                                            <select class="form-select  h-100 w-100" aria-label="" id="busTipoDoc"
+                                                    name="busTipoDoc">
+                                                {% for tiposDoc in TiposDoc %}
+                                                <option value="{{tiposDoc.id}}"> {{tiposDoc.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                        <label class="col-sm-1 control-label" for="busDocumento">DocNo:</label>
+                                        <input class="col-sm-1" type="text" id="busDocumento"
+                                               name="busDocumento"></input>
+
+
+                                        <div class="submit-row">
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input class="col-sm-7" type="submit" value="Buscar">
+
+                                        </div>
+
+
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-default" type="submit">
+                                                <i class="glyphicon glyphicon-search"></i>
+                                            </button>
+                                        </div>
+
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row justify-content-center">
+
+                                    <div class="form-group">
+
+                                        <label class="col-sm-1 control-label" for="busPaciente">Pacient:</label>
+                                        <input class="col-sm-1" type="text" id="busPaciente" name="busPaciente"></input>
+
+                                        <label class="ol-sm-1 control-label"
+                                               for="busDesde">Desde:&nbsp;&nbsp;&nbsp;</label>
+
+                                        <input class="col-sm-1" type="datetime-local" id="busDesde"
+                                               name="busDesde"></input>
+
+                                        <label class="ol-sm-1 control-label" for="busHasta">Hasta:</label>
+
+                                        <input class="col-sm-1" type="datetime-local" id="busHasta"
+                                               name="busHasta"></input>
+
+                                        <label for="busEspecialidad" class="col-sm-1 control-label">Esp: </label>
+                                        <div class="col-sm-1">
+                                            <select form-select h-100 w-100" aria-label="" id="busEspecialidad"
+                                            name="busEspecialidad">
+                                            {% for especialidades in Especialidades %}
+                                            <option value="{{especialidades.id}}"> {{especialidades.nombre}}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                        <label for="busMedico" class="col-sm-1 control-label">&nbsp;Med: </label>
+                                        <div class="col-sm-1">
+                                            <select form-select h-100 w-100" aria-label="" id="busMedico"
+                                            name="busMedico">
+                                            {% for medico in Medicos %}
+                                            <option value="{{medico.id}}"> {{medico.nombre}}</option>
+                                            {% endfor %}
+                                            </select>
+                                        </div>
+                                        <span id="error" name="error" style="color:blue">{{Error}}</span>
+                                    </div>
+                                </div>
+
+
                             </form>
+                            <!--   <div/> -->
+                            <!--    <tr /> -->
 
                             <!-- fim formulario -->
+
+
+                            <!--    </table>  -->
+                        </div>
+
+
+                    </div>
+
+                </div>
+
+            </div>
 
             <!-- antes de table -->
 
 
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
-		<div class="container my-2">
-             
-		<div align="right" height="15px" width="50px">
+            <!-- esta es la tabla  -->
 
-		</div>
+        <div class="row">
+            <div class="col-lg-12" >
 
-   			   <div class="row">
+                <div class="card-block">
+                    <div style="height: 300px; overflow: auto">
+                        <table class="table table-hover" id="tablaDatos"
+                               style="height: 300px , background-color:LightGray; border: 2px solid black; border-radius: 10px; width:93%;">
+                            <thead>
+                            <th>Tipo Doc</th>
+                            <th>Documento</th>
+                            <th>Paciente</th>
+                            <th>Ingreso</th>
+                            <th>Fec.Ingreso</th>
+                            <th>Fec.Salida</th>
+                            <th>Servicio</th>
+                            <th>Dependencia</th>
+                            <th>Dx</th>
+                            <th>Convenios</th>
+                            <th>Abonos</th>
+                            <th>Editar</th>
 
-                                        <table  id= "tablaDatos" class=" display table table-striped" style="width: 100%";>
-                                           <thead>
-                                            <tr>    
-					<bold>                                  
-				        <th>id</th>
-				        <th>tipoDoc</th>
-                                	<th>Documento</th>
-	                                <th>Nombre</th>
-        	                        <th>Consec</th>
-	                                <th>FechaIngreso</th>
-        	                        <th>FechaSalida</th>
-                	                <th>servicioNombreIng</th>
-                        	        <th>camaNombreIng</th>
-                                	<th>DxActual</th>
-	                                <th>numConvenios</th>
-        	                        <th>numAbonos</th>
-                                         <th>Seleccionar</th> 
-                                      
-					</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>    
-				        <th>id</th>                              
-				        <th>tipoDoc</th>
-                                	<th>Documento</th>
-	                                <th>Nombre</th>
-        	                        <th>Consec</th>
-	                                <th>FechaIngreso</th>
-        	                        <th>FechaSalida</th>
-                	                <th>servicioNombreIng</th>
-                        	        <th>camaNombreIng</th>
-                                	<th>DxActual</th>
-	                                <th>numConvenios</th>
-        	                        <th>numAbonos</th>
-                                         <th>Seleccionar</th> 
-					</bold>                                  
-                                            </tr>
-                                            </tfoot>
 
-                                        </table>
-                                    </div>
-                                </div>
+                            </thead>
+                            {% for ingresos in Ingresos %}
+                            <tr>
+                                <td>{{ingresos.tipoDoc}}</td>
+                                <td>{{ingresos.Documento}}</td>
+                                <td>{{ingresos.Nombre}}</td>
+                                <td>{{ingresos.Consec}}</td>
+                                <td>{{ingresos.FechaIngreso}}</td>
+                                <td>{{ingresos.FechaSalida}}</td>
+                                <td>{{ingresos.servicioNombreIng}}</td>
+                                <td>{{ingresos.camaNombreIng}}</td>
+                                <td>{{ingresos.DxActual}}</td>
+                                <td>{{ingresos.numConvenios}}</td>
+                                <td>{{ingresos.numAbonos}}</td>
+                                <td>
+                                    <a href="#" class="btn btn-primary eBtn1" role="button" data-toggle="modal" id="banda1" >
+                                      </a>
+						</td>
+                                </td>
+				                <td>
+					<input type="radio" id="ingresoId" name="ingresoId" value="{{ingresos.id}}"></input>
+				</td>
+                            </tr>
+                            {% endfor %}
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-		<!--  FIN DATATABLE -->
+        <!-- fin tabla -->
 
                 <!--  Espacio para las modal de Edicion de admisiones -->
 
@@ -339,7 +465,6 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                 </div>
                                 <div class="modal-footer">
-					  <span id="mensajesErrorModalEdicionAdmisiones" name="mensajesErrorModalEdicionAdmisiones" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
                                      <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CierraModalActualiza()">Close
                                         </button>
                                         <input type="button" class="btn btn-primary" value="save" onclick="actualizaAdmision()">
@@ -1446,12 +1571,14 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 
     <article id="Convenios">
- 
+        <center><h2>Convenios paciente</h2></center>
 
 <script type="text/javascript">
-
+    var $ = jQuery;
 function cargarTablaConmveniosPaciente()
        {
+
+
   	var data =  {}   ;
         var sede = document.getElementById("sede1").value;
         data['sede'] = sede;
@@ -1460,6 +1587,8 @@ function cargarTablaConmveniosPaciente()
         data = JSON.stringify(data);
 	table = $("#tablaConveniosAdmisiones").dataTable().fnDestroy();
         initTableConvenios(data);
+
+
 }
  </script>
 
@@ -1517,44 +1646,31 @@ function cargarTablaConmveniosPaciente()
                     </div>
 					 </div>
                                             <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
 
+                                                        <table id=tablaConveniosAdmisiones class="display nowrap table table table-bordered  tablaConveniosAdmisiones table-hover table-sm dtr-inline">
 
+                                                            <thead>
+                                                            <tr>
+                                                                <th style="width:5%;">id</th>
+                                                                <th style="width:25;">Tipo de Documento</th>
+                                                                <th style="width:25%;">Nombre Paciente</th>
+                                                                <th style="width:12%;"># de Ingreso</th>
 
-                                                       <table  id= "tablaConveniosAdmisiones" class=" display table table-striped" style="width: 100%";>
-                                           <thead>
-                                            <tr>    
-						<bold>                                  
-					        <th>id</th>
-					        <th>nombreDocumento</th>
-                        	        	<th>nombre</th>
-	                        	        <th>Consec</th>
-        	                        	<th>Convenio</th>
-        	                                 <th>Seleccionar</th> 
-                                      
-					</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>    
-					        <th>id</th>
-					        <th>nombreDocumento</th>
-                        	        	<th>nombre</th>
-	                        	        <th>Consec</th>
-        	                        	<th>Convenio</th>
-        	                                 <th>Seleccionar</th> 
-					</bold>                                  
-                                            </tr>
-                                            </tfoot>
-
-                                        </table>
-                                         
-
-
-                                            </div> <!-- card body fin -->
-
+                                                                <th style="width:30%;">Nombre Convenio</th>
+                                                                <th style="width:3%;">Borrar</th>
+                                                                <!--  <th data-visible="true"></th>  -->
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody style="vertical-align:bottom">
+                                                            <tr style="height:10%">
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1564,6 +1680,9 @@ function cargarTablaConmveniosPaciente()
 
 
              <!-- HASTA AQUI DATATABLE -->
+
+
+
 
                 </td>
                 <td>
@@ -1622,9 +1741,9 @@ function cargarTablaConmveniosPaciente()
 
 
     <article id="Abonos">
-
+        <center><h3>Abonos</h3></center>
 <script type="text/javascript">
-
+    var $ = jQuery;
 function cargarTablaAbonosPaciente()
        {
 
@@ -1687,49 +1806,39 @@ function cargarTablaAbonosPaciente()
                                                <input type="text" id="convConsecA" name="convConsecA" value = "" readonly>
                                            </div>
 
+
                  			       <div class="col-sm-3 text-end">
                        				      <span class="text-secondary">Crear Abono</span>
                        			     <a class="btn btn-success" href="javascript:void(0)" id="createNewPostAbonos"> <i class="fa fa-plus"></i></a>
                       				  </div>
-				                    </div> <!-- termina row -->
-					 </div>  <!-- termina header -->
+                    </div>
+					 </div>
                                             <div class="card-body">
-                                              
-                                                       <table  id="tablaAbonosAdmisiones" class=" display table table-striped" style="width: 100%";>
-	                                           <thead>
-	                                            <tr>    
-						<bold>                                  
-  					        <th>Tipo Pago</th>
-					        <th>Nombre Tipo Pago</th>
-					        <th>Forma Pago</th>
-					        <th>nombreFormaPago</th>
-                        	        	<th>Valor</th>
-	                        	        <th>Descripcion</th>	
-                                                <th>Borrar</th>				
-                                     	</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>  
-  					        <th>Tipo Pago</th>
-					        <th>Nombre Tipo Pago</th>
-					        <th>Forma Pago</th>
-					        <th>nombreFormaPago</th>
-                        	        	<th>Valor</th>
-	                        	        <th>Descripcion</th>	
-                                                <th>Borrar</th>				
-					</bold>                                  
-                                            </tr>
-                                            </tfoot>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
 
-                                        </table>
+                                                        <table id=tablaAbonosAdmisiones class="display nowrap table table table-bordered  tablaAbonosAdmisiones table-hover table-sm dtr-inline">
 
-                                            </div>  <!-- Finaliza el card body-->
-
-
+                                                            <thead>
+                                                            <tr>
+                                                                <th style="width:25;">Tipo Pago</th>
+                                                                <th style="width:25;">Nombre Tipo Pago</th>
+                                                                <th style="width:25;">Forma Pago</th>
+                                                                <th style="width:25;">Nombre Forma Pago</th>
+                                                                <th style="width:25%;">Valor</th>
+                                                                <th style="width:12%;">Descripcion</th>
+                                                                <th style="width:3%;">Borrar</th>
+                                                                <!--  <th data-visible="true"></th>  -->
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody style="vertical-align:bottom">
+                                                            <tr style="height:10%">
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1803,9 +1912,7 @@ function cargarTablaAbonosPaciente()
 				Descripcion:
 			       <input type="text" id="descripcionAbono" name="descripcionAbono" value = "0"> </input>
    			</div>
-			<div class="col">
-				  <span id="mensajesErrorModalCrearAbono" name="mensajesErrorModalCrearAbono" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
-   			</div>
+
 
                     <div class="col-sm-offset-2 col-sm-10 mt-2">
                         <button type="submit" class="btn btn-primary" id="saveBtnCrearAbonos" value="create">Guardar
@@ -2047,6 +2154,7 @@ function cargarTablaAbonosPaciente()
     </article>
 
     <article id="Responsables">
+        <center><h3>Responsables Cuenta</h3></center>
 
             <table class="table  " style="height: 50px; background-color:LightGray;  width:90%;">
                 <tr>
