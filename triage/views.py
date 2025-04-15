@@ -2905,3 +2905,42 @@ def guardarAdmisionTriage(request):
 
 
 # fin nuevo mcodigo crear admison DEF
+
+def Load_dataTriage(request, data):
+    print("Entre load_data Triage")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    triage2 = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'SELECT  t.id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , t.consec consec , dep.nombre camaNombre,t."fechaSolicita" solicita,t.motivo motivo, t."clasificacionTriage_id" triage FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  ,sitios_serviciosSedes sd, clinico_servicios ser  WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND t."sedesClinica_id" =' + "'" + str(sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and t."tipoDoc_id" = u."tipoDoc_id" and  u.id = t."documento_id"  and ser.id = sd.servicios_id and dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str('TRIAGE') + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, tipoDoc, documento, nombre, consec, camaNombre, solicita, motivo, triage in curx.fetchall():
+        triage2.append(
+            {"model": "triage.triage", "pk": id, "fields":
+            {'id':id, 'tipoDoc': tipoDoc, 'Documento': documento, 'Nombre': nombre, 'Consec': consec,
+                       'camaNombre': camaNombre, 'solicita': solicita,
+                       'motivo': motivo, 'triage': triage}})
+
+    miConexionx.close()
+    print(triage2)
+
+    serialized1 = json.dumps(triage2, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')

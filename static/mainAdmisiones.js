@@ -1256,13 +1256,32 @@ function findOneUsuario1()
 
 $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 
-// $('#tablaDatos tbody td').click(function(){
+
      alert("Entre click en la tabla para Editar la admision");
+
+    var row = $(this).closest('tr'); // Encuentra la fila
+	   
+	  var table = $('#tablaDatos').DataTable();  // Inicializa el DataTable jquery
+        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+
+		var ingresoId = dato3.id;  // jquery
+		alert(dato3.id);
+		alert(dato3.tipoDoc);
+		alert(dato3.Documento);
+		alert(dato3.consec);
+
+
+
+
 
       var rowIndex = $(this).parent().index('#tablaDatos tbody tr');
       var tdIndex = $(this).index('#tablaDatos tbody tr:eq('+rowIndex+') td');
-  //     alert('Row Number: '+(rowIndex+1)+'\nColumn Number: '+(tdIndex+1));
-	alert("Entre por click a la tabla " + (rowIndex+1));
+	alert("Entre por click a la fila: " + (rowIndex+1));
 
       tipoDoc=$(this).parents("tr").find("td").eq(0).html();
       documento=$(this).parents("tr").find("td").eq(1).html();
@@ -1270,24 +1289,13 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
       var sede = document.getElementById("sede").value;
 
      alert("sede = " + sede);
-  //    alert("tipoDoc =" + tipoDoc + "documento=" + documento + "ingreso= " + consec);
-  //    alert("tdIndex = " + tdIndex);
+	alert("ingresoId = " + dato3.id);
 
-//    $(this).addClass('selected').siblings().removeClass('selected');    
-  //    alert("El valor del botón seleccionado es: " + $(this).find('input:first').val());
-  
-
-      if ((tdIndex+1)=='12')
-      {
-      alert("Entre a Editar AJAX");
 
       $.ajax({
 		type: 'POST',
       	url: '/encuentraAdmisionModal/',
-      	data: {'tipoDoc':tipoDoc,
-      	       'documento':documento,
-      	       'consec':consec,
-      	       'sede':sede},
+      	data: {'ingresoId':ingresoId, 'sede':sede},
 		success: function (Usuarios) {
 			 alert("entre DATOS MODAL  nombre es = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
 		            $('#tipoDoc').val(Usuarios.tipoDoc);
@@ -1296,22 +1304,19 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
    			    $('#dependenciasIngreso').val(Usuarios.dependenciasIngreso);
     			    $('#busEspecialidadP').val(Usuarios.espMedico);
     			    $('#dxIngresoP').val(Usuarios.diagMedico);
-
     			    $('#viasIngresoT').val(Usuarios.viasIngreso);
     			    $('#causasExternaP').val(Usuarios.causasExterna);
     			    $('#regimenesP').val(Usuarios.regimenes);
     			    $('#tiposCotizanteP').val(Usuarios.cotizante);
     			    $('#remitidoP').val(Usuarios.remitido);
     			    $('#numManillaP').val(Usuarios.numManilla);
-
-
     			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
 
-			alert("Estos son los conveniosPaciente " + Usuarios['ConveniosPaciente']);	 	   
-
+	
 
  
   		   $('#modalActualizaAdmision').modal('show');	
+    $('#tiposCotizanteP').val(Usuarios.cotizante);
 
                             alert("ya abri  ventanaoy");
 
@@ -1319,31 +1324,7 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 	   		    error: function (request, status, error) {
 	   	    	}
 	});
-      }
 
-      if ((tdIndex+1)=='11')
-      {
-
-    alert("Entre columna 11");
-
-      var ingresoId = $('input[name="ingresoId"]:checked').val();
-
-      document.getElementById("ingresoIdGlobal").value = ingresoId;
-      document.getElementById("sede1").value = sede;
-      document.getElementById("ingresoId1").value =ingresoId;
-      document.getElementById("sede2").value = sede;
-      document.getElementById("ingresoId2").value =ingresoId;
-
-      document.getElementById("sede4").value = sede;
-      document.getElementById("ingresoId4").value =ingresoId;
-      document.getElementById("sede5").value = sede;
-      document.getElementById("ingresoId5").value =ingresoId;
-      document.getElementById("sede6").value = sede;
-      document.getElementById("ingresoId6").value =ingresoId;
-      document.getElementById("sede22").value = sede;
-      document.getElementById("ingresoId22").value =ingresoId;
-
-      }
 
 });
 
@@ -1956,6 +1937,12 @@ function findOneAdmision(tipoDoc,Documento,consec, sede)
 				$('#medicoIngreso').val(Usuarios.medicoIngreso);
 				$('#espMedico').val(Usuarios.espMedico);
 				$('#diagMedico').val(Usuarios.diagMedico);
+
+	  	
+
+
+
+
 
 				 $('#modalActualizaAdmision').modal({show:true});
 

@@ -15,14 +15,19 @@
 
 
     except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
         if miConexion3:
+            print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-            return JsonResponse({'success': False, 'Mensaje': error})
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
             miConexion3.close()
-            return JsonResponse({'success': True, 'Mensaje': 'Convenio Actualizado satisfactoriamente!'})
+
+       
 
 # Aqui Fin Manejo Transaccionalidad
 
@@ -40,8 +45,3 @@ try:
         print("Se hizo rollback por:", e)
 
 
-funciones transaccionar
-
-guardarabonoisadmisn
-guardarcvambiosserviios
-y crtear admisiondef

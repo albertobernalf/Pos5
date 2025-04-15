@@ -27,8 +27,6 @@ var envio_final1 = new FormData()
 var x=0
 var  folio_final =0
 
-let dataTableTriageInitialized = false;
-
 const form = document.getElementById('formHistoria')
 
 const form2 = document.getElementById('formClinicos')
@@ -36,167 +34,12 @@ console.log(form)
 console.log(form2)
 
 
-
-$(document).ready(function() {
-    var table = $('#tablaDatosTriage').DataTable();
-    
-       $('#search').on('keyup', function() {
-        var searchValue = this.value.split(' '); // Supongamos que los términos de búsqueda están separados por espacios
-        
-        // Aplica la búsqueda en diferentes columnas
-        table
-            .columns([3]) // Filtra en la primera columna
-            .search(searchValue[0]) // Primer término de búsqueda
-            .draw();
-
-	  table
-            .columns([9]) // Filtra en la segunda columna
-            .search(searchValue[1]) // Segundo término de búsqueda
-            .draw();
-
-
-        
-        table
-            .columns([14]) // Filtra en la segunda columna
-            .search(searchValue[1]) // Segundo término de búsqueda
-            .draw();
-    });
-});
-
-function arrancaTriage(valorTabla,valorData)
+function valida(forma)
 {
-    data = {}
-    data = valorData;
-
-    if (valorTabla == 1)
-    {
-        let dataTableOptionsTriage  ={
-  dom: 'Bfrtilp',
-  buttons: [
-    {
-      extend: 'excelHtml5',
-      text: '<i class="fas fa-file-excel"></i> ',
-      titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
-    },
-    {
-      extend: 'pdfHtml5',
-      text: '<i class="fas fa-file-pdf"></i> ',
-      titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
-    },
-    {
-      extend: 'print',
-      text: '<i class="fa fa-print"></i> ',
-      titleAttr: 'Imprimir',
-      className: 'btn btn-info',
-    },
-  ],
-  lengthMenu: [2, 4, 15],
-           processing: true,
-            serverSide: false,
-            scrollY: '275px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-	    { width: '10%', targets: [2,3] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-        btn = btn + " <button class='miEditaTriage btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
-              btn = btn + " <input type='radio'  name='triageId' class='miTriageId form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
 
 
-                       return btn;
-                    },
-
-                    "targets": 10
-               }
-            ],
-	 pageLength: 3,
-	  destroy: true,
-	  language: {
-		    processing: 'Procesando...',
-		    lengthMenu: 'Mostrar _MENU_ registros',
-		    zeroRecords: 'No se encontraron resultados',
-		    emptyTable: 'Ningún dato disponible en esta tabla',
-		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
-		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
-		    search: 'Buscar:',
-		    infoThousands: ',',
-		    loadingRecords: 'Cargando...',
-		    paginate: {
-			      first: 'Primero',
-			      last: 'Último',
-			      next: 'Siguiente',
-			      previous: 'Anterior',
-		    }
-			},
-
-
-           ajax: {
-                 url:"/load_dataTriage/" +  data,
-                 type: "POST",
-                 dataSrc: ""
-            },
-            columns: [
-                { data: "fields.id"},
-                { data: "fields.tipoDoc"},
-                { data: "fields.Documento"},
-                { data: "fields.Nombre"},
-                { data: "fields.Consec"},
-                { data: "fields.camaNombre"},
-                { data: "fields.solicita"},
-                { data: "fields.motivo"},
-		        { data: "fields.triage"},
-		        ]
-            }
-	        dataTable = $('#tablaDatosTriage').DataTable(dataTableOptionsTriage);
-
-      
-
-  }
-}
-
-const initDataTableTriage = async () => {
-	if  (dataTableTriageInitialized)  {
-		dataTable.destroy();
-
-}
-    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
-        var username = document.getElementById("username").value;
-        var nombreSede = document.getElementById("nombreSede").value;
-    	var sede = document.getElementById("sede").value;
-        var username_id = document.getElementById("username_id").value;
-         var data =  {}   ;
-        data['username'] = username;
-        data['sedeSeleccionada'] = sedeSeleccionada;
-        data['nombreSede'] = nombreSede;
-        data['sede'] = sede;
-        data['username_id'] = username_id;
- 	    data = JSON.stringify(data);
-
-
-        arrancaTriage(1,data);
-	    dataTableTriageInitialized = true;
-}
-
- // COMIENZA ONLOAD
-
-window.addEventListener('load', async () => {
-    await  initDataTableTriage();
-	
-
-});
-
-
- /* FIN ONLOAD */
-
-
-
-
+	};
 
 function CierraModalUsuarioTriage()
 {
@@ -365,9 +208,6 @@ $('#tablaDatosTriage tbody td').click(function(){
       tiposDoc=$(this).parents("tr").find("td").eq(0).html();
       documento=$(this).parents("tr").find("td").eq(1).html();
       var sede = document.getElementById("sede").value;
-
-      alert("Entre click en tabla triage");
-
 
       if ((tdIndex+1) == '9')
       {

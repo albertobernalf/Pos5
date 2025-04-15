@@ -53,6 +53,7 @@ th ,tr{
 <div class="secciones">
     <article id="Triage">
 
+        <center><h4> Triage </h4></center>
 
         <!-- Filtros de busqueda -->
         <div class="row justify-content-center">
@@ -77,6 +78,79 @@ th ,tr{
                                    value="{{PermisosDetalle}}">
                             <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
 
+                            <div class="row justify-content-center">
+                                <div class="form-row">
+                                    <div class="col">
+                                        <label for="busServicio"
+                                               class="col-sm-1 col-form-label col-form-label-sm">Servicio:</label>
+                                        <select class="form-select  h-10 w-100 form-control form-control-sm"
+                                                aria-label="" id="busServicio" name="busServicio">
+                                            {% for servicios in Servicios %}
+                                            <option value="{{servicios.id}}"> {{servicios.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="busSubServicio"
+                                               class="col-sm-1 col-form-label col-form-label-sm">SubServicio:</label>
+                                        <select class="form-select  h-10 w-100 form-control form-control-sm"
+                                                aria-label=""
+                                                id="busSubServicio" name="busSubServicio">
+                                            {% for subServicios in SubServicios %}
+                                            <option value="{{subServicios.id}}"> {{subServicios.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="busHabitacion"
+                                               class="col-sm-1 col-form-label col-form-label-sm">Hab:</label>
+                                        <select class="form-select  h-10 w-100 form-control form-control-sm"
+                                                aria-label=""
+                                                id="busHabitacion" name="busHabitacion">
+                                            {% for habitaciones in Habitaciones %}
+                                            <option value="{{habitaciones.id}}"> {{habitaciones.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label for="busTipoDoc"
+                                               class="col-sm-1 col-form-label col-form-label-sm">TipoDoc:</label>
+                                        <select class="form-select  h-10 w-100 form-control form-control-sm"
+                                                aria-label=""
+                                                id="busTipoDoc" name="busTipoDoc">
+                                            {% for tiposDoc in TiposDoc %}
+                                            <option value="{{tiposDoc.id}}"> {{tiposDoc.nombre}}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <label class="col-sm-1 control-label" for="busDocumento">DocNo:</label>
+                                        <input class="col-sm-12" style="height: 32px;" type="text" id="busDocumento"
+                                               name="busDocumento"></input>
+                                    </div>
+
+                                    <div class="col">
+                                        <label class="col-sm-1 control-label" for="busPaciente">Paciente:</label>
+                                        <input class="col-sm-10" style="height: 32px;" type="text" id="busPaciente"
+                                               name="busPaciente"></input>
+                                    </div>
+
+                                    <div class="col">
+                                        <label class="col-sm-1 control-label" for="busDesde">Desde:</label>
+                                        <input class="col-sm-6" type="datetime-local" id="busDesde"
+                                               name="busDesde"></input>
+                                    </div>
+
+                                    <div class="col">
+                                        <label class="col-sm-4 control-label"
+                                               for="busHasta">Hasta:</label>
+                                        <input class="col-sm-6" type="datetime-local" id="busHasta"
+                                               name="busHasta"></input>
+                                        <span id="error" name="error" style="color:blue">{{Error}}</span>
+                                        <input class="col-sm-4" type="submit" value="Buscar">
+                                    </div>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -87,57 +161,67 @@ th ,tr{
         <!-- Fin  Filtros de busqueda -->
 
 
-         <!-- INICIO TABLE DE  EL DATATABLE  -->
-		<div class="container my-2">
-             
 
-   			   <div class="row">
-				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
-
-                                        <table  id= "tablaDatosTriage" class=" display table table-striped" style="width: 100%";>
-                                           <thead>
-                                            <tr>    
-						<bold>                                  
-	                                  <th>id</th>
-	                                  <th>Tipo Doc</th>
-        		                    <th>Documento</th>
-		                            <th>Paciente</th>
-		                            <th>Consec</th>
-		                            <th>Cama</th>
-		                            <th>Solicita</th>
-                		            <th>Motivo</th>
-		                            <th>Triage</th>
-                		            <th>Editar</th>
-		                            <th>Crear Admision</th>
-					</bold>                                  
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>
-	                                  <th>id</th>                                  
-                                          <th>Tipo Doc</th>
-		                            <th>Documento</th>
-		                            <th>Paciente</th>
-                		            <th>Consec</th>
-		                            <th>Cama</th>
-		                            <th>Solicita</th>
-		                            <th>Motivo</th>
-		                            <th>Triage</th>
-		                            <th>Editar</th>
-		                            <th>Crear Admision</th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
-
-                                        </table>
-                                    </div>
-                                </div>
+        <!-- La tabla -->
 
 
+        <div class="row">
+
+            <div class="col-10" >
+                <div class="card-block">
+                    <div style="height: 400px; width:1400px; overflow: auto">
+                        <table class="table table-hover" id="tablaDatosTriage"
+                               style="height: 300px , background-color:LightGray; border: 2px solid black; border-radius: 10px; width:99%;">
+                            <thead>
+                            <th>Tipo Doc</th>
+                            <th>Documento</th>
+                            <th>Paciente</th>
+                            <th>Consec</th>
+                            <th>Cama</th>
+                            <th>Solicita</th>
+                            <th>Motivo</th>
+                            <th>Triage</th>
+                            <th>Editar</th>
+                            <th>Crear Admision</th>
+                            </thead>
+                            {% for triage in Triage %}
+                            <tr>
+                                <td>{{triage.tipoDoc}}</td>
+                                <td>{{triage.Documento}}</td>
+                                <td>{{triage.Nombre}}</td>
+                                <td>{{triage.Consec}}</td>
+                                <td>{{triage.camaNombre}}</td>
+                                <td>{{triage.Solicita}}</td>
+                                <td>{{triage.motivo}}</td>
+                                <td>{{triage.triage}}</td>
+                                <td>
+                                    <button class="btn btn-primary" type="submit">Editar</button>
+
+                                    <!-- Ops recuerde lo estoy haciendo por la click en la tabla  Todo esto deberia de arreglarlo mejo
+
+                   <a href="#" class="btn btn-primary eBtn1" role="button" data-toggle="modal" id="banda1"
+                                          onclick="findOneTriage( {{triage.tipoDoc}}  {{triage.Documento}}  {{Sede}})">Editar</a>
+    -->
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-primary" role="button" data-toggle="modal"
+                                       id="banda2"></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <!-- Fin La tabla -->
 
         <!-- Espacio Modales del article-->
 

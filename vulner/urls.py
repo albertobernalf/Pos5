@@ -173,6 +173,7 @@ urlpatterns = [
     path('grabaTriageModal/', viewsTriage.grabaTriageModal),
     path('admisionTriageModal/', viewsTriage.admisionTriageModal),
     path('guardarAdmisionTriage/', viewsTriage.guardarAdmisionTriage),
+    path('load_dataTriage/<str:data>', viewsTriage.Load_dataTriage, name='loaddata_Triage'),
 
     # Apoyo Terapeutico
 

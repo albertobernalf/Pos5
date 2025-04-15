@@ -29,6 +29,7 @@ from facturacion.models import ConveniosPacienteIngresos, Liquidacion, Liquidaci
 from rips.models import  RipsDestinoEgreso
 from cartera.models import FormasPagos, PagosFacturas
 import datetime
+from django.db import transaction, IntegrityError
 
 # Create your views here.
 
@@ -3989,7 +3990,7 @@ def crearAdmisionDef(request):
         ## DESDE AQUIP TRANSACCIONALIDAD
 
         try:
-
+            with transaction.atomic():
                 grabo = Ingresos(
                                  sedesClinica_id=Sede,
                                  tipoDoc_id=tipoDoc,
@@ -4079,19 +4080,10 @@ def crearAdmisionDef(request):
 
                 print("Grabe HISTPRICO DEPENDENCIAS")
 
-        except psycopg2.DatabaseError as error:
-            print (error)
-            pass
-        #    print("Entre por rollback", error)
-        #    if miConexion3:
-        #        print("Entro ha hacer el Rollback")
-        #        miConexion3.rollback()
+        except Exception as e:
+            # Aquí ya se hizo rollback automáticamente
+            print("Se hizo rollback por:", e)
 
-        #   print("Voy a hacer el jsonresponde")
-        #   return JsonResponse({'success': False, 'Mensaje': error})
-
-        finally:
-            pass
 
         # HASTA AQUIP TRANSACCIONALIDAD
 
@@ -5234,28 +5226,25 @@ def guardarUsuariosModal(request):
 
 
 
-def encuentraAdmisionModal(request) : #, tipoDoc, documento, consec, sede):
+def encuentraAdmisionModal(request):
 
-        tipoDoc = request.POST["tipoDoc"]
-        documento = request.POST["documento"]
+        ingresoId = request.POST["ingresoId"]
         sede = request.POST["sede"]
-        consec = request.POST["consec"]
 
+        Ingreso = Ingresos.objects.get(id=ingresoId)
 
         print("Entre a buscar una Admision Modal")
-        print("documento = ", documento)
-        print("tipodoc = ", tipoDoc)
-        print("consecutivoAdmision = ", consec)
+        print("documento = ", Ingreso.documento_id)
+        print("tipodoc = ", Ingreso.tipoDoc_id)
+        print("consecutivoAdmision = ", Ingreso.consec)
         print("Sede = ", sede)
-        print("consec = ", consec)
 
-        tipoDoc1 = TiposDocumento.objects.get(nombre=tipoDoc)
-        print("tipodoc1 = ", tipoDoc1.id)
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(tipoDoc1.id) + "'" + ' and u.documento = ' + "'" + str(documento) + "'" + ' and i.consec= ' + "'" + str(consec) + "'" + ' and i."fechaSalida" is null'
+        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(Ingreso.tipoDoc_id) + "'" + ' and u.id = ' + "'" + str(Ingreso.documento_id) + "'" + ' and i.consec= ' + "'" + str(Ingreso.consec) + "'" + ' and i."fechaSalida" is null'
 
         print(comando)
         curt.execute(comando)
@@ -5541,42 +5530,6 @@ def guardaCambioServicio(request):
 
 
 
-
-    # Actualiza la dependecia Actual
-
-    grabo01 =  Dependencias.objects.filter(id = dependenciaActualId.id).update(tipoDoc_id='', documento_id='', consec=0, disponibilidad='L',fechaRegistro=fechaRegistro, fechaLiberacion= fechaOcupacion)
-    print ("pase grabo01", grabo01)
-
-    # Actualiza la dependencia Nueva
-
-    grabo02 =  Dependencias.objects.filter(id = dependenciaFinalId.id).update(tipoDoc_id=tipoDocId.id, documento_id=documentoId.id, consec=consec, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaOcupacion)
-    print("pase grabo02", grabo02)
-    # Inserta en dependeciasHistoricos
-
-    # Actualiza la admision en Ingresos
-
-    grabo03 =  Ingresos.objects.filter(id = ingresoActualId.id).update(dependenciasActual_id=dependenciaFinalId.id, serviciosActual_id = servicioActualId.servicios_id)
-    print("pase grabo03", grabo03)
-
-    # Registro el historico de dependencias
-
-
-    grabo04 = HistorialDependencias(
-            tipoDoc_id=tipoDocId.id,
-            documento_id=documentoId.id,
-            consec=consec,
-            dependencias_id=dependenciaActualId.id,
-            disponibilidad='L',
-            fechaRegistro=fechaRegistro,
-            usuarioRegistro_id=username_id,
-            fechaLiberacion=fechaRegistro,
-            fechaOcupacion=dependenciaActualId.fechaOcupacion,
-            estadoReg='A'
-
-        )
-    grabo04.save()
-    print("yA grabe dependencias historico", grabo04.id)
-
     # Combo de Servicios
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -5661,7 +5614,63 @@ def guardaCambioServicio(request):
     CambioServicio['DependenciaActual'] = dependenciaActualId.nombre
     CambioServicio['FechaOcupacion'] = fechaOcupacion
 
-    return JsonResponse(CambioServicio, safe=False)
+    try:
+        with transaction.atomic():
+            # Actualiza la dependecia Actual
+
+            grabo01 = Dependencias.objects.filter(id=dependenciaActualId.id).update(tipoDoc_id='', documento_id='',
+                                                                                    consec=0, disponibilidad='L',
+                                                                                    fechaRegistro=fechaRegistro,
+                                                                                    fechaLiberacion=fechaOcupacion)
+            print("pase grabo01", grabo01)
+
+            # Actualiza la dependencia Nueva
+
+            grabo02 = Dependencias.objects.filter(id=dependenciaFinalId.id).update(tipoDoc_id=tipoDocId.id,
+                                                                                   documento_id=documentoId.id,
+                                                                                   consec=consec, disponibilidad='O',
+                                                                                   fechaRegistro=fechaRegistro,
+                                                                                   fechaOcupacion=fechaOcupacion)
+            print("pase grabo02", grabo02)
+            # Inserta en dependeciasHistoricos
+
+            # Actualiza la admision en Ingresos
+
+            grabo03 = Ingresos.objects.filter(id=ingresoActualId.id).update(dependenciasActual_id=dependenciaFinalId.id,
+                                                                            serviciosActual_id=servicioActualId.servicios_id)
+            print("pase grabo03", grabo03)
+
+            # Registro el historico de dependencias
+
+            grabo04 = HistorialDependencias(
+                tipoDoc_id=tipoDocId.id,
+                documento_id=documentoId.id,
+                consec=consec,
+                dependencias_id=dependenciaActualId.id,
+                disponibilidad='L',
+                fechaRegistro=fechaRegistro,
+                usuarioRegistro_id=username_id,
+                fechaLiberacion=fechaRegistro,
+                fechaOcupacion=dependenciaActualId.fechaOcupacion,
+                estadoReg='A'
+
+            )
+            grabo04.save()
+            print("yA grabe dependencias historico", grabo04.id)
+
+            return JsonResponse(CambioServicio, safe=False)
+
+            #if algo_malo:
+            #    raise ValueError("Algo salió mal")
+
+    except Exception as e:
+        # Aquí ya se hizo rollback automáticamente
+        print("Se hizo rollback por:", e)
+        return JsonResponse({'success': False, 'Mensaje': e})
+
+
+
+
 	
 
 def serialize_datetime(obj): 
@@ -5851,16 +5860,33 @@ def GuardaAbonosAdmision(request):
     print  ("registroId documento =" , registroId.documento_id)
 
     ## falta usuarioRegistro_id
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-    comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso", convenio_id) values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0, ' + "'" + str(convenioPaciente) + "')"
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
 
+    miConexion3 = None
+    try:
 
-    return JsonResponse({'success': True, 'message': 'Abono Creado satisfactoriamente!'})
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso", convenio_id) values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0, ' + "'" + str(convenioPaciente) + "')"
+
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+
+        return JsonResponse({'success': True, 'message': 'Abono Creado satisfactoriamente!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            miConexion3.close()
+
 
 
 def PostDeleteConveniosAdmision(request):
