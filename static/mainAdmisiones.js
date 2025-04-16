@@ -73,6 +73,7 @@ function arrancaAdmisiones(valorTabla,valorData)
       className: 'btn btn-info',
     },
   ],
+	autoWidth: false,
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
@@ -82,7 +83,7 @@ function arrancaAdmisiones(valorTabla,valorData)
             paging:false,
             columnDefs: [
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-	    { width: '10%', targets: [2,3] },
+
 		{     "render": function ( data, type, row ) {
                         var btn = '';
 	        btn = btn + " <button class='miEditaAdmision btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
@@ -121,7 +122,7 @@ function arrancaAdmisiones(valorTabla,valorData)
             },
             columns: [
                  { data: "fields.id"},
-                { data: "fields.tipoDoc"},
+                 { data: "fields.tipoDoc" }, 
                 { data: "fields.Documento"},
                 { data: "fields.Nombre"},
                 { data: "fields.Consec"},
@@ -129,7 +130,7 @@ function arrancaAdmisiones(valorTabla,valorData)
                 { data: "fields.FechaSalida"},
                 { data: "fields.servicioNombreIng"},
                 { data: "fields.camaNombreIng"},
-		        { data: "fields.DxActual"},
+		     { data: "fields.DxActual"}, 
                 { data: "fields.numConvenios"},
 		        { data: "fields.numPagos"},
             ]
@@ -337,6 +338,7 @@ const initDataTableAdmisiones = async () => {
 
 	 var sede = document.getElementById("sede").value;
 
+
 	 document.getElementById("ingresoIdGlobal").value = valor;
 	 document.getElementById("ingresoId22").value = valor;
 
@@ -345,11 +347,13 @@ const initDataTableAdmisiones = async () => {
 	 document.getElementById("ingresoId4").value = valor;
 	 document.getElementById("ingresoId5").value = valor;
 	 document.getElementById("ingresoId6").value = valor;
-	 document.getElementById("ingresoIdF").value = valor;
+	 // document.getElementById("ingresoIdF").value = valor;
 
-          var sede = document.getElementById("sede1").value;
+         // var sede = document.getElementById("sede1").value;
+	//  var ingresoId= document.getElementById("ingresoId1").value;
+
           data['sede'] = sede;
-          var ingresoId= document.getElementById("ingresoId1").value;
+        
 
  	    data = JSON.stringify(data);
 
@@ -696,7 +700,7 @@ $('#tablaDatos tbody').on('change', '.miIngresoId', function() {
 	        document.getElementById("ingresoId4").value = valor;
 	        document.getElementById("ingresoId5").value = valor;
 	          document.getElementById("ingresoId6").value = valor;
-            document.getElementById("ingresoIdF").value = valor;
+        //    document.getElementById("ingresoIdF").value = valor;
 
 	       var data =  {}   ;
      	   var sede = document.getElementById("sede").value;   
