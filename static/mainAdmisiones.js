@@ -52,48 +52,58 @@ function arrancaAdmisiones(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptionsAdmisiones  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
+
+
+//  dom: 'Bfrtilp',
   buttons: [
     {
       extend: 'excelHtml5',
       text: '<i class="fas fa-file-excel"></i> ',
+	// text: '<i class="bi bi-file-earmark-excel-fill"></i> Exportar Excel',
       titleAttr: 'Exportar a Excel',
-      className: 'btn btn-success',
+      className: 'btn btn-success btn-sm',
     },
     {
       extend: 'pdfHtml5',
       text: '<i class="fas fa-file-pdf"></i> ',
       titleAttr: 'Exportar a PDF',
-      className: 'btn btn-danger',
+      className: 'btn btn-danger btn-sm',
     },
     {
       extend: 'print',
       text: '<i class="fa fa-print"></i> ',
       titleAttr: 'Imprimir',
-      className: 'btn btn-info',
+      className: 'btn btn-info btn-sm',
     },
   ],
-	autoWidth: false,
+	
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '360px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
             columnDefs: [
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-
+		{   targets: [5,6,7,8,9,10], // índice de la columna que quieres evitar que haga wrap
+		      className: 'nowrap-column'
+		    },
 		{     "render": function ( data, type, row ) {
                         var btn = '';
-	        btn = btn + " <button class='miEditaAdmision btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
               btn = btn + " <input type='radio'  name='ingresoId' class='miIngresoId form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
 
 
                        return btn;
                     },
 
-                    "targets": 12
+
+
+                    "targets": 13
                }
             ],
 	 pageLength: 3,
@@ -133,6 +143,16 @@ function arrancaAdmisiones(valorTabla,valorData)
 		     { data: "fields.DxActual"}, 
                 { data: "fields.numConvenios"},
 		        { data: "fields.numPagos"},
+		{
+		"render": function ( data, type, row ) {
+                        var btn = '';
+
+	        btn = btn + " <button class='miEditaAdmision btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+		}
+                    },
+
             ]
              }
 
@@ -147,7 +167,9 @@ function arrancaAdmisiones(valorTabla,valorData)
       if (valorTabla == 2)
     {
         let dataTableOptionsConvenios  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -227,7 +249,10 @@ function arrancaAdmisiones(valorTabla,valorData)
       if (valorTabla == 3)
     {
         let dataTableOptionsAbonosAdmisiones  ={
-  dom: 'Bfrtilp',
+
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -256,7 +281,7 @@ function arrancaAdmisiones(valorTabla,valorData)
 	    scrollCollapse: true,
             paging:false,
             columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{ className: 'centered', targets: [0, 1, 2] },
 	    { width: '10%', targets: [2] },
 		{     "render": function ( data, type, row ) {
                         var btn = '';
@@ -264,7 +289,7 @@ function arrancaAdmisiones(valorTabla,valorData)
                        return btn;
                     },
 
-                    "targets": 6
+                    "targets": 7
                }
             ],
 	 pageLength: 3,
@@ -292,6 +317,7 @@ function arrancaAdmisiones(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+		 { data: "fields.id"},
 	  /*                { data: "fields.tipoPago"}, */
 		{
 			target: 0,
@@ -708,8 +734,6 @@ $('#tablaDatos tbody').on('change', '.miIngresoId', function() {
            data['ingresoId'] = ingresoId;
 
            data = JSON.stringify(data);
-
-
 
 	       arrancaAdmisiones(2,data);
 	    dataTableAdmisionesConveniosInitialized = true;

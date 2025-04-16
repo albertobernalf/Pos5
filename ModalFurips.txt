@@ -65,9 +65,7 @@
                                             <label for="primerApellidoVictima" class="col-sm-6 control-label">primerNombreVictima:</label>
 
 				 <input type="text" id="primerApellidoVictima" name="primerApellidoVictima" value="">
-
-
-                                            
+                                          
                                         </div>
                                         <div class="col-1">
                                             {{FuripsForm.segundoApellidoVictima.label}}

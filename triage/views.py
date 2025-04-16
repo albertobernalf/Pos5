@@ -1076,9 +1076,9 @@ def encuentraTriageModal(request):
 
         print("Entre a buscar una Triage Modal")
         Sede = request.POST["sede"]
+        triageId = request.POST["triageId"]
         tiposDoc = request.POST["tiposDoc"]
         documento = request.POST["documento"]
-
         print("documento = ", documento)
         print("tiposdoc = ", tiposDoc)
         print("Sede = ", Sede)

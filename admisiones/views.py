@@ -5490,8 +5490,8 @@ def guardaCambioServicio(request):
 
     # Aqui consigo el servicio Actual
 
-    servicioActualId = ServiciosSedes.objects.get(id=servicioFin)
-    print("servicioActualId = ", servicioActualId.id)	
+    servicioFinId = ServiciosSedes.objects.get(id=servicioFin)
+    print("servicioFinId = ", servicioFinId.id)
 
     documentoId = Usuarios.objects.get(documento=documento)
     print("el id del documento es : ", documentoId.id)
@@ -5603,32 +5603,44 @@ def guardaCambioServicio(request):
 
     CambioServicio['Mensaje'] = 'Cambio de servicio realizado'
 
-    servicioActualId = ServiciosSedes.objects.get(id=servicioFin)
-    subServicioActualId = SubServiciosSedes.objects.get(id=subServicioFin)
-    dependenciaActualId = Dependencias.objects.get(id=dependenciaFin)
+    servicioFinalId = ServiciosSedes.objects.get(id=servicioFin)
+    subServicioFinalId = SubServiciosSedes.objects.get(id=subServicioFin)
+    dependenciaFinalId = Dependencias.objects.get(id=dependenciaFin)
 
     ## OJO NO CONFUNDIR ESTE PEDAZO DE CODIGO DE ABAJO CON LO DE ARRIBA SE SOBREESCRIBE
 	
-    CambioServicio['ServicioActual'] = servicioActualId.nombre
-    CambioServicio['SubServicioActual'] = subServicioActualId.nombre
-    CambioServicio['DependenciaActual'] = dependenciaActualId.nombre
+    CambioServicio['ServicioActual'] = servicioFinalId.nombre
+    CambioServicio['SubServicioActual'] = subServicioFinalId.nombre
+    CambioServicio['DependenciaActual'] = dependenciaFinalId.nombre
     CambioServicio['FechaOcupacion'] = fechaOcupacion
 
     try:
         with transaction.atomic():
             # Actualiza la dependecia Actual
 
+            print("Aqui actualiza  : ",  dependenciaActualId.id);
+
+
+
+
             grabo01 = Dependencias.objects.filter(id=dependenciaActualId.id).update(tipoDoc_id='', documento_id='',
-                                                                                    consec=0, disponibilidad='L',
+                                                                                    consec=0, disponibilidad="L",
                                                                                     fechaRegistro=fechaRegistro,
                                                                                     fechaLiberacion=fechaOcupacion)
             print("pase grabo01", grabo01)
 
             # Actualiza la dependencia Nueva
 
+            print("Aqui Error  : ",  dependenciaFinalId.id);
+            print ("tipoDocId.id = ",tipoDocId.id)
+            print("documentoId.id = ", documentoId.id )
+            print("consec =", consec )
+
+
+
             grabo02 = Dependencias.objects.filter(id=dependenciaFinalId.id).update(tipoDoc_id=tipoDocId.id,
                                                                                    documento_id=documentoId.id,
-                                                                                   consec=consec, disponibilidad='O',
+                                                                                   consec=consec, disponibilidad="O",
                                                                                    fechaRegistro=fechaRegistro,
                                                                                    fechaOcupacion=fechaOcupacion)
             print("pase grabo02", grabo02)
@@ -5637,7 +5649,7 @@ def guardaCambioServicio(request):
             # Actualiza la admision en Ingresos
 
             grabo03 = Ingresos.objects.filter(id=ingresoActualId.id).update(dependenciasActual_id=dependenciaFinalId.id,
-                                                                            serviciosActual_id=servicioActualId.servicios_id)
+                                                                            serviciosActual_id=servicioFinalId.servicios_id)
             print("pase grabo03", grabo03)
 
             # Registro el historico de dependencias

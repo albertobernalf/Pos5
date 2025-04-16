@@ -71,7 +71,9 @@ function arrancaTriage(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptionsTriage  ={
-  dom: 'Bfrtilp',
+     dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -105,10 +107,7 @@ function arrancaTriage(valorTabla,valorData)
 		{     "render": function ( data, type, row ) {
                         var btn = '';
         btn = btn + " <button class='miEditaTriage btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
-              btn = btn + " <input type='radio'  name='triageId' class='miTriageId form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-
-
+ 
                        return btn;
                     },
 
@@ -151,6 +150,16 @@ function arrancaTriage(valorTabla,valorData)
                 { data: "fields.solicita"},
                 { data: "fields.motivo"},
 		        { data: "fields.triage"},
+{
+		"render": function ( data, type, row ) {
+                        var btn = '';
+
+             btn = btn + " <input type='radio'  name='triageId' class='miTriage form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+                       return btn;
+		}
+                    },
+
 		        ]
             }
 	        dataTable = $('#tablaDatosTriage').DataTable(dataTableOptionsTriage);
@@ -353,30 +362,37 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 
 
 
+$('#tablaDatosTriage tbody').on('click', '.miTriage', function() {
 
-$('#tablaDatosTriage tbody td').click(function(){
-      var rowIndex = $(this).parent().index('#tablaDatosTriage tbody tr');
-      var tdIndex = $(this).index('#tablaDatosTriage tbody tr:eq('+rowIndex+') td');
-   //   alert('Row Number: '+(rowIndex+1)+'\nColumn Number: '+(tdIndex+1));
-  //    var celda = $(this);
-      //alert("valor celda = " + celda.html());
- //     let obtenerDato = document.getElementsByTagName("td");
-
-      tiposDoc=$(this).parents("tr").find("td").eq(0).html();
-      documento=$(this).parents("tr").find("td").eq(1).html();
-      var sede = document.getElementById("sede").value;
-
-      alert("Entre click en tabla triage");
+ 
+	 var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
+	alert("post_id=" + post_id);
+	alert("row=" + row);
+	var triageId= post_id;
+	 var sede =  document.getElementById("sede").value;
+	 var username =  document.getElementById("username").value;
 
 
-      if ((tdIndex+1) == '9')
-      {
+	var table = $('#tablaDatosTriage').DataTable();  // Inicializa el DataTable jquery 	      
+        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+        dato1 = Object.values(rowindex);
+	console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+        dato3 = dato1[2];
+	console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	alert(" fila selecciona de vuelta dato3  glosaId= " +   dato3.Documento);
+	alert(" fila selecciona de vuelta dato3 factura = " + dato3.tipoDoc);
 
+
+     /*
+
+	
 
       $.ajax({
 		type: 'POST',
     	url: '/encuentraTriageModal/',
-		data: {'tiposDoc':tiposDoc,'documento':documento,'sede':sede},
+		data: {'triageId':triageId,'sede':sede,'tiposDoc':dato3.tipoDoc,'documento':dato3.Documento},
 		success: function (response_data) {
 
               //  var options = '<option value="=================="></option>';
@@ -417,13 +433,13 @@ $('#tablaDatosTriage tbody td').click(function(){
    		    error: function (request, status, error) {
 	   	    	}
 	});
-      }
+
+*/
 
 	// Aqui es la creacion de la Admision para el triage
 
- if ((tdIndex+1) == '10')
-      {
 	alert ("Entre a crear la admision Triage");
+
 	//$('#tiposDoc').val(tiposDoc);
 	//$('#documento').val(documento);
 	//$('#sede').val(sede);
@@ -435,15 +451,10 @@ $('#tablaDatosTriage tbody td').click(function(){
       $.ajax({
 		type: 'POST',
     	url: '/admisionTriageModal/',
-		data: {'tiposDoc':tiposDoc,
-		        'documento':documento,
-		        'sede':sede,
-		        'username':username},
+		data: {'tiposDoc':dato3.tipoDoc,'documento':dato3.Documento,'sede':sede, 'username':username},
 		success: function (response_data) {
-
    			    alert("entre DATOS MODAL ADMISION DESDE TRIAGE  de tipoDoc y documento  = " + response_data['TiposDoc2'] + " " +  response_data['Documento']);
    			    alert("Servicios  = " + response_data['Servicios']);
-
                 var options = '<option value="=================="></option>';
                 const $id2 = document.querySelector("#busServicio2");
 
@@ -459,8 +470,6 @@ $('#tablaDatosTriage tbody td').click(function(){
 
 
 			alert("voy para SubServicios  = " + response_data['SubServicios']);
-
-
 
           	    //$('#busSubServicio2').val(response_data['SubServicios']);
 
@@ -512,7 +521,7 @@ $('#tablaDatosTriage tbody td').click(function(){
    		    error: function (request, status, error) {
 	   	    	}
 	});
-      }
+
 
 });
 

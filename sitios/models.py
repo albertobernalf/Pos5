@@ -162,7 +162,7 @@ class Dependencias(models.Model):
     class Meta:
 
     #  unique_together = ('sedesClinica', 'serviciosSedes', 'subServicios','numero','dependenciasTipo')
-       unique_together = (('tipoDoc', 'documento'),)	
+       unique_together = (('tipoDoc', 'documento','consec','disponibilidad'),)	
        #constraints = [
         #   models.UniqueConstraint(fields=[ 'sedesClinica', 'serviciosSedes','servicios','subServicios','numero','dependenciasTipo'], name='Constraint_dependencias')
        # ]
