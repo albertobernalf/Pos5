@@ -45,3 +45,37 @@ try:
         print("Se hizo rollback por:", e)
 
 
+
+	    data: {'tiposDoc': tiposDoc,
+		 'documento': documento,
+		'busServicio2' : busServicio2,
+	            'busSubServicio2':busSubServicio2,
+		 'dependenciasIngreso':dependenciasIngreso,
+		        'dxIngreso':dxIngreso,
+			'busEspecialidad':busEspecialidad,
+		        'medicoIngreso':medicoIngreso,
+			'viasIngreso':viasIngreso,
+		        'causasExterna':causasExterna,
+			 'regimenes':regimenes,
+		        'tiposCotizante':tiposCotizante,
+			 'remitido':remitido,
+		        'ips':ips, 
+			'numManilla':numManilla,
+		        'ripsServiciosIng' : ripsServiciosIng ,
+			 'ripsmodalidadGrupoServicioTecSal' : ripsmodalidadGrupoServicioTecSal ,
+		        'ripsViaIngresoServicioSalud' : ripsViaIngresoServicioSalud ,
+		        'ripsGrupoServicios' : ripsGrupoServicios ,
+		        'ripsCondicionDestinoUsuarioEgreso' : ripsCondicionDestinoUsuarioEgreso,
+		        'ripsCausaMotivoAtencion' : ripsCausaMotivoAtencion,
+		        'ripsRecienNacido' : ripsRecienNacido ,
+			  'ripsNumConsultasCPrenatal' : ripsNumConsultasCPrenatal,
+		        'ripsEdadGestacional' :  ripsEdadGestacional, 		
+			 'ripsDestinoUsuarioEgresoRecienNacido' : ripsDestinoUsuarioEgresoRecienNacido,
+		          'ripsPesoRecienNacido' : ripsPesoRecienNacido ,
+			 'Sede':sede, 'username':username,      
+			   'Profesional':Profesional,
+	             'nombreSede':nombreSede,  
+		    'escogeModulo':escogeModulo,   
+		'Username_id':Username_id},
+
+

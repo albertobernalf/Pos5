@@ -360,6 +360,79 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 
 });
 
+$('#tablaDatosTriage tbody').on('click', '.miEditaTriage', function() {
+
+	 var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
+	alert("post_id=" + post_id);
+	alert("row=" + row);
+	var triageId= post_id;
+	 var sede =  document.getElementById("sede").value;
+	 var username =  document.getElementById("username").value;
+
+
+	var table = $('#tablaDatosTriage').DataTable();  // Inicializa el DataTable jquery 	      
+        var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+        dato1 = Object.values(rowindex);
+	console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+        dato3 = dato1[2];
+	console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	alert(" fila selecciona de vuelta dato3  glosaId= " +   dato3.Documento);
+	alert(" fila selecciona de vuelta dato3 factura = " + dato3.tipoDoc);
+	alert("Voy ajax editar Triage");
+	
+
+      $.ajax({
+		type: 'POST',
+    	url: '/encuentraTriageModal/',
+		data: {'triageId':triageId,'sede':sede,'tiposDoc':dato3.tipoDoc,'documento':dato3.Documento},
+		success: function (response_data) {
+
+       
+		var dato =   JSON.parse(response_data['Triage'].servicioSedes);
+		alert("REGRESE dato = " + dato);
+
+                $('#busServicioT').val(response_data['Triage'].servicioSedes);
+ 
+          	    $('#busSubServicioP').val(response_data['Triage'].subServiciosSedes);
+				$('#dependenciasP').val(response_data['Triage'].dependencias);
+          		$('#tiposDoc').val(response_data['Triage'].tiposDoc);
+				$('#busDocumentoSel').val(response_data['Triage'].documento);
+				$('#motivo').val(response_data['Triage'].motivo);
+				$('#examenFisico').val(response_data['Triage'].examenFisico);
+				$('#frecCardiaca').val(response_data['Triage'].frecCardiaca);
+				$('#frecRespiratoria').val(response_data['Triage'].frecRespiratoria);
+				$('#taSist').val(response_data['Triage'].taSist);
+				$('#taDiast').val(response_data['Triage'].taDiast);
+				$('#taMedia').val(response_data['Triage'].taMedia);
+				$('#glasgow').val(response_data['Triage'].glasgow);
+				$('#peso').val(response_data['Triage'].peso);
+				$('#temperatura').val(response_data['Triage'].temperatura);
+				$('#estatura').val(response_data['Triage'].estatura);
+				$('#glucometria').val(response_data['Triage'].glucometria);
+				$('#saturacion').val(response_data['Triage'].saturacion);
+				$('#escalaDolor').val(response_data['Triage'].escalaDolor);
+				$('#tipoIngreso').val(response_data['Triage'].tipoIngreso);
+				$('#observaciones').val(response_data['Triage'].observaciones);
+				$('#clasificacionTriage').val(response_data['Triage'].clasificacionTriage);
+				alert("Voy a abrit la modal = ");
+		
+				 $('#modalActualizaTriage').modal('show');
+
+		//	$('#modalActualizaTriage').modal({show:true});
+			$('#clasificacionTriage').val(response_data['Triage'].clasificacionTriage);
+                    },
+   		    error: function (request, status, error) {
+	   	    	}
+	});
+	});
+
+
+
+
+
+
 
 
 $('#tablaDatosTriage tbody').on('click', '.miTriage', function() {
@@ -385,66 +458,10 @@ $('#tablaDatosTriage tbody').on('click', '.miTriage', function() {
 	alert(" fila selecciona de vuelta dato3 factura = " + dato3.tipoDoc);
 
 
-     /*
-
-	
-
-      $.ajax({
-		type: 'POST',
-    	url: '/encuentraTriageModal/',
-		data: {'triageId':triageId,'sede':sede,'tiposDoc':dato3.tipoDoc,'documento':dato3.Documento},
-		success: function (response_data) {
-
-              //  var options = '<option value="=================="></option>';
-              //  const $id9 = document.querySelector("#busServicioT");
-
-		var dato =   JSON.parse(response_data['Triage'].servicioSedes);
-		alert("dato = " + dato);
-
-                $('#busServicioT').val(response_data['Triage'].servicioSedes);
- 
-          	    $('#busSubServicioP').val(response_data['Triage'].subServiciosSedes);
-				$('#dependenciasP').val(response_data['Triage'].dependencias);
-          		$('#tiposDoc').val(response_data['Triage'].tiposDoc);
-				$('#busDocumentoSel').val(response_data['Triage'].documento);
-				$('#motivo').val(response_data['Triage'].motivo);
-				$('#examenFisico').val(response_data['Triage'].examenFisico);
-				$('#frecCardiaca').val(response_data['Triage'].frecCardiaca);
-				$('#frecRespiratoria').val(response_data['Triage'].frecRespiratoria);
-				$('#taSist').val(response_data['Triage'].taSist);
-				$('#taDiast').val(response_data['Triage'].taDiast);
-				$('#taMedia').val(response_data['Triage'].taMedia);
-				$('#glasgow').val(response_data['Triage'].glasgow);
-				$('#peso').val(response_data['Triage'].peso);
-				$('#temperatura').val(response_data['Triage'].temperatura);
-				$('#estatura').val(response_data['Triage'].estatura);
-				$('#glucometria').val(response_data['Triage'].glucometria);
-				$('#saturacion').val(response_data['Triage'].saturacion);
-				$('#escalaDolor').val(response_data['Triage'].escalaDolor);
-				$('#tipoIngreso').val(response_data['Triage'].tipoIngreso);
-				$('#observaciones').val(response_data['Triage'].observaciones);
-				$('#clasificacionTriage').val(response_data['Triage'].clasificacionTriage);
-
-		
-
-				 $('#modalActualizaTriage').modal({show:true});
-			$('#clasificacionTriage').val(response_data['Triage'].clasificacionTriage);
-                    },
-   		    error: function (request, status, error) {
-	   	    	}
-	});
-
-*/
-
 	// Aqui es la creacion de la Admision para el triage
 
 	alert ("Entre a crear la admision Triage");
 
-	//$('#tiposDoc').val(tiposDoc);
-	//$('#documento').val(documento);
-	//$('#sede').val(sede);
-	//$('#tiposDoc').val(tiposDoc);
-	//$('#busDocumentoSel').val(documento);
   	var username = document.getElementById("username").value;
   	alert ("username = " + username);
 
@@ -516,7 +533,11 @@ $('#tablaDatosTriage tbody').on('click', '.miTriage', function() {
 				$('#remitido').val('N');
 				$('#ips').val(response_data['Ips']);
 				$('#numManilla').val('0');
-		            $('#crearAdmTriage').modal({show:true});
+
+				alert("listo todo voy a abrir la modal");
+
+			 $('#crearAdmTriage').modal('show');
+		   //         $('#crearAdmTriage').modal({show:true});
                     },
    		    error: function (request, status, error) {
 	   	    	}
@@ -1047,9 +1068,9 @@ function guardaTriageModal()
 
 	$.ajax({
 		type: 'POST',
-	    url: '/grabaTriageModal/',
-	    dataType: 'JSON',
-	    data: {'tiposDoc': tiposDoc,
+		 url: '/grabaTriageModal/',
+		 dataType: 'json',
+	        data: {'tiposDoc': tiposDoc,
 	            'documento': documento,
 	            'busServicioT' : busServicioT,
 	            'busSubServicioP':busSubServicioP,
@@ -1082,14 +1103,10 @@ function guardaTriageModal()
 		        {
 
                 $('#mensaje1').html('<span> respuesta</span>');
-                // $('#modalActualizaTriage').modal('hide');
                 alert("esta es la clasificacion triage = " + respuesta['clasificacionTriage'] );
                 $('#clasificacionTriage').val(respuesta['clasificacionTriage']);
 
                 $('#modalActualizaTriage').modal({show:false});
-
-
-
 
 		$('#clasificacionTriage').val(respuesta['clasificacionTriage']);		
 
@@ -1131,9 +1148,9 @@ function guardarAdmisionTriage()
   	alert("sede =" + sede);
     var username = document.getElementById("username").value;
     var Profesional = document.getElementById("profesional").value;
-   alert("Profesional =" + Profesional);
+
     var nombreSede = document.getElementById("nombreSede").value;
-    alert("nombreSede =" + nombreSede);
+
     var Username_id = document.getElementById("username_id").value;
     var escogeModulo = document.getElementById("escogeModulo").value;
 
@@ -1150,54 +1167,50 @@ function guardarAdmisionTriage()
     var ripsEdadGestacional = document.getElementById("ripsEdadGestacional").value;
     var ripsDestinoUsuarioEgresoRecienNacido = document.getElementById("ripsDestinoUsuarioEgresoRecienNacido").value;
 
+	alert("Voy a guardar crear adnmision TRIAGE");
 
 	$.ajax({
-		type: 'POST',
-	    url: '/guardarAdmisionTriage/',
-	    dataType: 'JSON',
-	    data: {'tiposDoc': tiposDoc,
+     	// data: $('#AdmisionTriage').serialize(),
+data: {'tiposDoc': tiposDoc,
 	            'documento': documento,
-	            'busServicio2' : busServicio2,
-	            'busSubServicio2':busSubServicio2,
-   	            'dependenciasIngreso':dependenciasIngreso,
-		        'dxIngreso':dxIngreso,
-		        'busEspecialidad':busEspecialidad,
-		        'medicoIngreso':medicoIngreso,
-		        'viasIngreso':viasIngreso,
-		        'causasExterna':causasExterna,
-		        'regimenes':regimenes,
-		        'tiposCotizante':tiposCotizante,
-		        'remitido':remitido,
-		        'ips':ips,
-		        'numManilla':numManilla,
-		        'ripsServiciosIng' : ripsServiciosIng ,
-		        'ripsmodalidadGrupoServicioTecSal' : ripsmodalidadGrupoServicioTecSal ,
-		        'ripsViaIngresoServicioSalud' : ripsViaIngresoServicioSalud ,
-		        'ripsGrupoServicios' : ripsGrupoServicios ,
-		        'ripsCondicionDestinoUsuarioEgreso' : ripsCondicionDestinoUsuarioEgreso,
-		        'ripsCausaMotivoAtencion' : ripsCausaMotivoAtencion,
-		        'ripsRecienNacido' : ripsRecienNacido ,
-		        'ripsNumConsultasCPrenatal' : ripsNumConsultasCPrenatal,
-		        'ripsEdadGestacional' :  ripsEdadGestacional,
-		         'ripsDestinoUsuarioEgresoRecienNacido' : ripsDestinoUsuarioEgresoRecienNacido,
-		          'ripsPesoRecienNacido' : ripsPesoRecienNacido ,
-		        'Sede':sede,
+	            'busServicioT' : busServicioT,
+	            'busSubServicioP':busSubServicioP,
+	            'dependenciasP':dependenciasP,
+	            'motivo':motivo ,
+	             'examenFisico':examenFisico,
+	             'frecCardiaca':frecCardiaca,
+	             'frecRespiratoria':frecRespiratoria,
+	             'taSist':taSist,
+	             'taDiast':taDiast,
+	             'taMedia':taMedia,
+	             'glasgow':glasgow,
+	             'peso':peso,
+	             'temperatura':temperatura ,
+	             'estatura':estatura,
+	             'glucometria':glucometria,
+	             'saturacion':saturacion,
+	             'escalaDolor':escalaDolor,
+	             'tipoIngreso':tipoIngreso,
+	             'observaciones':observaciones,
+	             'clasificacionTriage':clasificacionTriage,
+	             'sede':sede,
 	             'username':username,
 	             'Profesional':Profesional,
 	             'nombreSede':nombreSede,
 	             'escogeModulo':escogeModulo,
-	             'Username_id':Username_id},
+	             'Username_id':Username_id  },
+	    url: '/guardarAdmisionTriage/',
+		type: 'POST',
+	    dataType: 'json',
 		success: function (respuesta)
 		        {
 		        alert ("respuesta =" + respuesta);
          		alert ("REGRESE DE GUARDAR Admision triage ");
 
                         $('#mensajes').html('<span> respuesta</span>');
-			//   $('#crearAdmTriage').modal().hide();
-		     $('#crearAdmTriage').modal({show:false});
-		         window.location.reload();
 
-		        $('#mensajeria').val("Admision creada ...");
+			 $('#crearAdmTriage').modal('hide');
+
 
                 },
 	   		    error: function (request, status, error)

@@ -159,6 +159,7 @@ urlpatterns = [
     #path('encuentraAdmisionModal/<str:tipoDoc> , <str:documento> , <str:consec> , <str:sede>/', viewsAdmisiones.encuentraAdmisionModal, name='encuentraAdmisionModal'),
     path('encuentraAdmisionModal/', viewsAdmisiones.encuentraAdmisionModal),
     path('load_dataAdmisiones/<str:data>', viewsAdmisiones.load_dataAdmisiones,   name='loaddata_Admisiones'),
+    path('load_dataAutorizacionesAdmisiones/<str:data>', viewsAdmisiones.Load_dataAutorizacionesAdmisiones, name='loaddata_AutorizacionesAdmisiones'),
 
     # Triage
 

@@ -1542,28 +1542,43 @@ function cargarTablaAbonosPaciente()
     </article>
 
     <article id="Autorizaciones">
-        <center><h3>Autorizaciones</h3></center>
-            <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <table class="table" style="height: 5px; background-color:LightGray; BORDERCOLOR=RED ; border: 8px solid black; border-color: #96D4D4;  width:99%;">
-                            <form class="form-inline" action="/crearAutorizacionesDef/" method="POST" id="FormaAutorizaciones">
+        
+   <!-- INICIO TABLE DE  EL DATATABLE  -->
 
+		<div class="container my-2">
+             
+   			   <div class="row">
 
+                                        <table  id= "tablaAutorizaciones" class="display table table-striped table-sm fs-6" style="width: 100%;">
+                                           <thead>
+                                            <tr>    
+					<bold>                                  
+				        <th>id</th>
+					<th>fechaSolicitud</th> 
+					<th>numeroAutorizacion</th>
+					<th>fechaAutorizacion</th>
+					<th>estado</th>
+					<th>empresa</th>
+					<th>examen</th>
+					<th>cums</th>
+					<th>valorAutorizado</th>
+					<th>autDetalle</th>
+					<th>nombreSuministro</th>
+					<th>nombreExamen</th>
+					<th>sel</th>
+                                      
+					</bold>                                  
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
 
-                            </form>
-                        </table>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            </table>
+                                        </table>
+                                    </div>
+                                </div>
+
+		<!--  FIN DATATABLE -->
+
 
 
     </article>

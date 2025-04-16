@@ -6211,4 +6211,44 @@ def BuscaConveniosAbonoAdmision(request):
         return HttpResponse(serialized1, content_type='application/json')
 
 
+def Load_dataAutorizacionesAdmisiones(request, data):
+    print("Entre  load_dataAutorizaciones")
 
+    context = {}
+    d = json.loads(data)
+
+    ingresoId = d['ingresoId']
+    sede = d['sede']
+
+    print("sede:", sede)
+    print("ingresoId:", ingresoId)
+
+
+    RegistroId =  Ingresos.objects.get(id=ingresoId)
+
+    autorizaciones = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select aut.id id,  aut."fechaSolicitud" fechaSolicitud ,aut."numeroAutorizacion" numeroAutorizacion,aut."fechaAutorizacion" fechaAutorizacion, est.nombre estado, emp.nombre empresa,det.examenes_id examen ,det.cums_id cums, det."valorAutorizado" valorAutorizado, det."numeroAutorizacion" autDetalle, sum.nombre nombreSuministro, exa.nombre nombreExamen from autorizaciones_autorizaciones aut  inner join clinico_historia his on (his.id = aut.historia_id)  left join autorizaciones_autorizacionesdetalle det on (det.autorizaciones_id = aut.id)	inner join autorizaciones_estadosautorizacion est on (est.id = aut."estadoAutorizacion_id" ) left join facturacion_empresas emp on (emp.id = aut.empresa_id) left join facturacion_suministros sum on (sum.id=det.cums_id) left join clinico_examenes exa on (exa.id = det.examenes_id) WHERE his."tipoDoc_id" = ' + "'" + str(RegistroId.tipoDoc_id) + "' AND his.documento_id =" + "'" + str(RegistroId.documento_id) + "'" + ' AND his."consecAdmision" = ' +"'" + str(RegistroId.consec) + "'"
+
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id, fechaSolicitud ,numeroAutorizacion,fechaAutorizacion,estado,empresa,examen,cums,valorAutorizado,autDetalle,nombreSuministro,nombreExamen in curx.fetchall():
+        autorizaciones.append(
+            {"model": "autorizaciones.autorizaciones", "pk": id, "fields":
+                {'id': id, 'fechaSolicitud': fechaSolicitud, 'numeroAutorizacion': numeroAutorizacion, 'fechaAutorizacion': fechaAutorizacion, 'estado': estado,
+                 'empresa': empresa, 'examen': examen, 'cums': cums,'valorAutorizado':valorAutorizado,'autDetalle':autDetalle,'nombreSuministro':nombreSuministro, 'nombreExamen':nombreExamen }})
+
+    miConexionx.close()
+    print(autorizaciones)
+
+    serialized1 = json.dumps(autorizaciones, default=serialize_datetime)
+
+    print("Envio = ", serialized1)
+
+    return HttpResponse(serialized1, content_type='application/json')

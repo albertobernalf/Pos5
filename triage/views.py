@@ -24,7 +24,7 @@ from django.db.models.functions import Cast, Coalesce
 
 import datetime
 from rips.models import  RipsDestinoEgreso
-
+from django.db import transaction, IntegrityError
 
 # Create your views here.
 
@@ -154,55 +154,62 @@ def crearTriage(request):
         usernameId = Planta.objects.get(documento=username)
         print("el id del planta = ", usernameId.id)
 
+        try:
+            with transaction.atomic():
 
-        grabo = Triage(
-                         sedesClinica_id=Sede,
-                         tipoDoc_id=tipoDoc,
-                         documento_id=documento_llave.id,
-                         consec=0,
-                         fechaSolicita=fechaRegistro,
-                         serviciosSedes_id=  busServicioT,
-                         subServiciosSedes_id=busSubServicioT,
-                         dependencias_id=dependencias,
-                         motivo=motivo,
-                         examenFisico=examenFisico,
-                         frecCardiaca=frecCardiaca,
-                         frecRespiratoria=frecRespiratoria,
-                         taSist=taSist,
-                         taDiast=taDiast,
-                         taMedia=taMedia,
-                         glasgow=glasgow,
-                         peso=peso,
-                         temperatura=temperatura,
-                         estatura=estatura,
-                         glucometria=glucometria,
-                         saturacion=saturacion,
-                         escalaDolor=escalaDolor,
-                         #tipoIngreso=tipoIngreso,
-                         observaciones=observaciones,
-                         clasificacionTriage_id=clasificacionTriage,
-                         fechaRegistro=fechaRegistro,
-                         usuarioCrea_id=usernameId.id,
-            			 consecAdmision=0,
-                         #estadoReg=estadoReg,
+                grabo = Triage(
+                                 sedesClinica_id=Sede,
+                                 tipoDoc_id=tipoDoc,
+                                 documento_id=documento_llave.id,
+                                 consec=0,
+                                 fechaSolicita=fechaRegistro,
+                                 serviciosSedes_id=  busServicioT,
+                                 subServiciosSedes_id=busSubServicioT,
+                                 dependencias_id=dependencias,
+                                 motivo=motivo,
+                                 examenFisico=examenFisico,
+                                 frecCardiaca=frecCardiaca,
+                                 frecRespiratoria=frecRespiratoria,
+                                 taSist=taSist,
+                                 taDiast=taDiast,
+                                 taMedia=taMedia,
+                                 glasgow=glasgow,
+                                 peso=peso,
+                                 temperatura=temperatura,
+                                 estatura=estatura,
+                                 glucometria=glucometria,
+                                 saturacion=saturacion,
+                                 escalaDolor=escalaDolor,
+                                 #tipoIngreso=tipoIngreso,
+                                 observaciones=observaciones,
+                                 clasificacionTriage_id=clasificacionTriage,
+                                 fechaRegistro=fechaRegistro,
+                                 usuarioCrea_id=usernameId.id,
+                                 consecAdmision=0,
+                                 #estadoReg=estadoReg,
 
-        )
-        print("Voy a guardar la INFO")
+                )
+                print("Voy a guardar la INFO")
 
-        grabo.save()
-        print("yA grabe 2", grabo.id)
-        grabo.id
-        print("yA grabe" , grabo.id)
-	
-	# Aqui UPDATE para actualizar la dependencia
+                grabo.save()
+                print("yA grabe 2", grabo.id)
+                grabo.id
+                print("yA grabe" , grabo.id)
 
-        # Grabo Dependencias
+            # Aqui UPDATE para actualizar la dependencia
 
-        print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
-        # ejemplo
-        grabo4 =  Dependencias.objects.filter(id = dependencias).update(tipoDoc_id=tipoDoc, documento_id=documento_llave.id, consec=0, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaRegistro)
+                # Grabo Dependencias
 
-	# FIN UPDATE actualiza dependencia
+                print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
+                # ejemplo
+                grabo4 =  Dependencias.objects.filter(id = dependencias).update(tipoDoc_id=tipoDoc, documento_id=documento_llave.id, consec=0, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaRegistro)
+
+            # FIN UPDATE actualiza dependencia
+
+        except Exception as e:
+            # Aquí ya se hizo rollback automáticamente
+            print("Se hizo rollback por:", e)
+
 
         # RUTINA ARMADO CONTEXT
 
@@ -1254,35 +1261,49 @@ def grabaUsuariosTriage(request):
 
     fechaRegistro = dnow
 
-
-    if Usuarios == []:
-
-         print("Entre a crear")
-         #miConexion3 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-         cur3 = miConexion3.cursor()
-         #comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio",  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", municipio_id, localidad_id, "estadoCivil_id", ocupacion_id, correo ,"fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" +  ', '  + "'" + str(departamentos) + "'" +  '  , ' + "'" +  str(ciudades) + "'" + '  , ' + "'" +  str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosC) + "'" +  ', ' + "'" + str(tipoDoc) + "'" + ', ' + "'" + str(tiposUsuario) + "' , " + "'" + str(municipios) + "'" +   ', ' + "'" + str(localidades) + "'" + ", " + "'" + str(estadoCivil) + "'" + ", " + "'" + str(ocupaciones) + "'" + ", " + "'" + str(correo) + "', " +  "'"  + str(fechaRegistro) + "'"  +  ", 'A'"  +      ')'
-         comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio",  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", "estadoCivil_id","localidad_id", "municipio_id", "ocupacion_id",  "fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" + ', ' + "'" + str(departamentos) + "'" + '  , ' + "'" + str(ciudades) + "'" + '  , ' + "'" + str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosC) + "'" + ', ' + "'" + str(tipoDoc) + "'" + ', ' + "'" + str(tiposUsuario) + "' , '" + str(estadoCivil) + "' , '" + str(localidades) + "' , '"+ str(municipios) + "' , '"+ str(ocupaciones) +  "' , '"+  str(fechaRegistro) + "'" + ", 'A'" + ')'
-
-         print(comando)
-         cur3.execute(comando)
-         miConexion3.commit()
-         miConexion3.close()
-         return HttpResponse("Usuario Creado ! ")
-    else:
-        print("Entre a actualizar")
-        #miConexion3 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        cur3 = miConexion3.cursor()
-        comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" +str(fechaNacio) + "'" +  ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosC) + "'"  + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario) + "' , "   + ' municipio_id = ' + str(municipios) +   ', localidad_id = ' +  str(localidades) +  ', "estadoCivil_id"= ' +  str(estadoCivil) +  ', ocupacion_id = ' +  str(ocupaciones) +  ', correo = ' + "'" + str(correo) + "'" + ' WHERE "tipoDoc_id" = ' + str(tipoDoc) + ' AND documento = ' + "'" + str(documento) + "'"
-
-        print(comando)
-        cur3.execute(comando)
-        miConexion3.commit()
+    miConexion3 = None
+    try:
 
 
-        miConexion3.close()
-        return HttpResponse("Usuario Actualizado ! ")
+        if Usuarios == []:
+
+                 print("Entre a crear")
+                 #miConexion3 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+                 miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                 cur3 = miConexion3.cursor()
+                 comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio",  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", "estadoCivil_id","localidad_id", "municipio_id", "ocupacion_id",  "fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" + ', ' + "'" + str(departamentos) + "'" + '  , ' + "'" + str(ciudades) + "'" + '  , ' + "'" + str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosC) + "'" + ', ' + "'" + str(tipoDoc) + "'" + ', ' + "'" + str(tiposUsuario) + "' , '" + str(estadoCivil) + "' , '" + str(localidades) + "' , '"+ str(municipios) + "' , '"+ str(ocupaciones) +  "' , '"+  str(fechaRegistro) + "'" + ", 'A'" + ')'
+                 print(comando)
+                 cur3.execute(comando)
+                 miConexion3.commit()
+                 miConexion3.close()
+
+                 return HttpResponse("Usuario Creado ! ")
+        else:
+                print("Entre a actualizar")
+                #miConexion3 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+                miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                cur3 = miConexion3.cursor()
+                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" +str(fechaNacio) + "'" +  ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosC) + "'"  + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario) + "' , "   + ' municipio_id = ' + str(municipios) +   ', localidad_id = ' +  str(localidades) +  ', "estadoCivil_id"= ' +  str(estadoCivil) +  ', ocupacion_id = ' +  str(ocupaciones) +  ', correo = ' + "'" + str(correo) + "'" + ' WHERE "tipoDoc_id" = ' + str(tipoDoc) + ' AND documento = ' + "'" + str(documento) + "'"
+                print(comando)
+                cur3.execute(comando)
+                miConexion3.commit()
+                miConexion3.close()
+                return HttpResponse("Usuario Actualizado ! ")
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            miConexion3.close()
+
 
 def grabaTriageModal(request):
 
@@ -1327,21 +1348,35 @@ def grabaTriageModal(request):
         print("el id del documento = ", documento_llave.id)
 
         print("Entre a actualizar")
-        # miConexion3 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        cur3 = miConexion3.cursor()
-        comando = 'update triage_triage set  "serviciosSedes_id" = ' + "'" + str(busServicioT) + "'," + ' "subServiciosSedes_id" = ' + "'" + str(busSubServicioP) + "',"  + ' dependencias_id= ' + "'" +  str(dependenciasP) + "'," +  ' "tipoDoc_id" = ' "'" + str(tiposDoc) + "'" + ', documento_id  = ' + "'" + str(documento_llave.id) + "'" + ', motivo = ' + "'" + str(motivo) + "'" + ', "examenFisico" = ' + "'" + str(examenFisico) + "'" + ', "frecCardiaca"= ' + "'" + str(frecCardiaca) + "'" + ', "frecRespiratoria"= ' + "'" + str(frecRespiratoria) + "'" + ', "taSist"= ' + "'" + str(taSist) + "'" + ', "taDiast" = ' + "'" + str(taDiast) + "' , " + ' "taMedia" = ' + "'" + str(taMedia) + "'" + ', glasgow = ' + "'" + str(glasgow) + "'" + ', "peso"= ' + "'" + str(peso) + "'"  +  ', estatura= ' + "'" + str(estatura) + "'"  + ', temperatura = ' + "'" + str(temperatura) + "'" + ', glucometria = ' + str(glucometria)  + ', "tipoIngreso"= ' + "'" + str(tipoIngreso) + "'" + ', observaciones = ' + "'" + str(observaciones) + "'"  +  ', "clasificacionTriage_id" = ' + "'" + str(clasificacionTriage) + "'"  +   ' WHERE "tipoDoc_id" = ' + str(tiposDoc) + ' AND documento_id = ' + "'" + str(documento_llave.id) + "';"
 
-        print(comando)
-        cur3.execute(comando)
-        miConexion3.commit()
+        miConexion3 = None
+        try:
 
-        miConexion3.close()
-        print("De regreso")
-        response_data = {}
-        response_data['Mensajes']='Triage Actualizado ! '
-        return JsonResponse(response_data, safe=False)
+                miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                               password="123456")
+                cur3 = miConexion3.cursor()
+                comando = 'update triage_triage set  "serviciosSedes_id" = ' + "'" + str(busServicioT) + "'," + ' "subServiciosSedes_id" = ' + "'" + str(busSubServicioP) + "',"  + ' dependencias_id= ' + "'" +  str(dependenciasP) + "'," +  ' "tipoDoc_id" = ' "'" + str(tiposDoc) + "'" + ', documento_id  = ' + "'" + str(documento_llave.id) + "'" + ', motivo = ' + "'" + str(motivo) + "'" + ', "examenFisico" = ' + "'" + str(examenFisico) + "'" + ', "frecCardiaca"= ' + "'" + str(frecCardiaca) + "'" + ', "frecRespiratoria"= ' + "'" + str(frecRespiratoria) + "'" + ', "taSist"= ' + "'" + str(taSist) + "'" + ', "taDiast" = ' + "'" + str(taDiast) + "' , " + ' "taMedia" = ' + "'" + str(taMedia) + "'" + ', glasgow = ' + "'" + str(glasgow) + "'" + ', "peso"= ' + "'" + str(peso) + "'"  +  ', estatura= ' + "'" + str(estatura) + "'"  + ', temperatura = ' + "'" + str(temperatura) + "'" + ', glucometria = ' + str(glucometria)  + ', "tipoIngreso"= ' + "'" + str(tipoIngreso) + "'" + ', observaciones = ' + "'" + str(observaciones) + "'"  +  ', "clasificacionTriage_id" = ' + "'" + str(clasificacionTriage) + "'"  +   ' WHERE "tipoDoc_id" = ' + str(tiposDoc) + ' AND documento_id = ' + "'" + str(documento_llave.id) + "';"
+                print(comando)
+                cur3.execute(comando)
+                miConexion3.commit()
+                miConexion3.close()
+                print("De regreso")
+                response_data = {}
+                response_data['Mensajes']='Triage Actualizado ! '
+                return JsonResponse(response_data, safe=False)
+
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexion3:
+                print("Entro ha hacer el Rollback")
+                miConexion3.rollback()
+
+            print ("Voy a hacer el jsonresponde")
+            return JsonResponse({'success': False, 'Mensaje': error})
+
+        finally:
+            if miConexion3:
+                miConexion3.close()
 
 
 
@@ -1704,7 +1739,7 @@ def admisionTriageModal(request):
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(
+    comando = 'SELECT med.id id, p.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(
         sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str('MEDICO') + "'" + ' and med.planta_id = p.id'
 
     curt.execute(comando)
@@ -1952,22 +1987,22 @@ def guardarAdmisionTriage(request):
         print("EntrePost Graba Admision Triage")
 
         #sedesClinica = request.POST['sedesClinica']
-        sedesClinica = request.POST['Sede']
-        Sede = request.POST['Sede']
-        sede = request.POST['Sede']
-        context['Sede'] = Sede
+        sedesClinica = request.POST['sede']
+        sede = request.POST['sede']
+
+        context['sede'] = sede
         NombreSede = request.POST['nombreSede']
         nombreSede = request.POST['nombreSede']
         print("Sedes Clinica = ", sedesClinica)
-        print ("Sede = ",Sede)
+        print ("Sede = ",sede)
         username = request.POST["username"].strip()
-        print(" Username = " , username)
-        context['Username'] = username
-        Profesional = request.POST["Profesional"]
+        print(" username = " , username)
+        context['username'] = username
+        Profesional = request.POST["profesional"]
         print(" Profesional = " , Profesional)
-        context['Profesional'] = Profesional
-        Username_id = request.POST["Username_id"]
-        print("Username_id = ", Username_id)
+        context['profesional'] = Profesional
+        Username_id = request.POST["username_id"]
+        print("username_id = ", Username_id)
         context['Username_id'] = Username_id
 
         busServicio2 = request.POST["busServicio2"]
@@ -1976,7 +2011,7 @@ def guardarAdmisionTriage(request):
         busSubServicio2 = request.POST["busSubServicio2"]
         print(" busSubServicio2 = ", busSubServicio2)
         context['BusSubServicio2'] = busSubServicio2
-        tiposDoc = request.POST['tiposDoc']
+        tiposDoc = request.POST['tiposDoc2']
        # documento = request.POST['documento']
         documento = request.POST['documento']
         print("tiposDoc = ", tiposDoc)
@@ -1984,7 +2019,7 @@ def guardarAdmisionTriage(request):
 
         # Consigo el Id del Paciente Documento
 
-        DocumentoId = Usuarios.objects.get(documento=documento)
+        DocumentoId = Usuarios.objects.get(documento=documento.strip())
         idPacienteFinal = DocumentoId.id
 
         tiposDocId = TiposDocumento.objects.get(nombre=tiposDoc)
@@ -2047,7 +2082,7 @@ def guardarAdmisionTriage(request):
 
         # Consigo ID de Documento
 
-        documento_llave = Usuarios.objects.get(documento=documento)
+        documento_llave = Usuarios.objects.get(documento=documento.strip())
         print("el id del dopcumento = ", documento_llave.id)
 
         usernameId = Planta.objects.get(documento=username)
@@ -2090,115 +2125,124 @@ def guardarAdmisionTriage(request):
         ripsDestinoUsu1 = RipsDestinoEgreso.objects.get(id=ripsDestinoUsuarioEgresoRecienNacido)
         ripsCondicionDestinoUsuarioEgreso = request.POST["ripsCondicionDestinoUsuarioEgreso"]
 
-        grabo = Ingresos(
-                         sedesClinica_id=Sede,
-                         tipoDoc_id=idTipoDocFinal,
-                         documento_id=documento_llave.id,
-                         consec=consecAdmision,
-                         fechaIngreso=fechaIngreso,
-                         #fechaSalida=NULL,
-                         factura=factura,
-                         numcita=numcita,
-                         serviciosIng_id=  busServicio2,
-                         dependenciasIngreso_id=dependenciasIngreso,
-                         dxIngreso_id=dxIngreso,
-                         medicoIngreso_id=medicoIngreso,
-                         especialidadesMedicosIngreso_id=especialidadesMedicos,
-                         serviciosActual_id=busServicio2,
-                         dependenciasActual_id=dependenciasIngreso,
-                         dxActual_id = dxIngreso,
-                         medicoActual_id=medicoIngreso,
-                         especialidadesMedicosActual_id=especialidadesMedicos,
-                         #dependenciasSalida_id = dependenciasSalida,
-                         #dxSalida_id = dxSalida,
-                         #medicoSalida_id=medicoSalida,
-                         #especialidadesMedicosSalida_id="",
-                         #estadoSalida_id = estadoSalida,
-                         ViasIngreso_id=viasIngreso,
-                         causasExterna_id=causasExterna,
-                         regimen_id=regimenes,
-                         tiposCotizante_id=tiposCotizante,
-                         #empresa_id=empresaId,
-                         ipsRemite_id=ipsRemite,
-                         numManilla=numManilla,
-                         #contactoAcompañante_id=contactoAcompanante,
-                         #contactoResponsable_id=contactoResponsable,
-                         remitido=remitido,
-                         #salidaClinica=salidaClinica,
-                         #salidaDefinitiva=salidaDefinitiva,
-                         ripsServiciosIng_id=ripsServiciosIng,
-                         ripsServiciosActual_id=ripsServiciosIng,
-                         ripsmodalidadGrupoServicioTecSal_id=ripsmodalidadGrupoServicioTecSal,
-                         ripsViaIngresoServicioSalud_id=ripsViaIngresoServicioSalud,
-                         ripsGrupoServicios_id=ripsGrupoServicios,
-                         ripsCondicionDestinoUsuarioEgreso_id=ripsCondicionDestinoUsuarioEgreso,
-                         ripsCausaMotivoAtencion_id=ripsCausaMotivoAtencion,
-                         ripsRecienNacido=ripsRecienNacido,
-                         ripsPesoRecienNacido=ripsPesoRecienNacido,
-                         ripsNumConsultasCPrenatal=ripsNumConsultasCPrenatal,
-                         ripsEdadGestacional=ripsEdadGestacional,
-                         ripsDestinoUsuarioEgresoRecienNacido=ripsDestinoUsu1,
-                         fechaRegistro=fechaRegistro,
-                         usuarioRegistro_id=usernameId.id,
-                         estadoReg=estadoReg,
+        try:
+            with transaction.atomic():
 
-        )
-        print("Voy a guardar la INFO")
+                grabo = Ingresos(
+                                 sedesClinica_id=Sede,
+                                 tipoDoc_id=idTipoDocFinal,
+                                 documento_id=documento_llave.id,
+                                 consec=consecAdmision,
+                                 fechaIngreso=fechaIngreso,
+                                 #fechaSalida=NULL,
+                                 factura=factura,
+                                 numcita=numcita,
+                                 serviciosIng_id=  busServicio2,
+                                 dependenciasIngreso_id=dependenciasIngreso,
+                                 dxIngreso_id=dxIngreso,
+                                 medicoIngreso_id=medicoIngreso,
+                                 especialidadesMedicosIngreso_id=especialidadesMedicos,
+                                 serviciosActual_id=busServicio2,
+                                 dependenciasActual_id=dependenciasIngreso,
+                                 dxActual_id = dxIngreso,
+                                 medicoActual_id=medicoIngreso,
+                                 especialidadesMedicosActual_id=especialidadesMedicos,
+                                 #dependenciasSalida_id = dependenciasSalida,
+                                 #dxSalida_id = dxSalida,
+                                 #medicoSalida_id=medicoSalida,
+                                 #especialidadesMedicosSalida_id="",
+                                 #estadoSalida_id = estadoSalida,
+                                 ViasIngreso_id=viasIngreso,
+                                 causasExterna_id=causasExterna,
+                                 regimen_id=regimenes,
+                                 tiposCotizante_id=tiposCotizante,
+                                 #empresa_id=empresaId,
+                                 ipsRemite_id=ipsRemite,
+                                 numManilla=numManilla,
+                                 #contactoAcompañante_id=contactoAcompanante,
+                                 #contactoResponsable_id=contactoResponsable,
+                                 remitido=remitido,
+                                 #salidaClinica=salidaClinica,
+                                 #salidaDefinitiva=salidaDefinitiva,
+                                 ripsServiciosIng_id=ripsServiciosIng,
+                                 ripsServiciosActual_id=ripsServiciosIng,
+                                 ripsmodalidadGrupoServicioTecSal_id=ripsmodalidadGrupoServicioTecSal,
+                                 ripsViaIngresoServicioSalud_id=ripsViaIngresoServicioSalud,
+                                 ripsGrupoServicios_id=ripsGrupoServicios,
+                                 ripsCondicionDestinoUsuarioEgreso_id=ripsCondicionDestinoUsuarioEgreso,
+                                 ripsCausaMotivoAtencion_id=ripsCausaMotivoAtencion,
+                                 ripsRecienNacido=ripsRecienNacido,
+                                 ripsPesoRecienNacido=ripsPesoRecienNacido,
+                                 ripsNumConsultasCPrenatal=ripsNumConsultasCPrenatal,
+                                 ripsEdadGestacional=ripsEdadGestacional,
+                                 ripsDestinoUsuarioEgresoRecienNacido=ripsDestinoUsu1,
+                                 fechaRegistro=fechaRegistro,
+                                 usuarioRegistro_id=usernameId.id,
+                                 estadoReg=estadoReg,
 
-        grabo.save()
-        print("yA grabe 2", grabo.id)
-        grabo.id
-        print("yA grabe" , grabo.id)
+                )
+                print("Voy a guardar la INFO")
 
-        # Consigo la Dependencia Triage Actual que ocupa
+                grabo.save()
+                print("yA grabe 2", grabo.id)
+                grabo.id
+                print("yA grabe" , grabo.id)
 
-        depActual = Dependencias.objects.get(documento_id=idPacienteFinal)
-        print ("dependencia Triage = ", depActual.id)
+                # Consigo la Dependencia Triage Actual que ocupa
 
-        # Grabo Desmarcar la Dependencias triage
+                depActual = Dependencias.objects.get(documento_id=idPacienteFinal)
+                print ("dependencia Triage = ", depActual.id)
 
-        print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
-        # ejemplo
-        grabo5 = Dependencias.objects.filter(id=depActual.id).update(tipoDoc_id='',documento_id='',consec=0, disponibilidad='L', fechaRegistro=fechaRegistro, fechaOcupacion=fechaRegistro)
+                # Grabo Desmarcar la Dependencias triage
 
-        # Fin Grabo Desmarcar la Dependencias triage
+                print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
+                # ejemplo
+                grabo5 = Dependencias.objects.filter(id=depActual.id).update(tipoDoc_id='',documento_id='',consec=0, disponibilidad='L', fechaRegistro=fechaRegistro, fechaOcupacion=fechaRegistro)
 
-        # Grabo Dependencias
+                # Fin Grabo Desmarcar la Dependencias triage
 
-        print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
-        # ejemplo
-        grabo4 =  Dependencias.objects.filter(id = dependenciasIngreso).update(tipoDoc_id=idTipoDocFinal, documento_id=documento_llave.id, consec=consecAdmision, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaRegistro)
+                # Grabo Dependencias
+
+                print("Voy a guardar dependencias OJO ESTO ES UN UPDATE")
+                # ejemplo
+                grabo4 =  Dependencias.objects.filter(id = dependenciasIngreso).update(tipoDoc_id=idTipoDocFinal, documento_id=documento_llave.id, consec=consecAdmision, disponibilidad='O',fechaRegistro=fechaRegistro, fechaOcupacion= fechaRegistro)
 
 
 
-        # Grabo Dependencia Historico
+                # Grabo Dependencia Historico
 
-        print("Voy a guardar HISTORICO dependencias ")
+                print("Voy a guardar HISTORICO dependencias ")
 
-        grabo2 = HistorialDependencias(
-            tipoDoc_id=idTipoDocFinal,
-            documento_id=documento_llave.id,
-            consec=consecAdmision,
-            dependencias_id=dependenciasIngreso,
-            disponibilidad='O',
-            fechaRegistro=fechaRegistro,
-            usuarioRegistro_id=usernameId.id,
-            #fechaLiberacion=NULL,
-            fechaOcupacion=fechaRegistro,
-            estadoReg=estadoReg
+                grabo2 = HistorialDependencias(
+                    tipoDoc_id=idTipoDocFinal,
+                    documento_id=documento_llave.id,
+                    consec=consecAdmision,
+                    dependencias_id=dependenciasIngreso,
+                    disponibilidad='O',
+                    fechaRegistro=fechaRegistro,
+                    usuarioRegistro_id=usernameId.id,
+                    #fechaLiberacion=NULL,
+                    fechaOcupacion=fechaRegistro,
+                    estadoReg=estadoReg
 
-        )
-        grabo2.save()
-        print("yA grabe dependencias historico", grabo2.id)
+                )
+                grabo2.save()
+                print("yA grabe dependencias historico", grabo2.id)
 
-        print("Grabe HISTPRICO DEPENDENCIAS")
+                print("Grabe HISTPRICO DEPENDENCIAS")
 
-    	# Actualizo consecutivo de admision en TRIAGE
+                # Actualizo consecutivo de admision en TRIAGE
 
-        grabo55 = Triage.objects.filter( tipoDoc_id=idTipoDocFinal,documento_id=documento_llave.id,consecAdmision=0).update(consecAdmision=consecAdmision)
+                grabo55 = Triage.objects.filter( tipoDoc_id=idTipoDocFinal,documento_id=documento_llave.id,consecAdmision=0).update(consecAdmision=consecAdmision)
 
-        #grabo55.save()
-        #print("Actualizo ingreso en tabala TRIAGE id = ", grabo55.id)
+                #grabo55.save()
+
+        except Exception as e:
+            # Aquí ya se hizo rollback automáticamente
+            print("Se hizo rollback por:", e)
+
+
+
 
         # RUTINA ARMADO CONTEXT
 
@@ -2210,7 +2254,7 @@ def guardarAdmisionTriage(request):
         curx = miConexionx.cursor()
 
         comando = 'SELECT  tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , t.consec consec , dep.nombre camaNombre,t."fechaSolicita" solicita,t.motivo motivo, t."clasificacionTriage_id" triage FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  ,sitios_serviciosSedes sd, clinico_servicios ser  WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND t."sedesClinica_id" =' + "'" + str(
-            Sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and t."tipoDoc_id" = u."tipoDoc_id" and  u.id = t."documento_id"  and ser.id = sd.servicios_id and dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str('TRIAGE') + "'"
+            sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and t."tipoDoc_id" = u."tipoDoc_id" and  u.id = t."documento_id"  and ser.id = sd.servicios_id and dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str('TRIAGE') + "'"
 
         print(comando)
 
@@ -2259,7 +2303,7 @@ def guardarAdmisionTriage(request):
         context['Documento'] = documento
         context['Username'] = username
         context['Profesional'] = Profesional
-        context['Sede'] = Sede
+        context['Sede'] = sede
         context['PermisosGrales'] = permisosGrales
         context['NombreSede'] = NombreSede
         context['NombreSede'] = nombreSede
@@ -2367,7 +2411,7 @@ def guardarAdmisionTriage(request):
                                        password="123456")
         curt = miConexiont.cursor()
         comando = ' SELECT dep.id ,dep.nombre FROM sitios_dependencias dep, sitios_dependenciasTipo tip where dep."sedesClinica_id" = ' + "'" + str(
-            Sede) + "'" + ' AND tip.nombre=' + "'" + str(
+            sede) + "'" + ' AND tip.nombre=' + "'" + str(
             'HABITACIONES') + "'" + ' and dep."dependenciasTipo_id" = tip.id'
         curt.execute(comando)
         print(comando)
@@ -2438,7 +2482,7 @@ def guardarAdmisionTriage(request):
         curt = miConexiont.cursor()
 
         comando = 'SELECT p.id id, p.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(
-            Sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str(
+            sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str(
             'MEDICO') + "'" + ' and med.planta_id = p.id'
 
         curt.execute(comando)
