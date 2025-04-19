@@ -1,15 +1,3 @@
------------------------------------------------------------------------------------------------------------------------
---  TRIAGE
------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------
---  ADMISIONES
------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------
---  HISTORIA CLINICA
------------------------------------------------------------------------------------------------------------------------
-
-
-ojo --> Todo esto son horas y horas de camello. Work, Trabajop
 
 1. Poder grabar una Admision (una vez guarde el nuevo usuario se pueda seguir la modal desaparezca y pueda crear correctamente una admision al igual con actualizar probar)
    se debe seguir con Furips, Triage, Ingreso a Triage (Probar trabajar con clases)
@@ -26,9 +14,6 @@ ojo --> Todo esto son horas y horas de camello. Work, Trabajop
         actadedefuncion, estadoSalida, especialidades, dx,  etc
 -- Pues datos como usuaruio no se hacen aqui, contactos, tampoco se hacen aquip,
 --Ojo que pasa con os estadorREg de todos los modelos ojop definir de una vez despues es inmanejable
-7. ojo tengo quemado un centroc_id en 1 creo para que guarde la modal usuario (NO SE PORQUE)/ tambien en main, ausuario1 fecIngreso esta quemado 2024-01-01
-8.  Creo crear programa autorizaciones con panelAutorizaciones y demas depronot un menuAutorizaciones para comenzar a diferenciar y yap todo
-   con el estandard de programacion
 
 Tablas = tblhcl_ingresos ( es la parte clinica del accidente)
 Tablas= tbl_furips ( Es como la parte legal de datos)
@@ -53,8 +38,6 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
 
    Para el lunes 16-sept
 
-   2. bajar anexosa tecnicos de glosas. Crear carpetasde anexos tecnicos
-   4. crear historia-clinicos con form . Es el historial como un resumen de historia en pantalla de consulta
    5.que crajop pasa con las fechas-hora
    6. algo pasda con el grid de revsion de sistemas/historia clinica
    
@@ -98,12 +81,10 @@ Terminar Clinico, buscar alog de farmacia, inventarios, compras
    3. se debe subir la tabla cumm de rips a facturacion_suministros
    4. Es necesario atar los itmes de examens de la HClinica a la facturacion los del sistema. Los demas son ajustes o manuales No se ligan
    5. OJO PILAS QUE UD. ESTA TRABAJANDO FURIPS (ya paso el parrentesis de rips , facturacion y glosas) . Hay que terminar primero admisiones-triage-histora clinica , luego si seguir
-   6. Reorganizar la captura de la admision con los nuevos campos de rips ripsServiciosActual etc
-   7. Comenzar a crear tablas cums, cups solidas las dfinitivas
    8. No me desaparecio la ventana  Modal .crear admison desde triage, el query de regreso Nop funciono mostraba en triage aun la persona
    9. Esta pendiente aun no abre la modal encuentraModal, para editar admision 
       Pendiente colocar el default de la fecha de nacimiento en usuarios.-
-   11. el alto de la tabla pilas debe ser fijo para que funcione el scroll   
+
        trabajar sobbre DELETE,mensajes de error, presesntacion apoyo terapeutico
        Hay un problema con el delete de apoyo terapeutico RASGOS, por cua ?
        Falta colocar el nombre del paciente en respuestas apoyo terapeutico
@@ -408,9 +389,6 @@ CAPTURA DETALLE GLOSA: Muestra seleccion de :  Muestra Facturas con rips de la E
 IGUAL CON NOTAS CREDITO
 NOTAS DEBITO NOSE EXACTAMENTE
 
-AHORA SI YA CRUZE O FILTRE CON LOS RIPS--> PUES NADA LAS GRABO EN LA TABLA GLOSAS Y LAS GRABO EN LA TABLA RIPS
-
-AHORA COMO CONTROLAR LOS SALDOS DE LA FACTURA: PUES EN LA TABLA DE FACTURACION,,.. ANTON NO SOBRA.. 
 digamos el valor d ela factura inicial nop cambia y los daso de los detalle pueden estar en Faturacion y glosas y notas credito. Mejor no llevarlas desde los RIPS No CREE ?
 
 
@@ -432,9 +410,6 @@ digamos el valor d ela factura inicial nop cambia y los daso de los detalle pued
 -- Como se cambio Hisotira campo espeicalidadesMedicos se agrego, quitar ampoespecialidades
    Anton arreglar en la historia Clinica la validacion del medico en cuanto a que especialidades tiene de acuerdo a la planta y a la sede
 -- La salida del programa me saca hasta una pantalla de reporteador
--- La edicion de la Admision no coloca los combos con los valores
--- La edicion de la Admision no iene funcion que guarde los cambios
--- El dia lunes termina de estirdiar admisiones.viewd y comenzar con clinico.views/etc
 -- OJJO PARA SELECCIONAR LA PRIMER FILA DE UN TABLE/ PROBAR EN ADMISIONES Y HCLINICA	var $row = $(this).closest('table').children('tr:first');	
 -- Ojo creo que error en el borrado de una radiologia siempre borra la primnera fila, no la seleccionada Verificar, MIERCOLES: Terpais , No qx etx
    NO PAILANDER PAILAS tiene repetido la funcion borrar . que donde funcina no lo se pero quye esta mal si creo que este mal $('#tablaDiagnosticos tbody').on('click', 'tr', function () {
@@ -455,7 +430,6 @@ psycopg2.errors.UndefinedColumn: no existe la columna med.nombre
 LINE 1: SELECT med.id id, med.nombre nombre FROM clinico_medicos med...
 
 
--- LISTO YA TENGO TRES FACTURAS PARA COMENZAR RIPS
 
 
 // Selecciona el checkbox dentro de la primera fila (suponiendo que está dentro de una celda 'td')
@@ -707,28 +681,23 @@ BIBLIOGRAFIA:
 -- 4. Todo esto en el supuesto que no hay nada en el nuevo conveio, o sea esta en blmaco. Que pasa si yahay cupscreados allip
 -- 7. finalmente ver terminar rips PROBAR 
 -- 10 alertas: # e abonos y si o No convenio en admisiones
-
 -- Ojo en las consuiltas d efactyuras por fchar o numeros, como va a hacer con tablas particionadas ???
 -- Ojo hay que verificar todos los REFESH cuando hace acciones en toda las pantallas
 -- ojo COLOCAR LOS COMODIMTES D ERUTA DEL MODELO PARAMTERO EN : CARGARIPS, CARGAPROCEDIMIENTOS, CARGASUMINISTROS
 
--- OPPS LUES DESPUES DE SEMANA SANTA
+
    - ME mamo gallo y no sep portque en contratacion datatble procprocedimeitnos displaya MAL el valor y5 columnas que pasa weys
   -- ya borre todas las tablas LISTO PARA PRUEBAS MAS COMPLEJAS
-       Ver el global comportamiento , corregir errores pequeños q pero que son vistosos
       Recuerda facturacionbusquedas-- tablas particionados no por rango de faturas
      - Hay pantallas que estan por vers mas bonitas, pero pailas por mi conocimeintos .css bootsprtyrap html, dejarasi seguir adelante
-    -- OJO como el nivel es mas alto, los datos siendo supervisados por 9 modulos. Anton implementar solucines. No machete. Mas robustas si se puede, mas maco. EVALUAR
-    -- Esto va muy bien si lo ves desde todo el software andando 1000000 de instrucciones por segundo. A lo mejor a mi me parece mas o menos pero No es asi. Vas
-       -- RE_BIEN. Adelante
 
--- OPOS OJO ACABO DE ENCONTRAT ALGO MADRE EL context se demora mucho, como sede ajax carga todad las data ?? ES POSIBLE??
-  -- Por lo menos los datos pesados
--- Ojo en views de Admisiones faltan (3) Funciones def : por pasar OJOO
-	 <!--   onclick="findOneAdmision( {{ingresos.tipoDoc}} , {{ingresos.Documento}} ,{{ingresos.Nombre}} ,{{Sede}})" -->
 
-falta pais y tipo de usuarios cuando crea usuario por segunda vez
-OJO POR QUE SE DEMORA EN CARGHAR LA ADMSION Y CUANDO GRABA una admision si lo hace rapidito
--- contemplar cargar desde AJAX combos a ver si mejora la velocidad
-Quede en encuentraAdmisionModal,, sera que me perdi ??
-
+-- Para el dia Lunes 21 de Abril :
+  -- Terminar crear admision desde triage Problema AJAX
+  -- Seguir puesta ba punta historia clinica : Transaccionalidad, velocidad, datatables pequeños,excel izquiera,etc
+  -- Seguir Apoyo terapeutico
+  -- Seguri Facturacion, traifarios, rips, glosas, contratacion
+  -- Averiguar como NO HACER wrap, si truncate para que quepan mas registros en la pantalla
+  -- Ojo recuerda que los form ponen lento la pagina y a lo mejor sea necesarfio acar el furips para otra parte evaluar
+  -- Ops me falto la empresa en Admisiones y el query de ingresos que traiga la empresa y pillar de acuerdoa imhotep
+  -- Ops recuerda qy corregir que los abonos estan ahora amarrados a convenio - liqudaciones

@@ -505,17 +505,27 @@ select "tipoDoc_id", documento_id,consec,disponibilidad,* from sitios_dependenci
 select * from sitios_historialdependencias where documento_id=16;
 
 select * from admisiones_ingresos;
+	select * from clinico_historia;
+
+	select * from triage_triage;
+
+	select * from planta_planta;
 
 select * from autorizaciones_autorizaciones;
 select * from autorizaciones_autorizacionesdetalle;
 select * from autorizaciones_estadosautorizacion
 
-select aut.id id,  aut."fechaSolicitud" fechaSolicitud ,aut."numeroAutorizacion" numeroAutorizacion,aut."fechaAutorizacion" fechaAutorizacion, est.nombre estado, emp.nombre empresa,
-	det.examenes_id examen ,det.cums_id cums, det."valorAutorizado" valorAutorizado, det."numeroAutorizacion" autDetalle, sum.nombre nombreSuministro, exa.nombre nombreExamen
-from autorizaciones_autorizaciones aut
-	left join autorizaciones_autorizacionesdetalle det on (det.autorizaciones_id = aut.id)
-	inner join autorizaciones_estadosautorizacion est on (est.id = aut."estadoAutorizacion_id" )
-	left join facturacion_empresas emp on (emp.id = aut.empresa_id)
-    left join facturacion_suministros sum on (sum.id=det.cums_id)
-    left join clinico_examenes exa on (exa.id = det.examenes_id)
+select aut.id id,  aut."fechaSolicitud" fechaSolicitud ,aut."numeroAutorizacion" numeroAutorizacion,aut."fechaAutorizacion" fechaAutorizacion, est.nombre estado, emp.nombre empresa,det.examenes_id examen ,det.cums_id cums, det."valorAutorizado" valorAutorizado, det."numeroAutorizacion" autDetalle, sum.nombre nombreSuministro, exa.nombre nombreExamen from autorizaciones_autorizaciones aut left join autorizaciones_autorizacionesdetalle det on (det.autorizaciones_id = aut.id)	inner join autorizaciones_estadosautorizacion est on (est.id = aut."estadoAutorizacion_id" ) left join facturacion_empresas emp on (emp.id = aut.empresa_id) left join facturacion_suministros sum on (sum.id=det.cums_id) left join clinico_examenes exa on (exa.id = det.examenes_id)
+
+
+	select aut.id id,  aut."fechaSolicitud" fechaSolicitud ,aut."numeroAutorizacion" numeroAutorizacion,aut."fechaAutorizacion" fechaAutorizacion, 
+	est.nombre estado, emp.nombre empresa,det.examenes_id examen ,det.cums_id cums, det."valorAutorizado" valorAutorizado, 
+	det."numeroAutorizacion" autDetalle, sum.nombre nombreSuministro, exa.nombre nombreExamen 
+	from autorizaciones_autorizaciones aut
+	inner join clinico_historia his on (his.id = aut.historia_id)
+	left join autorizaciones_autorizacionesdetalle det on (det.autorizaciones_id = aut.id)	
+	inner join autorizaciones_estadosautorizacion est on (est.id = aut."estadoAutorizacion_id" ) 
+	left join facturacion_empresas emp on (emp.id = aut.empresa_id) 
+	left join facturacion_suministros sum on (sum.id=det.cums_id) 
+	left join clinico_examenes exa on (exa.id = det.examenes_id)
 	

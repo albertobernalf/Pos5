@@ -80,30 +80,24 @@ function arrancaAdmisiones(valorTabla,valorData)
       className: 'btn btn-info btn-sm',
     },
   ],
-	
+	autoWidth: false,
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '360px',
+            scrollY: '450px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
+             "rowClass": function( row, data, index ) {
+      return 'my-row-class';
+    },
             columnDefs: [
+            { width: '1%', targets: [0,1] },
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 		{   targets: [5,6,7,8,9,10], // índice de la columna que quieres evitar que haga wrap
-		      className: 'nowrap-column'
+
 		    },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-
-              btn = btn + " <input type='radio'  name='ingresoId' class='miIngresoId form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-
-                       return btn;
-                    },
-
-
-
+		{
                     "targets": 13
                }
             ],
@@ -132,6 +126,29 @@ function arrancaAdmisiones(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+              btn = btn + " <input type='radio'  name='ingresoId' class='miIngresoId form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+
+                       return btn;
+                    },
+
+	},
+
+		{
+			"render": function ( data, type, row ) {
+                        var btn = '';
+
+	        btn = btn + " <button class='miEditaAdmision btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+		}
+                    },
+
                  { data: "fields.id"},
                  { data: "fields.tipoDoc" }, 
                 { data: "fields.Documento"},
@@ -144,15 +161,7 @@ function arrancaAdmisiones(valorTabla,valorData)
 		     { data: "fields.DxActual"}, 
                 { data: "fields.numConvenios"},
 		        { data: "fields.numPagos"},
-		{
-		"render": function ( data, type, row ) {
-                        var btn = '';
 
-	        btn = btn + " <button class='miEditaAdmision btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
-
-                       return btn;
-		}
-                    },
 
             ]
              }

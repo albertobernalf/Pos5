@@ -30,7 +30,7 @@ tablaConveniosAdmisiones tr {
 }
 #tablaDatos {
          font-family: 'Verdana', sans-serif; 
-        font-size: 130px;
+        font-size: 50px;
 	 padding: 1px;
 	 /* Alto de las celdas */
 	  height: 1px;
@@ -40,6 +40,10 @@ table.dataTable tbody tr {
   min-height: 60px;
 }
 
+
+.my-row-class {
+    height: 30px;
+}
 
 
 </style>
@@ -79,9 +83,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 {% block content %}
 
-<div class="marco">
-<div class="secciones">
-    <article id="Ingresos">
+<div class="marco"  style="width="100%">
+<div class="secciones" style="width="100%">
+    <article id="Ingresos" style="width:100%">
 
            <input type="hidden" id="ingresoIdGlobal" name="ingresoIdGlobal" value = ""></input>
 
@@ -119,16 +123,18 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
             <!-- INICIO TABLE DE  EL DATATABLE  -->
 
-		<div class="container my-2">
+		<div class="container my-2" style="width:100%">
              
 
 
-   			   <div class="row">
+   			   <div class="row" style="width:100%">
 
-                                        <table  id= "tablaDatos" class="display table table-striped table-sm fs-6" style="width: 100%";>
+                                        <table  id= "tablaDatos" class="display table table-striped table-sm fs-6 nowrap" style="width:100%";>
                                            <thead>
                                             <tr>    
-					<bold>                                  
+					<bold>    
+        			    <th style="width:5px">S1</th> 
+				      <th style="width:5px">S2</th>                               
 				        <th>id</th>
 				        <th style="width:150px">tipoDoc</th>
                                 	<th>Documento</th>
@@ -141,8 +147,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 	<th>DxActual</th>
 	                                <th>Conv</th>
         	                        <th>numAbonos</th>
-                                         <th>Sel1</th> 
-				      <th>Sel2</th> 
+                             
                                       
 					</bold>                                  
                                             </tr>
