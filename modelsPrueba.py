@@ -697,7 +697,7 @@ BIBLIOGRAFIA:
   -- Seguir puesta ba punta historia clinica : Transaccionalidad, velocidad, datatables pequeños,excel izquiera,etc
   -- Seguir Apoyo terapeutico
   -- Seguri Facturacion, traifarios, rips, glosas, contratacion
-  -- Averiguar como NO HACER wrap, si truncate para que quepan mas registros en la pantalla
   -- Ojo recuerda que los form ponen lento la pagina y a lo mejor sea necesarfio acar el furips para otra parte evaluar
-  -- Ops me falto la empresa en Admisiones y el query de ingresos que traiga la empresa y pillar de acuerdoa imhotep
   -- Ops recuerda qy corregir que los abonos estan ahora amarrados a convenio - liqudaciones
+
+- OJO al editar una dmision hay erorres por ejemplo si no toca responsables o acompanates los blanquea

@@ -89,7 +89,7 @@ def load_dataApoyoTerapeutico(request, data):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med , planta_planta pla WHERE pla.id = med.planta_id order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -115,7 +115,7 @@ def load_dataApoyoTerapeutico(request, data):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med , planta_planta pla WHERE pla.id = med.planta_id order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -140,7 +140,7 @@ def load_dataApoyoTerapeutico(request, data):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med , planta_planta pla WHERE pla.id = med.planta_id order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -732,9 +732,6 @@ def PostConsultaApoyoTerapeuticoConsulta(request):
         return JsonResponse({'errors':'Something went wrong!'})
 
     # hasta quip
-	
-
-
 
 
 def load_dataRasgos(request, data):
@@ -776,14 +773,14 @@ def load_dataRasgos(request, data):
 
     miConexionx.close()
     print(rasgos)
-    context['Rasgos'] = rasgos
+    #context['Rasgos'] = rasgos
 
     print("Rasgos  =  ", rasgos)
 
     serialized1 = json.dumps(rasgos, default=serialize_datetime)
 
     return HttpResponse(serialized1,   content_type='application/json')
-    #return JsonResponse(json.dumps(serialized1),  safe=False)
+
 
 
 

@@ -5264,20 +5264,20 @@ def encuentraAdmisionModal(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, esp1.nombre espMedico,diag1.nombre diagMedico,vias.nombre viasIngreso, cexterna.nombre causasExterna,reg.nombre regimenes ,cot.nombre cotizante,i.remitido remitido,ips.nombre ips ,i."numManilla" numManilla, diag1.nombre dxIngreso FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  inner join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(Ingreso.tipoDoc_id) + "'" + ' and u.id = ' + "'" + str(Ingreso.documento_id) + "'" + ' and i.consec= ' + "'" + str(Ingreso.consec) + "'" + ' and i."fechaSalida" is null'
+        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, i."especialidadesMedicosIngreso_id" espMedico, diag1.nombre diagMedico, i."ViasIngreso_id" viasIngreso, i."causasExterna_id" causasExterna,i.regimen_id regimenes ,i."tiposCotizante_id"  cotizante,i.remitido remitido,i."ipsRemite_id" ips ,i."numManilla" numManilla, i."dxIngreso_id" dxIngreso, "contactoResponsable_id" responsable, "contactoAcompañante_id" acompanante  FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  left join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(Ingreso.tipoDoc_id) + "'" + ' and u.id = ' + "'" + str(Ingreso.documento_id) + "'" + ' and i.consec= ' + "'" + str(Ingreso.consec) + "'" + ' and i."fechaSalida" is null'
 
         print(comando)
         curt.execute(comando)
 
         Usuarios = {}
 
-        for tipoDoc,  documento,paciente ,consec ,  ingreso , salida, servicioNombreIng, dependenciasIngreso , medicoIngreso, espMedico,diagMedico, viasIngreso, causasExterna,regimenes, cotizante, remitido,ips , numManilla, dxIngreso  in curt.fetchall():
+        for tipoDoc,  documento,paciente ,consec ,  ingreso , salida, servicioNombreIng, dependenciasIngreso , medicoIngreso, espMedico,diagMedico, viasIngreso, causasExterna,regimenes, cotizante, remitido,ips , numManilla, dxIngreso,responsable, acompanante  in curt.fetchall():
             Usuarios = {'tipoDoc': tipoDoc, 'documento': documento, 'paciente': paciente, 'ingreso': ingreso,
                         'salida': salida, 'servicioNombreIng': servicioNombreIng, 'dependenciasIngreso': dependenciasIngreso,
                         'medicoIngreso': medicoIngreso, 'espMedico': espMedico, 'diagMedico': diagMedico,
                         'viasIngreso': viasIngreso, 'causasExterna': causasExterna,
                         'regimenes': regimenes, 'cotizante': cotizante, 'remitido': remitido,
-                        'ips': ips, 'numManilla': numManilla, 'dxIngreso':dxIngreso}
+                        'ips': ips, 'numManilla': numManilla, 'dxIngreso':dxIngreso,'responsable':responsable, 'acompanante':acompanante}
 
         miConexiont.close()
         print(Usuarios)
@@ -6172,16 +6172,16 @@ def load_dataAdmisiones(request, data):
 
     #detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos, empresa.nombre Empresa  FROM admisiones_ingresos i, usuarios_usuarios u, facturacion_empresas empresa , sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and empresa.id = i.empresa_id AND sd.servicios_id  = ser.id and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
     #        Sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + 'O' + "'" + ' AND i."salidaDefinitiva" = ' + "'" + 'N' + "'" + ' and tp.id = u."tipoDoc_id" and i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and ser.nombre != ' + "'" + str('TRIAGE') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"'
-    detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,	(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos,	empresa.nombre Empresa FROM admisiones_ingresos i inner join usuarios_usuarios u on ( u."tipoDoc_id" = i."tipoDoc_id"  and u.id = i."documento_id" ) left join facturacion_empresas empresa on (empresa.id = i.empresa_id) inner join sitios_dependencias dep on (dep.id = i."dependenciasActual_id" and dep."sedesClinica_id" =  i."sedesClinica_id" AND dep.disponibilidad = ' + "'" + str('O') + "')"  + ' inner join clinico_servicios ser on (ser.id = i."serviciosActual_id" and ser.nombre != ' + "'" + str('TRIAGE') + "')" + ' inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on ( deptip.id = dep."dependenciasTipo_id") left join  clinico_Diagnosticos diag on (diag.id = i."dxActual_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id" and sd.id= dep."serviciosSedes_id" and sd.servicios_id  = ser.id) WHERE  i."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' AND i."fechaSalida" is null '
+    detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,	(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos,	empresa.nombre Empresa, date_part(' + "'" + str('YEAR') + "'" + ' ,  AGE(CURRENT_DATE , U."fechaNacio")) edad, i."salidaClinica" salidaClinica FROM admisiones_ingresos i inner join usuarios_usuarios u on ( u."tipoDoc_id" = i."tipoDoc_id"  and u.id = i."documento_id" ) left join facturacion_empresas empresa on (empresa.id = i.empresa_id) inner join sitios_dependencias dep on (dep.id = i."dependenciasActual_id" and dep."sedesClinica_id" =  i."sedesClinica_id" AND dep.disponibilidad = ' + "'" + str('O') + "')"  + ' inner join clinico_servicios ser on (ser.id = i."serviciosActual_id" and ser.nombre != ' + "'" + str('TRIAGE') + "')" + ' inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on ( deptip.id = dep."dependenciasTipo_id") left join  clinico_Diagnosticos diag on (diag.id = i."dxActual_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id" and sd.id= dep."serviciosSedes_id" and sd.servicios_id  = ser.id) WHERE  i."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' AND i."fechaSalida" is null '
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, tipoDoc, documento, nombre, consec, fechaIngreso,  servicioNombreIng, camaNombreIng, dxActual, numConvenios, numPagos, Empresa in curx.fetchall():
+    for id, tipoDoc, documento, nombre, consec, fechaIngreso,  servicioNombreIng, camaNombreIng, dxActual, numConvenios, numPagos, Empresa , edad, salidaClinica in curx.fetchall():
             ingresos.append({"model": "ingresos.ingresos", "pk": id, "fields":
                 {'id': id, 'tipoDoc': tipoDoc, 'Documento': documento, 'Nombre': nombre,
                  'Consec': consec, 'FechaIngreso': fechaIngreso,   'servicioNombreIng': servicioNombreIng, 'camaNombreIng': camaNombreIng,
-                   'DxActual': dxActual,'numConvenios':numConvenios,'numPagos':numPagos, 'Empresa':Empresa}})
+                   'DxActual': dxActual,'numConvenios':numConvenios,'numPagos':numPagos, 'Empresa':Empresa,'edad':edad, 'salidaClinica': salidaClinica}})
 
     miConexionx.close()
     print("ingresos = " , ingresos)
@@ -6280,25 +6280,51 @@ def ActualizaAdmision(request):
     ingresoId = request.POST['ingresoId']
     numManilla = request.POST["numManilla"]
     ips = request.POST["ips"]
+    if ips=='':
+        ips='null'
+
     remitido = request.POST["remitido"]
     print("ingresoId  = ", ingresoId)
 
     responsables = request.POST["responsables"]
+
+    if responsables=='':
+        responsables='null'
+
     acompanantes = request.POST["acompanantes"]
+
+    if acompanantes=='':
+        acompanantes='null'
+
+
     tiposCotizante = request.POST["tiposCotizante"]
     fecha = datetime.datetime.now()
     fechaRegistro = fecha
     causasExterna = request.POST["causasExterna"]
+    if causasExterna=='':
+        causasExterna='null'
+
     regimenes = request.POST["regimenes"]
     viasIngreso = request.POST["viasIngreso"]
+    if viasIngreso=='':
+        viasIngreso='null'
+
 
     medicoIngreso = request.POST["medicoIngreso"]
-    busEspecialidad = request.POST["busEspecialidad"]
-    empresa = request.POST["empresa"]
+    if medicoIngreso=='':
+        medicoIngreso='null'
 
-    medicoIngreso = request.POST["medicoIngreso"]
+
     busEspecialidad = request.POST["busEspecialidad"]
+    if busEspecialidad=='':
+        busEspecialidad='null'
+
+
+
     empresa = request.POST["empresa"]
+    if empresa=='':
+        empresa='null'
+
 
     username_id = request.POST["username_id"]
 
@@ -6320,7 +6346,7 @@ def ActualizaAdmision(request):
 
             miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
-            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' ips=    ' + "'" + str(ips) + "'," +  ' responsables = ' + "'" + str(responsables) + "'," +  'acompanantes = ' + "'" + str(acompanantes) + "'," + '"tiposCotizante" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna" =   ' + "'" + str(causasExterna) + "'," +  'regimenes = ' + "'" + str(regimenes) + "'," +   '"viasIngreso" = ' + "'" + str(viasIngreso) + "'," + '"medicoIngreso_id = ' + "'" + str(medicoIngreso) + "'," +  '"especialidadesMedicosIngreso_id" = ' + "'" + str(busEspecialidad) + "'," + 'empresa_id = ' + "'" + str(empresa) +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
+            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' "ipsRemite_id" =    ' + str(ips) + "," +  ' "contactoResponsable_id" = ' + str(responsables) + "," +  '"contactoAcompañante_id" = ' + str(acompanantes) + "," + '"tiposCotizante_id" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna_id" =   ' + "'" + str(causasExterna) + "'," +  'regimen_id = ' + "'" + str(regimenes) + "'," +   '"ViasIngreso_id" = ' + str(viasIngreso) + "," + '"medicoIngreso_id" = ' + str(medicoIngreso) + "," +  ' "especialidadesMedicosIngreso_id" = ' + str(busEspecialidad) + "," + 'empresa_id = '  + str(empresa) +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
             print(comando)
 
             cur3.execute(comando)

@@ -98,7 +98,7 @@ function arrancaAdmisiones(valorTabla,valorData)
 
 		    },
 		{
-                    "targets": 13
+                    "targets": 15
                }
             ],
 	 pageLength: 3,
@@ -154,10 +154,12 @@ function arrancaAdmisiones(valorTabla,valorData)
                 { data: "fields.Documento"},
                 { data: "fields.Nombre"},
                 { data: "fields.Consec"},
+                { data: "fields.edad"},
                 { data: "fields.Empresa"},
                 { data: "fields.FechaIngreso"},
                 { data: "fields.servicioNombreIng"},
                 { data: "fields.camaNombreIng"},
+               { data: "fields.salidaClinica"},
 		     { data: "fields.DxActual"}, 
                 { data: "fields.numConvenios"},
 		        { data: "fields.numPagos"},
@@ -1397,7 +1399,6 @@ function findOneUsuario1()
 $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 
 
-     alert("Entre click en la tabla para Editar la admision");
 
     var row = $(this).closest('tr'); // Encuentra la fila
 	   
@@ -1411,26 +1412,17 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 
 		var ingresoId = dato3.id;  // jquery
 
-		alert(dato3.id);
-		alert(dato3.tipoDoc);
-		alert(dato3.Documento);
-		alert(dato3.consec);
 
 	document.getElementById("ingresoIdActualizar").value = dato3.id;
 
-
-
       var rowIndex = $(this).parent().index('#tablaDatos tbody tr');
       var tdIndex = $(this).index('#tablaDatos tbody tr:eq('+rowIndex+') td');
-	alert("Entre por click a la fila: " + (rowIndex+1));
+
 
       tipoDoc=$(this).parents("tr").find("td").eq(0).html();
       documento=$(this).parents("tr").find("td").eq(1).html();
       consec=$(this).parents("tr").find("td").eq(3).html();
       var sede = document.getElementById("sede").value;
-
-     alert("sede = " + sede);
-	alert("ingresoId = " + dato3.id);
 
 
       $.ajax({
@@ -1438,7 +1430,7 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
       	url: '/encuentraAdmisionModal/',
       	data: {'ingresoId':ingresoId, 'sede':sede},
 		success: function (Usuarios) {
-			 alert("entre DATOS MODAL  nombre es = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
+
 			  var options = '<option value="=================="></option>';
 
 
@@ -1460,111 +1452,26 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 
    			    $('#dependenciasIngreso').val(Usuarios.dependenciasIngreso);
 
-	
-/*
-		      const $id4 = document.querySelector("#busEspecialidadP");
-			     		  $("#busEspecialidadP").empty();
-
-	                 $.each(Usuarios['espMedico'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id4.appendChild(option);
- 	      		      });
-
-*/
     			    $('#busEspecialidadP').val(Usuarios.espMedico);
 
-	
-/*    		
-		  const $id5 = document.querySelector("#dxIngresoP");
-			     		  $("#dxIngresoP").empty();
-
-	                 $.each(Usuarios['diagMedico'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id5.appendChild(option);
- 	      		      });
-
-*/
-
     			    $('#dxIngresoP').val(Usuarios.diagMedico);
-
-
-		  const $id6 = document.querySelector("#viasIngresoT");
-			     		  $("#viasIngresoT").empty();
-
-	                 $.each(Usuarios['viasIngreso'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id6.appendChild(option);
- 	      		      });
-
-
     			    $('#viasIngresoT').val(Usuarios.viasIngreso);
-		  const $id7 = document.querySelector("#causasExternaP");
-			     		  $("#causasExternaP").empty();
-
-	                 $.each(Usuarios['causasExterna'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id7.appendChild(option);
- 	      		      });
-
-
     			    $('#causasExternaP').val(Usuarios.causasExterna);
-  const $id8 = document.querySelector("#regimenesP");
-			     		  $("#regimenesP").empty();
-
-	                 $.each(Usuarios['regimenes'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id8.appendChild(option);
- 	      		      });
-
     			    $('#regimenesP').val(Usuarios.regimenes);
-  const $id9 = document.querySelector("#tiposCotizanteP");
-			     		  $("#tiposCotizanteP").empty();
-
-	                 $.each(Usuarios['cotizante'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id9.appendChild(option);
- 	      		      });
     			    $('#tiposCotizanteP').val(Usuarios.cotizante);
-		
     			    $('#remitidoP').val(Usuarios.remitido);
     			    $('#numManillaP').val(Usuarios.numManilla);
-
-			 const $id10 = document.querySelector("#medicoIngresoP");
-			     		  $("#medicoIngresoP").empty();
-
-	                 $.each(Usuarios['medicoIngreso'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id10.appendChild(option);
- 	      		      });
-
     			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
+    			    $('#responsablesP').val(Usuarios.medicoIngreso); 	
+    			    $('#acompanantesP').val(Usuarios.medicoIngreso); 	
 
- 
+  		  $('#tiposCotizanteP').val(Usuarios.cotizante); 
+
+
   		   $('#modalActualizaAdmision').modal('show');	
-    $('#tiposCotizanteP').val(Usuarios.cotizante);
 
-                            alert("ya abri  ventanaoy");
+
+
 
                     },
 	   		    error: function (request, status, error) {
@@ -2492,7 +2399,7 @@ var valor = $('input[name="ingresoId"]:checked').val();
 function actualizaAdmision()
 {
 
-	    alert("Entre Actualizar:  ");
+
 
 	var empresa = document.getElementById("empresaE").value;
 	var busEspecialidad = document.getElementById("busEspecialidadP").value;
@@ -2526,7 +2433,7 @@ function actualizaAdmision()
 	var permisosDetalle = document.getElementById("permisosDetalle").value;
 
 	
-	    alert("Voy a Actualizar:  ");
+
 
 	$.ajax({
 		type: 'POST',
