@@ -154,8 +154,8 @@ function arrancaAdmisiones(valorTabla,valorData)
                 { data: "fields.Documento"},
                 { data: "fields.Nombre"},
                 { data: "fields.Consec"},
+                { data: "fields.Empresa"},
                 { data: "fields.FechaIngreso"},
-                { data: "fields.FechaSalida"},
                 { data: "fields.servicioNombreIng"},
                 { data: "fields.camaNombreIng"},
 		     { data: "fields.DxActual"}, 
@@ -1410,12 +1410,13 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
 
 		var ingresoId = dato3.id;  // jquery
+
 		alert(dato3.id);
 		alert(dato3.tipoDoc);
 		alert(dato3.Documento);
 		alert(dato3.consec);
 
-
+	document.getElementById("ingresoIdActualizar").value = dato3.id;
 
 
 
@@ -1438,21 +1439,126 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
       	data: {'ingresoId':ingresoId, 'sede':sede},
 		success: function (Usuarios) {
 			 alert("entre DATOS MODAL  nombre es = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
+			  var options = '<option value="=================="></option>';
+
+
+                          const $id1 = document.querySelector("#tipoDoc");
+	     		  $("#tipoDoc").empty();
+
+	                 $.each(Usuarios['TipoDoc'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id1.appendChild(option);
+ 	      		      });
+
 		            $('#tipoDoc').val(Usuarios.tipoDoc);
        			    $('#busDocumentoSel').val(Usuarios.documento);
-       			    $('#busServicio2').val(Usuarios.servicioNombreIng);
+      			    $('#busServicio2').val(Usuarios.servicioNombreIng);
+
+
    			    $('#dependenciasIngreso').val(Usuarios.dependenciasIngreso);
-    			    $('#busEspecialidadP').val(Usuarios.espMedico);
-    			    $('#dxIngresoP').val(Usuarios.diagMedico);
-    			    $('#viasIngresoT').val(Usuarios.viasIngreso);
-    			    $('#causasExternaP').val(Usuarios.causasExterna);
-    			    $('#regimenesP').val(Usuarios.regimenes);
-    			    $('#tiposCotizanteP').val(Usuarios.cotizante);
-    			    $('#remitidoP').val(Usuarios.remitido);
-    			    $('#numManillaP').val(Usuarios.numManilla);
-    			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
 
 	
+/*
+		      const $id4 = document.querySelector("#busEspecialidadP");
+			     		  $("#busEspecialidadP").empty();
+
+	                 $.each(Usuarios['espMedico'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id4.appendChild(option);
+ 	      		      });
+
+*/
+    			    $('#busEspecialidadP').val(Usuarios.espMedico);
+
+	
+/*    		
+		  const $id5 = document.querySelector("#dxIngresoP");
+			     		  $("#dxIngresoP").empty();
+
+	                 $.each(Usuarios['diagMedico'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id5.appendChild(option);
+ 	      		      });
+
+*/
+
+    			    $('#dxIngresoP').val(Usuarios.diagMedico);
+
+
+		  const $id6 = document.querySelector("#viasIngresoT");
+			     		  $("#viasIngresoT").empty();
+
+	                 $.each(Usuarios['viasIngreso'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id6.appendChild(option);
+ 	      		      });
+
+
+    			    $('#viasIngresoT').val(Usuarios.viasIngreso);
+		  const $id7 = document.querySelector("#causasExternaP");
+			     		  $("#causasExternaP").empty();
+
+	                 $.each(Usuarios['causasExterna'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id7.appendChild(option);
+ 	      		      });
+
+
+    			    $('#causasExternaP').val(Usuarios.causasExterna);
+  const $id8 = document.querySelector("#regimenesP");
+			     		  $("#regimenesP").empty();
+
+	                 $.each(Usuarios['regimenes'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id8.appendChild(option);
+ 	      		      });
+
+    			    $('#regimenesP').val(Usuarios.regimenes);
+  const $id9 = document.querySelector("#tiposCotizanteP");
+			     		  $("#tiposCotizanteP").empty();
+
+	                 $.each(Usuarios['cotizante'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id9.appendChild(option);
+ 	      		      });
+    			    $('#tiposCotizanteP').val(Usuarios.cotizante);
+		
+    			    $('#remitidoP').val(Usuarios.remitido);
+    			    $('#numManillaP').val(Usuarios.numManilla);
+
+			 const $id10 = document.querySelector("#medicoIngresoP");
+			     		  $("#medicoIngresoP").empty();
+
+	                 $.each(Usuarios['medicoIngreso'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id10.appendChild(option);
+ 	      		      });
+
+    			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
 
  
   		   $('#modalActualizaAdmision').modal('show');	
@@ -2382,3 +2488,96 @@ var valor = $('input[name="ingresoId"]:checked').val();
 
 
 })
+
+function actualizaAdmision()
+{
+
+	    alert("Entre Actualizar:  ");
+
+	var empresa = document.getElementById("empresaE").value;
+	var busEspecialidad = document.getElementById("busEspecialidadP").value;
+	var medicoIngreso = document.getElementById("medicoIngresoP").value;
+	var sede= document.getElementById("sede").value;
+
+	var viasIngreso = document.getElementById("viasIngresoP").value;
+    var causasExterna = document.getElementById("causasExternaP").value;
+    var regimenes = document.getElementById("regimenesP").value;
+    var tiposCotizante = document.getElementById("tiposCotizanteP").value;
+    var acompanantes = document.getElementById("acompanantesP").value;
+    var responsables = document.getElementById("responsablesP").value;
+    var remitido = document.getElementById("remitidoP").value;
+    var ips = document.getElementById("ipsP").value;
+    var numManilla = document.getElementById("numManillaP").value;
+    var ingresoId = document.getElementById("ingresoIdActualizar").value;
+
+
+	var username = document.getElementById("username").value;
+	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	var numReporte = document.getElementById("numreporte").value;
+	var grupo = document.getElementById("grupo").value;
+	var subGrupo = document.getElementById("subGrupo").value;
+	var sede = document.getElementById("sede").value;
+	var documento = document.getElementById("documento").value;
+	var nombreSede = document.getElementById("nombreSede").value;
+	var profesional = document.getElementById("profesional").value;
+	var permisosGrales = document.getElementById("permisosGrales").value;
+	var escogeModulo = document.getElementById("escogeModulo").value;
+	var username_id = document.getElementById("username_id").value;
+	var permisosDetalle = document.getElementById("permisosDetalle").value;
+
+	
+	    alert("Voy a Actualizar:  ");
+
+	$.ajax({
+		type: 'POST',
+    		url: '/actualizaAdmision/',
+		data: {'ingresoId':ingresoId,
+			'numManilla':numManilla,
+			'ips':ips,
+             'remitido':remitido,
+			 'sede':sede,
+			 'responsables':responsables,
+			 'acompanantes':acompanantes,
+			 'responsables':responsables,
+			 'tiposCotizante':tiposCotizante,
+			 'causasExterna':causasExterna,
+			 'regimenes':regimenes,
+			 'viasIngreso':viasIngreso,
+			 'medicoIngreso':medicoIngreso,
+			 'busEspecialidad':busEspecialidad,
+			 'empresa':empresa,
+			 'username':username,
+			 'sedeSeleccionada':sedeSeleccionada,
+			 'numReporte':numReporte,
+			 'grupo':grupo,
+ 			 'subGrupo':subGrupo,
+		         'nombreSede':nombreSede,
+			 'profesional':profesional,
+			 'permisosGrales':permisosGrales,
+			 'escogeModulo':escogeModulo,
+			 'username_id':username_id,
+			 'permisosDetalle':permisosDetalle},
+
+		success: function (data2) {
+
+                     document.getElementById("mensajes").innerText=data2.Mensaje;
+
+			 $('#modalActualizaAdmision').modal('hide');
+		      var data =  {}   ;
+     			   var sede = document.getElementById("sede").value;   
+       			    data['sede'] = sede;
+
+
+		           data = JSON.stringify(data);
+
+	       arrancaAdmisiones(1,data);
+	    dataTableAdmisionesInitialized = true;
+
+                    },
+		 error: function (xhr, status, error) {
+
+				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
+	   	    	}            
+	});
+};

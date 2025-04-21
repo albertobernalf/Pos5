@@ -160,7 +160,7 @@ urlpatterns = [
     path('encuentraAdmisionModal/', viewsAdmisiones.encuentraAdmisionModal),
     path('load_dataAdmisiones/<str:data>', viewsAdmisiones.load_dataAdmisiones,   name='loaddata_Admisiones'),
     path('load_dataAutorizacionesAdmisiones/<str:data>', viewsAdmisiones.Load_dataAutorizacionesAdmisiones, name='loaddata_AutorizacionesAdmisiones'),
-
+    path('actualizaAdmision/', viewsAdmisiones.ActualizaAdmision),
     # Triage
 
     path('crearTriage/', viewsTriage.crearTriage),

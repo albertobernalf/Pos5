@@ -29,7 +29,8 @@ tablaConveniosAdmisiones tr {
 
 }
 #tablaDatos {
-         font-family: 'Verdana', sans-serif; 
+     /*    font-family: 'Verdana', sans-serif;  */  /* Times*/
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
         font-size: 50px;
 	 padding: 1px;
 	 /* Alto de las celdas */
@@ -140,8 +141,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 	<th>Documento</th>
 	                                <th>Nombre</th>
         	                        <th>Consec</th>
+        	                        <th>Empresa</th>
 	                                <th>FechaIngreso</th>
-        	                        <th>FechaSalida</th>
                 	                <th>servicioNombreIng</th>
                         	        <th>camaNombreIng</th>
                                 	<th>DxActual</th>
@@ -152,7 +153,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 					</bold>                                  
                                             </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style="margin-left:0">
                                             </tbody>
 
                                         </table>
@@ -180,27 +181,39 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     {% endif %}
 
                                     <div class="form-row">
+					     <input type="text" class="form-control form-control-sm" id="ingresoIdActualizar"  name="ingresoIdActualizar" value="" readonly>
+
+					<div class="col">
+                                            <label for="empresaE" class="col-sm-6 control-label">Empresa:</label>
+                                            <select class="form-select  h-40 w-100" aria-label="" id="empresaE" name="empresaE" required>
+                                                {% for empresas in Empresas %}
+                                                <option value="{{empresas.id}}"> {{empresas.nombre}}
+                                                </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
 
                                         <div class="col">
-                                            <label for="busServicio2" class="col-sm-6 col-form-label col-form-label-sm">Servicio:</label>
-                                            <input type="text" class="form-control form-control-sm" id="busServicio2"  name="busServicio2" value="">
+                                            <label for="busServicio2" class="col-sm-12 col-form-label col-form-label-sm">Servicio:</label>
+                                            <input type="text" class="form-control form-control-sm" id="busServicio2"  name="busServicio2" value="" readonly>
                                         </div>
 
                                         <div class="col">
                                             <label for="busSubServicio2" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SubServ:</label>
-                                           <input type="text" class="form-control form-control-sm" id="busSubServicio2"  name="busSubServicio2" value="">
+                                           <input type="text" class="form-control form-control-sm" id="busSubServicio2"  name="busSubServicio2" value="" readonly>
                                         </div>
 
                                         <div class="col">
                                             <label for="dependenciasIngreso"  class="col-sm-6 control-label">Dependenc:</label>
-                                                <input type="text" class="form-control form-control-sm" id="dependenciasIngreso"  name="dependenciasIngreso" value="">
+                                                <input type="text" class="form-control form-control-sm" id="dependenciasIngreso"  name="dependenciasIngreso" value="" readonly>
                                         </div>
                                     </div>
 
                                     <div class="form-row">
                                         <div class="col">
                                             <label for="tipoDoc" class="col-sm-6 control-label">TipoDoc:</label>
-                                                <input type="text" class="form-control form-control-sm" id="tipoDoc"  name="tipoDoc" value="">
+                                                <input type="text" class="form-control form-control-sm" id="tipoDoc"  name="tipoDoc" value="" readonly>
 
                                         </div>
                                         <div class="col">
@@ -208,8 +221,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                             <input type="text" class="form-control" id="busDocumentoSel"  name="busDocumentoSel" disabled="disabled">
                                         </div>
                                         <div class="col">
-                                            <label for="dxIngresoT" class="col-sm-6 control-label">Diagnosticos:</label>
-                                            <select class="form-select  h-40 w-100" aria-label="" id="dxIngresoT" name="dxIngresoT" required>
+                                            <label for="dxIngresoP" class="col-sm-12 control-label">Diagnosticos:</label>
+                                            <select class="form-select " aria-label="" id="dxIngresoP" name="dxIngresoP" required>
                                                 {% for diagnosticos in Diagnosticos %}
                                                 <option value="{{diagnosticos.id}}"> {{diagnosticos.nombre}}
                                                 </option>
@@ -222,8 +235,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     <div class="form-row">
 
                                         <div class="col">
-                                            <label for="busEspecialidadP"  class="col-sm-6 control-label">Especialidad: </label>
-                                            <select class="form-select  h-40 w-10" aria-label=""  id="busEspecialidadP" name="busEspecialidadP"  required>
+                                            <label for="busEspecialidadP"  class="col-sm-12 control-label">Especialidad: </label>
+                                            <select  id="busEspecialidadP" name="busEspecialidadP"  required>
                                                 {% for especialidades in Especialidades %}
                                                 <option value="{{especialidades.id}}">
                                                     {{especialidades.nombre}}
@@ -234,8 +247,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
                                         <div class="col">
 
-                                            <label for="medicoIngresoP" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico: nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label=""  id="medicoIngresoP" name="medicoIngresoP" required>
+                                            <label for="medicoIngresoP" class="col-sm-12 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico: nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select " aria-label=""  id="medicoIngresoP" name="medicoIngresoP" required>
                                                 {% for medicos in Medicos %}
                                                 <option value="{{medicos.id}}"> {{medicos.nombre}}</option>
                                                 {% endfor %}
@@ -284,17 +297,10 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     </div>
 
                                     <div class="form-group row">
+                                      
                                         <div class="col">
-                                            <label for="empresas" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Empresa:  &nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label="" id="empresas"  name="empresas" required>
-                                                {% for empresas in Empresas %}
-                                                <option value="{{empresas.id}}"> {{empresas.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                        <div class="col">
-                                            <label for="acompanantes" class="col-sm-6 control-label">&nbsp;TiposAcompañante:    &nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label=""  id="acompanantes" name="acompanantes" required>
+                                            <label for="acompanantesP" class="col-sm-6 control-label">&nbsp;TiposAcompañante:    &nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select  h-40 w-100" aria-label=""  id="acompanantesP" name="acompanantesP" required>
                                                 {% for acompanantes in Acompanantes %}
                                                 <option value="{{acompanantes.id}}"> {{acompanantes.nombre}}
                                                 </option>
@@ -302,8 +308,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label for="responsables" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Responsable: &nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label=""     id="responsables" name="responsables" required>
+                                            <label for="responsablesP" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Responsable: &nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select  h-40 w-100" aria-label=""     id="responsablesP" name="responsablesP" required>
                                                 {% for responsables in Responsables %}
                                                 <option value="{{responsables.id}}"> {{responsables.nombre}}
                                                 </option>
@@ -315,20 +321,20 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                     <div class="form-group row">
 
                                         <div class="col">
-                                            <label for="remitido" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;remitido:   &nbsp;&nbsp;&nbsp;</label>
-                                            <input type="text" class="form-control" id="remitido" name="remitido"      value="">
+                                            <label for="remitidoP" class="col-sm-6 control-label">&nbsp;&nbsp;&nbsp;remitido:   &nbsp;&nbsp;&nbsp;</label>
+                                            <input type="text" class="form-control" id="remitidoP" name="remitidoP"      value="">
                                         </div>
                                         <div class="col">
-                                            <label for="ips" class="col-sm-4 col-form-label col-form-label-sm">IPS:&nbsp;&nbsp;&nbsp;</label>
-                                            <select class="form-select  h-40 w-100" aria-label="" id="ips" name="ips"   required>
+                                            <label for="ipsP" class="col-sm-4 col-form-label col-form-label-sm">IPS:&nbsp;&nbsp;&nbsp;</label>
+                                            <select class="form-select  h-40 w-100" aria-label="" id="ipsP" name="ipsP"   required>
                                                 {% for ips in Ips %}
                                                 <option value="{{ips.id}}"> {{ips.nombre}}</option>
                                                 {% endfor %}
                                             </select>
                                         </div>
                                         <div class="col">
-                                            <label for="numManilla" class="col-sm-4 col-form-label col-form-label-sm">NumeroManilla:&nbsp;&nbsp;</label>
-                                            <input type="text" class="form-control form-control-sm" id="numManilla"  name="numManilla" value="">
+                                            <label for="numManillaP" class="col-sm-4 col-form-label col-form-label-sm">NumeroManilla:&nbsp;&nbsp;</label>
+                                            <input type="text" class="form-control form-control-sm" id="numManillaP"  name="numManillaP" value="">
                                         </div>
                                     </div>
 
@@ -379,6 +385,22 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
                                 {% endif %}
 
                                 <div class="row row-cols-10 mt-3">
+
+				      <div class="col">
+                                        <label for="empresaC"
+                                               class="col-sm-1 col-form-label col-form-label-sm">Empresa:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css"
+                                                    aria-label="" id="empresaC"
+                                                    name="empresaC" required>
+                                                {% for empresas in Empresas %}
+                                                <option value="{{empresas.id}}"> {{empresas.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+
 
                                     <div class="col">
                                         <label for="busServicio22"

@@ -7,19 +7,15 @@ from django.views.generic import ListView, CreateView, TemplateView
 from .forms import crearAdmisionForm
 from admisiones.models import Ingresos
 from django.db.models import Max
-from django.shortcuts import get_object_or_404
 from django.db.models.functions import Cast, Coalesce
 import pyodbc
 import psycopg2
 from datetime import datetime
 from decimal import Decimal
 from django.db.models import Avg, Max, Min, Sum
-
 import pytz
 import tzlocal
 # import datetime as dt
-
-
 from admisiones.models import Ingresos, Furips
 from admisiones.forms import furipsForm
 from sitios.models import  HistorialDependencias, Dependencias, ServiciosSedes, SubServiciosSedes
@@ -32,7 +28,6 @@ import datetime
 from django.db import transaction, IntegrityError
 
 # Create your views here.
-
 
 def menuAcceso(request):
     print("Ingreso a acceso")
@@ -179,9 +174,6 @@ def validaAcceso(request):
                 return render(request, "inicio/accesoPrincipal1.html", context)
 
             else:
-
-                ## AQUI BORRRE MUCHOS COMBOS
-
 
                 # Combo Modulos
 
@@ -605,7 +597,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT d.id id, d.nombre  nombre FROM sitios_paises d"
+    comando = "SELECT d.id id, d.nombre  nombre FROM sitios_paises d ORDER BY d.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -628,7 +620,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT d.id id, d.nombre  nombre FROM sitios_departamentos d"
+    comando = "SELECT d.id id, d.nombre  nombre FROM sitios_departamentos d ORDER by d.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -753,7 +745,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM clinico_viasingreso c"
+    comando = "SELECT c.id id,c.nombre nombre FROM clinico_viasingreso c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -777,7 +769,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM clinico_causasExterna c"
+    comando = "SELECT c.id id,c.nombre nombre FROM clinico_causasExterna c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -800,7 +792,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM clinico_regimenes c"
+    comando = "SELECT c.id id,c.nombre nombre FROM clinico_regimenes c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -825,7 +817,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c"
+    comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -848,7 +840,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM sitios_municipios c"
+    comando = "SELECT c.id id,c.nombre nombre FROM sitios_municipios c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -872,7 +864,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM sitios_localidades c"
+    comando = "SELECT c.id id,c.nombre nombre FROM sitios_localidades c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -896,7 +888,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM basicas_estadocivil c"
+    comando = "SELECT c.id id,c.nombre nombre FROM basicas_estadocivil c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -921,7 +913,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM basicas_ocupaciones c"
+    comando = "SELECT c.id id,c.nombre nombre FROM basicas_ocupaciones c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -946,7 +938,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM clinico_ips c"
+    comando = "SELECT c.id id,c.nombre nombre FROM clinico_ips c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -970,7 +962,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM facturacion_empresas c"
+    comando = "SELECT c.id id,c.nombre nombre FROM facturacion_empresas c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -996,7 +988,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM RIPS_ripstipousuario c"
+    comando = "SELECT c.id id,c.nombre nombre FROM RIPS_ripstipousuario c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -1019,7 +1011,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c"
+    comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -1102,7 +1094,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM contratacion_convenios p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM contratacion_convenios p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1119,13 +1111,41 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Fin combo Convenios
 
+
+        # Combo Empresas
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM facturacion_empresas p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        empresas = []
+
+        for id, nombre in curt.fetchall():
+            empresas.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("empresas", empresas)
+
+        context['Empresas'] = empresas
+
+        # Fin combo Empresas
+
+
+
+
         # Combo TiposPagos
 
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM cartera_tipospagos p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM cartera_tipospagos p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1149,7 +1169,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM cartera_formaspagos p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM cartera_formaspagos p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1173,7 +1193,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsServicios  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsServicios  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1197,7 +1217,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsModalidadAtencion   p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsModalidadAtencion   p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1222,7 +1242,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsviasingresosalud  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsviasingresosalud  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1246,7 +1266,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsGrupoServicios  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsGrupoServicios  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1270,7 +1290,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1294,7 +1314,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripscausaexterna  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripscausaexterna  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -1318,7 +1338,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -3733,7 +3753,7 @@ def buscarCiudades(request):
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id, c.nombre  nombre FROM sitios_departamentos d, sitios_ciudades c WHERE c.departamentos_id = d.id and d.id = '" + str(Departamento) + "'"
+    comando = "SELECT c.id id, c.nombre  nombre FROM sitios_departamentos d, sitios_ciudades c WHERE c.departamentos_id = d.id and d.id = '" + str(Departamento) + "' ORDER BY c.nombre"
 
     curt.execute(comando)
     print(comando)
@@ -4427,7 +4447,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM usuarios_tiposDocumento p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM usuarios_tiposDocumento p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4451,7 +4471,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_ips c"
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_ips c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4477,7 +4497,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM sitios_centros p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM sitios_centros p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4501,7 +4521,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM clinico_diagnosticos p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM clinico_diagnosticos p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4526,7 +4546,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT d.id id, d.nombre  nombre FROM sitios_departamentos d"
+        comando = "SELECT d.id id, d.nombre  nombre FROM sitios_departamentos d ORDER BY d.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4651,7 +4671,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_viasingreso c"
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_viasingreso c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4675,7 +4695,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_causasExterna c"
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_causasExterna c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4699,7 +4719,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_regimenes c"
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_regimenes c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4723,7 +4743,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c"
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c OREDR BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4747,7 +4767,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM sitios_municipios c"
+        comando = "SELECT c.id id,c.nombre nombre FROM sitios_municipios c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4771,7 +4791,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM sitios_localidades c"
+        comando = "SELECT c.id id,c.nombre nombre FROM sitios_localidades c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4795,7 +4815,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM basicas_estadocivil c"
+        comando = "SELECT c.id id,c.nombre nombre FROM basicas_estadocivil c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4819,7 +4839,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM basicas_ocupaciones c"
+        comando = "SELECT c.id id,c.nombre nombre FROM basicas_ocupaciones c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4842,7 +4862,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM contratacion_convenios p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM contratacion_convenios p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4865,7 +4885,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsServicios  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsServicios  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4889,7 +4909,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsModalidadAtencion   p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsModalidadAtencion   p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4914,7 +4934,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsviasingresosalud  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsviasingresosalud  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4938,7 +4958,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsGrupoServicios  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsGrupoServicios  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4962,7 +4982,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -4986,7 +5006,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripscausaexterna  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripscausaexterna  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -5010,7 +5030,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p"
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -5034,7 +5054,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c"
+        comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -6150,18 +6170,18 @@ def load_dataAdmisiones(request, data):
                                        password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos  FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
-            Sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + 'O' + "'" + ' AND i."salidaDefinitiva" = ' + "'" + 'N' + "'" + ' and tp.id = u."tipoDoc_id" and i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and ser.nombre != ' + "'" + str('TRIAGE') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"'
+    #detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos, empresa.nombre Empresa  FROM admisiones_ingresos i, usuarios_usuarios u, facturacion_empresas empresa , sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and empresa.id = i.empresa_id AND sd.servicios_id  = ser.id and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
+    #        Sede) + "'" + ' AND  deptip.id = dep."dependenciasTipo_id" and i."serviciosActual_id" = ser.id AND dep.disponibilidad = ' + "'" + 'O' + "'" + ' AND i."salidaDefinitiva" = ' + "'" + 'N' + "'" + ' and tp.id = u."tipoDoc_id" and i."tipoDoc_id" = u."tipoDoc_id" and u.id = i."documento_id" and diag.id = i."dxActual_id" and i."fechaSalida" is null and ser.nombre != ' + "'" + str('TRIAGE') + "'" + ' AND dep."serviciosSedes_id" = sd.id and dep.id = i."dependenciasActual_id"'
+    detalle = 'SELECT i.id id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual, (select count(*)  from facturacion_conveniospacienteingresos conv where conv."tipoDoc_id" = i."tipoDoc_id" and conv.documento_id=i.documento_id  and conv."consecAdmision"=i.consec) numConvenios,	(select count(*)  from cartera_pagos pag where pag."tipoDoc_id" = i."tipoDoc_id" and pag.documento_id=i.documento_id  and pag.consec=i.consec) numPagos,	empresa.nombre Empresa FROM admisiones_ingresos i inner join usuarios_usuarios u on ( u."tipoDoc_id" = i."tipoDoc_id"  and u.id = i."documento_id" ) left join facturacion_empresas empresa on (empresa.id = i.empresa_id) inner join sitios_dependencias dep on (dep.id = i."dependenciasActual_id" and dep."sedesClinica_id" =  i."sedesClinica_id" AND dep.disponibilidad = ' + "'" + str('O') + "')"  + ' inner join clinico_servicios ser on (ser.id = i."serviciosActual_id" and ser.nombre != ' + "'" + str('TRIAGE') + "')" + ' inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on ( deptip.id = dep."dependenciasTipo_id") left join  clinico_Diagnosticos diag on (diag.id = i."dxActual_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id" and sd.id= dep."serviciosSedes_id" and sd.servicios_id  = ser.id) WHERE  i."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' AND i."salidaDefinitiva" = ' + "'" + str('N') + "'" + ' AND i."fechaSalida" is null '
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, tipoDoc, documento, nombre, consec, fechaIngreso, fechaSalida, servicioNombreIng, camaNombreIng, dxActual, numConvenios, numPagos in curx.fetchall():
+    for id, tipoDoc, documento, nombre, consec, fechaIngreso,  servicioNombreIng, camaNombreIng, dxActual, numConvenios, numPagos, Empresa in curx.fetchall():
             ingresos.append({"model": "ingresos.ingresos", "pk": id, "fields":
                 {'id': id, 'tipoDoc': tipoDoc, 'Documento': documento, 'Nombre': nombre,
-                 'Consec': consec, 'FechaIngreso': fechaIngreso, 'FechaSalida': fechaSalida,
-                  'servicioNombreIng': servicioNombreIng, 'camaNombreIng': camaNombreIng,
-                   'DxActual': dxActual,'numConvenios':numConvenios,'numPagos':numPagos}})
+                 'Consec': consec, 'FechaIngreso': fechaIngreso,   'servicioNombreIng': servicioNombreIng, 'camaNombreIng': camaNombreIng,
+                   'DxActual': dxActual,'numConvenios':numConvenios,'numPagos':numPagos, 'Empresa':Empresa}})
 
     miConexionx.close()
     print("ingresos = " , ingresos)
@@ -6252,3 +6272,74 @@ def Load_dataAutorizacionesAdmisiones(request, data):
     print("Envio = ", serialized1)
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+def ActualizaAdmision(request):
+    print("entre ActualizaAdmision")
+
+    ingresoId = request.POST['ingresoId']
+    numManilla = request.POST["numManilla"]
+    ips = request.POST["ips"]
+    remitido = request.POST["remitido"]
+    print("ingresoId  = ", ingresoId)
+
+    responsables = request.POST["responsables"]
+    acompanantes = request.POST["acompanantes"]
+    tiposCotizante = request.POST["tiposCotizante"]
+    fecha = datetime.datetime.now()
+    fechaRegistro = fecha
+    causasExterna = request.POST["causasExterna"]
+    regimenes = request.POST["regimenes"]
+    viasIngreso = request.POST["viasIngreso"]
+
+    medicoIngreso = request.POST["medicoIngreso"]
+    busEspecialidad = request.POST["busEspecialidad"]
+    empresa = request.POST["empresa"]
+
+    medicoIngreso = request.POST["medicoIngreso"]
+    busEspecialidad = request.POST["busEspecialidad"]
+    empresa = request.POST["empresa"]
+
+    username_id = request.POST["username_id"]
+
+    sede = request.POST['sede']
+    sedeSeleccionada = request.POST['sedeSeleccionada']
+    numReporte = request.POST['numReporte']
+    grupo = request.POST['sede']
+    subGrupo = request.POST['subGrupo']
+    nombreSede = request.POST['nombreSede']
+    profesional = request.POST['profesional']
+    permisosGrales = request.POST['permisosGrales']
+    escogeModulo = request.POST['escogeModulo']
+    permisosDetalle = request.POST['permisosDetalle']
+
+    ## Gauardo laActualizacion
+
+    miConexion3 = None
+    try:
+
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            cur3 = miConexion3.cursor()
+            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' ips=    ' + "'" + str(ips) + "'," +  ' responsables = ' + "'" + str(responsables) + "'," +  'acompanantes = ' + "'" + str(acompanantes) + "'," + '"tiposCotizante" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna" =   ' + "'" + str(causasExterna) + "'," +  'regimenes = ' + "'" + str(regimenes) + "'," +   '"viasIngreso" = ' + "'" + str(viasIngreso) + "'," + '"medicoIngreso_id = ' + "'" + str(medicoIngreso) + "'," +  '"especialidadesMedicosIngreso_id" = ' + "'" + str(busEspecialidad) + "'," + 'empresa_id = ' + "'" + str(empresa) +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
+            print(comando)
+
+            cur3.execute(comando)
+            miConexion3.commit()
+            cur3.close()
+
+            return JsonResponse({'success': True, 'Mensaje': 'Ingreso Actualizado !'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        print("Finally")
+        if miConexion3:
+            miConexion3.close()
+            print("Cerre conexion")

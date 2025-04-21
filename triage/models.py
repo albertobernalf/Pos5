@@ -38,6 +38,7 @@ class Triage(models.Model):
     peso            = models.CharField(max_length=10,  blank=True, null=True,)
     temperatura     = models.CharField(max_length=10,  blank=True, null=True,)
     estatura        = models.CharField(max_length=10,  blank=True, null=True,)
+    empresa = models.ForeignKey('facturacion.Empresas', blank=True,null= True, editable=True,  on_delete=models.PROTECT)
     clasificacionTriage = models.ForeignKey('clinico.TiposTriage', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     viaEgreso  = models.ForeignKey('clinico.ViasEgreso', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     glucometria = models.CharField(max_length=50,  blank=True, null=True,)
