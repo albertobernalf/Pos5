@@ -94,6 +94,7 @@ function arrancaTriage(valorTabla,valorData)
       className: 'btn btn-info',
     },
   ],
+autoWidth: false,
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,

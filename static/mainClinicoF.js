@@ -18,7 +18,9 @@ function arrancaClinico(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptionsClinico  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -39,10 +41,11 @@ function arrancaClinico(valorTabla,valorData)
       className: 'btn btn-info',
     },
   ],
+autoWidth: false,
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '325px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -50,14 +53,9 @@ function arrancaClinico(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 	  
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
+		{     
 
-				    btn = btn + " <input type='radio'  class='miClinico form-check-input ' data-pk='" + row.pk + "'>" + "</input>";
-                       return btn;
-                    },
-
-                    "targets": 12
+                    "targets": 11
                }
             ],
 	 pageLength: 3,
@@ -87,7 +85,17 @@ function arrancaClinico(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
-               { data: "fields.tipoIng"},
+		{"render": function ( data, type, row ) {
+                        var btn = '';
+
+				    btn = btn + " <input type='radio'  class='miClinico form-check-input ' data-pk='" + row.pk + "'>" + "</input>";
+                       return btn;
+                    },
+
+
+		},
+
+      
                 { data: "fields.id"},
                 { data: "fields.tipoDoc"},
                 { data: "fields.documento"},

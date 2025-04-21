@@ -2424,7 +2424,7 @@ def crearHistoriaClinica(request):
 
         print ("tiposFolio = " ,TiposFolio)
 
-        return render(request, 'clinico/navegacionClinica.html', context);
+        return render(request, 'clinico/navegacionClinicaF.html', context);
 
 
 

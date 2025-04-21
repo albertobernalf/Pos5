@@ -53,11 +53,7 @@ th ,tr{
 <div class="secciones">
     <article id="Triage">
 
-        <!-- Filtros de busqueda -->
-        <div class="row justify-content-center">
-            <div class=" col-lg-12" style="backgrouond-color:LightGray;">
-                <div class="card-block">
-                    <div style="height: 100px;">
+     
                         <form class="form-inline" action="/buscarTriage/" method="POST" id="formBuscarTriage">
 
                             <input type="hidden" id="username" name="username" value="{{Username}}">
@@ -77,10 +73,6 @@ th ,tr{
                             <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
 
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
 
 
         <!-- Fin  Filtros de busqueda -->
@@ -92,7 +84,7 @@ th ,tr{
 
    			   <div class="row">
 
-                                        <table  id= "tablaDatosTriage" class="display table table-striped table-sm fs-6" style="width: 100%";>
+                                        <table  id= "tablaDatosTriage" class="display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  

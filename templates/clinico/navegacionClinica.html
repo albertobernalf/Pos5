@@ -1,10 +1,11 @@
-{% extends "clinico/menuMedico1F.html" %}
+{% extends "clinico/menuMedico1.html" %}
 {% load static %}
 
 {% block head %}
 <!-- Custom css -->
 <link rel="stylesheet" type="text/css" href={% static 'css/navegacionClinica.css' %} >
-
+<link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %} >
+<script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
 <script src={% static 'js/navegacionClinica.js' %} defer >         </script>
 <script src={% static 'js/navegacionTabsClinica.js' %} defer> </script>
 
@@ -53,7 +54,7 @@
 
 {% for datosPaciente in DatosPaciente %}
 <!-- <div class="paciente"> -->
-<!--  <div> -->
+<div>
     <input type="hidden" id="tipoIng" name="tipoIng" value="{{TipoIng}}"> </input>
     <input type="hidden" id="espMedico" name="espMedico" value="{{EspMedico}}"> </input>
     <input type="hidden" id="tiposFolio" name="tiposFolio" value="{{TiposFolio}}"> </input>
@@ -87,47 +88,69 @@
     <div class="form-row">
          <div class="form-group col-md-1">
          </div>
-        <div class="form-group col-md-12">
-           
+        <div class="form-group col-md-2">
+            Tipo Doc:
             {{ datosPaciente.tipnombre}}
             <input type="hidden" id="tipoDoc_id" name="tipoDoc_id" value="{{ datosPaciente.tipoDoc_id}}"  readonly></input>
+        </div>
 
-
+        <div class="form-group col-md-1">
+            No:
             {{ datosPaciente.documentoPaciente}}
             <input type="hidden" id="documentoPaciente" name="documentoPaciente"  value="{{ datosPaciente.documentoPaciente}}" readonly> </input>
+        </div>
+        <div class="form-group col-md-3 ">
+            Nombre:
             {{ datosPaciente.nombre}}
-   
+        </div>
+        <div class="form-group col-md-1 ">
             Ing:
             {{ IngresoPaciente}}
             <input type="hidden" id="IngresoPaciente" name="IngresoPaciente" value="{{ IngresoPaciente}}" readonly> </input>
             <input type="hidden" class="form-control" id="fecha" name="fecha" value={{ form.fecha }}>
-               {{ datosPaciente.genero}}
+        </div>
+
+        <div class="form-group col-md-1">
+            {{ datosPaciente.genero}}
+        </div>
+        <div class="form-group col-md-3">
             {{ datosPaciente.centro}}
-      </div>
+        </div>
+    </div>
     <div class="form-row">
          <div class="form-group col-md-1 ">
          </div>
 
-         <div class="form-group col-md-12 ">
-
+         <div class="form-group col-md-2 ">
+            Tipo:
             {{ datosPaciente.tipoUsuario}}
+        </div>
 
+         <div class="form-group col-md-2 ">
+            Dir:
             {{ datosPaciente.direccion}}
+        </div>
+
+         <div class="form-group col-md-1">
             Tel:
             {{ datosPaciente.telefono}}
-  Usuario:
-            {{Profesional}}
+        </div>
 
-             <select class="form-select  h-40 w-10" aria-label="" id="dependenciasRealizado" name="dependenciasRealizado">
+         <div class="form-group col-md-2">
+
+             <select class="form-select  h-40 w-50" aria-label="" id="dependenciasRealizado" name="dependenciasRealizado">
                 {% for dependenciasRealizado in DependenciasRealizado %}
                 <option value="{{dependenciasRealizado.id}}">{{dependenciasRealizado.nombre}}</option>
                 {% endfor %}
             </select>
+        </div>
 
-          
+        <div class="form-group col-md-3">
+            Usuario:
+            {{Profesional}}
         </div>
     </div>
-<!-- </div> -->
+</div>
 
 {% endfor %}
 </div>
@@ -285,6 +308,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 
 <article id="RevisionSistemas">
+        <center> <br>
+            <h3>Revision x Sistemas</h3>
 
         <table class="table  " style="height: 50px; background-color:LightGray;  width:95%;">
             <tr>
@@ -391,6 +416,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 
     <article id="SignosVitales">
+        <center> <br>
+            <h3>Signos Vitales</h3>
 
 
 	<div class="container">
@@ -483,6 +510,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
     <article id="Laboratorios">
 		<div class="marco">
+        <center><br>
+            Ordenes de Laboratorio </center>
              <!-- DESDE AQUIP DATATABLE  -->
       <table class="table" style="height: 50px; background-color:LightGray;  width:90%;">
             <tr style="padding: 0;">
@@ -577,8 +606,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
     <article id="Radiologia">
         <br>
+        <center>
 
-
+            <h3>Ordenes de Radiologia</h3></center>
 
         <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
             <tr>
@@ -690,6 +720,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
     <article id="Terapias">
                 <br>
+        <center>
+            <h3>Terapias</h3></center>
+
                 <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
             <tr>
                 <td>
@@ -798,6 +831,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
     </article>
 
     <article id="Formulacion">
+
+        <center>
+            <h3>Formulacion</h3></center>
              <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
             <tr>
                 <td>
@@ -975,6 +1011,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
     </article>
 
     <article id="Clinica">
+         <center>     <h3>Clinica del paciente</h3></center>
 
         <div class="row row-cols-20 mt-3">
 
@@ -1157,6 +1194,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
     <article id="ProcedimientosNoQx">
         <br>
+        <center>
+            <h3>ProcedimientosNoQx</h3></center>
 
 
                 <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
@@ -1266,6 +1305,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
     <article id="Diagnosticos">
                 <br>
+        <center>
+            <h3>Diagnosticos</h3></center>
 
 
              <table class="table  " style="height: 50px; background-color:LightGray;  width:90%;">
@@ -1388,6 +1429,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
     <article id="Antecedentes">
                 <br>
+        <center>
+            <h3>Antecedentes</h3></center>
 
              <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
             <tr>
@@ -1491,6 +1534,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
     </article>
 
     <article id="Incapacidades">
+                <br> <center>
+            <h3>Incapacidades</h3></center>
 
 	<div class="container">
 
@@ -1531,6 +1576,8 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
     </article>
 
     <article id="InterConsultas">
+                <br><center>
+            <h3>InterConsultas</h3></center>
 
 
              <table class="table  " style="height: 50px; background-color:LightGray;  width:90%;">
@@ -1682,6 +1729,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
     </article>
 
     <article id="SalidaClinica">
+                <br><center>
+
+            <h3>SalidaClinica</h3></center>
 		
 	   <div class="row">
 			                <div class="col">
@@ -1841,9 +1891,7 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 {% block mensajeria %}
 <div class="marco">
 <span> Avisos ... </span>
-       <span id="mensajes" name="mensajes" style= "color:blue; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
-     <span id="mensajesError" name="mensajesError" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
-
+     <span id="mensajes" name="mensajes">xxxx </span>
 
 </div>
 {% endblock %}

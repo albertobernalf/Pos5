@@ -1462,8 +1462,8 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
     			    $('#remitidoP').val(Usuarios.remitido);
     			    $('#numManillaP').val(Usuarios.numManilla);
     			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
-    			    $('#responsablesP').val(Usuarios.medicoIngreso); 	
-    			    $('#acompanantesP').val(Usuarios.medicoIngreso); 	
+    			    $('#responsablesP').val(Usuarios.responsable); 	
+    			    $('#acompanantesP').val(Usuarios.acompanante); 	
 
   		  $('#tiposCotizanteP').val(Usuarios.cotizante); 
 
