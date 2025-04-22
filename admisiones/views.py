@@ -5932,6 +5932,7 @@ def PostDeleteConveniosAdmision(request):
 
     miConexion3 = None
     try:
+      with transaction.atomic():	
 
         post = ConveniosPacienteIngresos.objects.get(id=id)
         post.delete()
@@ -5939,19 +5940,9 @@ def PostDeleteConveniosAdmision(request):
         return JsonResponse({'success': True, 'message': 'Convenio borrado!'})
 
 
-    except psycopg2.DatabaseError as error:
-        print ("Entre por rollback" , error)
-        if miConexion3:
-            print("Entro ha hacer el Rollback")
-            miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
-
-
-    finally:
-        if miConexion3:
-            miConexion3.close()
+    except Exception as e:
+        # Aquí ya se hizo rollback automáticamente
+        print("Se hizo rollback por:", e)
 
 
     # Aqui Fin Manejo Transaccionalidad

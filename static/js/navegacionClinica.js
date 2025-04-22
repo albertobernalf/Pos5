@@ -1,6 +1,18 @@
 $(document).ready(function() {
 	var $ = jQuery;
 	console.log('Hola Alberto Hi!')
+	var controlLab = 0;
+	var controlRad = 0;
+	var controlTer = 0;
+	var controlPro = 0;
+	var controlMed = 0;
+	var controlRev = 0;
+	var controlDia = 0;
+	var controlAnt = 0;
+	var controlInt = 0;
+
+
+
 
 	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
@@ -339,7 +351,16 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         --------------------------------------------*/
         $('#BtnAdicionarRadiologia').click(function (e) {
             e.preventDefault();
-   	   var table1 = $('#tablaRadiologia').DataTable();   // accede de nuevo a la DataTable.
+
+   	   if (controlRad == 0)
+   	   {
+   	   var table1 = $('#tablaRadiologia').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlRad=1;
+   	   }
+   	   else
+   	   {
+   	   var table1 = $('#tablaRadiologia').DataTable();
+   	   }
 
 	   var cantidad = document.getElementById("cantidad3").value;
 	   var observa = document.getElementById("observa3").value;
@@ -361,7 +382,18 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
             e.preventDefault();
          //   $('.success-msg').css('display','block');
          //   $('.success-msg').text('Dato actualizado');
-   	   var table3 = $('#tablaTerapias').DataTable();   // accede de nuevo a la DataTable.
+
+
+   	   if (controlTer == 0)
+   	   {
+   	   var table3 = $('#tablaTerapias').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlTer=1;
+   	   }
+   	   else
+   	   {
+   	   var table3 = $('#tablaTerapias').DataTable();
+   	   }
+
 
 	   var cantidad = document.getElementById("cantidad4").value;
 	   var observa = document.getElementById("observa4").value;
@@ -382,7 +414,16 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         $('#BtnAdicionarNoQx').click(function (e) {
             e.preventDefault();
          //   $('.success-msg').text('Dato actualizado');
-   	   var table4 = $('#tablaNoQx').DataTable();   // accede de nuevo a la DataTable.
+
+   	   if (controlPro == 0)
+   	   {
+   	   var table4 = $('#tablaNoQx').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlPro=1;
+   	   }
+   	   else
+   	   {
+   	   var table4 = $('#tablaNoQx').DataTable();
+   	   }
 
 	   var cantidad = document.getElementById("cantidad5").value;
        var observa = document.getElementById("observa5").value;
@@ -404,7 +445,17 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         $('#BtnAdicionarAntecedentes').click(function (e) {
             e.preventDefault();
 
-   	   var table5 = $('#tablaAntecedentes').DataTable();   // accede de nuevo a la DataTable.
+
+   	   if (controlAnt == 0)
+   	   {
+   	   var table5 = $('#tablaAntecedentes').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlAnt=1;
+   	   }
+   	   else
+   	   {
+   	   var table5 = $('#tablaAntecedentes').DataTable()
+   	   }
+
 
        var observa = document.getElementById("observa6").value;
 
@@ -425,7 +476,17 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         $('#BtnAdicionarDiagnosticos').click(function (e) {
             e.preventDefault();
 
-   	   var table6 = $('#tablaDiagnosticos').DataTable();   // accede de nuevo a la DataTable.
+
+   	   if (controlDia == 0)
+   	   {
+   	   var table6 = $('#tablaDiagnosticos').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlDia=1;
+   	   }
+   	   else
+   	   {
+   	   var table6 = $('#tablaDiagnosticos').DataTable();
+   	   }
+
 
        var observa = document.getElementById("observa7").value;
 
@@ -450,7 +511,15 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         $('#BtnAdicionarInterconsultas').click(function (e) {
             e.preventDefault();
 
-   	   var table7 = $('#tablaInterconsultas').DataTable();   // accede de nuevo a la DataTable.
+   	   if (controlInt == 0)
+   	   {
+   	   var table7 = $('#tablaInterconsultas').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlInt=1;
+   	   }
+   	   else
+   	   {
+   	   var table7 = $('#tablaInterconsultas').DataTable();
+   	   }
 
 	   var descripcion = document.getElementById("descripcionI").value;
 
@@ -503,7 +572,17 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
         $('#BtnAdicionarFormulacion').click(function (e) {
             e.preventDefault();
 
-   	   var table10 = $('#tablaFormulacion').DataTable();   // accede de nuevo a la DataTable.
+
+   	   if (controlMed == 0)
+   	   {
+   	   var table10 = $('#tablaFormulacion').DataTable({scrollY: '50px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlMed=1;
+   	   }
+   	   else
+   	   {
+	  var table10 = $('#tablaFormulacion').DataTable();
+   	   }
+
 
            var select3 = document.getElementById("medicamentos"); /*Obtener el SELECT */
       	   var medicamentos= select3.options[select3.selectedIndex].value; /* Obtener el valor */
@@ -549,13 +628,21 @@ $('#tablaFacturacions tbody').on('click', 'tr', function () {
          //   $('.success-msg').css('display','block');
          //   $('.success-msg').text('Dato actualizado');
 
-   	   var tableL = $('#tablaLaboratorios').DataTable();   // accede de nuevo a la DataTable.
+   	   if (controlLab == 0)
+   	   {
+   	   var tableL = $('#tablaLaboratorios').DataTable({scrollY: '150px', paging:false,   scrollX: true,  scrollCollapse: true,  lengthMenu: [5]});   // accede de nuevo a la DataTable.
+   	   controlLab=1;
+   	   }
+   	   else
+   	   {
+   	   var tableL = $('#tablaLaboratorios').DataTable();
+   	   }
    	   var TipoDocPaciente = document.getElementById("tipoDocPaciente1").value;
 	   var documentoPaciente = document.getElementById("documentoPaciente1").value;
 	   var IngresoPaciente = document.getElementById("ingresoPaciente1").value;
 
 	   var cantidad = document.getElementById("cantidad").value;
-       var observa = document.getElementById("observa").value;
+     	   var observa = document.getElementById("observa").value;
            var select = document.getElementById("lab"); /*Obtener el SELECT */
       	   var lab = select.options[select.selectedIndex].value; /* Obtener el valor */
       	   text = select.options[select.selectedIndex].innerText; //El texto de la opción seleccionada
@@ -575,7 +662,7 @@ function tableActionsLaboratorios() {
                     },
                 processing: true,
                 serverSide: false,
-                scrollY: '130px',
+                scrollY: '250px',
 	            scrollX: true,
 	            scrollCollapse: true,
                 paging:false,

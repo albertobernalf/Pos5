@@ -435,57 +435,42 @@ def crearHistoriaClinica(request):
 
                 # Inicio grabacion Historia Clinica
 
-                miConexiont = None
-                try:
+                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                curt = miConexiont.cursor()
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-                            curt = miConexiont.cursor()
+                #comando = 'INSERT INTO clinico_Historia ("tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento , "fechaRegistro"  ,"usuarioRegistro_id", "estadoReg" ) VALUES ('  + "'" +  str(
+                #   tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(
+                #   subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento) +  "','" + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "');"
 
-                            comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'"   +  ") RETURNING id ;"
+                ## aqui tentativo insert
 
-                            ## fin tentativo insert
+                comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'"   +  ") RETURNING id ;"
 
-                            print(comando)
-                            resultado = curt.execute(comando)
+                ## fin tentativo insert
 
-                            historiaId = curt.fetchone()[0]
-                            print("resultado = " , resultado)
+                print(comando)
+                resultado = curt.execute(comando)
 
-                            print ("historiaId Final = ", historiaId)
+                historiaId = curt.fetchone()[0]
+                print("resultado = " , resultado)
 
-                            miConexiont.commit()
+                print ("historiaId Final = ", historiaId)
 
-                            #print("historiaid = ", historiaId)
-                            #historiaIdU = Historia.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
-                            #historiaId = (historiaIdU['maximo']) + 0
-                            print("1 record inserted, ID:", historiaId)
+                miConexiont.commit()
 
-                            curt.close()
-                            miConexiont.close()
+                #print("historiaid = ", historiaId)
+                #historiaIdU = Historia.objects.all().aggregate(maximo=Coalesce(Max('id'), 0))
+                #historiaId = (historiaIdU['maximo']) + 0
+                print("1 record inserted, ID:", historiaId)
 
-                            print("El id del la hsitoria INSERTADA es ", historiaId)
+                miConexiont.close()
 
-                            # Fingrabacion Historia Clinica
+                #print("El id del la hsitoria INSERTADA es ", historiaId)
 
-                            print("Historia No : ", historiaId)
-                            jsonHistoria = {'id': historiaId}
+                # Fingrabacion Historia Clinica
 
-                except psycopg2.DatabaseError as error:
-                      print("Entre por rollback", error)
-                      if miConexiont:
-                           print("Entro ha hacer el Rollback")
-                           miConexiont.rollback()
-
-                      data = {'Mensaje': error}
-
-                      return HttpResponse(json.dumps(data))
-
-
-                finally:
-                    if miConexiont:
-                        curt.close()
-                        miConexiont.close()
-
+                print("Historia No : ", historiaId)
+                jsonHistoria = {'id': historiaId}
 
                 # Fin Grabacion Historia
 		
@@ -547,8 +532,9 @@ def crearHistoriaClinica(request):
 
                 print ("CABEZOTE DE LIQUIDACION = ", cabezoteLiquidacion);
 
+
                 miConexiont.close()
-                if (cabezoteLiquidacion == []):
+                if (cabezoteLiquidacion == ''):
                     # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
                     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
                                                    user="postgres", password="123456")
@@ -662,7 +648,7 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                        comando = 'SELECT conv.convenio_id id ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' valor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' valor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
                         print("comando = ", comando)
 
                         curt.execute(comando)
@@ -670,7 +656,7 @@ def crearHistoriaClinica(request):
                         convenioValor = []
 
                         for id, cups,tarifaValor   in curt.fetchall():
-                            convenioValor.append({'id': id, 'cups':cups, 'valor':tarifaValor})
+                            convenioValor.append({'convenio': convenio, 'cups':cups, 'valor':tarifaValor})
 
                         miConexiont.close()
                         print("columnaALeer.columna", columnaALeer.columna)
@@ -691,11 +677,9 @@ def crearHistoriaClinica(request):
                             tarifaValor = convenioValor[0]['valor']
                             tarifaValor = str(tarifaValor)
                             print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("None", ' ')
                             tarifaValor = tarifaValor.replace("(", ' ')
                             tarifaValor = tarifaValor.replace(")", ' ')
                             tarifaValor = tarifaValor.replace(",", ' ')
-                            tarifaValor = tarifaValor.replace(" ", '')
                             print ("tarifaValor = ", tarifaValor)
                             #cupsId = convenioValor[0]['cups']
                             #cupsId = str(cupsId)
@@ -706,11 +690,6 @@ def crearHistoriaClinica(request):
                             #print("cupsId = ", cupsId)
                             #
                         else:
-                            tarifaValor=0
-
-
-                        if tarifaValor == '':
-                            print ("Entre cambiar tarufa Valor" ,  tarifaValor)
                             tarifaValor=0
 
                         TotalTarifa = float(tarifaValor) * float(cantidad)
@@ -744,7 +723,7 @@ def crearHistoriaClinica(request):
                                                            user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso,  contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = " + "'" + str(convenioValor[0]['id'])  + "'" + ' RETURNING id'
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
 
                                 print ("comando ", comando)
 
@@ -848,13 +827,13 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                        comando = 'SELECT conv.convenio_id id ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND  proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND  proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
 
                         curt.execute(comando)
                         convenioValor = []
 
                         for id, cups,tarifaValor   in curt.fetchall():
-                            convenioValor.append({'id': id, 'cups':cups, 'valor':tarifaValor})
+                            convenioValor.append({'convenio': convenio, 'cups':cups, 'valor':tarifaValor})
 
                         miConexiont.close()
 
@@ -865,11 +844,9 @@ def crearHistoriaClinica(request):
                             tarifaValor = convenioValor[0]['valor']
                             tarifaValor = str(tarifaValor)
                             print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("None", ' ')
                             tarifaValor = tarifaValor.replace("(", ' ')
                             tarifaValor = tarifaValor.replace(")", ' ')
                             tarifaValor = tarifaValor.replace(",", ' ')
-                            tarifaValor = tarifaValor.replace(" ", '')
                             print ("tarifaValor = ", tarifaValor)
                             #cupsId = convenioValor[0]['cups']
                             #cupsId = str(cupsId)
@@ -881,9 +858,6 @@ def crearHistoriaClinica(request):
                             #
 
                         else:
-                            tarifaValor=0
-
-                        if tarifaValor == None:
                             tarifaValor=0
 
                         TotalTarifa = float(tarifaValor) * float(cantidad)
@@ -919,9 +893,7 @@ def crearHistoriaClinica(request):
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                #comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" + str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso,  contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = " + "'" + str(convenioValor[0]['id']) + "'" + ' RETURNING id'
-
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
                                 curt.execute(comando)
                                 autorizacionId = curt.fetchone()[0]
                                 miConexiont.close()
@@ -1016,13 +988,13 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                        comando = 'SELECT conv.convenio_id id ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id" AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
 
                         curt.execute(comando)
                         convenioValor = []
 
                         for id, cups,tarifaValor   in curt.fetchall():
-                            convenioValor.append({'id': id, 'cups':cups, 'valor':tarifaValor})
+                            convenioValor.append({'convenio': convenio, 'cups':cups, 'valor':tarifaValor})
 
                         miConexiont.close()
 
@@ -1032,11 +1004,9 @@ def crearHistoriaClinica(request):
                             tarifaValor = convenioValor[0]['valor']
                             tarifaValor = str(tarifaValor)
                             print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("None", ' ')
                             tarifaValor = tarifaValor.replace("(", ' ')
                             tarifaValor = tarifaValor.replace(")", ' ')
                             tarifaValor = tarifaValor.replace(",", ' ')
-                            tarifaValor = tarifaValor.replace(" ", '')
                             print ("tarifaValor = ", tarifaValor)
 
 
@@ -1048,12 +1018,7 @@ def crearHistoriaClinica(request):
                             #cupsId = cupsId.replace(",", ' ')
                             #print("cupsId = ", cupsId)
                         else:
-
                             tarifaValor=0
-
-                        if tarifaValor == None:
-                            tarifaValor=0
-
 
                         TotalTarifa = float(tarifaValor) * float(cantidad)
 
@@ -1089,8 +1054,7 @@ def crearHistoriaClinica(request):
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                #comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" + str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso,  contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = " + "'" + str(convenioValor[0]['id']) + "'" + ' RETURNING id'
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "' RETURNING id"
                                 curt.execute(comando)
                                 autorizacionId = curt.fetchone()[0]
                                 miConexiont.close()
@@ -1186,12 +1150,12 @@ def crearHistoriaClinica(request):
 
                           curt = miConexiont.cursor()
                           #comando = 'SELECT conv.convenio_id convenio ,proc.cups_id cups, proc.valor tarifaValor FROM facturacion_conveniospacienteingresos conv, contratacion_conveniosprocedimientos proc WHERE conv."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND conv.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.convenio_id = proc.convenio_id AND proc.cups_id = " + "'" +  str(codigoCupsId[0].id) + "'"
-                          comando = 'SELECT conv.convenio_id id ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id"  AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
+                          comando = 'SELECT conv.convenio_id convenio ,exa."codigoCups" cups, proc."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariosprocedimientos proc, clinico_examenes exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionProc_id"  AND proc."codigoCups_id" = exa.id  And exa.id = ' + "'" + str(codigoCupsId[0].id) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and proc."tiposTarifa_id" = tiptar.id'
                           curt.execute(comando)
                           convenioValor = []
 
                           for id, cups,tarifaValor   in curt.fetchall():
-                              convenioValor.append({'id': id, 'cups':cups, 'valor':tarifaValor})
+                              convenioValor.append({'convenio': convenio, 'cups':cups, 'valor':tarifaValor})
 
                           miConexiont.close()
 
@@ -1201,26 +1165,21 @@ def crearHistoriaClinica(request):
                             tarifaValor = convenioValor[0]['valor']
                             tarifaValor = str(tarifaValor)
                             print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("None", ' ')
                             tarifaValor = tarifaValor.replace("(", ' ')
                             tarifaValor = tarifaValor.replace(")", ' ')
                             tarifaValor = tarifaValor.replace(",", ' ')
-                            tarifaValor = tarifaValor.replace(" ", '')
                             print ("tarifaValor = ", tarifaValor)
 
                             #
                           else:
                             tarifaValor=0
 
-                          if tarifaValor == None:
-                              tarifaValor = 0
-
                           TotalTarifa = float(tarifaValor) * float(cantidad)
 
                           # Aqui analiza si es necesario que caiga en la tabla de Autorizaciones
 
                           print("el cups :", cups)
-                          print("Requiere autorizacion :", codigoCupsId[0].requiereAutorizacion)
+                          print("Requiere autorizacion :", autorizacion.requiereAutorizacion)
 
                           if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
@@ -1248,8 +1207,15 @@ def crearHistoriaClinica(request):
                                                                  user="postgres", password="123456")
 
                                   curt = miConexiont.cursor()
-                                  comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" + str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso,  contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = " + "'" + str(convenioValor[0]['id']) + "'" + ' RETURNING id'
-
+                                  comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(
+                                      estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str(
+                                      'A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" + str(
+                                      sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(
+                                      historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" + str(
+                                      tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(
+                                      documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(
+                                      ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" + str(
+                                      codigoCupsId[0].id) + "' RETURNING id"
                                   curt.execute(comando)
                                   autorizacionId = curt.fetchone()[0]
                                   miConexiont.close()
@@ -1616,7 +1582,7 @@ def crearHistoriaClinica(request):
 
                         curt = miConexiont.cursor()
                         #comando = 'SELECT convIngreso.convenio_id convenio ,sum.suministro_id sum, sum.valor tarifaValor FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniossuministros sum WHERE convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND convIngreso.convenio_id = sum.convenio_id AND sum.suministro_id = " + "'" +  str(medicamentos) + "'"
-                        comando = 'SELECT conv.convenio_id id ,exa.cums cums, sum."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionSum_id" AND sum."codigoCum_id" = exa.id  And exa.id = ' + "'" + str(medicamentos) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and sum."tiposTarifa_id" = tiptar.id'
+                        comando = 'SELECT conv.convenio_id convenio ,exa.cums cums, sum."' + str(columnaALeer.columna) + '"' + ' tarifaValor FROM facturacion_conveniospacienteingresos conv, tarifarios_tarifariosdescripcion des, tarifarios_tarifariossuministros sum, facturacion_suministros exa, contratacion_convenios conv1 , tarifarios_tipostarifa tiptar WHERE conv."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND conv.documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND conv."consecAdmision" = ' + "'" + str(ingresoPaciente) + "'" + ' AND conv.convenio_id = conv1.id AND des.id = conv1."tarifariosDescripcionSum_id" AND sum."codigoCum_id" = exa.id  And exa.id = ' + "'" + str(medicamentos) + "'" + ' AND des."tiposTarifa_id" = tiptar.id and sum."tiposTarifa_id" = tiptar.id'
 
                         print ("comando =" , comando)
 
@@ -1624,7 +1590,7 @@ def crearHistoriaClinica(request):
                         convenioValor = []
 
                         for id, sum,tarifaValor   in curt.fetchall():
-                            convenioValor.append({'id': id, 'sum':sum, 'valor':tarifaValor})
+                            convenioValor.append({'convenio': convenio, 'sum':sum, 'valor':tarifaValor})
 
                         miConexiont.close()
 
@@ -1667,9 +1633,7 @@ def crearHistoriaClinica(request):
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
-                                #comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(medicamentos) + "' RETURNING id"
-                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" + str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso,  contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = " + "'" + str(convenioValor[0]['id']) + "'" + ' RETURNING id'
-
+                                comando = 'INSERT INTO autorizaciones_autorizaciones ("estadoAutorizacion_id","fechaModifica", "fechaRegistro", "estadoReg",empresa_id, "plantaOrdena_id", "sedesClinica_id", "usuarioRegistro_id", historia_id )  SELECT ' + "'" + str(estadoAutorizacionId.id) + "'" + ', now(), now(), ' + "'" + str('A') + "'" + ', conv.empresa_id,  ' + "'" + str(plantaId.id) + "','" +  str(sede) + "','" + str(usuarioRegistro) + "'," + "'" + str(historiaId) + "'" + ' FROM facturacion_conveniospacienteingresos convIngreso, contratacion_conveniosprocedimientos proc, contratacion_convenios conv WHERE conv.id = convIngreso.convenio_id AND convIngreso."tipoDoc_id" = ' + "'" +  str(tipoDocId.id) + "' AND convIngreso.documento_id = " + "'" + str(documentoId.id) + "'" + ' AND convIngreso."consecAdmision" = ' + "'" + str(ingresoPaciente) + "' AND conv.id = proc.convenio_id AND proc.cups_id = " + "'" +  str(medicamentos) + "' RETURNING id"
                                 curt.execute(comando)
                                 autorizacionId = curt.fetchone()[0]
                                 miConexiont.commit()
@@ -1703,19 +1667,13 @@ def crearHistoriaClinica(request):
                             tarifaValor = convenioValor[0]['valor']
                             tarifaValor = str(tarifaValor)
                             print("tarifaValor = ", tarifaValor)
-                            tarifaValor = tarifaValor.replace("None", ' ')
                             tarifaValor = tarifaValor.replace("(", ' ')
                             tarifaValor = tarifaValor.replace(")", ' ')
                             tarifaValor = tarifaValor.replace(",", ' ')
-                            tarifaValor = tarifaValor.replace(" ", '')
                             print ("tarifaValor = ", tarifaValor)
 
                         else:
                             tarifaValor=0
-
-                        if tarifaValor == None:
-                            tarifaValor=0
-
 
                         TotalTarifa = float(tarifaValor) * float(cantidadMedicamento)
                         print("consecLiquidacion LISTO= ", consecLiquidacion)
