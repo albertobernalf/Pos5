@@ -1,5 +1,12 @@
-var $ = jQuery;
+
 console.log('Hola Alberto Hi!')
+let dataTable;
+let dataTableB;
+let dataTableC;
+let dataTableApoyoTerapeuticoInitialized = false;
+let dataTableTerapeuticoConsultaInitialized = false;
+let dataTableRasgosInitialized =false;
+
 
 $('.editPostar').on('click',function(event)
 {
@@ -8,28 +15,297 @@ $('.editPostar').on('click',function(event)
           alert("pk1 = " + $(this).data('pk'));
 });
 
-    $(document).ready(function() {
+$(document).ready(function() {
+    var table = $('#tablaApoyoTerapeutico').DataTable();
+    
+       $('#search').on('keyup', function() {
+        var searchValue = this.value.split(' '); // Supongamos que los términos de búsqueda están separados por espacios
+        
+        // Aplica la búsqueda en diferentes columnas
+        table
+            .columns([3]) // Filtra en la primera columna
+            .search(searchValue[0]) // Primer término de búsqueda
+            .draw();
 
-        var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	  table
+            .columns([9]) // Filtra en la segunda columna
+            .search(searchValue[1]) // Segundo término de búsqueda
+            .draw();
+
+
+        
+        table
+            .columns([14]) // Filtra en la segunda columna
+            .search(searchValue[1]) // Segundo término de búsqueda
+            .draw();
+    });
+});
+
+
+function arrancaApoyoTerapeutico(valorTabla,valorData)
+{
+    data = {}
+    data = valorData;
+
+    if (valorTabla == 1)
+    {
+        let dataTableOptionsApoyoTerapeutico  ={
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
+
+
+//  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+	// text: '<i class="bi bi-file-earmark-excel-fill"></i> Exportar Excel',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success btn-sm',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger btn-sm',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info btn-sm',
+    },
+  ],
+	autoWidth: false,
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '450px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+             "rowClass": function( row, data, index ) {
+      return 'my-row-class';
+    },
+            columnDefs: [
+            { width: '1%', targets: [0,1] },
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{   targets: [5,6,7] // índice de la columna que quieres evitar que haga wrap
+
+		    },
+		{
+                    "targets": 11
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataApoyoTerapeutico/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+                         btn = btn + " <input type='radio'  class='form-check-input editPostTerapeuticoConsulta' data-pk='" + row.pk + "'>" + "</input>";
+
+                       return btn;
+                    }
+
+	},
+                { data: "fields.id"},
+                { data: "fields.tipoDoc"},
+                { data: "fields.documento"},
+                { data: "fields.nombre"},
+                { data: "fields.consec"},
+                { data: "fields.fechaExamen"},
+                { data: "fields.tipoExamen"},
+	            { data: "fields.examen"},
+                { data: "fields.estadoExamen"},
+                { data: "fields.cantidad"},
+                { data: "fields.folio"},
+
+
+            ]
+             }
+
+	        dataTable = $('#tablaApoyoTerapeutico').DataTable(dataTableOptionsApoyoTerapeutico);
+
+    
+  }
+
+    if (valorTabla == 2)
+    {
+        let dataTableOptionsRasgosConsulta  ={
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
+
+
+//  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+	// text: '<i class="bi bi-file-earmark-excel-fill"></i> Exportar Excel',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success btn-sm',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger btn-sm',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info btn-sm',
+    },
+  ],
+	autoWidth: false,
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '450px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+             "rowClass": function( row, data, index ) {
+      return 'my-row-class';
+    },
+            columnDefs: [
+            { width: '1%', targets: [0,1] },
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{   targets: [5,6] // índice de la columna que quieres evitar que haga wrap
+
+		    },
+		{
+                    "targets": 8
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataRasgos/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+			btn = btn + " <button class='btn btn-danger deletePostRasgos' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa fa-trash"></i>' + "</button>";
+
+                       return btn;
+                    }
+
+	},
+  		{ data: "fields.codigoCups"},
+                { data: "fields.nombreRasgo"},
+                { data: "fields.unidad"},
+                { data: "fields.minimo"},
+                { data: "fields.maximo"},
+                { data: "fields.valorResultado"},
+		{ data: "fields.observa"},
+            ]
+             }
+
+	        dataTable = $('#tablaRasgosConsulta').DataTable(dataTableOptionsRasgosConsulta);
+
+    
+  }
+
+}
+
+const initDataTableApoyoTerapeutico = async () => {
+	if  (dataTableApoyoTerapeuticoInitialized)  {
+		dataTable.destroy();
+
+}
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
-
-        var data =  {}   ;
-
+         var data =  {}   ;
         data['username'] = username;
         data['sedeSeleccionada'] = sedeSeleccionada;
         data['nombreSede'] = nombreSede;
         data['sede'] = sede;
-	data['username_id'] = username_id;
+        data['username_id'] = username_id;
+
+
+	 var sede = document.getElementById("sede").value;
+
+          data['sede'] = sede;
         
 
-        data = JSON.stringify(data);
+ 	    data = JSON.stringify(data);
 
-	initTableApoyoTerapeutico(data);
-	initTableTerapeuticoConsulta(data);
-	initTableRasgos(data); 
+	alert("Voy a cargar la tabla");
+
+        arrancaApoyoTerapeutico(1,data);
+	    dataTableApoyoTerapeuticoInitialized = true;
+
+}
+
+ // COMIENZA ONLOAD
+
+window.addEventListener('load', async () => {
+    await  initDataTableApoyoTerapeutico();
+
+
+});
+
+
+ /* FIN ONLOAD */
+
+
+	// initTableApoyoTerapeutico(data);
+	// initTableTerapeuticoConsulta(data);
+	//initTableRasgos(data); 
 
 	/*------------------------------------------
         --------------------------------------------
@@ -89,13 +365,6 @@ $('.editPostar').on('click',function(event)
                 $(".error-msg").find("ul").append('<li>'+value+'</li>');
             });
         }
-
-
-
-
-
-   });  // Aquip fin del document.ready
-
 
 
 
@@ -221,6 +490,8 @@ function initTableRasgosConsulta(data) {
          var rutaVideo = document.getElementById("rutaVideo").value;
          var username_id = document.getElementById("username_id").value;	
 
+	alert("QUE PASO");
+
         var data =  {}   ;
 
 	 data['username'] = username;
@@ -232,10 +503,11 @@ function initTableRasgosConsulta(data) {
 
 	  data = JSON.stringify(data);
 
-          tableR= $("#tablaRasgos").dataTable().fnDestroy();
+        
 	alert("username_id ASI VA " + username_id );
 
-           initTableRasgos(data);
+   		  arrancaApoyoTerapeutico(2,data);
+	    dataTableRasgosConsultacoInitialized = true;
 
 
 
@@ -426,6 +698,7 @@ function initTableRasgosConsulta(data) {
          var rutaImagen = document.getElementById("zrutaImagen").value;
          var rutaVideo = document.getElementById("zrutaVideo").value;
          var username_id = document.getElementById("username_id").value;
+	alert("aqui voy");
 
         var data =  {}   ;
 
@@ -438,11 +711,9 @@ function initTableRasgosConsulta(data) {
 
 	  data = JSON.stringify(data);
 
-          tableR= $("#tablaRasgosConsulta").dataTable().fnDestroy();
-	alert("username_id ASI VA " + username_id );
 
-           initTableRasgosConsulta(data);
-
+          	  arrancaApoyoTerapeutico(2,data);
+	    dataTableRasgosConsultacoInitialized = true;
 
 
 	$.ajax({
@@ -670,62 +941,6 @@ function initTableRasgosConsulta(data) {
 
 
 
-
-
-// Esta Afuera  del documento.ready
-
-
-
-
-function initTableApoyoTerapeutico(data) {
-
-	return new DataTable('.tablaApoyoTerapeutico', {
-	 "language": {
-                  "lengthMenu": "Display _MENU_ registros",
-                   "search": "Filtrar registros:",
-                    },
-            processing: true,
-            serverSide: false,
-            scrollY: '360px',
-	    scrollX: true,
-	    scrollCollapse: true,
-            paging:false,
-            columnDefs: [
-                {
-                    "render": function ( data, type, row ) {
-                        var btn = '';
-                      //    btn = btn + " <button   class='btn btn-primary editPost' data-pk='" + row.pk + "'>" + "</button>";
-                         btn = btn + " <input type='radio'  class='form-check-input editPostApoyoTerapeutico' data-pk='" + row.pk + "'>" + "</input>";
-                        return btn;
-                    },
-                    "targets": 11
-               }
-            ],
-            ajax: {
-                 url:"/load_dataApoyoTerapeutico/" +  data,
-                 type: "POST",
-                dataSrc: ""
-            },
-
-            lengthMenu: [2,3, 5, 10, 20, 30, 40, 50],
-            columns: [
-              
-                { data: "fields.id"},
-                { data: "fields.tipoDoc"},
-                { data: "fields.documento"},
-                { data: "fields.nombre"},
-                { data: "fields.consec"},
-                { data: "fields.fechaExamen"},
-                { data: "fields.tipoExamen"},
-	            { data: "fields.examen"},
-                { data: "fields.estadoExamen"},
-                { data: "fields.cantidad"},
-                { data: "fields.folio"},
-
-            ]
- });
-
-}
 
 
 function initTableTerapeuticoConsulta(data) {

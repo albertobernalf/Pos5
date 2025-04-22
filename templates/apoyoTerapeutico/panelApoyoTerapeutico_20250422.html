@@ -3,10 +3,12 @@
 {% block head %}
 
 <link rel="stylesheet" type="text/css" href={% static 'css/navegacionApoyoTerapeutico.css' %} >
+
 <link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %}>
 <link rel="stylesheet" type="text/css"  href = {% static 'css/litle.css' %} >
 <script src={% static 'js/panelTabsApoyoTerapeutico.js' %} defer>         </script>
 <script src="https://kit.fontawesome.com/5d0337a043.js" crossorigin="anonymous"></script>
+<script src={% static 'js/panelApoyoTerapeutico.js' %} defer >         </script>
 
 <style>
 tablaApoyoTerapeutico td {
@@ -50,7 +52,7 @@ Mayor a un dia
     <ul class="tabs">
         <li><a href="#ApoyoTerapeutico"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
             Ingresos Apoyo Terapeutico </a></li>
-	 <li><a href="#RespuestasApoTerap"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
+	 <li><a href="#RespuestasApoyoTerapeutico"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
             Respuestas Apoyo Terapeutico</a></li>
 	 <li><a href="#ConsultaResultados"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
             Consulta de Resultados</a></li>
@@ -80,6 +82,7 @@ Mayor a un dia
                 <input type="hidden" id="permisosDetalle" name="permisosDetalle" value="{{PermisosDetalle}}">
                 <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
                 <input type="hidden" id="username_id" name="username_id" value="{{Username_id}}">
+
                 <input type="hidden" id="tipoDocId" name="tipoDocId" value="">
                 <input type="hidden" id="nombreTipoDoc" name="nombreTipoDoc" value="">
                 <input type="hidden" id="documentoId" name="documentoId" value="">
@@ -91,7 +94,7 @@ Mayor a un dia
             <!-- INICIO TABLE DE  EL DATATABLE  -->
           		<div class="container my-2" style="width:100%">
           		   <div class="row" style="width:100%">
- 				    <table  id= "tablaApoyoTerapeutico" class="display table table-striped table-sm fs-6 nowrap" style="width:100%;">                                    
+ 				    <table  id= "tablaApoyoTerapeutico" class="display table table-striped table-sm fs-6 nowrap" style="width:100%";>                                    
                                         <thead>
                                         <tr>
                                             <th style="width:5%;">Action</th>
@@ -106,20 +109,28 @@ Mayor a un dia
                                             <th style="width:12%;">Estado</th>
                                             <th style="width:12%;">Cantidad</th>
                                             <th style="width:12%;">Folio</th>
-                         
+                             
                                         </tr>
                                         </thead>
-                                        <tbody style="margin-left:0">
+                                        <tbody style="margin-left:0>
                                         </tbody>
                                     </table>
                                 </div> 
                             </div> 
         </article>
 
-       <article id="RespuestasApoTerap">
+        <article id="RespuestasApoyoTerapeutico">
             <center>
-                <h3>RespuestasApoyoTerapeutico</h3></center>
-   <div style="height: 1px;  width:90%;">  
+                <h3>Ingreso de Resultados</h3></center>
+            <table class="table" style="height: 80px; background-color:LightGray;  width:100%;">
+                <tr>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                     
+                           <div style="height: 1px;  width:90%;">  
                             <form class="form-inline" action="/crearApoyoTerapeutico/" method="POST"
                                   id="ApoyoTerapeuticoForma">
 
@@ -370,10 +381,19 @@ Mayor a un dia
                                 <!-- FIN TABLE DE  EL DATATABLE  -->
                   </div>  <!-- cierra el div papa -->
             <!-- HASTA AQUI DATATABLE -->
+    </td>
+    <td>
+    </td>
+    <td>
+    </td>
+    </tr>
 
-                   
-         </article>
-  <article id="ConsultaResultados">
+    </table>
+
+
+    </article>
+
+    <article id="ConsultaResultados">
             <center>
                 <h3>Consulta de Resultados</h3></center>
 
@@ -623,20 +643,21 @@ Mayor a un dia
 
                                                             <thead>
                                                             <tr>
-                                                           
+                                                             <!--    <th>id</th> -->
                                                                 <th>Codigo Cups</th>
                                                                 <th>Nombre Rasgo</th>
-                                                                <th>Unidad</th>
-                                                                <th>Minimo</th>
-                                                                <th>Maximo</th>
-                                                                <th>Valor</th>
-						                 <th>Observacion</th>
-                                                                <th>Borrar</th>  
+                                                                <th style="width:25%;">Unidad</th>
+                                                                <th style="width:12%;">Minimo</th>
+                                                                <th style="width:30%;">Maximo</th>
+                                                                <th style="width:30%;">Valor</th>
+						                                		 <th style="width:30%;">Observacion</th>
+                                                              <!--   <th style="width:3%;">Borrar</th>  -->
 
                                                             </tr>
                                                             </thead>
                                                             <tbody style="vertical-align:bottom">
-                                                        
+                                                            <tr style="height:5%">
+                                                            </tr>
                                                             </tbody>
                                                         </table>
                                                      </div> 
@@ -646,6 +667,7 @@ Mayor a un dia
                                     </div>
                                 </div>
                                 <!-- FIN TABLE DE  EL DATATABLE  -->
+                    <!--     </form>  estaba aquip-->
                   </div> 
             </table>
 
@@ -669,7 +691,6 @@ Mayor a un dia
     </article>
 
 	<!-- Aqui  Fin Otro Article de consultaDetallado  -->
-
 
     </div>
 </div>

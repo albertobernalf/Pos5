@@ -551,7 +551,7 @@ def PostConsultaApoyoTerapeuticoConsulta(request):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med, planta_planta pla where med.planta_id = pla.id  order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -577,7 +577,7 @@ def PostConsultaApoyoTerapeuticoConsulta(request):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med, planta_planta pla where med.planta_id = pla.id  order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -602,7 +602,7 @@ def PostConsultaApoyoTerapeuticoConsulta(request):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med, planta_planta pla where med.planta_id = pla.id  order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
