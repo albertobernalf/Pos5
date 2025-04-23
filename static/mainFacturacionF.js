@@ -672,6 +672,7 @@ window.addEventListener('load', async () => {
 
 
         var username_id = document.getElementById("username_id").value;
+        var sede = document.getElementById("sede").value;
 
 	document.getElementById("liquidacionId").value = '';
 	document.getElementById("liquidacionId1").value = '';
@@ -680,7 +681,7 @@ window.addEventListener('load', async () => {
 
 	$.ajax({
 	           url: '/postConsultaLiquidacion/',
-	            data : {post_id:post_id, username_id:username_id},
+	            data : {post_id:post_id, username_id:username_id,'sede':sede},
 	           type: 'POST',
 	           dataType : 'json',
 	  		success: function (data) {
@@ -824,8 +825,9 @@ window.addEventListener('load', async () => {
 			var ingresoId = document.getElementById("ingresoId").value;
 				
 		        data2['liquidacionId'] = data.id;
-		        
 
+			alert("Voy a cargar los abonos de esta liquidacion= " + data2['liquidacionId']);
+       
 			document.getElementById("tipoIngreso").value = data.tipo;
 
 			if (data.tipo == 'INGRESO')
@@ -855,7 +857,6 @@ window.addEventListener('load', async () => {
 	       		     arrancaLiquidacion(4,data2);
 			     dataTableFacAbonosInitialized = true;
 
-			     // LeerTotales();
 
                   },
 	   		    error: function (request, status, error) {
@@ -1014,6 +1015,7 @@ window.addEventListener('load', async () => {
 			var avalorEnCurso = document.getElementById("avalorEnCurso").value;
 			var avalorAbono = document.getElementById("avalorAbono").value;
 			var aSaldo = document.getElementById("aSaldo").value;
+			var aConvenio = document.getElementById("aConvenio").value;
 
 			if ( avalorEnCurso > aSaldo)
 			{
