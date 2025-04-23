@@ -796,7 +796,8 @@ function CrearItemTarifario()
 	    dataTableTarifariosProcedimientosInitialized = true;
 
 
-		   $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
 
 		$('#codigoHomologadoItem').val('');
 		$('#colValorBaseItem').val('0');
@@ -807,7 +808,7 @@ function CrearItemTarifario()
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -856,16 +857,14 @@ function AplicarTarifario()
 		 data['tiposTarifa_id'] = tiposTarifaTarifario_id;
 	        data = JSON.stringify(data);
 
-
-
-		   $("#mensajes").html(data2.message);
+		document.getElementById("mensajesError").innerHTML = data2.message;
 
 		    	  $('#crearModelAplicarTarifario').modal('hide');
 
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -918,13 +917,14 @@ function GuardarDescripcionProcedimientos()
      		  arrancaTarifarios(4,data);
 	    dataTableTarifariosDescripcionProcedimientosInitialized = true;
 	
-		   $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
  	  $('#crearModelDescripcionProcedimientos').modal('hide');
 
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -987,13 +987,14 @@ function CrearTarifarioProcedimientos()
 
 
 
-		   $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
  	  $('#crearModelCrearTarifarioProcedimientos').modal('hide');
 
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1046,12 +1047,13 @@ function GuardarEditarTarifarioProcedimientos()
 	    dataTableTarifariosProcedimientosInitialized = true;
 	    dataTableTarifariosProcedimientosInitialized = true;
 
-		   $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
  	  $('#crearModelEditarTarifarioProcedimientos').modal('hide');
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1112,13 +1114,14 @@ function CrearTarifarioSuministros()
 
 
 
-		   $("#mensajes").html(data2.message);
+		
+		document.getElementById("mensajesError").innerHTML = data2.message;
  	  $('#crearModelCrearTarifarioSuministros').modal('hide');
 
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1178,13 +1181,14 @@ function GuardarDescripcionSuministros()
 	    dataTableTarifariosSuministrosInitialized = true;
 
 
-		   $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
  	  $('#crearModelDescripcionSuministros').modal('hide');
 
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1312,13 +1316,14 @@ function AplicarTarifarioSuministros()
 
 
 		   $("#mensajes").html(data2.message);
+		document.getElementById("mensajesError").innerHTML = data2.message;
 
 		    	  $('#crearModelAplicarTarifario').modal('hide');
 
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1380,7 +1385,7 @@ function CrearItemTarifarioSuministros()
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1437,9 +1442,10 @@ function CrearItemTarifarioSuministros()
 
 
 		   $("#mensajes").html(data2.message);
+			document.getElementById("mensajesError").innerHTML = data2.message;
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1500,7 +1506,7 @@ function GuardarEditarTarifarioSuministros()
 
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 

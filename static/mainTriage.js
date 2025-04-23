@@ -289,10 +289,12 @@ function AUsuarioTriage()
 		success: function (respuesta) {
 
                 $('#mensaje1').html('<span> respuesta</span>');
+	document.getElementById("mensajes").innerHTML = respuesta;
                 $('#usuariosModalTriage').modal('hide');		     
 
                     },
 	   		    error: function (request, status, error) {
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 };
@@ -356,6 +358,7 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 
                     },
 	   		    error: function (request, status, error) {
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 
@@ -425,6 +428,7 @@ $('#tablaDatosTriage tbody').on('click', '.miEditaTriage', function() {
 			$('#clasificacionTriage').val(response_data['Triage'].clasificacionTriage);
                     },
    		    error: function (request, status, error) {
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 	});
@@ -541,6 +545,7 @@ $('#tablaDatosTriage tbody').on('click', '.miTriage', function() {
 		   //         $('#crearAdmTriage').modal({show:true});
                     },
    		    error: function (request, status, error) {
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 
@@ -626,7 +631,7 @@ $(document).on('change', '#departamentos', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajeria").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -679,7 +684,7 @@ $(document).on('change', '#busServicio', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajeria").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -731,7 +736,7 @@ $(document).on('change', '#busServicio2', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajeria").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -787,7 +792,7 @@ $(document).on('change', '#busServicioX', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -844,8 +849,7 @@ $(document).on('change', '#busSubServicio', function(event) {
 
                     },
 	   		    error: function (request, status, error) {
-
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -905,7 +909,7 @@ $(document).on('change', '#busSubServicioT', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			   document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -964,7 +968,7 @@ $(document).on('change', '#busSubServicio2', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			    document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 
 	     });
@@ -1112,11 +1116,13 @@ function guardaTriageModal()
 		$('#clasificacionTriage').val(respuesta['clasificacionTriage']);		
 
 		        window.location.reload();
-		        $('#mensajeria').val("Triage Actualizado ...");
+
+			document.getElementById("mensajes").innerHTML = 'Triage Actualizado';
 
                 },
 	   		    error: function (request, status, error)
 	   		    {
+	document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 
@@ -1208,7 +1214,8 @@ data: {'tiposDoc': tiposDoc,
 		        alert ("respuesta =" + respuesta);
          		alert ("REGRESE DE GUARDAR Admision triage ");
 
-                        $('#mensajes').html('<span> respuesta</span>');
+
+ 	      			document.getElementById("mensajesError").innerHTML = respuesta;
 
 			 $('#crearAdmTriage').modal('hide');
 
@@ -1216,6 +1223,7 @@ data: {'tiposDoc': tiposDoc,
                 },
 	   		    error: function (request, status, error)
 	   		    {
+ 	      			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 

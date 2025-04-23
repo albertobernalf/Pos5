@@ -1125,7 +1125,7 @@ $('#tablaEnviosRips tbody').on('click', '.miEnvioMinisterio', function() {
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
       
@@ -1241,7 +1241,7 @@ $('#tablaEnviosRips tbody').on('click', '.miEnvioMinisterio', function() {
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1306,7 +1306,7 @@ tipoRips2
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
       
@@ -1381,7 +1381,7 @@ $('#tablaDetalleRips tbody').on('click', '.miMinisterio', function() {
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
       
@@ -1431,7 +1431,7 @@ function GuardarDetalleRips()
  		 $('#crearModelRipsDetalle').modal('hide');
                 },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1466,7 +1466,7 @@ function CrearEnviosRips()
  		 $('#crearModelEnviosRips').modal('hide');
                 },
             error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1529,13 +1529,10 @@ function GenerarJsonRips()
 		  var tableA = $('#tablaEnviosRips').DataTable();
 	          tableA.ajax.reload();
 
-
-
-
-		   $("#mensajes").html(data2.message);
+		document.getElementById("mensajesError").innerHTML = data2.message;
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1578,11 +1575,10 @@ function EnviarJsonRips()
 	          tableA.ajax.reload();
 
 
-
-		   $("#mensajes").html(data2.message);
+		document.getElementById("mensajesError").innerHTML = data2.message;
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1636,10 +1632,11 @@ function GuardarRadicacionRips()
 	        data = JSON.stringify(data);
 	
 
-		   $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
                          },
                error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 }

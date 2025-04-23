@@ -51,7 +51,7 @@ function arrancaLiquidacion(valorTabla,valorData)
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '375px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -846,8 +846,8 @@ window.addEventListener('load', async () => {
 
 		        data2 = JSON.stringify(data2);
 
-			   $("#mensajes").html(data.message);
 
+			document.getElementById("mensajesError").innerHTML = data.message;
 
 		            arrancaLiquidacion(2,data2);
 	  	            dataTableLiquidacionDetalleInitialized = true;
@@ -859,7 +859,7 @@ window.addEventListener('load', async () => {
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 
@@ -925,11 +925,12 @@ window.addEventListener('load', async () => {
 		    dataTableFacturacionDetalleInitialized = true;
 
 
-			   $("#mensajes").html(data.message);
+
+			document.getElementById("mensajesError").innerHTML = data.message;
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 
@@ -996,9 +997,7 @@ window.addEventListener('load', async () => {
 
                 },
                 error: function (data) {
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
-                }
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error                }
             });
 
 	});
@@ -1060,9 +1059,7 @@ window.addEventListener('load', async () => {
 
                 },
                 error: function (data) {
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
-                }
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error                }
             });
       });
 
@@ -1128,9 +1125,7 @@ window.addEventListener('load', async () => {
  		 $('#crearAbonosModelFacturacion').modal('hide');
                 },
                 error: function (data) {
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
-                }
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error                }
             });
 	LeerTotales();
         });
@@ -1204,7 +1199,7 @@ window.addEventListener('load', async () => {
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 
@@ -1261,14 +1256,12 @@ window.addEventListener('load', async () => {
 
 			LeerTotales();
 
-		   $("#mensajes").html(data.message);
+
+			document.getElementById("mensajesError").innerHTML = data.message;
 
                 },
                 error: function (data) {
-			// alert("VENGO CON ERRORES :" , printErrorMsg(data.error));
-
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
+	document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 
                 }
             });
@@ -1313,12 +1306,13 @@ window.addEventListener('load', async () => {
 		  arrancaLiquidacion(4,data2);
 		    dataTableFacAbonosInitialized = true;
 		   			
-			   $("#mensajes").html(data.message);
+
+			document.getElementById("mensajesError").innerHTML = data.message;
                     },
 	   		    error: function (request, status, error) {
 			alert("Tengo ERROR");
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	           });
 	LeerTotales();
@@ -1368,10 +1362,11 @@ window.addEventListener('load', async () => {
 
 
 			LeerTotales();
-			   $("#mensajes").html(data.message);
+
+			document.getElementById("mensajesError").innerHTML = data.message;
                     },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	           });
 	});
@@ -1465,11 +1460,11 @@ function AFacturar()
 			}
 
 
-			$("#mensajes").html(data.message);
 
+document.getElementById("mensajesError").innerHTML = data.message;
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 }
@@ -1530,11 +1525,12 @@ function AdicionarLiquidacion()
 
 
 
-			$("#mensajes").html(data.message);
+
+			document.getElementById("mensajesError").innerHTML = data.message;
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 }
@@ -1563,11 +1559,11 @@ function LeerTotales()
 		$('#anticipos').val(data.totalAnticipos);
 		$('#totalAbonos').val(data.totalAbonos);
 
-			$("#mensajes").html(data.message);
 
+			document.getElementById("mensajesError").innerHTML = data.message;
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 }
@@ -1628,11 +1624,12 @@ function AnularFactura()
         arrancaLiquidacion(3,data2);
 	    dataTableFacturacionInitialized = true;
  
-			$("#mensajes").html(data.message);
+
+		document.getElementById("mensajesError").innerHTML = data.message;
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 }
@@ -1669,14 +1666,15 @@ function ReFacturar()
 		        data2['valor'] = liquidacionId;
 		        data2 = JSON.stringify(data2);
 
-			$("#mensajes").html(data.message);
+
+document.getElementById("mensajesError").innerHTML = data.message;
 
         arrancaLiquidacion(3,data2);
 	    dataTableFacturacionInitialized = true;
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 }
@@ -1722,11 +1720,12 @@ function RefrescarLiquidacionDetalle()
 		      arrancaLiquidacion(2,data2);
 		    dataTableLiquidacionDetalleInitialized = true;
 
-			$("#mensajes").html(data.message);
+
+		document.getElementById("mensajes").innerHTML = data.message;
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 
@@ -1829,12 +1828,13 @@ function TrasladoConvenio()
 		                arrancaLiquidacion(2,data2);
             	    dataTableLiquidacionDetalleInitialized = true;
 
-			$("#mensajes").html(data.message);
+
+			document.getElementById("mensajes").innerHTML = data.message;
 
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			   document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 }

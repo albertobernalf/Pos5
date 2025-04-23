@@ -1527,13 +1527,14 @@ formHistoriaClinica.addEventListener('submit', e=>{
 		        else
 		            {
 		           $("#mensajes").html(data.message);
+			document.getElementById("mensajes").innerHTML = data.message;
 		            }
 	
 			// location.reload();  Con el submit ya no seria necesariorecargar la pagina
 
  	      		}, // cierra function sucess
  	      		error: function (request, status, error) {
- 	      			alert(request.responseText);
+ 	      			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
  	      			
 
  	      		}, // cierra error function

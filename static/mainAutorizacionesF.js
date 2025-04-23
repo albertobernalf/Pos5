@@ -15,7 +15,9 @@ function arrancaAutorizaciones(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptions  ={
-  dom: 'Bfrtilp',
+    dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -47,14 +49,7 @@ function arrancaAutorizaciones(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 	    { width: '10%', targets: [9,15] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-             btn = btn + " <input type='radio' name='miAutorizacion' class='miAutorizacion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-
-                       return btn;
-                    },
-
+		{    
                     "targets": 16
                }
             ],
@@ -85,6 +80,18 @@ function arrancaAutorizaciones(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+		{
+
+ "render": function ( data, type, row ) {
+                        var btn = '';
+             btn = btn + " <input type='radio' name='miAutorizacion' class='miAutorizacion form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+
+                       return btn;
+                    },
+
+
+		},
                 { data: "fields.id"},
                 { data: "fields.sedesClinica_id"},
 
@@ -117,7 +124,9 @@ function arrancaAutorizaciones(valorTabla,valorData)
     {
 
         let dataTableOptionsAutorizacionesDetalle  ={
-  dom: 'Bfrtilp',
+    dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -328,7 +337,7 @@ window.addEventListener('load', async () => {
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -374,7 +383,7 @@ function ActualizarAut()
 
                 },
             error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 

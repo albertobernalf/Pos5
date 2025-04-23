@@ -178,7 +178,7 @@ window.addEventListener('load', async () => {
 
                   },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			   document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	     });
 

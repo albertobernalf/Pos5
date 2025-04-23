@@ -51,11 +51,11 @@ Mayor a un dia
         <li><a href="#ApoyoTerapeutico"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
             Ingresos Apoyo Terapeutico </a></li>
 	 <li><a href="#RespuestasApoTerap"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
-            Respuestas Apoyo Terapeutico</a></li>
+            Responder Examenes</a></li>
 	 <li><a href="#ConsultaResultados"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
-            Consulta de Resultados</a></li>
-	 <li><a href="#ConsultaRespuestasTerapeutico"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
-            Resultados </a></li>
+            Resultados</a></li>
+	 <li><a href="#DetalleResultados"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span>
+             Detalle Resultados </a></li>
 
 
     </ul>
@@ -135,6 +135,13 @@ Mayor a un dia
                                         <input type="text" class="form-control form-control-sm" id="tipoDocPaci"
                                                name="tipoDocPaci" value="" readonly>
                                     </div>
+
+				     <div class="col">
+                                        <label for="documentoPaci" class="col-sm-3 control-label">Documento:</label>
+                                        <input type="text" class="form-control form-control-sm" id="documentoPaci"
+                                               name="documentoPaci" value="" readonly>
+                                    </div>
+
 
 
 				     <div class="col">
@@ -295,16 +302,6 @@ Mayor a un dia
                                         <div class="card" style="width=100%;">
                                             <div class="card-header" style="height:30px;width=100%;">
                                                 <div class="row">
-                                                    <div class="col">
-                                                      
-                                                      <!--   <div class="alert alert-success success-msg" style="display:none"></div> -->
-							<span style="padding-right:3px; padding-top: 3px; display:inline-block; ">
-							<img class="manImg" src={% static 'img/iloveimg-converted/icons8-guardar-48.JPG' %}></img>
-								  <input type="button" id="btn-rango" name="btn-rango"
-                                                               value="Guardar ¡" onClick="guardarResultado()">
-							</span>
-
-                                                    </div>
 
 
                                                     <div class="col">
@@ -320,21 +317,39 @@ Mayor a un dia
                                                         </select>
                                                     </div>
 
+ 						 <div class="col"> Observa:
+                                                        <input type="text" id="observa" name="observa" value="">
+                                                    </div>
+
                                                     <div class="col">
+                                                       Resultado:
                                                         <input type="text" id="valor" name="valor" value="">
                                                     </div>
 
-						   <div class="col">
-                                                        <input type="text" id="observa" name="observa" value="">
-                                                    </div>
+						 
 
                                                     <div class="col">
                                                         <span class="text-secondary">Crear Resultado</span>
                                                         <a class="btn btn-success" href="javascript:void(0)"
                                                            id="createNewResultadoRasgo"> <i class="fa fa-plus"></i></a>
                                                     </div>
+                                                    <div class="col">
+                                                      
+
+							<span style="padding-right:3px; padding-top: 3px; display:inline-block; ">
+							<img class="manImg" src={% static 'img/iloveimg-converted/icons8-guardar-48.JPG' %}></img>
+								  <input type="button" id="btn-rango" name="btn-rango"
+                                                               value="Guardar ¡" onClick="guardarResultado()">
+							</span>
+
+                                                    </div>
+
+
                                                 </div> <!-- Cierra el row -->
                                             </div>  <!-- Cierra el header -->
+						<br>
+						<br>
+
                                             <div class="card-body" style="height:30px;width=100%;">
                                                 <div class="row">
                                                      <div class="col-sm-12"> 
@@ -377,58 +392,38 @@ Mayor a un dia
             <center>
                 <h3>Consulta de Resultados</h3></center>
 
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                        </div>
-                        <div class="card-body">
-                            <div class="row" style="height=250px;">
-                                <div class="col-md-12">
-                                    <div class="alert alert-success success-msg" style="display:none"></div>
-                                    <table id="tablaTerapeuticoConsulta"
-                                           class="display nowrap table table table-bordered  tablaTerapeuticoConsulta table-hover table-sm dtr-inline">
-                                        <thead>
+           <!-- INICIO TABLE DE  EL DATATABLE  -->
+          		<div class="container my-2" style="width:100%">
+          		   <div class="row" style="width:100%">
+ 				    <table  id= "tablaTerapeuticoConsulta" class="display table table-striped table-sm fs-6 nowrap" style="width:100%;">                                    
+                                       <thead>
                                         <tr>
-                                            <!--  <th style="width:5%;">Tipo</th> -->
-                                            <th style="width:5%;">id</th>
-                                            <th style="width:5%;">TipoDoc</th>
-                                            <th style="width:12%;">Documento</th>
-                                            <th style="width:20%;">Paciente</th>
-                                            <th style="width:3%;">#</th>
-                                            <th style="width:3%;">FecExamen</th>
-                                            <th style="width:12%;">TipoExamen</th>
-                                            <th style="width:12%;">Examen</th>
-                                            <th style="width:12%;">Estado</th>
-                                            <!-- <th style="width:12%;">Cups</th> -->
-                                            <th style="width:12%;">Cantidad</th>
-                                            <!--    <th style="width:12%;">Observa</th> -->
-                                            <th style="width:12%;">Folio</th>
-
-                                            <th style="width:5%;">Action</th>
-                                            <!--  <th data-visible="true"></th>  -->
+                                            <th>Action</th>
+                                            <th>id</th>
+                                            <th>TipoDoc</th>
+                                            <th>Documento</th>
+                                            <th>Paciente</th>
+                                            <th>#</th>
+                                            <th>FecExamen</th>
+                                            <th>TipoExamen</th>
+                                            <th>Examen</th>
+                                            <th>Estado</th>
+                                            <th>Cantidad</th>
+                                            <th>Folio</th>
                                         </tr>
                                         </thead>
-                                        <tbody style="vertical-align:bottom">
-                                        <tr style="height:10%">
-                                        </tr>
+                                        <tbody>
                                         </tbody>
                                     </table>
-                                </div> <!-- Cierra col -->
-                            </div> <!-- Cierra row -->
-                        </div>  <!-- Cierra body -->
-
-                    </div>   <!-- Cierra Card -->
-                </div>   <!-- Cierra col -->
-            </div>  <!-- Cierra row -->
+                                </div> 
+            </div>  
 
         </article>
 	<!-- Aqui  Otro Article de consultaDetallado  -->
 
-        <article id="ConsultaRespuestasTerapeutico">
+        <article id="DetalleResultados">
             <center>
-                <h3>Consulta Resultados tramitados </h3></center>
+                <h3>Detalle Resultados </h3></center>
             <table class="table" style="height: 80px; background-color:LightGray;  width:100%;">
                 <tr>
                     <td>

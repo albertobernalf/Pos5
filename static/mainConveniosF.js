@@ -553,7 +553,7 @@ $('#tarifariosDescripcionSum_id').val(info[0].fields.tarifariosDescripcionSum_id
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
       
@@ -634,7 +634,7 @@ function EditarGuardarConvenios()
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 }
@@ -729,7 +729,7 @@ function CrearGuardarConvenios()
 
                 },
                  error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 }

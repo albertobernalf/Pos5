@@ -31,8 +31,14 @@ select "requiereAutorizacion", * from clinico_examenes order by "requiereAutoriz
 
 select * from clinico_historialantecedentes;
 SELECT * from clinico_historialinterconsultas
+	select * from clinico_Historia;
+select * from clinico_historialincapacidades;
 
-INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo ,
+select * from clinico_medicos;
+select * from planta_planta;
+
+INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" ,
+	"dependenciasRealizado_id" , especialidades_id ,planta_id, motivo ,
 	subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2,
 	antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",
 	inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos,
@@ -40,4 +46,5 @@ INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "
 	"fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi",
 	"ordenMedicaInt")  
 	VALUES('1','1','16','1','5','2025-04-22 12:26:39','1','1','1','2','1','21','12','12','12','21','21','21212','S','','S','S','S','','','','',
-	'21212','21212','0001-01-01 00:00:00','','','','','','','','0','','','','','no','2025-04-22 12:26:39','1','A','21','','','','','','') RETURNING id ;
+	'N','N','0001-01-01 00:00:00','','','','','','','','0','','','','','no','2025-04-22 12:26:39','1','A','21','','','','','','') RETURNING id ;
+

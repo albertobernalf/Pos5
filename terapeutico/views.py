@@ -16,7 +16,7 @@ from sitios.models import Dependencias
 from planta.models import Planta
 #from contratacion.models import Procedimientos
 from usuarios.models import Usuarios, TiposDocumento
-from clinico.forms import  IncapacidadesForm, HistorialDiagnosticosCabezoteForm, HistoriaSignosVitalesForm
+from clinico.forms import  IncapacidadesForm, HistorialDiagnosticosCabezoteForm, HistoriaSignosVitalesForm, HistoriaExamenes, Historia
 from django.db.models import Avg, Max, Min
 from usuarios.models import Usuarios, TiposDocumento
 
@@ -32,7 +32,7 @@ import psycopg2
 import json 
 import datetime 
 from django.db.models import Avg, Max, Min
-
+from django.db import transaction, IntegrityError
 
 
 # Create your views here.
@@ -184,9 +184,6 @@ def load_dataApoyoTerapeutico(request, data):
     # Fin Combo DependenciasRealizado
 
 
- 
-
-
     ingresos1 = []
 
 
@@ -241,7 +238,40 @@ def PostConsultaApoyoTerapeutico(request):
     print("id = ", Post_id)
     llave = Post_id.split('-')
     print ("llave = " ,llave)
-    print ("primero=" ,llave[0])
+    print ("primero el id de historiaexamenes=" ,llave[0])
+
+
+    # Buscamos tipo de documento y documento
+
+    #str(llave[0].strip())
+
+    examenId = HistoriaExamenes.objects.get(id=str(llave[0].strip()))
+    historiaId = Historia.objects.get(id=examenId.historia_id)
+    pacienteId = Usuarios.objects.get(id=historiaId.documento_id)
+
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = 'SELECT u."tipoDoc_id" tipoDoc , u.documento documento, u.nombre nombre FROM usuarios_usuarios u Where id =' + "'" + str(pacienteId.id) + "'"
+
+    curt.execute(comando)
+    print(comando)
+
+    paciente = []
+
+
+    for tipoDoc, documento, nombre in curt.fetchall():
+        paciente.append({'tipoDoc': tipoDoc, 'documento':documento, 'nombre': nombre})
+
+    miConexiont.close()
+    print(paciente)
+
+
+
+    # Fin busca paciente
+
 
     # Combo estadosExamenes
 
@@ -250,7 +280,7 @@ def PostConsultaApoyoTerapeutico(request):
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT e.id id, e.nombre nombre FROM clinico_estadoexamenes e order by e.id'
+    comando = 'SELECT e.id id, e.nombre nombre FROM clinico_estadoexamenes e order by e.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -299,7 +329,7 @@ def PostConsultaApoyoTerapeutico(request):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med, planta_planta pla where med.planta_id = pla.id  order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -325,7 +355,7 @@ def PostConsultaApoyoTerapeutico(request):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med, planta_planta pla where med.planta_id = pla.id  order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -350,7 +380,7 @@ def PostConsultaApoyoTerapeutico(request):
                                        password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT med.id id, med.nombre nombre FROM clinico_medicos med order by med.nombre'
+    comando = 'SELECT med.id id, pla.nombre nombre FROM clinico_medicos med, planta_planta pla where med.planta_id = pla.id  order by pla.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -454,6 +484,7 @@ def PostConsultaApoyoTerapeutico(request):
         envio.append({'MedicoReporte':medicoRep})
         envio.append({'DependenciasRealizado': dependenciasRealizado})
         envio.append({'EstadosExamenes': estadosExamenes})
+        envio.append({'Paciente': paciente})
 
 
         print ("ENVIO FINAL =", envio)
@@ -502,7 +533,7 @@ def PostConsultaApoyoTerapeuticoConsulta(request):
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'SELECT e.id id, e.nombre nombre FROM clinico_estadoexamenes e order by e.id'
+    comando = 'SELECT e.id id, e.nombre nombre FROM clinico_estadoexamenes e order by e.nombre'
 
     curt.execute(comando)
     print(comando)
@@ -696,17 +727,12 @@ def PostConsultaApoyoTerapeuticoConsulta(request):
         envio = []
 
         envio.append({'ResultadoApoyoTerapeutico': zresultadoApoyoTerapeutico})
-
         envio.append({'RasgosClinicos':rasgosClinicos})
-
         envio.append({'MedicoInterpretacion1':medicoInt1})
-
         envio.append({'MedicoInterpretacion2':medicoInt2})
-
         envio.append({'MedicoReporte':medicoRep})
         envio.append({'DependenciasRealizado': dependenciasRealizado})
         envio.append({'EstadosExamenes': estadosExamenes})
-
 
         print ("ENVIO FINAL =", envio)
 
@@ -794,6 +820,9 @@ def load_dataRasgosConsulta(request, data):
     sede = d['sede']
     username_id = d['username_id']
     valor = d['valor']
+    print ("valor es el id de historiaexamenes")
+
+
 
     nombreSede = d['nombreSede']
     print ("sede:", sede)
@@ -854,18 +883,38 @@ def GuardarResultadoRasgo ( request):
         fechaResultado = datetime.datetime.now()
 
         ## falta usuarioRegistro_id
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-        curt = miConexiont.cursor()
-        comando = 'INSERT INTO clinico_historiaresultados ("estadoReg",  "consecResultado","examenesRasgos_id", "fechaResultado", "fechaServicio", "historiaExamenes_id", observaciones, valor) values (' + "'" + str(estadoReg) + "'," +   "'" + str(consecResultado) + "'," + "'" + str(rasgo) + "'," + "'" +  str(fechaResultado) + "'," + "'" + str(fechaResultado) + "'," + "'" + str(examId) + "'," + "'" + str(observaciones) + "'," + "'" + str(valor) + "')"
 
-        print(comando)
-        curt.execute(comando)
-        miConexiont.commit()
-        miConexiont.close()
+        miConexiont = None
+        try:
+
+                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+                curt = miConexiont.cursor()
+                comando = 'INSERT INTO clinico_historiaresultados ("estadoReg",  "consecResultado","examenesRasgos_id", "fechaResultado", "fechaServicio", "historiaExamenes_id", observaciones, valor) values (' + "'" + str(estadoReg) + "'," +   "'" + str(consecResultado) + "'," + "'" + str(rasgo) + "'," + "'" +  str(fechaResultado) + "'," + "'" + str(fechaResultado) + "'," + "'" + str(examId) + "'," + "'" + str(observaciones) + "'," + "'" + str(valor) + "')"
+
+                print(comando)
+                curt.execute(comando)
+                miConexiont.commit()
+                miConexiont.close()
+                curt.close()
 
 
 
-        return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
+                return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
+
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
+
+            print ("Voy a hacer el jsonresponde")
+            return JsonResponse({'success': False, 'Mensaje': error})
+
+        finally:
+            if miConexiont:
+                miConexiont.close()
+
+
 
 
 def PostDeleteExamenesRasgos(request):
@@ -876,14 +925,19 @@ def PostDeleteExamenesRasgos(request):
     id = request.POST["id"]
     print ("el id es = ", id)
 
+    try:
+        with transaction.atomic():
 
-    post = HistoriaResultados.objects.get(id=id)
-    post.delete()
-    
-    print( "voy para el JSONresponse")
-    #return HttpResponseRedirect(reverse('index'))	
-    return JsonResponse({'success': True, 'message': 'Resultado borrado!'})
-    #return JsonResponse({'message':'Resultado borrado!'})
+            post = HistoriaResultados.objects.get(id=id)
+            post.delete()
+
+            print( "voy para el JSONresponse")
+            #return HttpResponseRedirect(reverse('index'))
+            return JsonResponse({'success': True, 'message': 'Resultado borrado!'})
+
+    except Exception as e:
+        # Aquí ya se hizo rollback automáticamente
+        print("Se hizo rollback por:", e)
 
 
 
@@ -903,6 +957,17 @@ def GuardarResultado ( request):
         estadoExamen = request.POST["estadoExamen"]
         dependenciasRealizado = request.POST["dependenciasRealizado"]
 
+        if observaciones == '':
+           observaciones="null"
+
+
+        if interpretacion1 == '':
+           interpretacion1="null"
+
+        if interpretacion2 == '':
+           interpretacion2="null"
+
+
         if dependenciasRealizado == '':
            dependenciasRealizado="null"
 
@@ -910,26 +975,58 @@ def GuardarResultado ( request):
             medicoReporte ="null"
 
 
+        if medicoInterpretacion1 == '':
+            medicoInterpretacion1 ="null"
+
+        if medicoInterpretacion2 == '':
+            medicoInterpretacion2 ="null"
+
+        if dependenciasRealizado == '':
+            dependenciasRealizado ="null"
+
         estadoReg= 'A'
         usuarioToma = request.POST["usuarioToma"]
         fechaReporte = datetime.datetime.now()
         fechaInterpretacion1 = datetime.datetime.now()
         fechaInterpretacion2 = datetime.datetime.now()
 
+        if fechaInterpretacion1 == '':
+            fechaInterpretacion1 ="null"
+
+        if fechaInterpretacion2 == '':
+            fechaInterpretacion2 ="null"
+
+
         print ("examId =", examId)
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-        curt = miConexiont.cursor()
-        comando = 'UPDATE clinico_historiaexamenes set interpretacion1 = ' + "'" +str(interpretacion1) + "'," +  '"fechaInterpretacion1" = '  + "'" + str(fechaInterpretacion1) + "'," + ' "medicoInterpretacion1_id" = ' + "'" + str(medicoInterpretacion1) + "',"  + '"medicoReporte_id" = ' + str(medicoReporte) + ","  + '  interpretacion2 = '  + "'" +str(interpretacion2) + "'," + '"fechaInterpretacion2"  = '   + "'" + str(fechaInterpretacion2) + "'," + ' "medicoInterpretacion2_id" = ' + "'" + str(medicoInterpretacion2) + "',"  + ' observaciones = ' + "'" + str(observaciones) + "'," + '"rutaImagen" = ' + "'" + str(rutaImagen) +  "'" + ',"rutaVideo" = ' + "'" + str(rutaVideo) + "'," +  '"fechaReporte" = ' + "'" + str(fechaReporte) + "'," + ' "usuarioToma_id" = ' + "'" + str(usuarioToma) + "'," + '"dependenciasRealizado_id" = ' + str(dependenciasRealizado) + "," + '"estadoExamenes_id" = ' + "'" + str(estadoExamen) + "'" + ' WHERE id = ' + "'" + str(examId) + "'"
+        miConexiont = None
+        try:
 
-        print(comando)
-        curt.execute(comando)
-        miConexiont.commit()
-        miConexiont.close()
+                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+                curt = miConexiont.cursor()
+                comando = 'UPDATE clinico_historiaexamenes set interpretacion1 = ' + str(interpretacion1) + "," +  '"fechaInterpretacion1" = '  + "'" + str(fechaInterpretacion1) + "'," + ' "medicoInterpretacion1_id" = ' +  str(medicoInterpretacion1) + ","  + '"medicoReporte_id" = ' + str(medicoReporte) + ","  + '  interpretacion2 = '  + str(interpretacion2) + "," + '"fechaInterpretacion2"  = '  + "'"   + str(fechaInterpretacion2) + "'," + ' "medicoInterpretacion2_id" = ' + str(medicoInterpretacion2) + ","  + ' observaciones = ' + "'" +   str(observaciones) + "'," + '"rutaImagen" = ' + "'" + str(rutaImagen) +  "'" + ',"rutaVideo" = ' + "'" + str(rutaVideo) + "'," +  '"fechaReporte" = ' + "'" + str(fechaReporte) + "'," + ' "usuarioToma_id" = ' + "'" + str(usuarioToma) + "'," + '"dependenciasRealizado_id" = ' + str(dependenciasRealizado) + "," + '"estadoExamenes_id" = ' + "'" + str(estadoExamen) + "'" + ' WHERE id = ' + "'" + str(examId) + "'"
+                print(comando)
+                curt.execute(comando)
+                miConexiont.commit()
+                miConexiont.close()
+                curt.close()
+
+                return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
+
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
+
+            print ("Voy a hacer el jsonresponde")
+            return JsonResponse({'success': False, 'Mensaje': error})
+
+        finally:
+            if miConexiont:
+                miConexiont.close()
 
 
-
-        return JsonResponse({'success': True, 'message': 'Responsable Actualizado satisfactoriamente!'})
 
 def load_dataTerapeuticoConsulta(request, data):
     print ("Entre load_data TerapeuticoConsulta")
@@ -945,9 +1042,6 @@ def load_dataTerapeuticoConsulta(request, data):
     print ("sede:", sede)
     print ("username:", username)
     print ("username_id:", username_id)
-    
-
-
 
     ingresos1 = []
 

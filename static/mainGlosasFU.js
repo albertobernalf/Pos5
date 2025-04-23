@@ -1092,7 +1092,7 @@ window.addEventListener('load', async () => {
 		 $('#crearModelGlosasDetalle').modal('show');
                 },
             error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1203,7 +1203,7 @@ function GuardarGlosasDetalle()
 
                 },
             error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1264,10 +1264,11 @@ function GuardaGlosasEstados()
 			    dataTableGlosasMedicamentosInitialized = true;
 
 
-		  $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
                 },
             error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
@@ -1373,10 +1374,11 @@ function CrearGlosas()
 			    dataTableGlosasMedicamentosInitialized = true;
 		            $('#crearModelGlosas').modal('hide');
 
-		  $("#mensajes").html(data2.message);
+
+		document.getElementById("mensajesError").innerHTML = data2.message;
                 },
             error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 
