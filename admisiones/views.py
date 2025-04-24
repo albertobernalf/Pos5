@@ -3888,9 +3888,14 @@ def crearAdmisionDef(request):
         print(" Username = " , username)
         context['Username'] = username
 
+
+
         Profesional = request.POST["profesional"]
         print(" Profesional = " , Profesional)
         context['Profesional'] = Profesional
+
+        empresa = request.POST["empresaC"]
+        print(" empresa = ", empresa)
 
 
         Username_id = request.POST["username_id"]
@@ -3908,7 +3913,7 @@ def crearAdmisionDef(request):
 
         # Consigo el Id del Paciente Documento
 
-        DocumentoId = Usuarios.objects.get(documento=documento.strip())
+        DocumentoId = Usuarios.objects.get(tipoDoc_id=tipoDoc,   documento=documento.strip())
         idPacienteFinal = DocumentoId.id
 
         print("idPacienteFinal", idPacienteFinal)
@@ -3968,7 +3973,7 @@ def crearAdmisionDef(request):
 
         # Consigo ID de Documento
 
-        documento_llave = Usuarios.objects.get(documento=documento)
+        documento_llave = Usuarios.objects.get(tipoDoc_id=tipoDoc,   documento=documento.strip())
         print("el id del dopcumento = ", documento_llave.id)
 
         usernameId = Planta.objects.get(documento=username)
@@ -4017,6 +4022,7 @@ def crearAdmisionDef(request):
                                  documento_id=documento_llave.id,
                                  consec=consecAdmision,
                                  fechaIngreso=fechaIngreso,
+                                 empresa=empresa,
                                  #fechaSalida=NULL,
                                  factura=factura,
                                  numcita=numcita,
@@ -4743,7 +4749,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c OREDR BY c.nombre"
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)

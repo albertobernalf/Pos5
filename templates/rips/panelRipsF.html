@@ -28,6 +28,7 @@
     </ul>
 </div>
 
+
 <style>
 div.dataTables_wrapper  div.dataTables_filter input {
    height: 2px;
@@ -38,6 +39,24 @@ div.dataTables_wrapper  div.dataTables_filter input {
 div.dataTables_filter input {
     width: 50px;
   }
+
+
+#tablaEnviosRips {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+table.dataTable tbody tr {
+  min-height: 60px;
+}
+
+
+.my-row-class {
+    height: 30px;
+}
+
 </style>
 
 
@@ -95,10 +114,12 @@ div.dataTables_filter input {
    			   <div class="row">
 				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
 
-                                        <table  id= "tablaEnviosRips" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaEnviosRips" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr id= "filasEnvios">    
-						<bold>                                  
+						<bold>                
+                                                <th>Seleccionar</th>                   
+                                                <th>Seleccionar</th>                   
                                                 <th>id</th>
                                                 <th>Sede</th>                                       
                                                  <th>Emp</th> 
@@ -114,37 +135,14 @@ div.dataTables_filter input {
 						<th>Registra</th>
 					        <th>NombreClinica</th> 
 				                <th>TipoNota</th>
-                                                <th>Seleccionar</th> 
+
 						</bold>                                  
 
                                             </tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr id= "filasEnvios">    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Sede</th>                                       
-                                                 <th>Emp</th> 
-                                                <th>Empresa</th>                                    
-                                                <th>FechaEnvio</th>
-                                                <th>FechaRespuesta</th>
-                                                <th>Facturas</th>
-                                                <th>Pasaron</th>
-                                                <th>Rechazadas</th>
-                                                <th>AlMinisterio</th>
-						<th>FechaRegistro</th>
-						<th>UsuarioRegistro</th>
-						<th>Registra</th>
-					        <th>NombreClinica</th> 
-				                <th>TipoNota</th>
-                                                <th>Seleccionar</th> 
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
-
+                                     
                                         </table>
                                     </div>
                                 </div>
@@ -175,7 +173,7 @@ div.dataTables_filter input {
 				  <div class="col-12">
 					
                                     
-                                    <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="1" readonly></input>
+                                    <input type="text" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="1" readonly></input>
                                 </div>
 
 				<div class="col-12">
@@ -344,7 +342,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 			     Tipo:     <input type="text" name="tipoRips2" id="tipoRips2" readonly>  
    			   <div class="row">
 		     
-                                       <table  id= "tablaDetalleRipsAdicionar" class="display nowrap table table table-bordered tablaDetalleRipsAdicionar table-hover table-sm dtr-inline" style="width:100%; margin-left: 0;">  
+                                       <table  id= "tablaDetalleRipsAdicionar" class="display nowrap table table table-bordered tablaDetalleRipsAdicionar table-hover table-sm " style="width:100%; margin-left: 0;">  
 
   <thead>
                                             <tr>    
@@ -374,7 +372,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
             <!-- INICIO TABLE DE  EL DATATABLE  -->
 		<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaDetalleRips" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaDetalleRips" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -395,23 +393,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Factura No</th>
-                                                <th>GlosaId</th>
-                                                <th>Cuv</th>
-                                                <th>EstadoPasoAlMinisterio</th>
-                                                <th>RutaJsonRespuesta</th>
-                                                <th>RutaJsonFactura</th>
-                                                <th>RutaPdf</th>
-                                                <th>RutaZip</th>
-						<th>UsuarioRegistro</th>
-                                                <th>Action</th>
-						</bold>                                  
-                                            </tr>
-                                            </tfoot>
+                                  
 
                                         </table>
                                     </div>
@@ -605,7 +587,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
             <!-- INICIO TABLE DE  EL DATATABLE  -->
  	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaRipsTransaccion" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaRipsTransaccion" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -624,22 +606,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             </thead>
                                             <tbody>
                                             </tbody>
- 						<tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>NumeroDocObligatorio</th>
-                                                <th>NumNota</th>
-                                                <th>FechaRegistro</th>
-                                                <th>TipoNota</th>
-                                                <th>UsuarioRegistro</th>
-                                                <th>Envio Rips # </th>
-						<th>Sedes # </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+ 					
                                         </table>
                                     </div>
                                 </div>
@@ -651,7 +618,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 <article id="RipsUsuarios">
 	<div class="container my-2">          
    			   <div class="row">
-                                         <table  id= "tablaRipsUsuarios" class=" display table table-striped" style="width: 100%";>
+                                         <table  id= "tablaRipsUsuarios" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -679,30 +646,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             <tbody>
 
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>tipoDocumento </th>
-                                                <th>tipoUsuario </th>
-                                                <th>FechaNacimiento </th>
-                                                <th>CodSexo </th>
-                                                <th>CodZonaTerritorial </th>
-                                                <th>Incapacidad </th>
-						<th>Consecutivo </th>
-                                                <th>FechaRegistro </th>
-                                                <th>CodMunicipio</th>
-                                                <th>CodPaisOrigen </th>
-                                                <th>CodPaisResidencia </th>
-                                                <th>UsuarioRegistro </th>
-                                                <th>NumDocumentoIdentifica </th>
-                                                <th>RipsDetalleId </th>
-                                                <th>RipsTransaccionId </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                 
 
                                         </table>
                                     </div>
@@ -722,7 +666,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaRipsHospitalizacion" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaRipsHospitalizacion" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -753,34 +697,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Prestador </th>
-                                                <th>fechaAtn </th>
-                                                <th>Aut </th>
-                                                <th>Egreso </th>
-                                                <th>consec </th>
-						<th>Fec.Reg </th>
-                                                <th>CausaMotivo </th>
-                                                <th>Complica</th>
-                                                <th>DxMuerte </th>
-                                                <th>DxPrincipalI </th>
-                                                <th>DxPrincipalE </th>
-                                                <th>DxRel1</th>
-                                                <th>DxRel2</th>
-                                                <th>DxRel3 </th>
-                                                <th>DestEgreso </th>
-                                                <th>UsuReg </th>
-                                                <th>ViaIngreso </th>
-                                                <th>RipsDetalle_id </th>
-                                                <th>ripsTiposNotas_id </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                 
 
                                         </table>
                                     </div>
@@ -794,7 +711,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaRipsUrgenciasObs" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaRipsUrgenciasObs" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -822,31 +739,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-						<th> id</th> 
-						<th>cod</th> 
-						<th>fecInicAte</th>
-						<th>fecEgreso</th> 
-						<th>consec</th> 
-						<th>fecRegistro</th> 
-						<th>causaMotAten</th>
-						<th>codDxMuerte</th>
-						<th>codDxPpal</th>
-						<th>codDxPpalE</th> 
-						<th>codDxRel1</th> 
-						<th>codDxRel2</th>
-						<th>codDxRel3</th> 
-						<th>Egreso</th>
-						<th>usuarioReg</th> 
-						<th>ripsDetalle_id</th>
-						<th>ripsTipos_id</th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                       
 
                                         </table>
                                     </div>
@@ -860,7 +753,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaRipsProcedimientos" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaRipsProcedimientos" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -895,38 +788,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Prestador </th>
-                                                <th>fechaAtn </th>
-                                                <th>MIPRES</th>
-                                                <th>Aut </th>
-                                                <th>Identif </th>
-                                                <th>vr </th>
-						<th>Moderadora </th>
-                                                <th>FEVPago </th>
-                                                <th>consec</th>
-                                                <th>Complicacion </th>
-                                                <th>Principal </th>
-                                                <th>Relacionado </th>
-                                                <th>Proced</th>
-                                                <th>Servicio </th>
-                                                <th>concepto </th>
-                                                <th>FinalTecSalud </th>
-                                                <th>grupoServ </th>
-                                                <th>modGrupoServ </th>
-                                                <th>tipoIdent </th>
-                                                <th>usuario </th>
-                                                <th>viaIngreso </th>
-                                                <th>ripsDetalle </th>
-                                                <th>tipoModerado </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                       
 
                                         </table>
                                     </div>
@@ -940,7 +802,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
 
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaRipsMedicamentos" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaRipsMedicamentos" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -967,32 +829,7 @@ Envio No: <input type="text" name="envioRipsId" id="envioRipsId" readonly>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-	                                          
-				  <th>id</th>
-				<th>Prest</th>
-				 <th>Aut</th>
-				 <th>MIPRES</th> 
-				<th>fecDisp</th>
-				 <th>nomTec</th> 
-				<th>concentMed</th>
-				 <th>cant</th> 
-					<th>dias</th>
-				 <th>Ident</th>
-				 <th>vrUnit</th>		
-				 <th>vrServ</th> 	
-				<th>Modera</th>
-				 <th>FEV</th> 
-				<th>consec</th>
-		
-
-					<th>Accion </th>						
-				</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                     
 
                                         </table>
                                     </div>

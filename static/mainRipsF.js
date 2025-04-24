@@ -56,7 +56,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptions  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -87,17 +89,9 @@ function arrancaEnviosRips(valorTabla,valorData)
             columnDefs: [
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
-	    { width: '10%', targets: [9,15] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-	     btn = btn + " <button class='miEnvioMinisterio btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
-             btn = btn + " <input type='radio' name='miAutorizacion' class='miSol form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-
-                       return btn;
-                    },
-
-                    "targets": 15
+	    { width: '10%', targets: [9,10] },
+		{  
+                    "targets": 16
                }
             ],
 	 pageLength: 3,
@@ -120,13 +114,34 @@ function arrancaEnviosRips(valorTabla,valorData)
 		    }
 			},
 
-
            ajax: {
                  url:"/load_dataEnviosRips/" +  data,
                  type: "POST",
                  dataSrc: ""
             },
             columns: [
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+	     btn = btn + " <button class='miEnvioMinisterio btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+
+                       return btn;
+                    },
+
+	},
+
+		{
+			"render": function ( data, type, row ) {
+                        var btn = '';
+
+             btn = btn + " <input type='radio' name='miAutorizacion' class='miSol form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+                       return btn;
+		}
+                    },
+
                 { data: "fields.id"},
                 { data: "fields.sedesClinica_id"},
                 { data: "fields.empresa_id"},
@@ -155,7 +170,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsDetalleRipsAdicionar  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -246,7 +263,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsDetalleRips  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -344,7 +363,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsRipsTransaccion  ={
-  dom: 'Bfrtilp',
+    dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -439,7 +460,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsRipsUsuarios  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -542,7 +565,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsRipsProcedimientos  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -657,7 +682,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsRipsHospitalizacion  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -765,7 +792,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsRipsMedicamentos  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -869,7 +898,9 @@ function arrancaEnviosRips(valorTabla,valorData)
     {
 
         let dataTableOptionsRipsUrgenciasObs  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -987,6 +1018,7 @@ const initDataTableEnviosRips = async () => {
         data['username_id'] = username_id;
  	    data = JSON.stringify(data);
 
+	alert("sede = " + sede);
 
         arrancaEnviosRips(1,data);
 	    dataTableEnviosRipsInitialized = true;
@@ -1152,7 +1184,7 @@ $('#tablaEnviosRips tbody').on('click', '.miEnvioMinisterio', function() {
 	var empresaId = document.getElementById("empresaId").value; 
 	var envioRipsId = document.getElementById("envioRipsId").value ;
 	var tipoRips = document.getElementById("tipoRips2").value ;
-	var tipoRips = document.getElementById("tipoRips2").value ;
+
 
 	var table = $('#tablaDetalleRipsAdicionar').DataTable();  // Inicializa el DataTable jquery 	      
         var rowindex = table.row(row).data(); // Obtiene los datos de la fila
@@ -1441,7 +1473,9 @@ function GuardarDetalleRips()
 	
 function CrearEnviosRips()
 {
-	
+	var sede = document.getElementById("sede").value;
+
+	document.getElementById("sedesClinica_id").value =  sede;
 
             $.ajax({
                 data: $('#postFormEnviosRips').serialize(),
@@ -1457,11 +1491,16 @@ function CrearEnviosRips()
 	       data['sedeSeleccionada'] = sedeSeleccionada;
 	       data['nombreSede'] = nombreSede;
 	      data['sede'] = sede;
+	var tipoRips = document.getElementById("tipoRips2").value ;
+	data['tipoRips'] = tipoRips;
 	        data['username_id'] = username_id;
         data = JSON.stringify(data);
 	
-		  var tableA = $('#tablaEnviosRips').DataTable();
-	          tableA.ajax.reload();
+		
+
+        arrancaEnviosRips(1,data);
+	    dataTableEnviosRipsInitialized = true;
+
 
  		 $('#crearModelEnviosRips').modal('hide');
                 },
@@ -1489,6 +1528,8 @@ function EnvioRips()
             $('#post_id').val('');
             $('#postFormCrearEnviosRips').trigger("reset");
             $('#modelHeadingEnviosRips').html("Creacion Envios Rips");
+var sede = document.getElementById("sede").value;
+	document.getElementById("sedesClinica_id").value =  sede;
             $('#crearModelEnviosRips').modal('show');
         
 }

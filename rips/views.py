@@ -100,7 +100,7 @@ def load_dataEnviosRips(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."ripsEstados_id",  estrips.nombre estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa , usu.nombre nombreRegistra , tiposNotas.nombre tipoNota FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, usuarios_usuarios usu , rips_ripstiposnotas tiposNotas , rips_ripsestados estrips where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id AND usu.id = env."usuarioRegistro_id" AND env."ripsTiposNotas_id" = tiposNotas.id AND estrips.id = env."ripsEstados_id"'
+    detalle = 'SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."ripsEstados_id",  estrips.nombre estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" , sed.nombre nombreClinica, emp.nombre nombreEmpresa , pla.nombre nombreRegistra , tiposNotas.nombre tipoNota FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, planta_planta pla , rips_ripstiposnotas tiposNotas , rips_ripsestados estrips where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id AND pla.id = env."usuarioRegistro_id" AND env."ripsTiposNotas_id" = tiposNotas.id AND estrips.id = env."ripsEstados_id" AND env."sedesClinica_id" =' +  "'" + str(sede) + "'"
 
     print(detalle)
 
@@ -158,19 +158,36 @@ def GuardaEnviosRips(request):
 
     estadoRips = RipsEstados.objects.get(nombre='PENDIENTE')
 
+    miConexion3 = None
+    try:
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-    comando = 'insert into rips_ripsEnvios  ("fechaEnvio", "fechaRespuesta", "cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","ripsEstados_id", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion") values ('  + str(fechaEnvio) + "," + str(fechaRespuesta) + "," +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoRips.id) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'insert into rips_ripsEnvios  ("fechaEnvio","cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","ripsEstados_id", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion") values ('  + "'" + str(fechaEnvio) + "',"  +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoRips.id) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
 
 
 
-    return JsonResponse({'success': True, 'message': 'Envio realizado satisfactoriamente!'})
+        return JsonResponse({'success': True, 'message': 'Envio realizado satisfactoriamente!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
     #  DESDE AQUI EL DETALLE
@@ -260,18 +277,35 @@ def GuardaDetalleRips(request):
     print("rutaZip =", rutaZip)
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-    comando = 'UPDATE  rips_ripsdetalle SET cuv =  ' +  "'" + str(cuv) + "'," +  '"estadoPasoMinisterio" = ' + "'" + str(estadoPasoMinisterio) +  "'," + '"rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + "'" + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'," + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "' WHERE id =" + detalleRipsId
-
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+    miConexion3 = None
+    try:
 
 
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'UPDATE  rips_ripsdetalle SET cuv =  ' +  "'" + str(cuv) + "'," +  '"estadoPasoMinisterio" = ' + "'" + str(estadoPasoMinisterio) +  "'," + '"rutaJsonRespuesta"  = ' + "'" + str(rutaJsonRespuesta) + "'" + ',"rutaJsonFactura" = '  + "'" + str(rutaJsonFactura) + "'," +  ' "fechaRegistro" = ' + "'" + str(fechaRegistro) + "',"   + ' "estadoReg" = ' + "'" + str('A') + "'," + '"usuarioRegistro_id" =' + "'" + str(usuarioRegistro_id) + "'," + '"rutaPdf" = ' + "'" +str(rutaPdf) + "'," + '"rutaZip" =  ' + "'" + str(rutaZip)  + "' WHERE id =" + detalleRipsId
 
-    return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
 def load_dataDetalleRipsAdicionar(request, data):
@@ -328,8 +362,6 @@ def ActualizarEmpresaDetalleRips(request):
 
     print ("Entre ActualzaEmpresaDetalleRips" )
 
-
-
     envioRipsId = request.POST['envioRipsId']
     print("envioRipsId =", envioRipsId)
 
@@ -352,56 +384,67 @@ def ActualizarEmpresaDetalleRips(request):
     estadoReg = 'A'
 
 
-    #Primero el UPDATE
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    cur3 = miConexion3.cursor()
+    miConexion3 = None
+    try:
 
-    if (tipoRips == 'Factura'):
+            #Primero el UPDATE
 
-        comando = 'UPDATE facturacion_facturacion SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(facturaId) + "'"
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            cur3 = miConexion3.cursor()
 
-    if (tipoRips == 'Nota Credito'):
-        pass
+            if (tipoRips == 'Factura'):
 
-    if (tipoRips == 'Nota Debito'):
-        pass
+                comando = 'UPDATE facturacion_facturacion SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(facturaId) + "'"
 
-    if (tipoRips == 'Glosa'):
+            if (tipoRips == 'Nota Credito'):
+                pass
 
-        comando = 'UPDATE cartera_glosas SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(glosaId) + "'"
+            if (tipoRips == 'Nota Debito'):
+                pass
 
-    print(comando)
-    cur3.execute(comando)
+            if (tipoRips == 'Glosa'):
 
-    miConexion3.commit()
-    miConexion3.close()
+                comando = 'UPDATE cartera_glosas SET "ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'" + ' WHERE id =  ' + "'" + str(glosaId) + "'"
+
+            print(comando)
+            cur3.execute(comando)
+
+            # Segundo eL INSERT A detalleRips
+
+            empresa = []
+
+            if (tipoRips == 'Factura'):
+
+                comando1 = 'INSERT INTO RIPS_RIPSDETALLE ("numeroFactura_id", "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "ripsEnvios_id", "usuarioRegistro_id", estado) VALUES (' +  "'" + str(facturaId) + "','N'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "',"  +  "'" + str(envioRipsId) + "'," +  "'" +str(username_id) + "'," + "'" + str('ELABORADA') + "')"
+
+            if (tipoRips == 'Glosa'):
+
+                comando1 = 'INSERT INTO RIPS_RIPSDETALLE ("numeroFactura_id",glosa_id, "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "ripsEnvios_id", "usuarioRegistro_id", estado) VALUES (' + "'" + str(facturaId)  + "','" + str(glosaId) + "','N'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(envioRipsId) + "'," + "'" + str(username_id) + "'," + "'" + str('ELABORADA') + "')"
+
+            print(comando)
+            cur3.execute(comando1)
+            miConexion3.commit()
+            cur3.close()
+            miConexion3.close()
 
 
-    # Segundo eL INSERT A detalleRips
+            return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
 
-    empresa = []
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
 
-    if (tipoRips == 'Factura'):
-
-        comando = 'INSERT INTO RIPS_RIPSDETALLE ("numeroFactura_id", "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "ripsEnvios_id", "usuarioRegistro_id", estado) VALUES (' +  "'" + str(facturaId) + "','N'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "',"  +  "'" + str(envioRipsId) + "'," +  "'" +str(username_id) + "'," + "'" + str('ELABORADA') + "')"
-
-    if (tipoRips == 'Glosa'):
-
-        comando = 'INSERT INTO RIPS_RIPSDETALLE ("numeroFactura_id",glosa_id, "estadoPasoMinisterio", "fechaRegistro", "estadoReg", "ripsEnvios_id", "usuarioRegistro_id", estado) VALUES (' + "'" + str(facturaId)  + "','" + str(glosaId) + "','N'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(envioRipsId) + "'," + "'" + str(username_id) + "'," + "'" + str('ELABORADA') + "')"
-
-    print(comando)
-    cur3.execute(comando)
-
-    miConexion3.commit()
-    miConexion3.close()
-
-    return JsonResponse({'success': True, 'message': 'Factura Adicionada al Envio satisfactoriamente!'})
-
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 def TraeDetalleRips(request):
     print("Entre a TraerDetalleRips")
@@ -474,92 +517,98 @@ def GenerarJsonRips(request):
 	    return JsonResponse({'success': True, 'message': 'No es posible generar RIPS enviados!'})
 
 
-    # Primero Borra RIPS USUARIOS
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle =  'DELETE from rips_ripsusuarios u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) +"');"
-    resultado = curx.execute(detalle)
-    print ("BORRO USUARIOS ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
+    miConexionx = None
+    try:
 
 
-    # Primero Borra RIPS procedimientos
+            # Primero Borra RIPS USUARIOS
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripsprocedimientos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "')"
-    resultado = curx.execute(detalle)
-    print("BORRO USUARIOS ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle =  'DELETE from rips_ripsusuarios u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) +"');"
+            resultado = curx.execute(detalle)
+            print ("BORRO USUARIOS ", detalle)
 
 
-    # Primero Borra RIPS Medicamentos
+            # Primero Borra RIPS procedimientos
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripsmedicamentos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "')"
-    resultado = curx.execute(detalle)
-    print("BORRO USUARIOS ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle1 = 'DELETE from rips_ripsprocedimientos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "')"
+            resultado = curx.execute(detalle1)
+            print("BORRO USUARIOS ", detalle1)
 
 
+            # Primero Borra RIPS Medicamentos
 
-    # Primero Borra RIPS HOSPITALIZACION
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripshospitalizacion u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
-        envioRipsId) + "')"
-    resultado = curx.execute(detalle)
-    print("BORRO HOSPITALIZACION ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
-
-    # Primero Borra RIPS URGENCIAS
-
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripsurgenciasobservacion u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
-        envioRipsId) + "')"
-    resultado = curx.execute(detalle)
-    print("BORRO URGENCIAS ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle2 = 'DELETE from rips_ripsmedicamentos u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "')"
+            resultado = curx.execute(detalle2)
+            print("BORRO USUARIOS ", detalle2)
 
 
-    # Primero Borra RIPS RECIEN NACIDO
+            # Primero Borra RIPS HOSPITALIZACION
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripsreciennacido u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
-        envioRipsId) + "')"
-    resultado = curx.execute(detalle)
-    print("BORRO RECIEN NACIDO ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle3 = 'DELETE from rips_ripshospitalizacion u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
+                envioRipsId) + "')"
+            resultado = curx.execute(detalle3)
+            print("BORRO HOSPITALIZACION ", detalle3)
+
+            # Primero Borra RIPS URGENCIAS
+
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle4 = 'DELETE from rips_ripsurgenciasobservacion u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
+                envioRipsId) + "')"
+            resultado = curx.execute(detalle4)
+            print("BORRO URGENCIAS ", detalle4)
 
 
-    # Primero Borra RIPS TRANSACCION
+            # Primero Borra RIPS RECIEN NACIDO
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
-    detalle = 'DELETE from rips_ripstransaccion u where u."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'"
-    resultado = curx.execute(detalle)
-    print("BORRO tx ", detalle)
-    miConexionx.commit()
-    miConexionx.close()
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle5 = 'DELETE from rips_ripsreciennacido u where u."ripsTransaccion_id" in (select id from rips_ripstransaccion ripstra where ripstra."ripsEnvio_id" = ' + "'" + str(
+                envioRipsId) + "')"
+            resultado = curx.execute(detalle5)
+            print("BORRO RECIEN NACIDO ", detalle5)
 
+
+            # Primero Borra RIPS TRANSACCION
+
+            miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            curx = miConexionx.cursor()
+            detalle6 = 'DELETE from rips_ripstransaccion u where u."ripsEnvio_id" = ' + "'" + str(envioRipsId) + "'"
+            resultado = curx.execute(detalle6)
+            print("BORRO tx ", detalle6)
+            miConexionx.commit()
+            curx.close()
+            miConexionx.close()
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexionx:
+            print("Entro ha hacer el Rollback")
+            miConexionx.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexionx:
+            curx.close()
+            miConexionx.close()
 
     ## Aqui big Modificacion, pues tine que crear todos los rips de todas las facturas del Envio
 
@@ -1007,17 +1056,34 @@ def EnviarJsonRips(request):
 
     ### Aqui actualizar cosas de la tabla rips_ripsenvios
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curx = miConexionx.cursor()
+    miConexionx = None
+    try:
 
-    detalle = 'UPDATE rips_ripsEnvios SET "fechaEnvio" = ' + "'" + str(fechaRegistro) + "'" +', "cantidadFacturas" = 0 , "estadoPasoMinisterio" = ' + "'" + str('ENVIADA') + "' WHERE id =" + "'" + str(envioRipsId) + "'"
-    curx.execute(detalle)
-    miConexionx.commit()
+        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curx = miConexionx.cursor()
 
-    miConexionx.close()
+        detalle = 'UPDATE rips_ripsEnvios SET "fechaEnvio" = ' + "'" + str(fechaRegistro) + "'" +', "cantidadFacturas" = 0 , "estadoPasoMinisterio" = ' + "'" + str('ENVIADA') + "' WHERE id =" + "'" + str(envioRipsId) + "'"
+        curx.execute(detalle)
+        miConexionx.commit()
 
-    return JsonResponse({'success': True, 'message': 'Rips JSON marcados para Envio satisfactoriamente!'})
+        miConexionx.close()
+
+        return JsonResponse({'success': True, 'message': 'Rips JSON marcados para Envio satisfactoriamente!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexionx:
+            print("Entro ha hacer el Rollback")
+            miConexionx.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexionx:
+            curx.close()
+            miConexionx.close()
 
 
 def Load_tablaRipsProcedimientos(request, data):
@@ -1296,41 +1362,70 @@ def BorrarDetalleRips(request):
 
     # Ojo primero debo borrar todos los rips generados a esa factura
 
-    RipsHospitalizacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsMedicamentos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsProcedimientos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsRecienNacido.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsUsuarios.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsConsultas.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
-    RipsUrgenciasObservacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+    try:
+        with transaction.atomic():
 
 
-    # Primero debo conseguir la factura a borrar
+            RipsHospitalizacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+            RipsMedicamentos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+            RipsProcedimientos.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+            RipsRecienNacido.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+            RipsUsuarios.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+            RipsConsultas.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
+            RipsUrgenciasObservacion.objects.filter(ripsDetalle_id=envioDetalleRipsId).delete()
 
-    if (tipoNota.nombre == 'Factura'):
 
-        a = Facturacion.objects.get(id=envioDetalle.numeroFactura_id)
-        a.ripsEnvio_id = ""
-        a.save()
+            # Primero debo conseguir la factura a borrar
 
-    if (tipoNota.nombre == 'Glosa'):
+            if (tipoNota.nombre == 'Factura'):
 
-        a = Glosas.objects.get(id=envioDetalle.glosa_id)
-        a.ripsEnvio_id = ""
-        a.save()
+                a = Facturacion.objects.get(id=envioDetalle.numeroFactura_id)
+                a.ripsEnvio_id = ""
+                a.save()
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
+            if (tipoNota.nombre == 'Glosa'):
 
-    comando = 'DELETE FROM rips_ripsdetalle WHERE id = '  + "'" + str(envioDetalleRipsId) + "'"
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+                a = Glosas.objects.get(id=envioDetalle.glosa_id)
+                a.ripsEnvio_id = ""
+                a.save()
 
-    # Despues tengo que actualizar en la factura el campo enviorips_id a NULL , por ORM
+    except Exception as e:
+            # Aquí ya se hizo rollback automáticamente
+            print("Se hizo rollback por:", e)
 
-    return JsonResponse({'success': True, 'message': 'Detalle de Rips eliminado !'})
+
+
+    miConexion3 = None
+    try:
+
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'DELETE FROM rips_ripsdetalle WHERE id = '  + "'" + str(envioDetalleRipsId) + "'"
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        miConexion3.close()
+
+        # Despues tengo que actualizar en la factura el campo enviorips_id a NULL , por ORM
+
+        return JsonResponse({'success': True, 'message': 'Detalle de Rips eliminado !'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
 
 
 def GuardarRadicacionRips(request):
@@ -1348,14 +1443,29 @@ def GuardarRadicacionRips(request):
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
+    miConexion3 = None
+    try:
 
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        comando = 'UPDATE rips_ripsEnvios  SET "fechaRadicacion" = ' + "'" +str(fechaRadicacion) + "'," + '"usuarioRadicacion_id" = ' + "'" + str(username_id) + "' WHERE id =" + str(envioRipsId)
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        miConexion3.close()
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-    comando = 'UPDATE rips_ripsEnvios  SET "fechaRadicacion" = ' + "'" +str(fechaRadicacion) + "'," + '"usuarioRadicacion_id" = ' + "'" + str(username_id) + "' WHERE id =" + str(envioRipsId)
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        return JsonResponse({'success': True, 'message': 'Fecha de radicacion actualizada satisfactoriamente!'})
 
-    return JsonResponse({'success': True, 'message': 'Fecha de radicacion actualizada satisfactoriamente!'})
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        print ("Voy a hacer el jsonresponde")
+        return JsonResponse({'success': False, 'Mensaje': error})
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()

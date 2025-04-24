@@ -41,7 +41,7 @@ class Usuarios(models.Model):
     id = models.AutoField(primary_key=True)
     tipoDoc= models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     #documento =  models.IntegerField(unique=True)
-    documento = models.CharField(unique=True,max_length=30)
+    documento = models.CharField(max_length=30)
     nombre = models.CharField(max_length=50)
     genero = models.CharField(max_length=1, default ='M',choices=TIPO_CHOICES,)
     centrosC = models.ForeignKey('sitios.Centros', blank=True,null= True, editable=True, on_delete=models.PROTECT)
@@ -64,6 +64,9 @@ class Usuarios(models.Model):
 
     fechaRegistro = models.DateTimeField(default=now, editable=False)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    class Meta:
+        unique_together = (('tipoDoc', 'documento'),)
 
     def __str__(self):
         return self.nombre

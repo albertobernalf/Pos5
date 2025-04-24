@@ -713,4 +713,8 @@ BIBLIOGRAFIA:
         -- Al hacer una factura debe dejar en la primera pantyallaliquidacion y mostrar el nro de la factura jay que limipiar liquidacion/ abonos/ y traslados
        -- Al historial de dependencias agregarle sedes_clinica_id en la elaboracion de la factura y en el ingreso de admisiones
       -- Que pasa con los baono de un lado aotro ypo diria se anulan de ua y se pasan alotro ??
-}
+     -- ops al facturar a eumelia con dos convenios se le dio salida clinca, pero despues me la saco de la apantalla de liquidacion y no pude facturar la cuneta de compensar COMO LE PARECE GRAVISSISIMO
+---  en creacion de usuarios en crear admision debe obligar a llenar campos por ej: eror de loalidad hasta ta que graba 
+-- OPS no me trae el amompañamte y el reonsablke de la cuenta en apciente sede americas OJOOOOOOOO
+  -- en sede americas meti una moderadora aunque mero la cuota moderadora nop actualizo el valor recibido
+ -- op en sede americas no hay especialidads  es como un ERROR DE FONDO OJAZO
