@@ -523,9 +523,10 @@ window.addEventListener('load', async () => {
             $('#post_id').val('');
             $('#postFormCrearConvenio').trigger("reset");
             $('#modelHeading').html("Creacion convenios en admision");
-		var ingresos = $('input[name="ingresoId"]:checked').val();
+//		var ingresos = $('input[name="ingresoId"]:checked').val();
+		ingresoId1 = document.getElementById("ingresoId1").value
 	   
-	    document.getElementById("ingresoId2").value = ingresos;
+	    document.getElementById("ingresoId2").value = ingresoId1;
 
             $('#crearConvenioModel').modal('show');
         });
@@ -584,6 +585,11 @@ window.addEventListener('load', async () => {
 	           dataType : 'json',
 	  		success: function (data2) {
 	  		alert("llegue con : " + JSON.stringify(data2));
+
+			if (data2 == '')
+				{
+				alert("Debe crear un Convenio");
+				}
 
 	  	    var options = '<option value="=================="></option>';
 	  		//var dato = JSON.parse(data2);

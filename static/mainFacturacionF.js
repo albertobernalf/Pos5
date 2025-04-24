@@ -1695,6 +1695,8 @@ function RefrescarLiquidacionDetalle()
 	           dataType : 'json',
 	  		success: function (data) {
 
+			
+
 			$('#totalSuministros').val(data.totalSuministros);
 			$('#totalProcedimientos').val(data.totalProcedimientos);
 			$('#totalCopagos').val(data.totalCopagos);

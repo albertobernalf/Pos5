@@ -701,3 +701,16 @@ BIBLIOGRAFIA:
   -- Ops recuerda qy corregir que los abonos estan ahora amarrados a convenio - liqudaciones
 
 - OJO al editar una dmision hay erorres por ejemplo si no toca responsables o acompanates los blanquea
+
+-- OPS-REOPS -REOP ERRORES:
+	-- CuAndo  pasa de traiage a admision no quita la modal
+        -- Cuando pasa de triage a modal se desaparece de la pantalla de facturacion y que va a pasar con los cargos de esa cuenta ??/ Porque esta en la tabla facturacion_liquidacion y liquidcion detalle
+            -- anton crea una nueva cuenta ver so es posible por trsalados de cargos
+            -- ontemplar un traslado de cargos de una cuenta sin convenio a una cuenta con convenio 
+	-- Ojo cuando va a hacer un traslado y no encuentra una descripcion saca erro ver como escribirlo y decirlo a l usuario final que se debe crear el tarifario nuevo a donde se va a trasladar
+        -- Ojo el total de los nuevos suministros, proced, liqui a pagar son los del nuevo tarifario OPS ERroR GRAVISSISMOI
+         -- ops si un paciente tiene dos conmvenios y al dar salida clinica a una ya no puede facturar la segunda cuenta
+        -- Al hacer una factura debe dejar en la primera pantyallaliquidacion y mostrar el nro de la factura jay que limipiar liquidacion/ abonos/ y traslados
+       -- Al historial de dependencias agregarle sedes_clinica_id en la elaboracion de la factura y en el ingreso de admisiones
+      -- Que pasa con los baono de un lado aotro ypo diria se anulan de ua y se pasan alotro ??
+}

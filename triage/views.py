@@ -1974,7 +1974,7 @@ def admisionTriageModal(request):
         return JsonResponse(response_data, safe=False)
 
 
-#####
+
 def guardarAdmisionTriage(request):
 
     print("Entre a Crear Admision desde Triage")
@@ -2013,7 +2013,7 @@ def guardarAdmisionTriage(request):
         context['BusSubServicio2'] = busSubServicio2
         tiposDoc = request.POST['tiposDoc2']
        # documento = request.POST['documento']
-        documento = request.POST['documento']
+        documento = request.POST['busDocumentoSel2']
         print("tiposDoc = ", tiposDoc)
         print("documento = ", documento)
 
@@ -2125,11 +2125,13 @@ def guardarAdmisionTriage(request):
         ripsDestinoUsu1 = RipsDestinoEgreso.objects.get(id=ripsDestinoUsuarioEgresoRecienNacido)
         ripsCondicionDestinoUsuarioEgreso = request.POST["ripsCondicionDestinoUsuarioEgreso"]
 
+
+
         try:
             with transaction.atomic():
 
                 grabo = Ingresos(
-                                 sedesClinica_id=Sede,
+                                 sedesClinica_id=sede,
                                  tipoDoc_id=idTipoDocFinal,
                                  documento_id=documento_llave.id,
                                  consec=consecAdmision,
