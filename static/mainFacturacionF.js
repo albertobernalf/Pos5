@@ -666,9 +666,10 @@ window.addEventListener('load', async () => {
         $('body').on('click', '.editPostLiquidacion', function () {
 
 	          var post_id = $(this).data('pk');
+		var row = $(this).closest('tr'); // Encuentra la fila
 
 		 alert("entre pk = " + post_id);
-		
+
 
 
         var username_id = document.getElementById("username_id").value;
@@ -678,6 +679,8 @@ window.addEventListener('load', async () => {
 	document.getElementById("liquidacionId1").value = '';
 	document.getElementById("ingresoId").value = '';
 	document.getElementById("liquidacionIdA").value = '';
+
+
 
 	$.ajax({
 	           url: '/postConsultaLiquidacion/',

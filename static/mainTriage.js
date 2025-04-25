@@ -234,9 +234,7 @@ function CierraModalAdmisionTriage()
 
 function AUsuarioTriage()
 {
-	alert("Entre a Grabar Usuario Triage");
-
-	var envios = new FormData();
+		var envios = new FormData();
 
 
 	var tipoDoc = document.getElementById("tipoDocTriageModal").value;
@@ -244,8 +242,6 @@ function AUsuarioTriage()
 
 	var documento = document.getElementById("documentoTriageModal").value;
         var nombre = document.getElementById("nombre").value;
-
-	alert("Documento = " +  documento);
 
 	var genero = document.getElementById("genero").value;
 	var departamentos = document.getElementById("departamentos").value;
@@ -263,27 +259,28 @@ function AUsuarioTriage()
 
 	if (departamentos =='')
 		{
-		alert("Suministre Deparamento");
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Departamento';
 		return;
 		}
 if (ciudades =='')
 		{
-		alert("Suministre ciudades");
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Ciudad';
 		return;
 		}
 if (direccion =='')
 		{
-		alert("Suministre direccion");
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Direccion';
 		return;
 		}
 if (municipios =='')
 		{
-		alert("Suministre municipios");
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Municipio';
 		return;
 		}
 if (localidades =='')
 		{
-		alert("Suministre localidades");
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Localidad';
 		return;
 		}
 
@@ -294,7 +291,7 @@ if (localidades =='')
 
 if (tiposUsuario =='')
 		{
-		alert("Suministre tiposUsuario");
+	document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Tipo Usuario';
 		return;
 		}
 

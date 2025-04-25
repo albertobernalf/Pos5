@@ -18,6 +18,7 @@ let dataTableAdmisionesConvenios = false;
 let dataTableAbonosAdmisionesInitialized =false;
 let dataTableAbonosAutorizacionesInitialized =false;
 let dataTableCensoInitialized =false;
+let dataTableHabitacionesInitialized =false;
 
 
 $(document).ready(function() {
@@ -539,6 +540,100 @@ function arrancaAdmisiones(valorTabla,valorData)
 
   }
 
+    if (valorTabla == 6)
+    {
+        let dataTableOptionsHabitaciones  ={
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
+
+
+//  dom: 'Bfrtilp',
+  buttons: [
+    {
+      extend: 'excelHtml5',
+      text: '<i class="fas fa-file-excel"></i> ',
+	// text: '<i class="bi bi-file-earmark-excel-fill"></i> Exportar Excel',
+      titleAttr: 'Exportar a Excel',
+      className: 'btn btn-success btn-sm',
+    },
+    {
+      extend: 'pdfHtml5',
+      text: '<i class="fas fa-file-pdf"></i> ',
+      titleAttr: 'Exportar a PDF',
+      className: 'btn btn-danger btn-sm',
+    },
+    {
+      extend: 'print',
+      text: '<i class="fa fa-print"></i> ',
+      titleAttr: 'Imprimir',
+      className: 'btn btn-info btn-sm',
+    },
+  ],
+	
+  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '360px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{   targets: [5,6,7,8], // índice de la columna que quieres evitar que haga wrap
+		      className: 'nowrap-column'
+		    },
+		{     "render": function ( data, type, row ) {
+                        var btn = '';
+                      return btn;
+                    },
+                    "targets": 9
+               }            
+			],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+           ajax: {
+                 url:"/load_dataHabitacionesAdmisiones/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+                 { data: "fields.sede"},
+                 { data: "fields.servicio" }, 
+                { data: "fields.subservicio"},
+                { data: "fields.numero"},
+                { data: "fields.accion"},
+                { data: "fields.fecha"},
+                { data: "fields.tipoDoc"},
+                { data: "fields.documento"},
+                { data: "fields.paciente"},
+
+
+
+            ]
+             }
+
+	        dataTable = $('#tablaHabitaciones').DataTable(dataTableOptionsHabitaciones);
+
+  }
+
 
 
 }
@@ -592,6 +687,10 @@ const initDataTableAdmisiones = async () => {
 
         arrancaAdmisiones(5,data);
 	    dataTableCensoInitialized = true;
+
+
+        arrancaAdmisiones(6,data);
+	    dataTableHabitacionesInitialized = true;
 
 
 
@@ -1046,14 +1145,13 @@ function AUsuario()
 
 
 	var tipoDoc = document.getElementById("tipoDoc1").value;
-	alert("tipoDoc = " +  tipoDoc);
+
 
 	var documento = document.getElementById("documento1").value;
 		var busDocumentoSel = document.getElementById("busDocumentoSel").value;
    var nombre = document.getElementById("nombre1").value;
 
    alert("Documento = " +  documento);
-   alert("OtorDocumento = " +  busDocumentoSel);
 
 	var genero = document.getElementById("genero").value;
 	var pais = document.getElementById("pais").value;
@@ -1062,7 +1160,7 @@ function AUsuario()
 
 
 	var direccion = document.getElementById("direccion").value;
-	 alert("direccion = " +  direccion);
+
 	var telefono = document.getElementById("telefono").value;
 	var contacto = document.getElementById("contacto").value;
 	var municipio = document.getElementById("municipios").value;
@@ -1078,6 +1176,42 @@ function AUsuario()
 	var centrosC_id = document.getElementById("centrosc").value;
 
 //	alert("centroC_id = " +  centrosC_id);
+
+	if (departamentos =='')
+		{
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Departamento';
+		return;
+		}
+		if (ciudades =='')
+		{
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Ciudad';
+		return;
+		}
+		if (direccion =='')
+		{
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Direccion';
+		return;
+		}
+		if (municipio =='')
+		{
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Municipio';
+		return;
+		}
+		if (localidad =='')
+		{
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Localidad';
+		return;
+		}
+
+		if (tiposUsuario =='')
+		{
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Tipo Usuario';
+		return;
+		}
+
+
+
 
 
 	$.ajax({

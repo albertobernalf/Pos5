@@ -5847,12 +5847,26 @@ def GuardaConvenioAdmision(request):
 
             comando1 = 'insert into facturacion_ConveniosPacienteIngresos ("consecAdmision", "fechaRegistro",  convenio_id, documento_id, "tipoDoc_id" , "usuarioRegistro_id" ,"estadoReg") values (' + "'" + str(registroId.consec) + "'" + ' , ' + "'" + str(fechaRegistro) + "'" + ', ' + "'" + str(convenio) + "'" + '  , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.tipoDoc_id) + "'," + "'" + str("1") + "'," + "'" + str("A") + "');"
             print(comando1)
+            cur3.execute(comando1)
 
-            comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
+            try:
+                with transaction.atomic():
+                    existeLiquidacion = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consec)
+                    hayLiquidacion=existeLiquidacion.id
+
+            except Exception as e:
+                # Aquí No existe
+                print("Noexiste:", e)
+                hayLiquidacion = 0
+
+            if (hayLiquidacion==0):
+                comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
+            else:
+                comando2 = 'UPDATE facturacion_Liquidacion SET ocnvenio_id = ' + "'" + str(convenio) + "' WHERE id =" + str(hayLiquidacion)
             print("comando1= ", comando1)
             print("comando2= ", comando2)
 
-            cur3.execute(comando1)
+
             cur3.execute(comando2)
             miConexion3.commit()
             cur3.close()
@@ -6418,5 +6432,38 @@ def Load_dataCensoAdmisiones(request, data):
 
 
     serialized1 = json.dumps(censo, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_dataHabitacionesAdmisiones(request, data):
+    print("Entre load_data Admisiones")
+
+    context = {}
+    d = json.loads(data)
+
+    sede = d['sede']
+    print("sede = ", sede)
+
+    habitaciones = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select dep.id id,sed.nombre, serv.nombre, subserv.nombre, dep.numero numero,   case when his.disponibilidad = ' + "'" + str('L') + "'" + ' then ' + "'" + str('Libera') + "'" + ' else ' + "'" + str('Ocupa') + "'" + ' end accion,  case when his.disponibilidad =' + "'" + str('O') + "'" + ' then  his."fechaOcupacion" else  his."fechaLiberacion" end  fecha, tp.nombre tipoDoc 	,	u.documento documento, 	u.nombre paciente FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed, 	sitios_serviciossedes serv, sitios_subserviciossedes subserv, sitios_historialdependencias his WHERE his.dependencias_id = dep.id AND dep."sedesClinica_id"  = ' + "'" + str(sede) + "'" + ' AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id  ORDER By dep.numero, dep."fechaOcupacion"'
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,sede, servicio,subservicio, numero, accion, fecha    , tipoDoc,  documento, paciente in curx.fetchall():
+            habitaciones.append({"model": "ingresos.ingresos", "pk": id, "fields":
+                {'id':id,'sede': sede, 'servicio':servicio, 'subservicio':subservicio, 'numero':numero, 'accion':accion, 'fecha':fecha, 'tipoDoc': tipoDoc, 'Documento': documento, 'paciente': paciente }})
+
+    miConexionx.close()
+    print("habitaciones = " , habitaciones)
+
+
+    serialized1 = json.dumps(habitaciones, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')

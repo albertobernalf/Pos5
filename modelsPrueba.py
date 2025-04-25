@@ -717,9 +717,21 @@ BIBLIOGRAFIA:
       -- Que pasa con los baono de un lado aotro yo diria se anulan de ua y se pasan alotro ??
 
      -- ops al facturar a eumelia con dos convenios se le dio salida clinca, pero despues me la saco de la apantalla de liquidacion y no pude facturar la cuneta de compensar COMO LE PARECE GRAVISSISIMO
----  en creacion de usuarios en crear admision debe obligar a llenar campos por ej: eror de loalidad hasta ta que graba 
+---  en creacion de usuarios en crear admision debe obligar a llenar 
+campos por ej: eror de loalidad hasta ta que graba 
 -- OPS no me trae el amompañamte y el reonsable de la cuenta en paciente sede americas OJOOOOOOOO
   -- en sede americas meti una moderadora aunque mero la cuota moderadora nop actualizo el valor recibido
 --  sepierde el combo de clasificaion triage cunado crea uh triage
 --  Toca ver como las modales crear admisiondesde triage y crear usuarios en triage validen la data antes de emviar. por ajax
 -- ojo el historial de dependencias fechaLiberacion siempre tiene fecha ALGO PASA esta mal VERIFICAR
+
+
+-- Dia lunes 28 de Abril
+	ops , cambiar la logica de la funcion: PostConsultaLiquidacion, GRAVE ERROR : La consulta de la pantalla liquidacion, es a base de la tabla ingresos
+        y pacienteingresossfacturacion, o sea nada que ver con la tabla facturacion_loquiacion ANTON
+        Hay que buscar el convenioID que viene en la llave [0] del ingreso y pregunatar por esa llave,, de pronto cuando se crea UN conveion
+           si hay una Facturacion_liquidacion ques esta null se le carga o se actualiza a esa liquidacion pasando de convenio:_id null a una con valor
+          OPS YA HICE UN ARREGLO VALIDAR SI SI QUEDO BIEN PARA LIQUIDCIONES NULAS INICIALMENTE SIN CONVENIO,
+		--OPS PERO FALTA LA ÄRTE POSTCONSULTALIQUIDAION aqui meter lo mismo que se hco en admisiones.views GUARDA CONVEIOADMISION AH Y PROBARLO NO ? QUE NOO HE PROBADO
+           -- ops cuando hay de arrancada una sin convenio y selecionan en facturacion_lñiquidacion inmediataenmte ERROR PAILAS VERIFICAR ETSO ojo
+                error ñlinea 367 de facturacion.vies

@@ -124,6 +124,7 @@ def PostConsultaLiquidacion(request):
     username_id = request.POST["username_id"]
     sede = request.POST["sede"]
 
+
     print("id = ", Post_id)
     llave = Post_id.split('-')
     print ("llave = " ,llave)
@@ -347,6 +348,7 @@ def PostConsultaLiquidacion(request):
 
             print ("Entre Convenio = " , convenioId);
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(ingresoId.tipoDoc_id) + ' AND documento_id = ' + str(ingresoId.documento_id) + ' AND "consecAdmision" = ' + str(ingresoId.consec) + ' and convenio_id = ' + "'" + str(convenioId) + "'"
+
     else:
         if (convenioId == '0' or  convenioId == ''):
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(triageId.tipoDoc_id) + ' AND documento_id = ' + str(triageId.documento_id) + ' AND "consecAdmision" = ' + str(triageId.consec) + ' and convenio_id is null'
@@ -354,7 +356,7 @@ def PostConsultaLiquidacion(request):
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(triageId.tipoDoc_id) + ' AND documento_id = ' + str(triageId.documento_id) + ' AND "consecAdmision" = ' + str(triageId.consec) + ' and convenio_id = ' + "'" + str(convenioId) + "'"
 
     curt.execute(comando)
-
+    print(comando)
     cabezoteLiquidacion = []
 
     for id in curt.fetchall():
@@ -362,12 +364,12 @@ def PostConsultaLiquidacion(request):
 
     miConexiont.close()
 
-    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion)
+    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion[0])
 
     miConexiont = None
     try:
 
-      if (cabezoteLiquidacion == []):
+      if (cabezoteLiquidacion[0] == []):
                 print ("OJOOOOOO ENTRE AL CABEZOTE LIQUIDACION")
                 # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
 
@@ -375,25 +377,35 @@ def PostConsultaLiquidacion(request):
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",       user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
-                if llave[0] == 'INGRESO':
-                    if (convenioId == '0'):
-                        comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(ingresoId.tipoDoc_id)  + ',' +  str(ingresoId.documento_id) + ',' + str(ingresoId.consec) + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "', null"  + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
-                    else:
-                        comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(ingresoId.tipoDoc_id)  + ',' +  str(ingresoId.documento_id) + ',' + str(ingresoId.consec) + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(convenioId) + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
+                if (llave[0] == 'INGRESO'  and convenioId == '0') :
 
-                else:
-                    if (convenioId == '0'):
+                        comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(ingresoId.tipoDoc_id)  + ',' +  str(ingresoId.documento_id) + ',' + str(ingresoId.consec) + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "', null"  + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
+                        print ("Entre1")
+
+                if (llave[0] == 'INGRESO' and convenioId != '0'):
+
+                        comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(ingresoId.tipoDoc_id)  + ',' +  str(ingresoId.documento_id) + ',' + str(ingresoId.consec) + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(convenioId) + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
+                        print("Entre2")
+
+                if (llave[0] == 'TRIAGE' and  convenioId == '0'):
+
                         comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(triageId.tipoDoc_id)  + ',' +  str(triageId.documento_id) + ',' + str('0') + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "', null" + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
-                    else:
+                        print("Entre3")
+
+                if (llave[0] == 'TRIAGE' and  convenioId != '0'):
+
                         comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(triageId.tipoDoc_id)  + ',' +  str(triageId.documento_id) + ',' + str('0') + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(convenioId) + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
+                        print("Entre4")
 
                 curt.execute(comando)
                 liquidacionId = curt.fetchone()[0]
+                print("liquidacionId PARCIAL = ", liquidacionId)
                 miConexiont.commit()
                 curt.close()
                 miConexiont.close()
 
       else:
+                print("Por qui no entro")
                 liquidacionId = cabezoteLiquidacion[0]['id']
                 liquidacionId = str(liquidacionId)
                 print("liquidacionId = ", liquidacionId)

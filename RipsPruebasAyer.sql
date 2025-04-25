@@ -109,7 +109,7 @@ select * from sitios_dependencias;
 
 -- Query Censo 
 
-select sed.nombre, serv.nombre, subserv.nombre, dep.nombre nombre, tp.nombre tipoDoc ,
+select sed.nombre sede, serv.nombre servicio, subserv.nombre subservicio, dep.nombre nombre, tp.nombre tipoDoc ,
 	u.documento documento,  u.nombre paciente, dep."fechaOcupacion" ocupa,  dep.disponibilidad accion
 FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed,
 		sitios_serviciossedes serv, sitios_subserviciossedes subserv
@@ -118,6 +118,8 @@ WHERE dep."sedesClinica_id"  = 2 AND sed.id=dep."sedesClinica_id" AND sed.id = s
 	dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id and dep.disponibilidad = 'O'
 ORDER By dep.numero, dep."fechaOcupacion";
 
+comando = 'select sed.nombre sede, serv.nombre servicio, subserv.nombre subservicio, dep.nombre nombre, tp.nombre tipoDoc ,u.documento documento,  u.nombre paciente, dep."fechaOcupacion" ocupa,  dep.disponibilidad accion FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed, sitios_serviciossedes serv, sitios_subserviciossedes subserv WHERE dep."sedesClinica_id" ' + "'" + str(sede) + "'" + ' AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND  dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id and dep.disponibilidad = ' + "'" + str('O') + "' ORDER By dep.numero, dep."fechaOcupacion"'
+	'
 -- Query Historial deHabitaciones 
 
 select * from sitios_historialdependencias;

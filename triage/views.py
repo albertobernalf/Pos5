@@ -2900,8 +2900,8 @@ def guardarAdmisionTriage(request):
                     # Tan solo UPDATE al consecutivo
 
                     comando1 = 'UPDATE facturacion_liquidacion set "consecAdmision" = ' + "'" + str(consecAdmision) + "' WHERE id = " +  str(liquidacionDesdeId)
-                    print("comando = ", comando)
-                    cur3.execute(comando)
+                    print("comando = ", comando1)
+                    cur3.execute(comando1)
                     miConexion3.commit()
                     cur3.close()
 
