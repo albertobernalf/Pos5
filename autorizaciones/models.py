@@ -17,7 +17,7 @@ class Autorizaciones(models.Model):
     empresa = models.ForeignKey('facturacion.Empresas',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='empresa765')
     prioritario = models.CharField(max_length=1,blank=True,null= True, editable=True,)
     justificacion =  models.CharField(max_length=5000,blank=True,null= True, editable=True,)
-    plantaOrdena = models.ForeignKey('usuarios.Usuarios',blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    plantaOrdena = models.ForeignKey('planta.Planta',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     numeroAutorizacion=  models.CharField(max_length=5000,blank=True,null= True, editable=True,)
     fechaAutorizacion = models.DateTimeField( editable=True, null=True, blank=True)
     #plantaAutoriza = models.ForeignKey('planta.Planta',blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name ='Planta1')

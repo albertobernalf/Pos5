@@ -18,6 +18,7 @@ import datetime as dt
 
 from sitios.models import  HistorialDependencias, Dependencias
 from usuarios.models import Usuarios, TiposDocumento
+from facturacion.models import Liquidacion
 from planta.models import Planta
 from triage.models import Triage
 from django.db.models.functions import Cast, Coalesce
@@ -322,31 +323,8 @@ def crearTriage(request):
         context['SubServicios'] = subServicios
 
         # Fin combo SubServicios
-
-        # Combo TiposDOc
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-        curt = miConexiont.cursor()
-        comando = "SELECT id ,nombre FROM usuarios_TiposDocumento "
-        curt.execute(comando)
-        print(comando)
-
-        tiposDoc = []
-        # tiposDoc.append({'id': '', 'nombre': ''})
-
-        for id, nombre in curt.fetchall():
-            tiposDoc.append({'id': id, 'nombre': nombre})
-
-        miConexiont.close()
-        print(tiposDoc)
-
-        context['TiposDoc'] = tiposDoc
-
-        # Fin combo TiposDOc
-
         # Combo Habitaciones
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -369,15 +347,136 @@ def crearTriage(request):
 
         # Fin combo Habitaciones
 
+        # Combo Especialidades
 
-        # Combo TiposDocumento
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+        comando = "SELECT id ,nombre FROM clinico_Especialidades"
+        curt.execute(comando)
+        print(comando)
 
-        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+        especialidades = []
+        especialidades.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            especialidades.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(especialidades)
+
+        context['Especialidades'] = especialidades
+
+        # Fin combo Especialidades
+
+        # Combo EspecialidadesMedicos
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+        comando = 'SELECT em.id ,e.nombre FROM clinico_Especialidades e, clinico_EspecialidadesMedicos em,planta_planta pl  where em."especialidades_id" = e.id and em."planta_id" = pl.id AND pl.documento = ' + "'" + str(
+            username) + "'"
+        curt.execute(comando)
+        print(comando)
+
+        especialidadesMedicos = []
+        especialidadesMedicos.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            especialidadesMedicos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(especialidadesMedicos)
+
+        context['EspecialidadesMedicos'] = especialidadesMedicos
+
+        # Fin combo EspecialidadesMedicos
+
+        # Combo Medicos
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT p.id id, p.nombre  nombre FROM usuarios_tiposDocumento p"
+        comando = 'SELECT p.id id, p.nombre nombre FROM planta_planta p,clinico_medicos med, planta_tiposPlanta tp WHERE p."sedesClinica_id" = ' + "'" + str(
+            Sede) + "'" + ' and p."tiposPlanta_id" = tp.id and tp.nombre = ' + "'" + str(
+            'MEDICO') + "'" + ' and med.planta_id = p.id'
+
+        curt.execute(comando)
+        print(comando)
+
+        medicos = []
+        medicos.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            medicos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(medicos)
+
+        context['Medicos'] = medicos
+
+        # Fin combo Medicos
+
+        # Combo TiposFolio
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT e.id id, e.nombre nombre FROM clinico_tiposFolio e"
+
+        curt.execute(comando)
+        print(comando)
+
+        tiposFolio = []
+        tiposFolio.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            tiposFolio.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(tiposFolio)
+
+        context['TiposFolio'] = tiposFolio
+
+        # Fin combo TiposFolio
+
+        # Combo TiposUsuario
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM usuarios_tiposusuario p"
+
+        curt.execute(comando)
+        print(comando)
+
+        tiposUsuario = []
+        # tiposUsuario.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            tiposUsuario.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(tiposUsuario)
+
+        context['TiposUsuario'] = tiposUsuario
+
+        # Fin combo Tipos Usuario
+
+        # Combo TiposDocumento
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM usuarios_tiposDocumento p ORDER BY p.nombre"
 
         curt.execute(comando)
         print(comando)
@@ -395,9 +494,132 @@ def crearTriage(request):
 
         # Fin combo TiposDocumento
 
+        # Combo ips
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_ips c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ips = []
+        ips.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ips.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(ips)
+
+        context['Ips'] = ips
+
+        # Fin combo ips
+
+
+        # Combo Centros
+
+        # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM sitios_centros p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        centros = []
+
+        for id, nombre in curt.fetchall():
+            centros.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(tiposDocumento)
+
+        context['Centros'] = centros
+
+        # Fin combo Centros
+
+        # Combo Diagnosticos
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM clinico_diagnosticos p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        diagnosticos = []
+        diagnosticos.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            diagnosticos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(diagnosticos)
+
+        context['Diagnosticos'] = diagnosticos
+
+        # Fin combo Diagnosticos
+
+        # Combo Departamentos
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT d.id id, d.nombre  nombre FROM sitios_departamentos d ORDER BY d.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        departamentos = []
+        # tiposDocumento.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            departamentos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(departamentos)
+
+        context['Departamentos'] = departamentos
+
+        # Fin combo Departamentos
+
+        # Combo Ciudades
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id, c.nombre  nombre FROM sitios_ciudades c"
+
+        curt.execute(comando)
+        print(comando)
+
+        ciudades = []
+
+        for id, nombre in curt.fetchall():
+            ciudades.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(ciudades)
+
+        context['Ciudades'] = ciudades
+
+        # Fin combo Ciudades
+
         # Combo Modulos
 
-        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
@@ -461,7 +683,8 @@ def crearTriage(request):
 
         for id, nombre, nomenclatura, logo, nombreOpcion, nombreElemento in curt.fetchall():
             permisosDetalle.append(
-                {'id': id, 'nombre': nombre, 'nomenclatura': nomenclatura, 'logo': logo, 'nombreOpcion': nombreOpcion,'nombreElemento': nombreElemento})
+                {'id': id, 'nombre': nombre, 'nomenclatura': nomenclatura, 'logo': logo, 'nombreOpcion': nombreOpcion,
+                 'nombreElemento': nombreElemento})
 
         miConexiont.close()
         print(permisosDetalle)
@@ -469,6 +692,411 @@ def crearTriage(request):
         context['PermisosDetalle'] = permisosDetalle
 
         # Fin Combo PermisosDetalle
+
+        # Combo Vias Ingreso
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_viasingreso c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        viasIngreso = []
+
+        for id, nombre in curt.fetchall():
+            viasIngreso.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(viasIngreso)
+
+        context['ViasIngreso'] = viasIngreso
+
+        # Fin combo vias Ingreso
+
+        # Combo Causas Externa
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_causasExterna c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        causasExterna = []
+
+        for id, nombre in curt.fetchall():
+            causasExterna.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(causasExterna)
+
+        context['CausasExterna'] = causasExterna
+
+        # Fin combo causasExterna
+
+        # Combo Regimenes
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_regimenes c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        regimenes = []
+
+        for id, nombre in curt.fetchall():
+            regimenes.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(regimenes)
+
+        context['Regimenes'] = regimenes
+
+        # Fin combo regimenes
+
+        # Combo Tipos Cotizante
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM clinico_tiposcotizante c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        tiposCotizante = []
+
+        for id, nombre in curt.fetchall():
+            tiposCotizante.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(tiposCotizante)
+
+        context['TiposCotizante'] = tiposCotizante
+
+        # Fin combo tiposCotizante
+
+        # Combo municipios
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM sitios_municipios c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        municipios = []
+
+        for id, nombre in curt.fetchall():
+            municipios.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(municipios)
+
+        context['Municipios'] = municipios
+
+        # Fin combo municipios
+
+        # Combo localidades
+
+        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM sitios_localidades c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        localidades = []
+
+        for id, nombre in curt.fetchall():
+            localidades.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(localidades)
+
+        context['Localidades'] = localidades
+
+        # Fin combo localidades
+
+        # Combo estadoCivil
+
+        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM basicas_estadocivil c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        estadoCivil = []
+
+        for id, nombre in curt.fetchall():
+            estadoCivil.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(estadoCivil)
+
+        context['EstadoCivil'] = estadoCivil
+
+        # Fin combo estadoCivil
+
+        # Combo ocupaciones
+
+        # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM basicas_ocupaciones c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ocupaciones = []
+
+        for id, nombre in curt.fetchall():
+            ocupaciones.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(ocupaciones)
+
+        context['Ocupaciones'] = ocupaciones
+
+
+        # Combo Convenios
+
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM contratacion_convenios p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        convenios = []
+
+        for id, nombre in curt.fetchall():
+            convenios.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("convenios", convenios)
+
+        context['Convenios'] = convenios
+
+        # Fin combo Convenios
+
+        # Combo ripsServiciosIng
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsServicios  p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsServiciosIng = []
+        ripsServiciosIng.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ripsServiciosIng.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsServiciosIng", ripsServiciosIng)
+
+        context['RipsServiciosIng'] = ripsServiciosIng
+
+        # Fin combo ripsServiciosIng
+
+        # Combo ripsmodalidadGrupoServicioTecSal
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_RipsModalidadAtencion   p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsmodalidadGrupoServicioTecSal = []
+        ripsmodalidadGrupoServicioTecSal.append({'id': '', 'nombre': ''})
+
+
+        for id, nombre in curt.fetchall():
+            ripsmodalidadGrupoServicioTecSal.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsmodalidadGrupoServicioTecSal", ripsmodalidadGrupoServicioTecSal)
+
+        context['RipsmodalidadGrupoServicioTecSal'] = ripsmodalidadGrupoServicioTecSal
+
+        # Fin combo ripsmodalidadGrupoServicioTecSal
+
+        # Combo ripsViaIngresoServicioSalud
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsviasingresosalud  p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsViaIngresoServicioSalud = []
+        ripsViaIngresoServicioSalud.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ripsViaIngresoServicioSalud.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsViaIngresoServicioSalud", ripsViaIngresoServicioSalud)
+
+        context['RipsViaIngresoServicioSalud'] = ripsViaIngresoServicioSalud
+
+        # Fin combo ripsViaIngresoServicioSalud
+
+        # Combo ripsGrupoServicios
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsGrupoServicios  p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsGrupoServicios = []
+        ripsGrupoServicios.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ripsGrupoServicios.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsGrupoServicios", ripsGrupoServicios)
+
+        context['RipsGrupoServicios'] = ripsGrupoServicios
+
+        # Fin combo ripsGrupoServicios
+
+        # Combo ripsCondicionDestinoUsuarioEgreso
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsCondicionDestinoUsuarioEgreso = []
+        ripsCondicionDestinoUsuarioEgreso.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ripsCondicionDestinoUsuarioEgreso.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsCondicionDestinoUsuarioEgreso", ripsCondicionDestinoUsuarioEgreso)
+
+        context['RipsCondicionDestinoUsuarioEgreso'] = ripsCondicionDestinoUsuarioEgreso
+
+        # Fin combo ripsCondicionDestinoUsuarioEgreso
+
+        # Combo ripsCausaMotivoAtencion
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripscausaexterna  p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsCausaMotivoAtencion = []
+        ripsCausaMotivoAtencion.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ripsCausaMotivoAtencion.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsCausaMotivoAtencion", ripsCausaMotivoAtencion)
+
+        context['RipsCausaMotivoAtencion'] = ripsCausaMotivoAtencion
+
+        # Fin combo ripsCausaMotivoAtencion
+
+        # Combo ripsDestinoUsuarioEgresoRecienNacido
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM rips_ripsdestinoegreso  p ORDER BY p.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsDestinoUsuarioEgresoRecienNacido = []
+        ripsDestinoUsuarioEgresoRecienNacido.append({'id': '', 'nombre': ''})
+
+        for id, nombre in curt.fetchall():
+            ripsDestinoUsuarioEgresoRecienNacido.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ripsDestinoUsuarioEgresoRecienNacido", ripsDestinoUsuarioEgresoRecienNacido)
+
+        context['RipsDestinoUsuarioEgresoRecienNacido'] = ripsDestinoUsuarioEgresoRecienNacido
+
+        # Fin combo ripsDestinoUsuarioEgresoRecienNacido
+
+        # Combo ripsFinalidadConsulta
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c ORDER BY c.nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        ripsFinalidadConsulta = []
+
+        for id, codigo, nombre in curt.fetchall():
+            ripsFinalidadConsulta.append({'id': id, 'codigo': codigo, 'nombre': nombre})
+
+        miConexiont.close()
+        print(ripsFinalidadConsulta)
+
+        context['RipsFinalidadConsulta'] = ripsFinalidadConsulta
 
 
         # FIN RUTINA ARMADO CONTEXT
@@ -1212,30 +1840,32 @@ def grabaUsuariosTriage(request):
     print("telefono = ", telefono)
     print("contacto = ", contacto)
     municipios  = request.POST['municipios']
+
     if municipios == '':
         municipios="null"
 
-
     localidades  = request.POST['localidades']
+
     if localidades == '':
         localidades="null"
 
     estadoCivil  = request.POST['estadoCivil']
+
     if estadoCivil == '':
         estadoCivil="null"
 
     ocupaciones = request.POST['ocupaciones']
+
     if ocupaciones == '':
         ocupaciones="null"
 
     correo = request.POST["correo"]
+    print("correo = ", correo)
     print("centrosC = ", centrosC)
 
 
-    #if centrosC== '':
-    #    centrosC="."
-
-
+    if centrosC== '':
+        centrosC="null"
 
     print(documento)
     print(tipoDoc)
@@ -2016,6 +2646,9 @@ def guardarAdmisionTriage(request):
         documento = request.POST['busDocumentoSel2']
         print("tiposDoc = ", tiposDoc)
         print("documento = ", documento)
+        empresa = request.POST["empresasT"]
+        print(" empresa = ", empresa)
+
 
         # Consigo el Id del Paciente Documento
 
@@ -2125,7 +2758,17 @@ def guardarAdmisionTriage(request):
         ripsDestinoUsu1 = RipsDestinoEgreso.objects.get(id=ripsDestinoUsuarioEgresoRecienNacido)
         ripsCondicionDestinoUsuarioEgreso = request.POST["ripsCondicionDestinoUsuarioEgreso"]
 
+        # Consigo datos de la liquidacion Actual triage o sea la cuenta
+        try:
+            with transaction.atomic():
 
+                liquidacionDesdeId = Liquidacion.objects.get(tipoDoc_id=idTipoDocFinal, documento_id=documento_llave.id, consecAdmision=0)
+                print ("LiquidacionDesdeId.id = ", liquidacionDesdeId.id)
+                liq = liquidacionDesdeId.id
+        except Exception as e:
+            # Aquí ya se hizo rollback automáticamente
+            print("Se hizo rollback por:", e)
+            liq=0
 
         try:
             with transaction.atomic():
@@ -2136,6 +2779,7 @@ def guardarAdmisionTriage(request):
                                  documento_id=documento_llave.id,
                                  consec=consecAdmision,
                                  fechaIngreso=fechaIngreso,
+                                 empresa_id=empresa,
                                  #fechaSalida=NULL,
                                  factura=factura,
                                  numcita=numcita,
@@ -2243,8 +2887,44 @@ def guardarAdmisionTriage(request):
             # Aquí ya se hizo rollback automáticamente
             print("Se hizo rollback por:", e)
 
+        if liq != 0:
+
+                ## Desde Aqui traslado a la nueva Cuenta
+                miConexion3 = None
+                try:
+
+                    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                                   password="123456")
+                    cur3 = miConexion3.cursor()
+
+                    # Tan solo UPDATE al consecutivo
+
+                    comando1 = 'UPDATE facturacion_liquidacion set "consecAdmision" = ' + "'" + str(consecAdmision) + "' WHERE id = " +  str(liquidacionDesdeId)
+                    print("comando = ", comando)
+                    cur3.execute(comando)
+                    miConexion3.commit()
+                    cur3.close()
 
 
+                    ## PENDIENTE ACTUALIZAR cONVENIOS USUARIOS Y ABONOS USUARIOS
+
+                except psycopg2.DatabaseError as error:
+                    print("Entre por rollback", error)
+                    if miConexion3:
+                        print("Entro ha hacer el Rollback")
+                        miConexion3.rollback()
+
+                    print("Voy a hacer el jsonresponde")
+                    return JsonResponse({'success': False, 'Mensaje': error})
+
+                finally:
+                    if miConexion3:
+                        cur3.close()
+                        miConexion3.close()
+
+
+
+        ## Fin traslado a la nueva Cuenta
 
         # RUTINA ARMADO CONTEXT
 

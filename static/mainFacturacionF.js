@@ -1458,7 +1458,15 @@ function AFacturar()
 
 			        arrancaLiquidacion(3,data2);
 			    dataTableFacturacionInitialized = true;
+
+		        arrancaLiquidacion(4,data2);
+			    dataTableFacturacionInitialized = true;
 		
+		        arrancaLiquidacion(5,data2);
+			    dataTableFacturacionInitialized = true;
+
+			 window.location.reload();
+			
 			}
 
 

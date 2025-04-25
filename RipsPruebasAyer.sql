@@ -42,15 +42,95 @@ select * from sitios_sedesclinica
 	select * from rips_ripsestados;
 SELECT * FROM rips_ripsdetalle;
 
-select * from facturacion_facturaciondetalle where facturacion_id=58;
+/*
+		data: {'tipoDoc':tipoDoc,
+		       'documento':documento,
+               'nombre':nombre,
+               'genero':genero,
+               'fechaNacio':fechaNacio,
+		       'estadoCivil' : estadoCivil,
+		       'departamentos':departamentos,
+               'ciudades':ciudades,
+               'direccion':direccion,
+         	   'telefono':telefono,
+     		   'contacto':contacto,
+		       "centrosC":centrosC,
+		       'tiposUsuario':tiposUsuario,
+		       'municipios':municipios,
+		       'localidades':localidades,
+		       'estadoCivil':estadoCivil, 
+		       'ocupaciones':ocupaciones, 
+		       'correo':correo},*/
 
-select * from facturacion_facturacion;
-update facturacion_facturacion set "ripsEnvio_id" = null;
-SELECT env.id,  env."fechaEnvio", env."fechaRespuesta", env."cantidadFacturas", env."cantidadPasaron", env."cantidadRechazadas",env."ripsEstados_id", 
-	estrips.nombre estadoMinisterio, env."fechaRegistro", env."estadoReg", env."usuarioRegistro_id", env.empresa_id, env."sedesClinica_id" ,
-	sed.nombre nombreClinica, emp.nombre nombreEmpresa , pla.nombre nombreRegistra , tiposNotas.nombre tipoNota
-	FROM public.rips_ripsenvios env, sitios_sedesclinica sed, facturacion_empresas emp, planta_planta pla , rips_ripstiposnotas tiposNotas ,
-	rips_ripsestados estrips
-	where env."sedesClinica_id" = sed.id and env.empresa_id=emp.id AND pla.id = env."usuarioRegistro_id" AND
-	env."ripsTiposNotas_id" = tiposNotas.id AND estrips.id = env."ripsEstados_id" 
-	AND env."sedesClinica_id" ='2'
+
+select * from facturacion_facturaciondetalle where facturacion_id=58;
+select * from usuarios_usuarios;
+select "sedesClinica_id",* from facturacion_facturacion; -- 56 factura camila ENVIO 50/ 58 factura lucho ENVIO 52
+
+select * from rips_ripstransaccion; -- id 169 cami/ id 170 lucho
+select "ripsTransaccion_id", * from rips_ripsmedicamentos; -- lucho
+
+INSERT INTO rips_ripsmedicamentos ("codPrestador", "numAutorizacion", "idMIPRES", "fechaDispensAdmon", "nomTecnologiaSalud", "concentracionMedicamento",
+	"cantidadMedicamento", 	"diasTratamiento",	"numDocumentoIdentificacion", "vrUnitMedicamento", "vrServicio", "valorPagoModerador", "numFEVPagoModerador",
+	consecutivo, "fechaRegistro", "codDiagnosticoPrincipal_id", "codDiagnosticoRelacionado_id", "codTecnologiaSalud_id", "conceptoRecaudo_id", 
+	"formaFarmaceutica_id", "tipoDocumentoIdentificacion_id", "tipoMedicamento_id", "unidadMedida_id", "unidadMinDispensa_id", "usuarioRegistro_id",
+	"ripsDetalle_id", "itemFactura","ripsTipos_id", "ripsTransaccion_id") 
+
+	select * from usuarios_usuarios;
+
+select "sedesClinica_id",documento_id,*  from admisiones_ingresos where documento_id=27;
+
+SELECT  t.id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , t.consec consec , dep.nombre camaNombre,t."fechaSolicita" solicita,t.motivo motivo, t."clasificacionTriage_id" triage FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  ,sitios_serviciosSedes sd, clinico_servicios ser  WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND t."sedesClinica_id" ='2' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and t."tipoDoc_id" = u."tipoDoc_id" and  u.id = t."documento_id"  and ser.id = sd.servicios_id and dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and dep."documento_id" = t."documento_id" and ser.nombre = 'TRIAGE'
+
+select "sedesClinica_id",documento_id,* from triage_triage where documento_id=27;
+select "sedesClinica_id",documento_id,* from facturacion_liquidacion where documento_id=26;
+delete from facturacion_liquidacion where id = 152
+
+	--delete from facturacion_liquidacion where documento_id=26;
+select * from cartera_pagos where documento_id=26;
+
+	--delete from cartera_pagos where documento_id=26;
+
+select * from admisiones_ingresos;
+select "sedesClinica_id", documento_id, convenio_id,* from facturacion_liquidacion;
+
+select "sedesClinica_id",* from autorizaciones_autorizaciones;
+
+select "sedesClinica_id",documento_id,* from clinico_historia;
+
+select * from rips_ripstransaccion;
+select * from rips_ripsusuarios;
+
+select * from sitios_sedesclinica;
+select * from sitios_serviciossedes;
+select * from sitios_subserviciossedes;
+
+select * from sitios_dependencias;
+
+-- Query Censo 
+
+select sed.nombre, serv.nombre, subserv.nombre, dep.nombre nombre, tp.nombre tipoDoc ,
+	u.documento documento,  u.nombre paciente, dep."fechaOcupacion" ocupa,  dep.disponibilidad accion
+FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed,
+		sitios_serviciossedes serv, sitios_subserviciossedes subserv
+WHERE dep."sedesClinica_id"  = 2 AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND
+	 dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND
+	dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id and dep.disponibilidad = 'O'
+ORDER By dep.numero, dep."fechaOcupacion";
+
+-- Query Historial deHabitaciones 
+
+select * from sitios_historialdependencias;
+
+ 
+
+select sed.nombre, serv.nombre, subserv.nombre, dep.nombre nombre,  u.nombre paciente, his."fechaOcupacion" ocupa, his."fechaLiberacion" libera,tp.nombre tipoDoc ,
+	u.documento documento,  his.disponibilidad accion
+FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed,
+		sitios_serviciossedes serv, sitios_subserviciossedes subserv, sitios_historialdependencias his
+WHERE his.dependencias_id = dep.id AND dep."sedesClinica_id"  = 2 AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND
+	 dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND
+	dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id 
+ORDER By dep.numero, dep."fechaOcupacion";
+
+

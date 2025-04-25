@@ -161,6 +161,10 @@ urlpatterns = [
     path('load_dataAdmisiones/<str:data>', viewsAdmisiones.load_dataAdmisiones,   name='loaddata_Admisiones'),
     path('load_dataAutorizacionesAdmisiones/<str:data>', viewsAdmisiones.Load_dataAutorizacionesAdmisiones, name='loaddata_AutorizacionesAdmisiones'),
     path('actualizaAdmision/', viewsAdmisiones.ActualizaAdmision),
+    path('load_dataCensoAdmisiones/<str:data>', viewsAdmisiones.Load_dataCensoAdmisiones, name='load_dataCenso_Admisiones'),
+
+
+
     # Triage
 
     path('crearTriage/', viewsTriage.crearTriage),
@@ -175,6 +179,8 @@ urlpatterns = [
     path('admisionTriageModal/', viewsTriage.admisionTriageModal),
     path('guardarAdmisionTriage/', viewsTriage.guardarAdmisionTriage),
     path('load_dataTriage/<str:data>', viewsTriage.Load_dataTriage, name='loaddata_Triage'),
+
+
 
     # Apoyo Terapeutico
 

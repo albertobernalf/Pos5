@@ -261,13 +261,47 @@ function AUsuarioTriage()
 	var correo = document.getElementById("correo").value;
 	var fechaNacio = document.getElementById("fechaNacio").value;
 
+	if (departamentos =='')
+		{
+		alert("Suministre Deparamento");
+		return;
+		}
+if (ciudades =='')
+		{
+		alert("Suministre ciudades");
+		return;
+		}
+if (direccion =='')
+		{
+		alert("Suministre direccion");
+		return;
+		}
+if (municipios =='')
+		{
+		alert("Suministre municipios");
+		return;
+		}
+if (localidades =='')
+		{
+		alert("Suministre localidades");
+		return;
+		}
+
+
 
 	var centrosC = document.getElementById("centrosC").value;
 	var tiposUsuario = document.getElementById("tiposUsuario").value;
 
+if (tiposUsuario =='')
+		{
+		alert("Suministre tiposUsuario");
+		return;
+		}
+
+
 	$.ajax({
-		type: 'POST',
 	    	url: '/grabaUsuariosTriage/',
+		type: 'POST',
 		data: {'tipoDoc':tipoDoc,
 		       'documento':documento,
                'nombre':nombre,
@@ -1183,13 +1217,14 @@ function guardarAdmisionTriage()
 	    dataType: 'json',
 		success: function (respuesta)
 		        {
-		        alert ("respuesta =" + respuesta);
+		      
          		alert ("REGRESE DE GUARDAR Admision triage ");
 
 
- 	      			document.getElementById("mensajesError").innerHTML = respuesta;
+
 
 			 $('#crearAdmTriage').modal('hide');
+ 	      			document.getElementById("mensajesError").innerHTML = respuesta;
 
 
                 },

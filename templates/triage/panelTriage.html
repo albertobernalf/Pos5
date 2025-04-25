@@ -509,6 +509,23 @@ th ,tr{
                                                 </div>
                                             </div>
 
+					      <div class="row row-cols-8 mt-3">
+
+                                                <div class="col">
+                                                    <label for="empresasT"
+                                                           class="col-sm-10 col-form-label col-form-label-sm">Empresas:</label>
+                                                    <div class="col-sm-4">
+                                                        <select class="form-select  h-40 w-100 form-control form-control-sm"
+                                                                aria-label="" id="empresasT" name="empresasT">
+                                                            {% for empresas in Empresas %}
+                                                            <option value="{{empresas.id}}"> {{empresas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+
                                             <div class="row row-cols-8 mt-3">
 
                                                 <div class="col">
@@ -937,7 +954,7 @@ th ,tr{
                                             <label class="col-sm-1 control-label" for="clasificacionTriage">ClasificacionTriage:</label>
                                             <select class="form-select  h-10 w-50 form-control form-control-sm"
                                                     aria-label=""
-                                                    id="clasificacionTriage" name="clasificacionTriage">
+                                                    id="clasificacionTriage" name="clasificacionTriage" required>
                                                 {% for tiposTriage in TiposTriage %}
                                                 <option value="{{tiposTriage.id}}"> {{tiposTriage.nombre}}</option>
                                                 {% endfor %}
@@ -1031,7 +1048,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="departamentos" class="col-form-label">Departamento:</label>
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="departamentos" name="departamentos">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="departamentos" name="departamentos" required>
                                                     {% for departamentos in Departamentos %}
                                                     <option value="{{departamentos.id}}"> {{departamentos.nombre}}
                                                     </option>
@@ -1042,7 +1059,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="municipios" class="col-form-label">Municipio:</label>
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="municipios" name="municipios">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="municipios" name="municipios" required>
                                                     {% for municipios in Municipios %}
                                                     <option value="{{municipios.id}}"> {{municipios.nombre}}
                                                     </option>
@@ -1055,7 +1072,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="localidades" class="col-form-label">Localidad:</label>
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="localidades" name="localidades">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="localidades" name="localidades" required>
                                                     {% for localidades in Localidades %}
                                                     <option value="{{localidades.id}}"> {{localidades.nombre}}
                                                     </option>
@@ -1064,7 +1081,7 @@ th ,tr{
                                             </div>
                                             <div class="col">
                                                 <label for="ciudades" class="col-form-label">Ciudad:</label>
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm"  id="ciudades" name="ciudades">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm"  id="ciudades" name="ciudades" required>
                                                     {% for ciudades in Ciudades %}
                                                     <option value="{{ciudades.id}}"> {{ciudades.nombre}}
                                                     </option>
@@ -1074,7 +1091,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="direccion" class="col-form-label">Direccion:</label>
-                                                <input type="text" class="form-control" id="direccion" name="direccion" value="">
+                                                <input type="text" class="form-control" id="direccion" name="direccion" value="" required>
 
                                             </div>
 
@@ -1089,7 +1106,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="estadoCivil" class="col-form-label">Estado Civil:</label>
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm"  id="estadoCivil" name="estadoCivil">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm"  id="estadoCivil" name="estadoCivil" required>
                                                     {% for estadoCivil in EstadoCivil %}
                                                     <option value="{{estadoCivil.id}}"> {{estadoCivil.nombre}}
                                                     </option>
@@ -1114,7 +1131,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="centrosC" class="col-form-label">Centros:</label>
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="centrosC" name="centrosC">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="centrosC" name="centrosC" required>
                                                     {% for centros in Centros %}
                                                     <option value="{{centros.id}}"> {{centros.nombre}}</option>
                                                     {% endfor %}
@@ -1124,7 +1141,7 @@ th ,tr{
                                             <div class="col">
                                                 <label for="tiposUsuario" class="col-form-label">Tipos Usuario:</label>
 
-                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="tiposUsuario" name="tiposUsuario">
+                                                <select class="form-select  h-10 w-100 form-control form-control-sm" id="tiposUsuario" name="tiposUsuario" required>
                                                     {% for tiposUsuario in TiposUsuario %}
                                                     <option value="{{tiposUsuario.id}}"> {{tiposUsuario.nombre}}
                                                     </option>
@@ -1136,7 +1153,8 @@ th ,tr{
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="CierraModalUsuarioTriage()">Close
                                         </button>
-                                        <input type="button" class="btn btn-primary" value="save"  onclick="AUsuarioTriage()">
+                                         <input type="button" class="btn btn-primary" value="save"  onclick="AUsuarioTriage()"> 
+                                        
                                     </div> <!-- Cierra footer-->
                                 </div> <!-- Cierra content -->
                             </div> <!-- Cierra modal dialog -->

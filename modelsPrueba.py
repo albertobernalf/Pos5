@@ -705,16 +705,21 @@ BIBLIOGRAFIA:
 -- OPS-REOPS -REOP ERRORES:
 	-- CuAndo  pasa de traiage a admision no quita la modal
         -- Cuando pasa de triage a modal se desaparece de la pantalla de facturacion y que va a pasar con los cargos de esa cuenta ??/ Porque esta en la tabla facturacion_liquidacion y liquidcion detalle
+                       (YA SE HAY QUE LEVAR LOS CARGOS de la cuenta triage  a la cuenta de habitacion) es ..) facturacion_liquidacion/facturacion_liquidaciondetalle y de pronto carterapagos y crteop convenios
+                            Es como un INSERT UN DELETE, y UPDATE PARA ABONOS Y CONVENIOS QUE NO TENGAN NADA APLICADO
             -- anton crea una nueva cuenta ver so es posible por trsalados de cargos
-            -- ontemplar un traslado de cargos de una cuenta sin convenio a una cuenta con convenio 
+            -- Contemplar un traslado de cargos de una cuenta sin convenio a una cuenta con convenio 
 	-- Ojo cuando va a hacer un traslado y no encuentra una descripcion saca erro ver como escribirlo y decirlo a l usuario final que se debe crear el tarifario nuevo a donde se va a trasladar
-        -- Ojo el total de los nuevos suministros, proced, liqui a pagar son los del nuevo tarifario OPS ERroR GRAVISSISMOI
-         -- ops si un paciente tiene dos conmvenios y al dar salida clinica a una ya no puede facturar la segunda cuenta
-        -- Al hacer una factura debe dejar en la primera pantyallaliquidacion y mostrar el nro de la factura jay que limipiar liquidacion/ abonos/ y traslados
-       -- Al historial de dependencias agregarle sedes_clinica_id en la elaboracion de la factura y en el ingreso de admisiones
-      -- Que pasa con los baono de un lado aotro ypo diria se anulan de ua y se pasan alotro ??
+        -- Ojo el total de los nuevos suministros, proced, liqui a pagar son los del nuevo tarifario OPS ERroR GRAVISSISMOI REVISAR YA ARREGLADO
+         -- ops si un paciente tiene dos convenios y al dar salida clinica a una ya no puede facturar la segunda cuenta (colocar control pero a donde OPS)
+
+        -- Al hacer una factura debe dejar en la primera pantallaliquidacion y mostrar el nro de la factura jay que limipiar liquidacion/ abonos/ y traslados
+      -- Que pasa con los baono de un lado aotro yo diria se anulan de ua y se pasan alotro ??
+
      -- ops al facturar a eumelia con dos convenios se le dio salida clinca, pero despues me la saco de la apantalla de liquidacion y no pude facturar la cuneta de compensar COMO LE PARECE GRAVISSISIMO
 ---  en creacion de usuarios en crear admision debe obligar a llenar campos por ej: eror de loalidad hasta ta que graba 
--- OPS no me trae el amompañamte y el reonsablke de la cuenta en apciente sede americas OJOOOOOOOO
+-- OPS no me trae el amompañamte y el reonsable de la cuenta en paciente sede americas OJOOOOOOOO
   -- en sede americas meti una moderadora aunque mero la cuota moderadora nop actualizo el valor recibido
- -- op en sede americas no hay especialidads  es como un ERROR DE FONDO OJAZO
+--  sepierde el combo de clasificaion triage cunado crea uh triage
+--  Toca ver como las modales crear admisiondesde triage y crear usuarios en triage validen la data antes de emviar. por ajax
+-- ojo el historial de dependencias fechaLiberacion siempre tiene fecha ALGO PASA esta mal VERIFICAR

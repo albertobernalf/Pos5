@@ -4022,7 +4022,7 @@ def crearAdmisionDef(request):
                                  documento_id=documento_llave.id,
                                  consec=consecAdmision,
                                  fechaIngreso=fechaIngreso,
-                                 empresa=empresa,
+                                 empresa_id=empresa,
                                  #fechaSalida=NULL,
                                  factura=factura,
                                  numcita=numcita,
@@ -5881,6 +5881,7 @@ def GuardaAbonosAdmision(request):
 
     ingresoId = request.POST["ingresoId22"]
     sede = request.POST["sede22"]
+    username_id = request.POST["username22_id"]
     tipoPago = request.POST["tipoPago"]
     formaPago = request.POST["formaPago"]
     valor = request.POST['valorAbono']
@@ -5891,7 +5892,7 @@ def GuardaAbonosAdmision(request):
     convenioPaciente = request.POST['convenioPaciente']
     print ("convenioPaciente = ", convenioPaciente)
 
-
+    estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
     registroId = Ingresos.objects.get(id=ingresoId)
@@ -5907,6 +5908,24 @@ def GuardaAbonosAdmision(request):
         comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg",saldo, "totalAplicado", "valorEnCurso", convenio_id) values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "','" +  str("A") + "','" + str(valor) + "'," + ' 0 , 0, ' + "'" + str(convenioPaciente) + "')"
 
         cur3.execute(comando)
+
+
+        ## Aqui rutina crea cabezote si no existe. Actualiza totales a la liquidacion
+
+        comando1 = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(registroId.tipoDoc_id) + ' AND documento_id = ' + str(registroId.documento_id) + ' AND "consecAdmision" = ' + str(registroId.consec)
+        cur3.execute(comando1)
+
+        cabezoteLiquidacion = []
+
+        for id in cur3.fetchall():
+            cabezoteLiquidacion.append({'id': id})
+
+        if (cabezoteLiquidacion == []):
+            print("OJOOOOOO ENTRE AL CABEZOTE LIQUIDACION DEL ABONO NUEVO")
+            comando2 = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(registroId.tipoDoc_id) + ',' + str(registroId.documento_id) + ',' + str(registroId.consec) + ',' + "'" + str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(convenioPaciente) + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
+            cur3.execute(comando2)
+
+
         miConexion3.commit()
         cur3.close()
 
@@ -5924,7 +5943,6 @@ def GuardaAbonosAdmision(request):
     finally:
         if miConexion3:
             miConexion3.close()
-
 
 
 def PostDeleteConveniosAdmision(request):
@@ -6366,3 +6384,39 @@ def ActualizaAdmision(request):
         if miConexion3:
             miConexion3.close()
             print("Cerre conexion")
+
+
+
+def Load_dataCensoAdmisiones(request, data):
+    print("Entre load_data Admisiones")
+
+    context = {}
+    d = json.loads(data)
+
+    sede = d['sede']
+    print("sede = ", sede)
+
+    censo = []
+
+    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+    curx = miConexionx.cursor()
+
+    detalle = 'select dep.id id,sed.nombre sede, serv.nombre servicio, subserv.nombre subservicio, dep.nombre nombre, tp.nombre tipoDoc ,u.documento documento,  u.nombre paciente, dep."fechaOcupacion" ocupa,  dep.disponibilidad accion FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed, sitios_serviciossedes serv, sitios_subserviciossedes subserv WHERE dep."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND  dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id and dep.disponibilidad = ' + "'" + str('O') + "'" + ' ORDER By dep.numero, dep."fechaOcupacion"'
+    print(detalle)
+
+    curx.execute(detalle)
+
+    for id,sede, servicio,subservicio, nombre, tipoDoc,  documento, paciente, ocupa, accion in curx.fetchall():
+            censo.append({"model": "ingresos.ingresos", "pk": id, "fields":
+                {'id':id,'sede': sede, 'servicio':servicio, 'subservicio':subservicio, 'nombre':nombre, 'tipoDoc': tipoDoc, 'Documento': documento, 'paciente': paciente,
+                 'ocupa': ocupa, 'accion': accion}})
+
+    miConexionx.close()
+    print("censo = " , censo)
+    context['censo'] = censo
+
+
+    serialized1 = json.dumps(censo, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')

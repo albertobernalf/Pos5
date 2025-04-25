@@ -1310,9 +1310,12 @@ function cargarTablaAbonosPaciente()
                 </div>
                 <form id="postFormCrearAbonos" name="postFormCrearAbonos" class="form-horizontal"  novalidate>
                     {% csrf_token %}
-                    <input type="hidden" name="post_id" id="post_id">
-                    <input type="hidden" id="sede22" name="sede22" value = "{{Sede}}">
-                     <input type="hidden" id="ingresoId22" name="ingresoId22" value ="">
+                     <input type="hidden" name="post_id" id="post_id">
+                     <input type="hidden" id="sede22"        name="sede22" value = "{{Sede}}">
+                     <input type="hidden" id="ingresoId22"   name="ingresoId22" value ="">
+ 		     <input type="hidden" id="username22_id" name="username22_id" value ="{{Username_id}}">
+
+
 
 			<div class="col">
 				<label for="tipoPago" class="col-sm-2 control-label">Tipo Pago:</label>
@@ -1546,27 +1549,7 @@ function cargarTablaAbonosPaciente()
 
     <article id="Habitaciones">
         <center><h3>Mantenimiento de Habitaciones</h3></center>
-            <table class="table  " style="height: 50px; background-color:LightGray;  width:100%;">
-                <tr>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                        <table class="table" style="height: 5px; background-color:LightGray; BORDERCOLOR=RED ; border: 8px solid black; border-color: #96D4D4;  width:99%;">
-                            <form class="form-inline" action="/crearMantHabitacionesDef/" method="POST" id="FormaManthabitaciones">
-
-
-
-                            </form>
-                        </table>
-                    </td>
-                    <td>
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-            </table>
+          
 
     </article>
 
@@ -1767,6 +1750,46 @@ function cargarTablaAbonosPaciente()
     <article id="Reversar">
         <center><h3>Reversar salida Clinica</h3></center>
     </article>
+
+    <article id="Censo">
+
+ <!-- INICIO TABLE DE  EL DATATABLE  -->
+
+		<div class="container my-2">
+             
+   			   <div class="row">
+
+                                        <table  id= "tablaCenso" class="display table table-striped table-sm fs-6 nowrap" style="width: 100%;">
+                                           <thead>
+                                            <tr>    
+					<bold>                                  
+
+					<th>Sede</th> 
+					<th>Servicio</th>
+					<th>Subservicio</th>
+					<th>Nombre</th>
+					<th>tipoDoc</th>
+					<th>Documento</th>
+					<th>Paciente</th>
+					<th>Ocupa</th>
+					<th>Accion</th>
+					<th>Sel</th>
+                                      
+					</bold>                                  
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+
+		<!--  FIN DATATABLE -->
+
+
+    </article>
+
 
 <article id="Furips">
 
@@ -2237,8 +2260,12 @@ function cargarTablaAbonosPaciente()
                 class="tab-text"> </span> Abonos </a></li>
         <li><a href="#CambioServicio"><span class="fa-solid fa-user-doctor-message"></span> <span
                 class="tab-text"> </span> Cambio de servicio </a></li>
+        <li><a href="#Censo"><span class="fa-solid fa-user-doctor-message"></span> <span
+                class="tab-text"> </span> Censo Pacientes
+           </a></li>
+
         <li><a href="#Habitaciones"><span class="fa-solid fa-user-doctor-message"></span> <span
-                class="tab-text"> </span> Mant.Habitaciones
+                class="tab-text"> </span> Historico Habitaciones
            </a></li>
         <li><a href="#Responsables"><span class="fa-solid fa-user-doctor-message"></span> <span
                 class="tab-text"> </span> Responsables
