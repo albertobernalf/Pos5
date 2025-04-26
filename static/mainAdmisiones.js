@@ -1151,7 +1151,7 @@ function AUsuario()
 		var busDocumentoSel = document.getElementById("busDocumentoSel").value;
    var nombre = document.getElementById("nombre1").value;
 
-   alert("Documento = " +  documento);
+  // alert("Documento = " +  documento);
 
 	var genero = document.getElementById("genero").value;
 	var pais = document.getElementById("pais").value;
@@ -1169,7 +1169,7 @@ function AUsuario()
 	var ocupacion = document.getElementById("ocupaciones").value;
 	var correo = document.getElementById("correo").value;
 	var fechaNacio = document.getElementById("fechaNacio").value;
-	alert("fechaNacio = " + fechaNacio);
+	//alert("fechaNacio = " + fechaNacio);
 
 	var centrosc = document.getElementById("centrosc").value;
 	var tiposUsuario = document.getElementById("tiposUsuario").value;
@@ -1177,37 +1177,87 @@ function AUsuario()
 
 //	alert("centroC_id = " +  centrosC_id);
 
+if (genero =='')
+		{
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Genero';
+		throw "Error";
+		}
+
+				if (fechaNacio =='')
+		{
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Fecha nacimiento';
+		throw "Error";
+		}
+
+
+
+		if (pais =='')
+		{
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Pais';
+		throw "Error";
+		}
+
+
+
 	if (departamentos =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Departamento';
-		return;
+		throw "Error";
 		}
+
+			if (municipio =='')
+		{
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Municipio';
+		throw "Error";
+		}
+
+			if (localidad =='')
+		{
+
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Localidad';
+		throw "Error";
+		}
+
+
+
 		if (ciudades =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Ciudad';
-		return;
+		throw "Error";
 		}
 		if (direccion =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Direccion';
-		return;
+		throw "Error";
 		}
-		if (municipio =='')
+		if (telefono =='')
 		{
-		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Municipio';
-		return;
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Telefono';
+		throw "Error"
 		}
-		if (localidad =='')
+		if (estadoCivil =='')
 		{
-		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Localidad';
-		return;
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Estado Civil';
+		throw "Error"
 		}
+
+			if (centrosC_id =='')
+		{
+		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Centro de donde viene el paciente';
+		throw "Error"
+		}
+
+
 
 		if (tiposUsuario =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Tipo Usuario';
-		return;
+		throw "Error"
 		}
 
 
@@ -1242,12 +1292,12 @@ function AUsuario()
 
 // Aqui combos para Cambio de servicio
 
-$(document).on('change', '#servicioCambio', function(event) {
+$(document).on('click', '#servicioCambio', function(event) {
 
     alert (" Entre cambio Servicio");
     var serv =   $(this).val()
     var sede =  document.getElementById("sede").value;
-    alert ("envio = " + serv + "   " + sede);
+    //alert ("envio = " + serv + "   " + sede);
 
 
         $.ajax({
@@ -1279,13 +1329,13 @@ $(document).on('change', '#servicioCambio', function(event) {
 
 
 
-$(document).on('change', '#subServicioCambio', function(event) {
+$(document).on('click', '#subServicioCambio', function(event) {
     alert (" Entre cambio Habitacion Servicio");
        var select = document.getElementById("servicioCambio"); /*Obtener el SELECT */
        var serv = select.options[select.selectedIndex].value; /* Obtener el valor */
        var subServ =   $(this).val()
-       alert("voy a enviar este servicio   = " + serv);
-       alert("voy a enviar este Subservicio   = " + subServ);
+    //   alert("voy a enviar este servicio   = " + serv);
+      //  alert("voy a enviar este Subservicio   = " + subServ);
        var sede =  document.getElementById("sede").value;
 
         $.ajax({
@@ -1514,8 +1564,8 @@ $(document).on('change', '#busDocumentoSel22', function(event) {
 
 	var documento = document.getElementById("busDocumentoSel22").value;
 
-    alert("Envio TIPOdOC = " + tipoDoc);
-    alert("Envio a la MOdal documento = " + documento);
+   // alert("Envio TIPOdOC = " + tipoDoc);
+  //  alert("Envio a la MOdal documento = " + documento);
 
 
 	$.ajax({
@@ -1524,11 +1574,11 @@ $(document).on('change', '#busDocumentoSel22', function(event) {
 		data: {'tipoDoc':tipoDoc,'documento':documento},
 		success: function (Usuarios) {
 
-			 alert("entre DATOS MODAL y el nombre es = " + Usuarios.tipoDoc_id + " " +  Usuarios.documento);
+			// alert("entre DATOS MODAL y el nombre es = " + Usuarios.tipoDoc_id + " " +  Usuarios.documento);
 
                if ( Usuarios.tipoDoc_id == null)
 				{
-				alert("ENTRE DOCUMENTO EN BLANCO");
+				// alert("ENTRE DOCUMENTO EN BLANCO");
 
 				$('#tipoDoc1').val(tipoDoc);
 				$('#documento1').val(documento);
@@ -1555,8 +1605,9 @@ $(document).on('change', '#busDocumentoSel22', function(event) {
 				$('#correo').val(Usuarios.correo);
 				$('#centrosc').val(Usuarios.centrosc_id);
 				$('#tiposUsuario').val(Usuarios.tiposUsuario_id);
-			
+			 document.getElementById('nombre1').focus();
 				$('#usuariosModal').modal('show');
+
 				 //  $('#usuariosModal').modal({show:true});
 
 
@@ -2137,12 +2188,12 @@ $(document).on('change', '#busServicio22', function(event) {
 	           dataType : 'json',
 
 	  		success: function (respuesta) {
-				alert("DE REGRESO");
+				// alert("DE REGRESO");
 
 
 	  		   var options = '<option value="=================="></option>';
 	  		  var dato = JSON.parse(respuesta);
-			alert("esto devuelve = " + dato);
+		//	alert("esto devuelve = " + dato);
 
                      const $id21 = document.querySelector("#busSubServicio22");
  	      		     $("#busSubServicio22").empty();
@@ -2171,7 +2222,7 @@ $(document).on('change', '#busServicio22', function(event) {
 
 $(document).on('change', '#busSubServicio22', function(event) {
 
-       alert("Entre a cambiar el subservicio");	
+      //  alert("Entre a cambiar el subservicio");
 
        var select = document.getElementById("busServicio22"); /*Obtener el SELECT */
        var serv = select.options[select .selectedIndex].value; /* Obtener el valor */

@@ -735,3 +735,5 @@ campos por ej: eror de loalidad hasta ta que graba
 		--OPS PERO FALTA LA ÄRTE POSTCONSULTALIQUIDAION aqui meter lo mismo que se hco en admisiones.views GUARDA CONVEIOADMISION AH Y PROBARLO NO ? QUE NOO HE PROBADO
            -- ops cuando hay de arrancada una sin convenio y selecionan en facturacion_lñiquidacion inmediataenmte ERROR PAILAS VERIFICAR ETSO ojo
                 error ñlinea 367 de facturacion.vies
+		MEJOR DICHO CAMBIO LA LOGIACA ESA FUNCION HAY QUE MOCHARLE UNA PARTE , COMO YA TRAIGO EL CONVEIO o CERO SI NO TRRAE
+                      ES COMO SE HIXO EN ADMISIONES, PRIMERO SE VERIFICA SI HAY O NO QUE CREAR CABEZOTE SI ES CERO SE CREA CON CONVENIO NULL y SI TRAE CONVENIO SE CREA CON CONVENIO

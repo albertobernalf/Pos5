@@ -5060,7 +5060,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c ORDER BY p.nombre"
+        comando = "SELECT c.id,c.codigo id,c.nombre nombre FROM RIPS_ripsFinalidadConsulta c ORDER BY c.nombre"
 
         curt.execute(comando)
         print(comando)

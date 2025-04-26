@@ -118,16 +118,15 @@ WHERE dep."sedesClinica_id"  = 2 AND sed.id=dep."sedesClinica_id" AND sed.id = s
 	dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id and dep.disponibilidad = 'O'
 ORDER By dep.numero, dep."fechaOcupacion";
 
-comando = 'select sed.nombre sede, serv.nombre servicio, subserv.nombre subservicio, dep.nombre nombre, tp.nombre tipoDoc ,u.documento documento,  u.nombre paciente, dep."fechaOcupacion" ocupa,  dep.disponibilidad accion FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed, sitios_serviciossedes serv, sitios_subserviciossedes subserv WHERE dep."sedesClinica_id" ' + "'" + str(sede) + "'" + ' AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND  dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id and dep.disponibilidad = ' + "'" + str('O') + "' ORDER By dep.numero, dep."fechaOcupacion"'
-	'
+
 -- Query Historial deHabitaciones 
 
 select * from sitios_historialdependencias;
-
+select * from usuarios_usuarios;
  
 
-select sed.nombre, serv.nombre, subserv.nombre, dep.nombre nombre,  u.nombre paciente, his."fechaOcupacion" ocupa, his."fechaLiberacion" libera,tp.nombre tipoDoc ,
-	u.documento documento,  his.disponibilidad accion
+select sed.nombre, serv.nombre, subserv.nombre, dep.numero numero,   case when his.disponibilidad ='L' then 'Libera' else 'Ocupa' end accion,  case when his.disponibilidad ='O' then  his."fechaOcupacion" else  his."fechaLiberacion" end  fecha,
+ tp.nombre tipoDoc 	,	u.documento documento, 	u.nombre paciente
 FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed,
 		sitios_serviciossedes serv, sitios_subserviciossedes subserv, sitios_historialdependencias his
 WHERE his.dependencias_id = dep.id AND dep."sedesClinica_id"  = 2 AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND
@@ -135,4 +134,20 @@ WHERE his.dependencias_id = dep.id AND dep."sedesClinica_id"  = 2 AND sed.id=dep
 	dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id 
 ORDER By dep.numero, dep."fechaOcupacion";
 
+detalle ='select sed.nombre, serv.nombre, subserv.nombre, dep.numero numero,   case when his.disponibilidad = ' + "'" + str('L') + "'" + ' then ' + "'" +  str('Libera') + "'" + ' else ' + "'" + str('Ocupa') + "'" + ' end accion,  case when his.disponibilidad =' + "'" + str('O') + "'" + ' then  his."fechaOcupacion" else  his."fechaLiberacion" end  fecha, tp.nombre tipoDoc 	,	u.documento documento, 	u.nombre paciente FROM sitios_dependencias dep, usuarios_usuarios u, usuarios_tiposdocumento tp,sitios_sedesclinica sed, 	sitios_serviciossedes serv, sitios_subserviciossedes subserv, sitios_historialdependencias his WHERE his.dependencias_id = dep.id AND dep."sedesClinica_id"  = ' + "'" + str(sede) + "'" + ' AND sed.id=dep."sedesClinica_id" AND sed.id = serv."sedesClinica_id" AND sed.id = subserv."sedesClinica_id" AND dep."serviciosSedes_id" = serv.id and dep."subServiciosSedes_id" = subserv.id AND dep."tipoDoc_id" = u."tipoDoc_id" and dep.documento_id = u.id and u."tipoDoc_id" = tp.id  ORDER By dep.numero, dep."fechaOcupacion'
+select * from usuarios_usuarios
 
+select "sedesClinica_id",documento_id,* from triage_triage where documento_id=27;
+select "sedesClinica_id",documento_id,* from facturacion_liquidacion where documento_id=27;
+
+select * from clinico_historia where documento_id=38;
+select * from clinico_historiaexamenes where historia_id in (727,728);
+
+select * from facturacion_liquidacion where documento_id=19;
+delete  from facturacion_liquidacion where id=166;
+SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = 1 AND documento_id = 38 AND "consecAdmision" = 1 and convenio_id = '1'
+SELECT id, convenio_id  FROM facturacion_liquidacion WHERE "tipoDoc_id" = 1 AND documento_id = 38 AND "consecAdmision" = 1 and convenio_id = '1'
+
+select * from admisiones_ingresos;
+select * from facturacion_conveniospacienteingresos where documento_id=38; ;
+update facturacion_liquidacion set convenio_id=1 where documento_id=38;
