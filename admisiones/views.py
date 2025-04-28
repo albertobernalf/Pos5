@@ -4109,6 +4109,7 @@ def crearAdmisionDef(request):
         except Exception as e:
             # Aquí ya se hizo rollback automáticamente
             print("Se hizo rollback por:", e)
+            raise Exception("¡Ha ocurrido un error ENVIADO DESDE DJANGO!")
 
 
         # HASTA AQUIP TRANSACCIONALIDAD
@@ -5165,6 +5166,10 @@ def guardarUsuariosModal(request):
     if estadoCivil == '':
            estadoCivil="null"
 
+    if pais == '':
+           pais="null"
+
+
     if tiposUsuario_id == '':
            tiposUsuario_id="null"
 
@@ -5223,7 +5228,7 @@ def guardarUsuariosModal(request):
 
             else:
                 print("Entre a actualizar")
-                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + str(centrosc_id)  + ', "tiposUsuario_id" = ' + str(tiposUsuario_id) + ","   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= '  + str(estadoCivil)  + ', ocupacion_id = ' + str(ocupaciones)  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
+                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +    ', direccion  = ' + "'" +  str(direccion) + "'"  + ', pais_id = ' + "'" + str(pais) + "'"     + ', departamentos_id = ' + "'" + str(departamento) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + str(centrosc_id)  + ', "tiposUsuario_id" = ' + str(tiposUsuario_id) + ","   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= '  + str(estadoCivil)  + ', ocupacion_id = ' + str(ocupaciones)  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
                 print(comando)
 
             cur3.execute(comando)
@@ -5241,8 +5246,9 @@ def guardarUsuariosModal(request):
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
 
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         print("Finally")
@@ -5270,20 +5276,20 @@ def encuentraAdmisionModal(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, i."especialidadesMedicosIngreso_id" espMedico, diag1.nombre diagMedico, i."ViasIngreso_id" viasIngreso, i."causasExterna_id" causasExterna,i.regimen_id regimenes ,i."tiposCotizante_id"  cotizante,i.remitido remitido,i."ipsRemite_id" ips ,i."numManilla" numManilla, i."dxIngreso_id" dxIngreso, "contactoResponsable_id" responsable, "contactoAcompañante_id" acompanante  FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  left join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(Ingreso.tipoDoc_id) + "'" + ' and u.id = ' + "'" + str(Ingreso.documento_id) + "'" + ' and i.consec= ' + "'" + str(Ingreso.consec) + "'" + ' and i."fechaSalida" is null'
+        comando = 'SELECT tp.nombre tipoDoc,  u.documento documento, u.nombre  paciente , i.consec consec , i."fechaIngreso" ingreso , i."fechaSalida" salida, ser.nombre servicioNombreIng, dep.nombre dependenciasIngreso ,pla.nombre medicoIngreso, i."especialidadesMedicosIngreso_id" espMedico, diag1.nombre diagMedico, i."ViasIngreso_id" viasIngreso, i."causasExterna_id" causasExterna,i.regimen_id regimenes ,i."tiposCotizante_id"  cotizante,i.remitido remitido,i."ipsRemite_id" ips ,i."numManilla" numManilla, i."dxIngreso_id" dxIngreso, "contactoResponsable_id" responsable, "contactoAcompañante_id" acompanante , i.empresa_id empresa  FROM admisiones_ingresos i inner join usuarios_usuarios u on (u."tipoDoc_id" = i."tipoDoc_id" and u.id = i."documento_id" ) inner join sitios_dependencias dep on (dep."sedesClinica_id" = i."sedesClinica_id" and dep."tipoDoc_id" =  i."tipoDoc_id" and dep.documento_id =i."documento_id"  and dep.consec = i.consec) inner join usuarios_tiposDocumento tp on (tp.id = u."tipoDoc_id") inner join sitios_dependenciastipo deptip on (deptip.id = dep."dependenciasTipo_id") inner join sitios_serviciosSedes sd on (sd."sedesClinica_id" = i."sedesClinica_id") inner join clinico_servicios ser  on (ser.id = sd.servicios_id  and ser.id = i."serviciosIng_id" ) left join clinico_especialidades esp1 on (esp1.id = i."especialidadesMedicosIngreso_id" ) left join clinico_diagnosticos diag1 on (diag1.id = i."dxIngreso_id") left join clinico_medicos med1 on (med1.id =i."medicoIngreso_id") left join planta_planta pla on (pla.id =i."medicoIngreso_id")  left join clinico_viasIngreso vias on (vias.id = i."ViasIngreso_id") left join clinico_causasExterna cexterna on (cexterna.id = i."causasExterna_id") inner join clinico_regimenes reg on (reg.id = i.regimen_id) inner join clinico_tiposcotizante cot on (cot.id = i."tiposCotizante_id") left  join clinico_ips ips on (ips.id =i."ipsRemite_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and u."tipoDoc_id" = ' + "'" + str(Ingreso.tipoDoc_id) + "'" + ' and u.id = ' + "'" + str(Ingreso.documento_id) + "'" + ' and i.consec= ' + "'" + str(Ingreso.consec) + "'" + ' and i."fechaSalida" is null'
 
         print(comando)
         curt.execute(comando)
 
         Usuarios = {}
 
-        for tipoDoc,  documento,paciente ,consec ,  ingreso , salida, servicioNombreIng, dependenciasIngreso , medicoIngreso, espMedico,diagMedico, viasIngreso, causasExterna,regimenes, cotizante, remitido,ips , numManilla, dxIngreso,responsable, acompanante  in curt.fetchall():
+        for tipoDoc,  documento,paciente ,consec ,  ingreso , salida, servicioNombreIng, dependenciasIngreso , medicoIngreso, espMedico,diagMedico, viasIngreso, causasExterna,regimenes, cotizante, remitido,ips , numManilla, dxIngreso,responsable, acompanante, empresa  in curt.fetchall():
             Usuarios = {'tipoDoc': tipoDoc, 'documento': documento, 'paciente': paciente, 'ingreso': ingreso,
                         'salida': salida, 'servicioNombreIng': servicioNombreIng, 'dependenciasIngreso': dependenciasIngreso,
                         'medicoIngreso': medicoIngreso, 'espMedico': espMedico, 'diagMedico': diagMedico,
                         'viasIngreso': viasIngreso, 'causasExterna': causasExterna,
                         'regimenes': regimenes, 'cotizante': cotizante, 'remitido': remitido,
-                        'ips': ips, 'numManilla': numManilla, 'dxIngreso':dxIngreso,'responsable':responsable, 'acompanante':acompanante}
+                        'ips': ips, 'numManilla': numManilla, 'dxIngreso':dxIngreso,'responsable':responsable, 'acompanante':acompanante,'empresa':empresa}
 
         miConexiont.close()
         print(Usuarios)
@@ -5344,8 +5350,6 @@ def cambioServicio(request):
     cambioServicio = {}
     cambioServicio['Usuarios'] = usuarios
 
-
-
     dependenciasActual = {}
 
     # Ahora llevamos la dependencia Actual
@@ -5353,7 +5357,7 @@ def cambioServicio(request):
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                   password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'select dep.id id , dep.numero numero , dep.nombre depNombre, sd.nombre servicio, sub.nombre subServicio,   dep."tipoDoc_id" tipoDocId, dep.documento_id documentoId, dep."fechaRegistro" fechaRegistro, dep.disponibilidad dispo,dep.consec consec ,dep."fechaOcupacion" ocupacion from sitios_dependencias dep, sitios_serviciosSedes sd, sitios_subServiciosSedes sub where dep."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and dep."tipoDoc_id"=' + "'" + str(datosTip.id) + "'" + ' and dep.documento_id=' + "'" + str(datosDoc.id) + "'" + ' and dep.consec = ' + str(consec) + '  and dep.disponibilidad = ' + "'" + str('O') + "'" + ' and sub."serviciosSedes_id" = sd.id and sd.id=dep."serviciosSedes_id" and sub.id= dep."subServiciosSedes_id"'
+    comando = 'select dep.id id , dep.numero numero , dep.nombre depNombre, sd.nombre servicio, sub.nombre subServicio,   dep."tipoDoc_id" tipoDocId, dep.documento_id documentoId, dep."fechaRegistro" fechaRegistro, dep.disponibilidad dispo,dep.consec consec ,dep."fechaOcupacion" ocupacion from sitios_dependencias dep, sitios_serviciosSedes sd, sitios_subServiciosSedes sub where dep."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' and dep."tipoDoc_id"=' + "'" + str(datosTip.id) + "'" + ' and dep.documento_id=' + "'" + str(datosDoc.id) + "'" + ' and dep.consec = ' + str(datos.consec) + '  and dep.disponibilidad = ' + "'" + str('O') + "'" + ' and sub."serviciosSedes_id" = sd.id and sd.id=dep."serviciosSedes_id" and sub.id= dep."subServiciosSedes_id"'
 
     print(comando)
     curt.execute(comando)
@@ -5879,9 +5883,9 @@ def GuardaConvenioAdmision(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
@@ -5950,9 +5954,9 @@ def GuardaAbonosAdmision(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
@@ -6022,9 +6026,9 @@ def PostDeleteAbonosAdmision(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
             if miConexion3:
@@ -6066,9 +6070,9 @@ def GuardarResponsableAdmision(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
 
 
@@ -6113,9 +6117,9 @@ def GuardarAcompananteAdmision(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
 
 
@@ -6172,9 +6176,9 @@ def GuardaFurips(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
@@ -6368,6 +6372,22 @@ def ActualizaAdmision(request):
     escogeModulo = request.POST['escogeModulo']
     permisosDetalle = request.POST['permisosDetalle']
 
+
+    ripsDestinoUsuarioEgresoRecienNacido = request.POST['ripsDestinoUsuarioEgresoRecienNacido']
+    ripsEdadGestacional = request.POST['ripsEdadGestacional']
+    ripsNumConsultasCPrenatal = request.POST['ripsNumConsultasCPrenatal']
+    ripsPesoRecienNacido = request.POST['ripsPesoRecienNacido']
+    ripsRecienNacido = request.POST['ripsRecienNacido']
+    ripsCausaMotivoAtencion = request.POST['ripsCausaMotivoAtencion']
+    ripsCondicionDestinoUsuarioEgreso = request.POST['ripsCondicionDestinoUsuarioEgreso']
+    ripsGrupoServicios = request.POST['ripsGrupoServicios']
+    ripsViaIngresoServicioSalud = request.POST['ripsViaIngresoServicioSalud']
+    ripsmodalidadGrupoServicioTecSal = request.POST['ripsmodalidadGrupoServicioTecSal']
+    ripsFinalidadConsulta = request.POST['ripsFinalidadConsulta']
+    ripsServiciosIng = request.POST['ripsServiciosIng']
+
+
+
     ## Gauardo laActualizacion
 
     miConexion3 = None
@@ -6375,7 +6395,7 @@ def ActualizaAdmision(request):
 
             miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
-            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' "ipsRemite_id" =    ' + str(ips) + "," +  ' "contactoResponsable_id" = ' + str(responsables) + "," +  '"contactoAcompañante_id" = ' + str(acompanantes) + "," + '"tiposCotizante_id" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna_id" =   ' + "'" + str(causasExterna) + "'," +  'regimen_id = ' + "'" + str(regimenes) + "'," +   '"ViasIngreso_id" = ' + str(viasIngreso) + "," + '"medicoIngreso_id" = ' + str(medicoIngreso) + "," +  ' "especialidadesMedicosIngreso_id" = ' + str(busEspecialidad) + "," + 'empresa_id = '  + str(empresa) +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
+            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' "ipsRemite_id" =    ' + str(ips) + "," +  ' "contactoResponsable_id" = ' + str(responsables) + "," +  '"contactoAcompañante_id" = ' + str(acompanantes) + "," + '"tiposCotizante_id" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna_id" =   ' + "'" + str(causasExterna) + "'," +  'regimen_id = ' + "'" + str(regimenes) + "'," +   '"ViasIngreso_id" = ' + str(viasIngreso) + "," + '"medicoIngreso_id" = ' + str(medicoIngreso) + "," +  ' "especialidadesMedicosIngreso_id" = ' + str(busEspecialidad) + "," + 'empresa_id = '  + str(empresa)  + "," +  ' "ripsDestinoUsuarioEgresoRecienNacido" = ' + str(ripsDestinoUsuarioEgresoRecienNacido) +  "," +  ' "ripsEdadGestacional" = ' + str(ripsEdadGestacional) + "," +  ' "ripsNumConsultasCPrenatal" = ' + str(ripsNumConsultasCPrenatal) + "," +  ' "ripsPesoRecienNacido" = ' + str(ripsPesoRecienNacido) + "," +  ' "ripsRecienNacido" = ' + str(ripsRecienNacido) + "," +  ' "ripsCausaMotivoAtencion" = ' + str(ripsCausaMotivoAtencion) + "," +  ' "ripsCondicionDestinoUsuarioEgreso" = ' + str(ripsCondicionDestinoUsuarioEgreso) + "," +  ' "ripsGrupoServicios" = ' + str(ripsGrupoServicios) + "," +  ' "ripsViaIngresoServicioSalud" = ' + str(ripsViaIngresoServicioSalud) +  "," +  ' "ripsmodalidadGrupoServicioTecSal" = ' + str(ripsmodalidadGrupoServicioTecSal) + "," +  ' "ripsFinalidadConsulta" = ' + str(ripsFinalidadConsulta) +  "," +  ' "ripsServiciosIng" = ' + str(ripsServiciosIng)   +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
             print(comando)
 
             cur3.execute(comando)
@@ -6389,9 +6409,9 @@ def ActualizaAdmision(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
-
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
+        raise error
+        #print ("Voy a hacer el jsonresponde")
+        #return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         print("Finally")

@@ -528,7 +528,7 @@ function arrancaAdmisiones(valorTabla,valorData)
                 { data: "fields.subservicio"},
                 { data: "fields.nombre"},
                 { data: "fields.tipoDoc"},
-                { data: "fields.documento"},
+                { data: "fields.Documento"},
                 { data: "fields.paciente"},
                 { data: "fields.ocupa"},
                 { data: "fields.accion"},
@@ -622,7 +622,7 @@ function arrancaAdmisiones(valorTabla,valorData)
                 { data: "fields.accion"},
                 { data: "fields.fecha"},
                 { data: "fields.tipoDoc"},
-                { data: "fields.documento"},
+                { data: "fields.Documento"},
                 { data: "fields.paciente"},
 
 
@@ -807,11 +807,11 @@ window.addEventListener('load', async () => {
             $('#modelHeading').html("Creacion Abonos en admision");
             $('#crearAbonosModel').modal('show');
                     },
-	   		    error: function (xhr, status, error) {
+	   		    error: function (request, status, error) {
 				//alert("Error Ajax" + errorThrown)
 				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
 
-				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesErrorModalUsuario").innerHTML =  'Error' + ': ' + request.responseText;
 	   	    	}
 
 	           });
@@ -865,11 +865,10 @@ window.addEventListener('load', async () => {
                 },
 
 
-	   		    error: function (xhr, status, error) {
+	   		    error: function (request, status, error) {
 				//alert("Error Ajax" + errorThrown)
-				 alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
 
-				document.getElementById("mensajesErrorModalConvenio").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesErrorModalConvenio").innerHTML =  'Error' + ': ' + request.responseText;
 
 		  var table = $('#tablaConveniosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 	          table.ajax.reload();
@@ -946,11 +945,9 @@ window.addEventListener('load', async () => {
 			            var table = $('#tablaConveniosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 		                table.ajax.reload();
                     },
-	   		    error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+	   		    error: function (request, status, error) {
 
-				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesErrorModalUsuario").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}
 
@@ -983,11 +980,9 @@ window.addEventListener('load', async () => {
 			            var table = $('#tablaConveniosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 		                table.ajax.reload();
                     },
-	   		    error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+	   		    error: function (request, status, error) {
 
-				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesErrorModalUsuario").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}
 
@@ -1168,8 +1163,7 @@ function AUsuario()
 	var estadoCivil = document.getElementById("estadoCivil").value;
 	var ocupacion = document.getElementById("ocupaciones").value;
 	var correo = document.getElementById("correo").value;
-	var fechaNacio = document.getElementById("fechaNacio").value;
-	//alert("fechaNacio = " + fechaNacio);
+	var fechaNacio = document.getElementById("fechaNacioU").value;
 
 	var centrosc = document.getElementById("centrosc").value;
 	var tiposUsuario = document.getElementById("tiposUsuario").value;
@@ -1181,14 +1175,14 @@ if (genero =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Genero';
-		throw "Error";
+		return;
 		}
 
 				if (fechaNacio =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Fecha nacimiento';
-		throw "Error";
+		return;
 		}
 
 
@@ -1197,7 +1191,7 @@ if (genero =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Pais';
-		throw "Error";
+        return;
 		}
 
 
@@ -1206,21 +1200,21 @@ if (genero =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Departamento';
-		throw "Error";
+        return;
 		}
 
 			if (municipio =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Municipio';
-		throw "Error";
+		return;
 		}
 
 			if (localidad =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Localidad';
-		throw "Error";
+		return;
 		}
 
 
@@ -1228,28 +1222,28 @@ if (genero =='')
 		if (ciudades =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Ciudad';
-		throw "Error";
+		return;
 		}
 		if (direccion =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Direccion';
-		throw "Error";
+		return;
 		}
 		if (telefono =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Telefono';
-		throw "Error"
+		return;
 		}
 		if (estadoCivil =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Estado Civil';
-		throw "Error"
+		return;
 		}
 
 			if (centrosC_id =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Centro de donde viene el paciente';
-		throw "Error"
+		return;
 		}
 
 
@@ -1257,33 +1251,49 @@ if (genero =='')
 		if (tiposUsuario =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Tipo Usuario';
-		throw "Error"
+		return;
 		}
-
-
-
 
 
 	$.ajax({
 		type: 'POST',
     	url: '/guardarUsuariosModal/',
-		data: {'tipoDoc':tipoDoc,'documento':documento,'nombre':nombre,'genero':genero,'fechaNacio':fechaNacio, 'pais':pais, 'departamentos':departamentos, 'ciudades':ciudades,'direccion':direccion,'telefono':telefono, 'contacto':contacto, "centrosC_id":centrosC_id, 'tiposUsuario':tiposUsuario, 'municipios':municipio,'localidades':localidad, 'estadoCivil':estadoCivil,'ocupaciones':ocupacion, 'correo':correo},
+		data: {'tipoDoc':tipoDoc,
+		        'documento':documento,
+		        'nombre':nombre,
+		        'genero':genero,
+		        'fechaNacio':fechaNacio,
+		         'pais':pais,
+		          'departamentos':departamentos,
+		          'ciudades':ciudades,
+		          'direccion':direccion,
+		          'telefono':telefono,
+		          'contacto':contacto,
+		           "centrosC_id":centrosC_id,
+		            'tiposUsuario':tiposUsuario,
+		            'municipios':municipio,
+		            'localidades':localidad,
+		            'estadoCivil':estadoCivil,
+		            'ocupaciones':ocupacion,
+		            'correo':correo},
 
 		success: function (respuesta) {
 
-			$('#usuariosModal').modal().hide();
+			$('#usuariosModal').modal('hide');
  
 	                $('#mensajes').html(respuesta.Mensaje);
 
-			$('#usuariosModal').modal('hide');   
 
 
                     },
-	   		    error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+	   		    error: function (request, status, error) {
+				//alert("Error Ajax" + error);
+				//alert("Error Ajax" + request);
 
-				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+
+				//alert("Ocurrió un error al procesar la solicitud: " + request.responseText);
+
+				document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error' + ': ' + request.responseText;
 
 	   	    	}
 	});
@@ -1578,21 +1588,23 @@ $(document).on('change', '#busDocumentoSel22', function(event) {
 
                if ( Usuarios.tipoDoc_id == null)
 				{
-				// alert("ENTRE DOCUMENTO EN BLANCO");
 
 				$('#tipoDoc1').val(tipoDoc);
 				$('#documento1').val(documento);
 				}
 			     else
  				{
- 				alert("ENTRE DOCUMENTO CON VALOR ");
                                 $('#tipoDoc1').val(Usuarios.tipoDoc_id);
 				$('#documento1').val(Usuarios.documento);
 				}
-
 				$('#nombre1').val(Usuarios.nombre);
 				$('#genero').val(Usuarios.genero);
-				$('#pais').val(Usuarios.pais);	
+				//$('#fechaNacioU').val(Usuarios.fechaNacio);
+				alert("fecha = " + Usuarios.fechaNacio);
+
+				document.getElementById("fechaNacioU").value = Usuarios.fechaNacio;
+
+				$('#pais').val(Usuarios.pais_id);
 				$('#departamentos').val(Usuarios.departamento);
 				$('#municipios').val(Usuarios.municipio);
 				$('#localidades').val(Usuarios.localidad);
@@ -1605,11 +1617,10 @@ $(document).on('change', '#busDocumentoSel22', function(event) {
 				$('#correo').val(Usuarios.correo);
 				$('#centrosc').val(Usuarios.centrosc_id);
 				$('#tiposUsuario').val(Usuarios.tiposUsuario_id);
+
 			 document.getElementById('nombre1').focus();
+
 				$('#usuariosModal').modal('show');
-
-				 //  $('#usuariosModal').modal({show:true});
-
 
 
 
@@ -1736,6 +1747,8 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 
 		            $('#tipoDoc').val(Usuarios.tipoDoc);
        			    $('#busDocumentoSel').val(Usuarios.documento);
+       			  $('#paciente').val(Usuarios.paciente);
+       			      			    $('#empresaE').val(Usuarios.empresa);
       			    $('#busServicio2').val(Usuarios.servicioNombreIng);
 
 
@@ -1943,11 +1956,9 @@ $(document).on('change', '#tiposAntecedente', function(event) {
  	      		      });
 
                     },
-		 error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+		 error: function (request, status, error) {
 
-				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}            
 	     });
@@ -2520,11 +2531,9 @@ function guardaCambioServicio()
 
 
                     },
-		 error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+		 error: function (request, status, error) {
 
-				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}            
 	});
@@ -2579,11 +2588,9 @@ $(document).on('click', '#Convenios', function(event) {
 
 
                 },
-		 error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+		 error: function (request, status, error) {
 
-				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}            
 });
@@ -2617,11 +2624,9 @@ $(document).on('click', '#Convenios', function(event) {
 					  $("#mensajes").html(data['message']);
 
                 },
-		 error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+		 error: function (request, status, error) {
 
-				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}
 
@@ -2672,11 +2677,9 @@ var valor = $('input[name="ingresoId"]:checked').val();
 		 $("#mensajes").html(" !  Registro Actualizado !");
 
                     },
-			 error: function (xhr, status, error) {
-				//alert("Error Ajax" + errorThrown)
-				// alert("Ocurrió un error al procesar la solicitud: " + xhr.responseText);
+			 error: function (request, status, error) {
 
-				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+				document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}	});
 
@@ -2721,7 +2724,20 @@ function actualizaAdmision()
 	var username_id = document.getElementById("username_id").value;
 	var permisosDetalle = document.getElementById("permisosDetalle").value;
 
-	
+	// RIPS
+
+	var ripsDestinoUsuarioEgresoRecienNacido = document.getElementById("ripsDestinoUsuarioEgresoRecienNacidoX").value;
+	var ripsEdadGestacional = document.getElementById("ripsEdadGestacionalX").value;
+	var ripsNumConsultasCPrenatal = document.getElementById("ripsNumConsultasCPrenatalX").value;
+	var ripsPesoRecienNacido = document.getElementById("ripsPesoRecienNacidoX").value;
+	var ripsRecienNacido = document.getElementById("ripsRecienNacidoX").value;
+	var ripsCausaMotivoAtencion = document.getElementById("ripsCausaMotivoAtencionX").value;
+	var ripsCondicionDestinoUsuarioEgreso = document.getElementById("ripsCondicionDestinoUsuarioEgresoX").value;
+	var ripsGrupoServicios = document.getElementById("ripsGrupoServiciosX").value;
+	var ripsViaIngresoServicioSalud = document.getElementById("ripsViaIngresoServicioSaludX").value;
+	var ripsmodalidadGrupoServicioTecSal = document.getElementById("ripsmodalidadGrupoServicioTecSalX").value;
+	var ripsFinalidadConsulta = document.getElementById("ripsFinalidadConsultaX").value;
+	var ripsServiciosIng = document.getElementById("ripsServiciosIng").value;
 
 
 	$.ajax({
@@ -2752,7 +2768,20 @@ function actualizaAdmision()
 			 'permisosGrales':permisosGrales,
 			 'escogeModulo':escogeModulo,
 			 'username_id':username_id,
-			 'permisosDetalle':permisosDetalle},
+			 'permisosDetalle':permisosDetalle,
+			 'ripsDestinoUsuarioEgresoRecienNacido':ripsDestinoUsuarioEgresoRecienNacido,
+			 'ripsEdadGestacional':ripsEdadGestacional,
+			 'ripsNumConsultasCPrenatal':ripsNumConsultasCPrenatal,
+			 'ripsPesoRecienNacido':ripsPesoRecienNacido,
+			 'ripsRecienNacido':ripsRecienNacido,
+			 'ripsCausaMotivoAtencion':ripsCausaMotivoAtencion,
+			 'ripsCondicionDestinoUsuarioEgreso':ripsCondicionDestinoUsuarioEgreso,
+			 'ripsGrupoServicios':ripsGrupoServicios,
+			 'ripsViaIngresoServicioSalud':ripsViaIngresoServicioSalud,
+			 'ripsmodalidadGrupoServicioTecSal':ripsmodalidadGrupoServicioTecSal,
+			 'ripsFinalidadConsulta':ripsFinalidadConsulta,
+			 'ripsServiciosIng':ripsServiciosIng},
+
 
 		success: function (data2) {
 
@@ -2770,10 +2799,18 @@ function actualizaAdmision()
 	    dataTableAdmisionesInitialized = true;
 
                     },
-		 error: function (xhr, status, error) {
+		 error: function (request, status, error) {
 
 				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 
 	   	    	}            
 	});
 };
+
+function CrearAdm()
+{
+
+	alert("CrearAdmisionDef a poner foco");
+			 document.getElementById('empresaC').focus();
+
+	};
