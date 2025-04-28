@@ -5170,6 +5170,11 @@ def guardarUsuariosModal(request):
            pais="null"
 
 
+    if ciudad == '':
+           ciudad="null"
+
+
+
     if tiposUsuario_id == '':
            tiposUsuario_id="null"
 
@@ -5228,7 +5233,7 @@ def guardarUsuariosModal(request):
 
             else:
                 print("Entre a actualizar")
-                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +    ', direccion  = ' + "'" +  str(direccion) + "'"  + ', pais_id = ' + "'" + str(pais) + "'"     + ', departamentos_id = ' + "'" + str(departamento) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + str(centrosc_id)  + ', "tiposUsuario_id" = ' + str(tiposUsuario_id) + ","   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= '  + str(estadoCivil)  + ', ocupacion_id = ' + str(ocupaciones)  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
+                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'"  + ',ciudades_id = ' + "'" + str(ciudad) + "'"  +    ', direccion  = ' + "'" +  str(direccion) + "'"  + ', pais_id = ' + "'" + str(pais) + "'"     + ', departamentos_id = ' + "'" + str(departamento) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" + str(fechaNacio) + "'"   + ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + str(centrosc_id)  + ', "tiposUsuario_id" = ' + str(tiposUsuario_id) + ","   + ' municipio_id = ' + "'" + str(municipio) + "'" +  ', localidad_id = ' + "'" + str(localidad) + "'" + ', "estadoCivil_id"= '  + str(estadoCivil)  + ', ocupacion_id = ' + str(ocupaciones)  + ', correo = ' + "'" + str(correo) + "'"  + ' WHERE "tipoDoc_id" = ' + str(tipoDoc_id) + ' AND documento = ' + "'" + str(documento) + "'"
                 print(comando)
 
             cur3.execute(comando)
@@ -5855,7 +5860,7 @@ def GuardaConvenioAdmision(request):
 
             try:
                 with transaction.atomic():
-                    existeLiquidacion = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consec)
+                    existeLiquidacion = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consec, convenio_id = convenio)
                     hayLiquidacion=existeLiquidacion.id
 
             except Exception as e:
@@ -5866,7 +5871,7 @@ def GuardaConvenioAdmision(request):
             if (hayLiquidacion==0):
                 comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
             else:
-                comando2 = 'UPDATE facturacion_Liquidacion SET ocnvenio_id = ' + "'" + str(convenio) + "' WHERE id =" + str(hayLiquidacion)
+                comando2 = 'UPDATE facturacion_Liquidacion SET convenio_id = ' + "'" + str(convenio) + "' WHERE id =" + str(hayLiquidacion)
             print("comando1= ", comando1)
             print("comando2= ", comando2)
 
@@ -6387,6 +6392,31 @@ def ActualizaAdmision(request):
     ripsServiciosIng = request.POST['ripsServiciosIng']
 
 
+    if ripsDestinoUsuarioEgresoRecienNacido=='':
+        ripsDestinoUsuarioEgresoRecienNacido='null'
+    if ripsEdadGestacional=='':
+        ripsEdadGestacional='null'
+    if ripsNumConsultasCPrenatal=='':
+        ripsNumConsultasCPrenatal='null'
+    if ripsPesoRecienNacido=='':
+        ripsPesoRecienNacido='null'
+    if ripsRecienNacido=='':
+        ripsRecienNacido='null'
+    if ripsCausaMotivoAtencion=='':
+        ripsCausaMotivoAtencion='null'
+    if ripsCondicionDestinoUsuarioEgreso=='':
+        ripsCondicionDestinoUsuarioEgreso='null'
+    if ripsGrupoServicios=='':
+        ripsGrupoServicios='null'
+    if ripsViaIngresoServicioSalud=='':
+        ripsViaIngresoServicioSalud='null'
+    if ripsmodalidadGrupoServicioTecSal=='':
+        ripsmodalidadGrupoServicioTecSal='null'
+    if ripsFinalidadConsulta=='':
+        ripsFinalidadConsulta='null'
+    if ripsServiciosIng=='':
+        ripsServiciosIng='null'
+
 
     ## Gauardo laActualizacion
 
@@ -6395,7 +6425,7 @@ def ActualizaAdmision(request):
 
             miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
-            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' "ipsRemite_id" =    ' + str(ips) + "," +  ' "contactoResponsable_id" = ' + str(responsables) + "," +  '"contactoAcompañante_id" = ' + str(acompanantes) + "," + '"tiposCotizante_id" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna_id" =   ' + "'" + str(causasExterna) + "'," +  'regimen_id = ' + "'" + str(regimenes) + "'," +   '"ViasIngreso_id" = ' + str(viasIngreso) + "," + '"medicoIngreso_id" = ' + str(medicoIngreso) + "," +  ' "especialidadesMedicosIngreso_id" = ' + str(busEspecialidad) + "," + 'empresa_id = '  + str(empresa)  + "," +  ' "ripsDestinoUsuarioEgresoRecienNacido" = ' + str(ripsDestinoUsuarioEgresoRecienNacido) +  "," +  ' "ripsEdadGestacional" = ' + str(ripsEdadGestacional) + "," +  ' "ripsNumConsultasCPrenatal" = ' + str(ripsNumConsultasCPrenatal) + "," +  ' "ripsPesoRecienNacido" = ' + str(ripsPesoRecienNacido) + "," +  ' "ripsRecienNacido" = ' + str(ripsRecienNacido) + "," +  ' "ripsCausaMotivoAtencion" = ' + str(ripsCausaMotivoAtencion) + "," +  ' "ripsCondicionDestinoUsuarioEgreso" = ' + str(ripsCondicionDestinoUsuarioEgreso) + "," +  ' "ripsGrupoServicios" = ' + str(ripsGrupoServicios) + "," +  ' "ripsViaIngresoServicioSalud" = ' + str(ripsViaIngresoServicioSalud) +  "," +  ' "ripsmodalidadGrupoServicioTecSal" = ' + str(ripsmodalidadGrupoServicioTecSal) + "," +  ' "ripsFinalidadConsulta" = ' + str(ripsFinalidadConsulta) +  "," +  ' "ripsServiciosIng" = ' + str(ripsServiciosIng)   +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
+            comando = 'UPDATE ADMISIONES_INGRESOS SET "numManilla" = ' + "'" + str(numManilla) + "'," + ' "ipsRemite_id" =    ' + str(ips) + "," +  ' "contactoResponsable_id" = ' + str(responsables) + "," +  '"contactoAcompañante_id" = ' + str(acompanantes) + "," + '"tiposCotizante_id" = ' + "'" + str(tiposCotizante) + "'," +  '"causasExterna_id" =   ' + "'" + str(causasExterna) + "'," +  'regimen_id = ' + "'" + str(regimenes) + "'," +   '"ViasIngreso_id" = ' + str(viasIngreso) + "," + '"medicoIngreso_id" = ' + str(medicoIngreso) + "," +  ' "especialidadesMedicosIngreso_id" = ' + str(busEspecialidad) + "," + 'empresa_id = '  + str(empresa)  + "," +  ' "ripsDestinoUsuarioEgresoRecienNacido_id" = ' + str(ripsDestinoUsuarioEgresoRecienNacido) +  "," +  ' "ripsEdadGestacional" = ' + str(ripsEdadGestacional) + "," +  ' "ripsNumConsultasCPrenatal" = ' + str(ripsNumConsultasCPrenatal) + "," +  ' "ripsPesoRecienNacido" = ' + str(ripsPesoRecienNacido) + "," +  ' "ripsRecienNacido" = ' + str(ripsRecienNacido) + "," +  ' "ripsCausaMotivoAtencion_id" = ' + str(ripsCausaMotivoAtencion) + "," +  ' "ripsCondicionDestinoUsuarioEgreso_id" = ' + str(ripsCondicionDestinoUsuarioEgreso) + "," +  ' "ripsGrupoServicios_id" = ' + str(ripsGrupoServicios) + "," +  ' "ripsViaIngresoServicioSalud_id" = ' + str(ripsViaIngresoServicioSalud) +  "," +  ' "ripsmodalidadGrupoServicioTecSal_id" = ' + str(ripsmodalidadGrupoServicioTecSal) + "," +  ' "ripsFinalidadConsulta_id" = ' + str(ripsFinalidadConsulta) +  "," +  ' "ripsServiciosIng_id" = ' + str(ripsServiciosIng)   +  ' WHERE id = ' + "'" + str(ingresoId) + "'"
             print(comando)
 
             cur3.execute(comando)

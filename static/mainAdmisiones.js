@@ -756,7 +756,8 @@ window.addEventListener('load', async () => {
 
                     },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			    	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	     });
         });
@@ -908,11 +909,8 @@ window.addEventListener('load', async () => {
 	          tableA.ajax.reload();
 
                 },
-                error: function (data) {
-			alert("VENGO CON ERRORES :" , printErrorMsg(data.error));
-                   // $('#saveBtnCrearAbonos').html('NOT Save Changes');
-                        $('.success-msg').css('display','block');
-                        $('.success-msg').text(data.error);
+                error: function (request,status, error) {
+			document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
 		  var tableA = $('#tablaAbonosAdmisiones').DataTable(); // accede de nuevo a la DataTable.
 	          tableA.ajax.reload();
@@ -1106,6 +1104,8 @@ $('#tablaDatos tbody').on('change', '.miIngresoId', function() {
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
@@ -1332,7 +1332,8 @@ $(document).on('click', '#servicioCambio', function(event) {
  	      		      });
                     },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			  	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	     });
 });
@@ -1368,7 +1369,8 @@ $(document).on('click', '#subServicioCambio', function(event) {
  	      		      });
                     },
 	   		    error: function (request, status, error) {
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			   	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	     });
 });
@@ -1439,6 +1441,8 @@ $(document).on('change', '#busDocumentoSel', function(event) {
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
@@ -1500,6 +1504,8 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 			//	 $('#usuariosModal').modal().hide();
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
@@ -1561,6 +1567,9 @@ function findOneUsuarioTriage()
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
+
 	   	    	}
 	});
 };
@@ -1626,6 +1635,8 @@ $(document).on('change', '#busDocumentoSel22', function(event) {
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 });
@@ -1690,6 +1701,8 @@ function findOneUsuario1()
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 };
@@ -1777,6 +1790,8 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
@@ -1854,7 +1869,8 @@ $(document).on('change', '#departamentos', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			  	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -1911,7 +1927,8 @@ $(document).on('change', '#busEspecialidad', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			 	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -2012,7 +2029,8 @@ $(document).on('change', '#busServicio', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -2062,7 +2080,8 @@ $(document).on('change', '#busServicioT', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			    	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -2106,8 +2125,8 @@ $(document).on('change', '#busSubServicio', function(event) {
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
 	   	    	}
 
 	     });
@@ -2169,7 +2188,8 @@ $(document).on('change', '#busSubServicioT', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   				document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -2224,7 +2244,8 @@ $(document).on('change', '#busServicio22', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			  	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -2276,7 +2297,8 @@ $(document).on('change', '#busSubServicio22', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    $("#mensajes").html(" !  Reproduccion  con error !");
+	   			document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -2401,6 +2423,8 @@ function findOneAdmision(tipoDoc,Documento,consec, sede)
 
                     },
 	   		    error: function (request, status, error) {
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 };
@@ -2801,7 +2825,8 @@ function actualizaAdmision()
                     },
 		 error: function (request, status, error) {
 
-				document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+					document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 
 	   	    	}            
 	});

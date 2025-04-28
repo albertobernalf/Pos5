@@ -257,6 +257,71 @@ def PostConsultaLiquidacion(request):
         print("consec =", triageId.consec)
 
 
+    if llave[0] == 'INGRESO':
+       # Combo Convenios Paciente
+       #
+       miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+       curt = miConexiont.cursor()
+       comando = 'SELECT ing.convenio_id id, conv.nombre nombre FROM facturacion_conveniospacienteingresos ing,contratacion_convenios conv where ing.convenio_id = conv.id and ing."tipoDoc_id" = ' + "'" + str(ingresoId.tipoDoc_id) + "'" + ' and ing.documento_id = ' + "'" + str(ingresoId.documento_id) + "'" + ' AND ing."consecAdmision" = ' + "'" + str(ingresoId.consec) + "'" + ' ORDER BY ing."tipoDoc_id", ing.documento_id '
+       curt.execute(comando)
+       print(comando)
+
+       conveniosPaciente = []
+       conveniosPaciente.append({'id': '', 'nombre': ''})
+
+       for id,  nombre in curt.fetchall():
+           conveniosPaciente.append({'id': id,  'nombre': nombre})
+
+       miConexiont.close()
+       print(conveniosPaciente)
+       #context['ConveniosPaciente'] = conveniosPaciente
+	   # Fin combo convenios Paciente
+	
+       # Combo Convenios PacienteHacia
+       #
+       miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+       curt = miConexiont.cursor()
+       comando = 'SELECT ing.convenio_id id, conv.nombre nombre FROM facturacion_conveniospacienteingresos ing,contratacion_convenios conv where ing.convenio_id = conv.id and ing."tipoDoc_id" = ' + "'" + str(ingresoId.tipoDoc_id) + "'" + ' and ing.documento_id = ' + "'" + str(ingresoId.documento_id) + "'" + ' AND ing."consecAdmision" = ' + "'" + str(ingresoId.consec) + "'" + ' ORDER BY ing."tipoDoc_id", ing.documento_id '
+       curt.execute(comando)
+       print(comando)
+
+       conveniosPacienteHacia = []
+       conveniosPacienteHacia.append({'id': '', 'nombre': ''})
+
+       for id,  nombre in curt.fetchall():
+           conveniosPacienteHacia.append({'id': id,  'nombre': nombre})
+
+       miConexiont.close()
+       print(conveniosPacienteHacia)
+       #context['ConveniosPacienteHacia'] = conveniosPacienteHacia
+	   # Fin combo convenios Paciente
+
+
+    else:
+
+	   # Combo Convenios Paciente
+       #
+       miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+       curt = miConexiont.cursor()
+
+       comando = 'SELECT ing.convenio_id id, conv.nombre nombre FROM facturacion_conveniospacienteingresos ing,contratacion_convenios conv where ing.convenio_id = conv.id and ing."tipoDoc_id" = ' + "'" + str(triageId.tipoDoc_id) + "'" + ' and ing.documento_id = ' + "'" + str(triageId.documento_id) + "'" + ' AND ing."consecAdmision" = ' + "'" + str(triageId.consec) + "'" + ' ORDER BY ing."tipoDoc_id", ing.documento_id '
+       curt.execute(comando)
+       print(comando)
+
+       conveniosPaciente = []
+       conveniosPaciente.append({'id': '', 'nombre': ''})
+
+       for id,  nombre in curt.fetchall():
+
+           conveniosPaciente.append({'id': id,  'nombre': nombre})
+
+       miConexiont.close()
+       print(conveniosPaciente)
+
+	   #context['ConveniosPaciente'] = conveniosPaciente
+	   # Fin combo convenios Paciente
+
+
     estadoReg= 'A'
     now = datetime.datetime.now()
     print("NOW  = ", now)
@@ -274,9 +339,9 @@ def PostConsultaLiquidacion(request):
     curt = miConexiont.cursor()
 
     if llave[0] == 'INGRESO':
-        if (convenioId == '0'):
+        if (convenioId == '0' or  convenioId == ''):
 
-            print ("Entre Convenio=0 ");
+            print ("Entre Convenio=0 o Null");
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(ingresoId.tipoDoc_id) + ' AND documento_id = ' + str(ingresoId.documento_id) + ' AND "consecAdmision" = ' + str(ingresoId.consec) + ' and convenio_id is null'
 
         else:
@@ -285,7 +350,7 @@ def PostConsultaLiquidacion(request):
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(ingresoId.tipoDoc_id) + ' AND documento_id = ' + str(ingresoId.documento_id) + ' AND "consecAdmision" = ' + str(ingresoId.consec) + ' and convenio_id = ' + "'" + str(convenioId) + "'"
 
     else:
-        if (convenioId == '0' ):
+        if (convenioId == '0' or  convenioId == ''):
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(triageId.tipoDoc_id) + ' AND documento_id = ' + str(triageId.documento_id) + ' AND "consecAdmision" = ' + str(triageId.consec) + ' and convenio_id is null'
         else:
             comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + str(triageId.tipoDoc_id) + ' AND documento_id = ' + str(triageId.documento_id) + ' AND "consecAdmision" = ' + str(triageId.consec) + ' and convenio_id = ' + "'" + str(convenioId) + "'"
@@ -299,19 +364,12 @@ def PostConsultaLiquidacion(request):
 
     miConexiont.close()
 
-    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion[0]['id'])
-
-    cabezote = str(cabezoteLiquidacion[0]['id'])
-    cabezote = cabezote.replace("(", ' ')
-    cabezote = cabezote.replace(")", ' ')
-    cabezote = cabezote.replace(",", ' ')
-    print("OJOOOOO cabezote", cabezote)
-
+    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion[0])
 
     miConexiont = None
     try:
 
-      if (cabezote[0] == ''):
+      if (cabezoteLiquidacion[0] == []):
                 print ("OJOOOOOO ENTRE AL CABEZOTE LIQUIDACION")
                 # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
 
@@ -339,8 +397,6 @@ def PostConsultaLiquidacion(request):
                         comando = 'INSERT INTO facturacion_liquidacion ("tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos" , "totalRecibido" , "sedesClinica_id" ) VALUES (' + str(triageId.tipoDoc_id)  + ',' +  str(triageId.documento_id) + ',' + str('0') + ',' +  "'" +  str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(convenioId) + ',' + "'" + str(username_id) + "',0,0," + "'" + str(sede) + "') RETURNING id"
                         print("Entre4")
 
-                print("comando =" , comando)
-
                 curt.execute(comando)
                 liquidacionId = curt.fetchone()[0]
                 print("liquidacionId PARCIAL = ", liquidacionId)
@@ -367,7 +423,8 @@ def PostConsultaLiquidacion(request):
             print("Entro ha hacer el Rollback")
             miConexiont.rollback()
 
-            raise error
+            print("Voy a hacer el jsonresponde")
+            return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexiont:
@@ -499,7 +556,7 @@ def PostConsultaLiquidacion(request):
 			     'totalSuministros':totalSuministros,'totalProcedimientos':totalProcedimientos,'totalCopagos':totalCopagos,
 			     'totalCuotaModeradora':totalCuotaModeradora,'totalAnticipos':totalAnticipos, 'totalAbonos':totalAbonos,
 			     'totalLiquidacion':totalLiquidacion, 'totalRecibido':totalRecibido , 'totalAPagar':valorApagar, 'TiposPagos':tiposPagos, 'FormasPagos':formasPagos,
-			     'ingresoId1': ingresoId1, 'documento': documento, 'tipoDocumento': tipoDocumento, # 'ConveniosPaciente':conveniosPaciente,
+			     'ingresoId1': ingresoId1, 'documento': documento, 'tipoDocumento': tipoDocumento, 'ConveniosPaciente':conveniosPaciente,
                                 'salidaClinica':salidaClinica
 
             })
@@ -533,7 +590,7 @@ def PostConsultaLiquidacion(request):
                  'totalAbonos': totalAbonos,
                  'totalLiquidacion': totalLiquidacion, 'totalRecibido':totalRecibido , 'totalAPagar': valorApagar, 'TiposPagos': tiposPagos,
                  'FormasPagos': formasPagos,
-                 'triageId1': triageId1, 'documento': documento, 'tipoDocumento': tipoDocumento , # 'ConveniosPaciente':conveniosPaciente,
+                 'triageId1': triageId1, 'documento': documento, 'tipoDocumento': tipoDocumento , 'ConveniosPaciente':conveniosPaciente,
                  'salidaClinica': salidaClinica
 
                  })

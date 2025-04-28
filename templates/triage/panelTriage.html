@@ -127,15 +127,14 @@ th ,tr{
             <div class="myForm">
                 <form id="guardaTriageModal" method="POST" onsubmit="guardaTriageModal()">
                     <div class="modal fade" id="modalActualizaTriage" tabindex="-1" role="dialog"
-                         style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg" role="document">
+                         style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-center" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Actualiza
-                                        Triage</h5>
-                                    <button type="button" class="close" data-dismiss="modal"
-                                            aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
+                                    <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Actualiza Triage</font> </div>
+                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
                                     </button>
                                 </div>
                                 <div class="modal-body">
@@ -330,10 +329,9 @@ th ,tr{
 
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            onclick="CierraModalTriage()">Close
-                                    </button>
-                                    <input type="button" class="btn btn-primary" value="save"
+					  <span id="mensajesErrorTriage" name="mensajesErrorModalUsuario" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+                                   	  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+				 <input type="button" class="btn btn-primary" value="save"
                                            onclick="guardaTriageModal()">
 
                                 </div>
@@ -357,13 +355,12 @@ th ,tr{
                 <div class="myForm">
                     <form id="AdmisionTriage" method="POST" onsubmit="guardarAdmisionTriage()">
                         <div class="modal fade" id="crearAdmTriage" tabindex="-1" role="dialog"
-                             aria-labelledby="exampleModalLabel1" aria-hidden="true">
-                            <div class="modal-dialog  modal-lg" role="document">
+                             aria-labelledby="exampleModalLabel1" aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog  modal-lg modal-dialog-scrollable modal-dialog-center" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Creacion Admision desde
-                                            Triage</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                       <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Creacion Admision desde Triage</font> </div>
+                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -748,10 +745,11 @@ th ,tr{
 
 
                                 <div class="modal-footer">
+			  <span id="mensajesErrorModalCreaAdmisionTriage" name="mensajesErrorModalCreaAdmisionTriage" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
 
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                            onclick="CierraModalAdmisionTriage()">Close
-                                    </button>
+                                 	  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+
                                     <input type="button" class="btn btn-primary" value="save"
                                            onclick="guardarAdmisionTriage()">
                                 </div>
@@ -1003,14 +1001,12 @@ th ,tr{
             <div class="card">
                 <div class="myForm">
                     <form id="ModalCaptura" method="POST" onsubmit="CierraModal()">
-                        <div class="modal fade" id="usuariosModalTriage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
+                        <div class="modal fade" id="usuariosModalTriage" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                            <div class="modal-dialog modal-lg modal-dialog-scrollable  modal-dialog-center" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Actualiza Usuario</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
+                                           <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Actualiza usuario</font> </div>
+                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
                                     </div>
                                     <div class="modal-body">
                                         <div class="row row-cols-8 mt-3">
@@ -1042,7 +1038,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="fechaNacio" class="col-form-label">Fecha Nacio:</label>
-                                                <input type="datetime-local" class="form-control" id="fechaNacio"
+                                                <input type="datetime" class="form-control" id="fechaNacio"
                                                        name="fechaNacio">
                                             </div>
 
@@ -1152,8 +1148,8 @@ th ,tr{
                                     </div> <!-- Cierra body -->
                                     <div class="modal-footer">
 			 <span id="mensajesErrorModalUsuario" name="mensajesErrorModalUsuario" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"  onclick="CierraModalUsuarioTriage()">Close
-                                        </button>
+                                       <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+
                                          <input type="button" class="btn btn-primary" value="save"  onclick="AUsuarioTriage()"> 
                                         
                                     </div> <!-- Cierra footer-->

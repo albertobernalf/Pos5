@@ -1844,6 +1844,10 @@ def grabaUsuariosTriage(request):
     if municipios == '':
         municipios="null"
 
+    if ciudades == '':
+        ciudades="null"
+
+
     localidades  = request.POST['localidades']
 
     if localidades == '':
@@ -1901,7 +1905,7 @@ def grabaUsuariosTriage(request):
                  #miConexion3 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
                  miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                  cur3 = miConexion3.cursor()
-                 comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio",  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", "estadoCivil_id","localidad_id", "municipio_id", "ocupacion_id",  "fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" + ', ' + "'" + str(departamentos) + "'" + '  , ' + "'" + str(ciudades) + "'" + '  , ' + "'" + str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' + "'" + str(centrosC) + "'" + ', ' + "'" + str(tipoDoc) + "'" + ', ' + "'" + str(tiposUsuario) + "' , '" + str(estadoCivil) + "' , '" + str(localidades) + "' , '"+ str(municipios) + "' , '"+ str(ocupaciones) +  "' , '"+  str(fechaRegistro) + "'" + ", 'A'" + ')'
+                 comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio",  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", "estadoCivil_id","localidad_id", "municipio_id", "ocupacion_id",  "fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" + ', ' + "'" + str(departamentos) + "'" + '  , ' + "'" + str(ciudades) + "'" + '  , ' + "'" + str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' +  str(centrosC)  + ', ' + "'" + str(tipoDoc) + "'" + ', ' + "'" + str(tiposUsuario) + "' , '" + str(estadoCivil) + "' , '" + str(localidades) + "' , '"+ str(municipios) + "' , "+ str(ocupaciones) +  " , '"+  str(fechaRegistro) + "'" + ", 'A'" + ')'
                  print(comando)
                  cur3.execute(comando)
                  miConexion3.commit()
@@ -1913,7 +1917,7 @@ def grabaUsuariosTriage(request):
                 #miConexion3 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
                 miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                 cur3 = miConexion3.cursor()
-                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" +str(fechaNacio) + "'" +  ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosC) + "'"  + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario) + "' , "   + ' municipio_id = ' + str(municipios) +   ', localidad_id = ' +  str(localidades) +  ', "estadoCivil_id"= ' +  str(estadoCivil) +  ', ocupacion_id = ' +  str(ocupaciones) +  ', correo = ' + "'" + str(correo) + "'" + ' WHERE "tipoDoc_id" = ' + str(tipoDoc) + ' AND documento = ' + "'" + str(documento) + "'"
+                comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'"   + ', ciudades_id = ' + "'" + str(ciudades) + "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" +str(fechaNacio) + "'" +  ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosC) + "'"  + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario) + "' , "   + ' municipio_id = ' + str(municipios) +   ', localidad_id = ' +  str(localidades) +  ', "estadoCivil_id"= ' +  str(estadoCivil) +  ', ocupacion_id = ' +  str(ocupaciones) +  ', correo = ' + "'" + str(correo) + "'" + ' WHERE "tipoDoc_id" = ' + str(tipoDoc) + ' AND documento = ' + "'" + str(documento) + "'"
                 print(comando)
                 cur3.execute(comando)
                 miConexion3.commit()
@@ -1926,9 +1930,8 @@ def grabaUsuariosTriage(request):
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
+        raise error
 
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:
@@ -2000,9 +2003,8 @@ def grabaTriageModal(request):
             if miConexion3:
                 print("Entro ha hacer el Rollback")
                 miConexion3.rollback()
+            raise error
 
-            print ("Voy a hacer el jsonresponde")
-            return JsonResponse({'success': False, 'Mensaje': error})
 
         finally:
             if miConexion3:
@@ -2913,9 +2915,9 @@ def guardarAdmisionTriage(request):
                     if miConexion3:
                         print("Entro ha hacer el Rollback")
                         miConexion3.rollback()
-
-                    print("Voy a hacer el jsonresponde")
-                    return JsonResponse({'success': False, 'Mensaje': error})
+                    raise error
+                    #print("Voy a hacer el jsonresponde")
+                    #return JsonResponse({'success': False, 'Mensaje': error})
 
                 finally:
                     if miConexion3:

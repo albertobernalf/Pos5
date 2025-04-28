@@ -238,7 +238,7 @@ function AUsuarioTriage()
 
 
 	var tipoDoc = document.getElementById("tipoDocTriageModal").value;
-	alert("tipoDoc = " +  tipoDoc);
+
 
 	var documento = document.getElementById("documentoTriageModal").value;
         var nombre = document.getElementById("nombre").value;
@@ -257,17 +257,22 @@ function AUsuarioTriage()
 	var correo = document.getElementById("correo").value;
 	var fechaNacio = document.getElementById("fechaNacio").value;
 
+
 	if (departamentos =='')
 		{
 
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Departamento';
 		return;
 		}
-if (ciudades =='')
+
+	if (ciudades =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Ciudad';
 		return;
 		}
+
+
+
 if (direccion =='')
 		{
 		document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Direccion';
@@ -286,6 +291,7 @@ if (localidades =='')
 
 
 
+
 	var centrosC = document.getElementById("centrosC").value;
 	var tiposUsuario = document.getElementById("tiposUsuario").value;
 
@@ -294,6 +300,7 @@ if (tiposUsuario =='')
 	document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Suministre Tipo Usuario';
 		return;
 		}
+
 
 
 	$.ajax({
@@ -325,7 +332,7 @@ if (tiposUsuario =='')
 
                     },
 	   		    error: function (request, status, error) {
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+document.getElementById("mensajesErrorModalUsuario").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
 	});
 };
@@ -334,14 +341,13 @@ document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Admini
 
 $(document).on('change', '#busDocumentoSelTriage', function(event) {
 
-        alert("Entre cambio Modal usuarios Triage");
-
+      
 	
 	 var select = document.getElementById("tipoDocTriage"); /*Obtener el SELECT */
     var tipoDoc = select.options[select.selectedIndex].value; /* Obtener el valor */
 
    documento = document.getElementById("busDocumentoSelTriage").value;
-   alert( "Este es el documento : " + tipoDoc +  " " + documento);
+  // alert( "Este es el documento : " + tipoDoc +  " " + documento);
 
 	$.ajax({
 		type: 'POST',
@@ -349,7 +355,7 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 		data: {'tipoDoc':tipoDoc,'documento':documento},
 		success: function (Usuarios) {
 
-			 alert("REGRESE DATOS MODAL2 = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
+			// alert("REGRESE DATOS MODAL2 = " + Usuarios.tipoDoc + " " +  Usuarios.documento);
 
 				if (Usuarios.tipoDoc == null ) 
 					{
@@ -371,7 +377,7 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 				$('#fechaNacio').val(Usuarios.fechaNacio);
 				$('#municipios').val(Usuarios.municipios);
 				$('#localidades').val(Usuarios.localidades);
-				$('#ciudades').val(Usuarios.ciudad);
+				$('#ciudades').val(Usuarios.ciudades);
 				$('#direccion').val(Usuarios.direccion);
 				$('#telefono').val(Usuarios.telefono);
 				$('#contacto').val(Usuarios.contacto);
@@ -383,7 +389,7 @@ $(document).on('change', '#busDocumentoSelTriage', function(event) {
 
 				$('#usuariosModalTriage').modal('show');
 				 $('#usuariosModalTriage').modal({show:true});
-				 alert("Ya abri la ventana Modial");
+
 
 
 
@@ -576,7 +582,8 @@ $('#tablaDatosTriage tbody').on('click', '.miTriage', function() {
 		   //         $('#crearAdmTriage').modal({show:true});
                     },
    		    error: function (request, status, error) {
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
@@ -619,12 +626,12 @@ document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Admini
 
 $(document).on('change', '#departamentos', function(event) {
 
-        alert("Entre cambio Departamento");
+       // alert("Entre cambio Departamento");
 
 
        var Departamento =   $(this).val()
 
-       alert("Departamento = " + Departamento);
+      // alert("Departamento = " + Departamento);
 
 
 
@@ -662,7 +669,8 @@ $(document).on('change', '#departamentos', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -672,7 +680,7 @@ document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Admini
 $(document).on('change', '#busServicio', function(event) {
 
        var serv =   $(this).val()
-      alert("Este es mi servicio codigo = " + serv);
+    //  alert("Este es mi servicio codigo = " + serv);
 
     //   alert("Entre para llamar a buscarServiciosTriage : " + Serv)
 
@@ -715,7 +723,8 @@ $(document).on('change', '#busServicio', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -726,7 +735,7 @@ $(document).on('change', '#busServicio2', function(event) {
 
        var serv =   $(this).val()
 
-       alert("Servicio = " + serv)
+      // alert("Servicio = " + serv)
 
         var sede =  document.getElementById("sede").value;
        // var Sede1 = document.getElementById("FormBuscar").elements["Sede"];
@@ -767,7 +776,8 @@ $(document).on('change', '#busServicio2', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -782,7 +792,7 @@ $(document).on('change', '#busServicioX', function(event) {
 
        var serv =   $(this).val()
 
-       alert("Servicio = " + serv)
+      // alert("Servicio = " + serv)
 
         var sede =  document.getElementById("sede").value;
        // var Sede1 = document.getElementById("FormBuscar").elements["Sede"];
@@ -823,7 +833,8 @@ $(document).on('change', '#busServicioX', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -831,13 +842,13 @@ document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Admini
 
 $(document).on('change', '#busSubServicio', function(event) {
 
-        alert("Entre a busSubServicio");
+      //  alert("Entre a busSubServicio");
 
         var select = document.getElementById('busServicio'); /*Obtener el SELECT */
 
         var Serv = select.options[select.selectedIndex].value; /* Obtener el valor */
 
-        alert("servicio = " + Serv);
+     //   alert("servicio = " + Serv);
 
         var SubServ =   $(this).val();
 
@@ -845,7 +856,7 @@ $(document).on('change', '#busSubServicio', function(event) {
 
         var Sede =  document.getElementById("Sede").value;
 
-         alert("Sede = " + Sede);
+     //    alert("Sede = " + Sede);
 //        alert("Entre para llamar a buscar SubServiciosTriage : " + SubServ);
   //      alert("Entre para llamar a buscar Sede : " + Sede);
 
@@ -880,7 +891,8 @@ $(document).on('change', '#busSubServicio', function(event) {
 
                     },
 	   		    error: function (request, status, error) {
-document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -890,21 +902,21 @@ document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Admini
 
 $(document).on('change', '#busSubServicioT', function(event) {
 
-        alert("Entre a busSubServicioT");
+     //   alert("Entre a busSubServicioT");
 
         var select = document.getElementById('busServicioX'); /*Obtener el SELECT */
 
         var serv = select.options[select.selectedIndex].value; /* Obtener el valor */
 
-        alert("servicio = " + serv);
+     //   alert("servicio = " + serv);
 
         var subServ =   $(this).val();
 
-        alert("SubServ = " + subServ);
+      //  alert("SubServ = " + subServ);
 
         var sede =  document.getElementById("sede").value;
 
-         alert("Sede = " + sede);
+        // alert("Sede = " + sede);
 //        alert("Entre para llamar a buscar SubServiciosTriage : " + SubServ);
   //      alert("Entre para llamar a buscar Sede : " + Sede);
 
@@ -940,7 +952,8 @@ $(document).on('change', '#busSubServicioT', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			   document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -999,7 +1012,8 @@ $(document).on('change', '#busSubServicio2', function(event) {
                     },
 	   		    error: function (request, status, error) {
 
-	   			    document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 
 	     });
@@ -1153,7 +1167,8 @@ function guardaTriageModal()
                 },
 	   		    error: function (request, status, error)
 	   		    {
-	document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesErrorTriage").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
@@ -1227,7 +1242,8 @@ function guardarAdmisionTriage()
                 },
 	   		    error: function (request, status, error)
 	   		    {
- 	      			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
 	});
 
