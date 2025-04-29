@@ -163,19 +163,33 @@ def GuardaGlosas(request):
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
+
+    miConexion3 = None
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ) VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null)"
+    try:
+        comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ) VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null)"
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
 
+        return JsonResponse({'success': True, 'message': 'Glosa creada satisfactoriamente!'})
 
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
 
-    return JsonResponse({'success': True, 'message': 'Envio realizado satisfactoriamente!'})
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
 def Load_tablaGlosasProcedimientos(request, data):
@@ -560,73 +574,80 @@ def GuardarGlosasDetalle(request):
 
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-    if tipoGloDet == 'MEDICAMENTOS' :
+    miConexion3 = None
+    try:
 
-        comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            cur3 = miConexion3.cursor()
 
-    if tipoGloDet == 'PROCEDIMIENTOS' :
+            if tipoGloDet == 'MEDICAMENTOS' :
 
-        comando = 'UPDATE rips_ripsprocedimientos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+                comando = 'UPDATE rips_ripsmedicamentos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
 
-    if tipoGloDet == 'CONSULTAS' :
+            if tipoGloDet == 'PROCEDIMIENTOS' :
 
-        comando = 'UPDATE rips_ripsconsultas SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+                comando = 'UPDATE rips_ripsprocedimientos SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
 
-    if tipoGloDet == 'OTOS SERVICIOS' :
+            if tipoGloDet == 'CONSULTAS' :
 
-        comando = 'UPDATE rips_ripsotrosservicios SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
+                comando = 'UPDATE rips_ripsconsultas SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
 
+            if tipoGloDet == 'OTOS SERVICIOS' :
 
+                comando = 'UPDATE rips_ripsotrosservicios SET "cantidadGlosada"= ' +"'" + str(cantidadGlosada) + "'," + ' "cantidadAceptada" = ' + "'" +str(cantidadAceptada) + "'," + '"cantidadSoportado" = ' + "'" + str(cantidadSoportado) + "'," + '"valorGlosado"= ' + "'" + str(valorGlosado) + "'," + '"vAceptado" = ' + "'" + str(vAceptado) + "',"  + '"valorSoportado" = ' + "'" + str(valorSoportado) + "'," +  '"notasCreditoGlosa" = ' + "'" + str(notasCreditoGlosa) + "'" + ', glosa_id = '  + "'" + str(glosaId) + "'," + '"motivoGlosa_id" = ' + "'" + str(motivoGlosa_id) + "'" + '   WHERE id = ' + str(ripsId)
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+            print(comando)
+            cur3.execute(comando)
 
+            # TOTALES
+            totalAceptadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+            totalSoportadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+            totalGlosadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
-    # TOTALES
-    totalAceptadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-    totalSoportadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-    totalGlosadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+            totalAceptadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+            totalSoportadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+            totalGlosadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
-    totalAceptadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-    totalSoportadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-    totalGlosadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+            totalAceptadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+            totalSoportadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+            totalGlosadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
-    totalAceptadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-    totalSoportadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-    totalGlosadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
-
-    totalAceptadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-    totalSoportadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-    totalGlosadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
-
-
-    totalAceptado = totalAceptadoMed['totalA'] + totalAceptadoProc['totalA'] + totalAceptadoOtrosServ['totalA'] + totalAceptadoCons['totalA']
-    totalSoportado = totalSoportadoMed['totalS'] + totalSoportadoProc['totalS'] + totalSoportadoOtrosServ['totalS'] + totalSoportadoCons['totalS']
-    totalGlosado = totalGlosadoMed['totalG'] + totalGlosadoProc['totalG'] + totalGlosadoOtrosServ['totalG'] + totalGlosadoCons['totalG']
-
-    print ("totalAceptado = ",totalAceptado)
-    print("totalSoportado = ", totalSoportado)
-    print("totalGlosado = ", totalGlosado)
-
-    saldoFactura = 0
-
-    # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES / PENDIENTE SALDO FACTURA
+            totalAceptadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
+            totalSoportadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
+            totalGlosadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
+            totalAceptado = totalAceptadoMed['totalA'] + totalAceptadoProc['totalA'] + totalAceptadoOtrosServ['totalA'] + totalAceptadoCons['totalA']
+            totalSoportado = totalSoportadoMed['totalS'] + totalSoportadoProc['totalS'] + totalSoportadoOtrosServ['totalS'] + totalSoportadoCons['totalS']
+            totalGlosado = totalGlosadoMed['totalG'] + totalGlosadoProc['totalG'] + totalGlosadoOtrosServ['totalG'] + totalGlosadoCons['totalG']
 
-    comando = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"valorGlosa" = ' + "'" + str(valorGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
+            print ("totalAceptado = ",totalAceptado)
+            print("totalSoportado = ", totalSoportado)
+            print("totalGlosado = ", totalGlosado)
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+            saldoFactura = 0
 
+            # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES / PENDIENTE SALDO FACTURA
+
+            comando = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"valorGlosa" = ' + "'" + str(valorGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
+
+            print(comando)
+            cur3.execute(comando)
+            miConexion3.commit()
+            cur3.close()
+            miConexion3.close()
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
     # TIENE QUE ACTUALIZAR CARTERA_GLOSASDETALLE INSERTAR O UPDATE, NO VOY A METER MAS SIMPOLEMENTE UN QUERY ENTRE TABÑAS
@@ -699,17 +720,35 @@ def GuardaGlosasEstados(request):
     sedesClinica_id = request.POST["sedesClinica_idGlo"]
     print("sedesClinica_id =", sedesClinica_id)
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
+    miConexion3 = None
+    try:
 
-    comando = 'UPDATE cartera_glosas SET "tipoGlosa_id"= ' +"'" + str(tipoGlosa) + "'," + ' "estadoRadicacion_id" = ' + "'" +str(estadoRadicacion) + "'," + '"estadoRecepcion_id" = ' + "'" + str(estadoRecepcion) + "'" + '   WHERE id = ' + str(glosaId)
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        comando = 'UPDATE cartera_glosas SET "tipoGlosa_id"= ' +"'" + str(tipoGlosa) + "'," + ' "estadoRadicacion_id" = ' + "'" +str(estadoRadicacion) + "'," + '"estadoRecepcion_id" = ' + "'" + str(estadoRecepcion) + "'" + '   WHERE id = ' + str(glosaId)
 
-    return JsonResponse({'success': True, 'message': 'Glosa Actualizada satisfactoriamente!'})
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Glosa Actualizada satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
 
 def Load_tablaGlosasHospitalizacion(request, data):
     print("Entre load_data Hospitalizacion Rips")

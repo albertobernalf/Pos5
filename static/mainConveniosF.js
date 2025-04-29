@@ -48,7 +48,9 @@ function arrancaConvenios(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptionsConvenios  ={
-  dom: 'Bfrtilp',
+     dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -80,14 +82,9 @@ function arrancaConvenios(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-	     btn = btn + " <button class='editoConvenio btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
-             btn = btn + " <input type='radio' name='miConvenio' class='miConvenio2 form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-                       return btn;
-                    },
+		{    
 
-                    "targets": 13
+                    "targets": 14
                }
             ],
 	 pageLength: 3,
@@ -115,6 +112,21 @@ function arrancaConvenios(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+		{
+		 "render": function ( data, type, row ) {
+                        var btn = '';
+	     btn = btn + " <button class='editoConvenio btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+                       return btn;
+                    },
+		},
+		{
+		 "render": function ( data, type, row ) {
+                        var btn1 = '';
+             btn1 = btn1 + " <input type='radio' name='miConvenio' class='miConvenio2 form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                       return btn1;
+                    },
+
+		},
                 { data: "fields.id"},
                 { data: "fields.empresa"},
                 { data: "fields.empresa_id"},
@@ -124,8 +136,8 @@ function arrancaConvenios(valorTabla,valorData)
                 { data: "fields.vigenciaHasta"},
                 { data: "fields.tarifariosDescripcionProc_id"},
                 { data: "fields.tarifariosDescripcionProc"},
-		        { data: "fields.tarifariosDescripcionSum_id"},
-	        	{ data: "fields.tarifariosDescripcionSum"},
+		 { data: "fields.tarifariosDescripcionSum_id"},
+	      	{ data: "fields.tarifariosDescripcionSum"},
                 { data: "fields.tarifariosDescripcionHono_id"},
                 { data: "fields.tarifariosDescripcionHono"},
                 ]
@@ -138,7 +150,9 @@ function arrancaConvenios(valorTabla,valorData)
     if (valorTabla == 2)
     {
         let dataTableOptionsProcedimientos  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -221,7 +235,9 @@ function arrancaConvenios(valorTabla,valorData)
     {
 
         let dataTableOptionsSuministros  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -553,7 +569,8 @@ $('#tarifariosDescripcionSum_id').val(info[0].fields.tarifariosDescripcionSum_id
 
                 },
                  error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesErrorModalConvenios").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
             });
       
@@ -634,7 +651,8 @@ function EditarGuardarConvenios()
 
                 },
                  error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
             });
 }
@@ -729,7 +747,7 @@ function CrearGuardarConvenios()
 
                 },
                  error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
 	   	    	}
             });
 }

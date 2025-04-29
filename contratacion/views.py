@@ -247,19 +247,36 @@ def EditarGuardarConvenios(request):
 
     fechaRegistro = datetime.datetime.now()
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-    curt = miConexiont.cursor()
+    miConexiont = None
+    try:
 
-    comando = 'UPDATE contratacion_Convenios SET nombre = ' + "'" + str(nombreConvenio) + "'," + '"vigenciaDesde" = ' + "'" + str(vigenciaDesde) + "'," + '"vigenciaHasta" = ' + "'" + str(vigenciaHasta) + "'," + '"porcTarifario" = ' + str(porcTarifario) + "," + '"porcSuministros" = ' + str(porcSuministros) + "," + '"valorOxigeno" = ' + str(valorOxigeno) + "," + '"porcEsterilizacion" = ' + str(porcEsterilizacion) + "," + '"porcMaterial" = ' + str(porcMaterial) + "," + '"hospitalario" = ' + "'" + str(hospitalario) + "'," + '"urgencias" = ' + "'" + str(urgencias) + "'," + '"ambulatorio" = ' + "'" + str(ambulatorio) + "'," + '"consultaExterna" = ' + "'" + str(consultaExterna) + "'," + '"copago" = ' + "'" + str(copago) + "'," + '"moderadora" = ' + "'" + str(moderadora) + "'," + '"tipofactura" = ' + "'" + str(tipofactura) + "'," + '"facturacionSuministros" = ' + "'" + str(facturacionSuministros) + "'," + '"facturacionCups" = ' + "'" + str(facturacionCups) + "'," + '"cuentaContable" = ' + "'" + str(cuentaContable) + "',"  + '"requisitos" = ' + "'" + str(requisitos) + "'," + '"empresa_id" = ' + "'" + str(empresa_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(usuarioRegistro_id) + "'," + '"tarifariosDescripcionProc_id" = ' + str(tarifariosDescripcionProc_id) + "," + '"tarifariosDescripcionSum_id" = ' + str(tarifariosDescripcionSum_id) + ", descripcion = " + "'" + str(descripcion) + "'," + '"tarifariosDescripcionHono_id" = '  + str(tarifariosDescripcionHono_id) + " WHERE id = " + "'" + str(convenioId) + "'"
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+        curt = miConexiont.cursor()
 
-    print(comando)
-    curt.execute(comando)
+        comando = 'UPDATE contratacion_Convenios SET nombre = ' + "'" + str(nombreConvenio) + "'," + '"vigenciaDesde" = ' + "'" + str(vigenciaDesde) + "'," + '"vigenciaHasta" = ' + "'" + str(vigenciaHasta) + "'," + '"porcTarifario" = ' + str(porcTarifario) + "," + '"porcSuministros" = ' + str(porcSuministros) + "," + '"valorOxigeno" = ' + str(valorOxigeno) + "," + '"porcEsterilizacion" = ' + str(porcEsterilizacion) + "," + '"porcMaterial" = ' + str(porcMaterial) + "," + '"hospitalario" = ' + "'" + str(hospitalario) + "'," + '"urgencias" = ' + "'" + str(urgencias) + "'," + '"ambulatorio" = ' + "'" + str(ambulatorio) + "'," + '"consultaExterna" = ' + "'" + str(consultaExterna) + "'," + '"copago" = ' + "'" + str(copago) + "'," + '"moderadora" = ' + "'" + str(moderadora) + "'," + '"tipofactura" = ' + "'" + str(tipofactura) + "'," + '"facturacionSuministros" = ' + "'" + str(facturacionSuministros) + "'," + '"facturacionCups" = ' + "'" + str(facturacionCups) + "'," + '"cuentaContable" = ' + "'" + str(cuentaContable) + "',"  + '"requisitos" = ' + "'" + str(requisitos) + "'," + '"empresa_id" = ' + "'" + str(empresa_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(usuarioRegistro_id) + "'," + '"tarifariosDescripcionProc_id" = ' + str(tarifariosDescripcionProc_id) + "," + '"tarifariosDescripcionSum_id" = ' + str(tarifariosDescripcionSum_id) + ", descripcion = " + "'" + str(descripcion) + "'," + '"tarifariosDescripcionHono_id" = '  + str(tarifariosDescripcionHono_id) + " WHERE id = " + "'" + str(convenioId) + "'"
 
-    miConexiont.commit()
-    miConexiont.close()
+        print(comando)
+        curt.execute(comando)
 
-    return JsonResponse({'success': True, 'message': 'Tarifa Honorario Creada satisfactoriamente!'})
+        miConexiont.commit()
+        curt.close()
+        miConexiont.close()
+
+        return JsonResponse({'success': True, 'message': 'Convenio Actualizado satisfactoriamente!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexiont:
+            print("Entro ha hacer el Rollback")
+            miConexiont.rollback()
+        raise error
+
+
+    finally:
+        if miConexiont:
+            curt.close()
+            miConexiont.close()
 
 
 def CrearGuardarConvenios(request):
@@ -375,20 +392,37 @@ def CrearGuardarConvenios(request):
 
     fechaRegistro = datetime.datetime.now()
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                       password="123456")
-    curt = miConexiont.cursor()
+    miConexiont = None
+    try:
 
-    comando = 'INSERT INTO contratacion_Convenios (nombre, "vigenciaDesde", "vigenciaHasta", "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial", hospitalario, urgencias, ambulatorio, "consultaExterna", copago, moderadora, tipofactura, agrupada, "facturacionSuministros", "facturacionCups", "cuentaContable", requisitos, "fechaRegistro", "estadoReg", empresa_id, "usuarioRegistro_id", descripcion, "tarifariosDescripcionProc_id", "tarifariosDescripcionHono_id", "tarifariosDescripcionSum_id") VALUES (' + "'" + str(nombreConvenio) + "'," + "'" + str(vigenciaDesde) + "','" + str(vigenciaHasta) + "'," + str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + "," + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(ambulatorio) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipofactura) + "','" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "','"  + str(requisitos)   + "'," + "'" +  str(fechaRegistro) + "'," + "'" +  str(estadoReg) + "','" + str(empresa_id) + "',"  + str(usuarioRegistro_id) + ",'" + str(descripcion) + "',"   + str(tarifariosDescripcionProc_id) + "," + str(tarifariosDescripcionSum_id)  +  "," + str(tarifariosDescripcionHono_id) + ')'
 
-    print(comando)
-    curt.execute(comando)
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+        curt = miConexiont.cursor()
 
-    miConexiont.commit()
-    miConexiont.close()
+        comando = 'INSERT INTO contratacion_Convenios (nombre, "vigenciaDesde", "vigenciaHasta", "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial", hospitalario, urgencias, ambulatorio, "consultaExterna", copago, moderadora, tipofactura, agrupada, "facturacionSuministros", "facturacionCups", "cuentaContable", requisitos, "fechaRegistro", "estadoReg", empresa_id, "usuarioRegistro_id", descripcion, "tarifariosDescripcionProc_id", "tarifariosDescripcionHono_id", "tarifariosDescripcionSum_id") VALUES (' + "'" + str(nombreConvenio) + "'," + "'" + str(vigenciaDesde) + "','" + str(vigenciaHasta) + "'," + str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + "," + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(ambulatorio) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipofactura) + "','" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "','"  + str(requisitos)   + "'," + "'" +  str(fechaRegistro) + "'," + "'" +  str(estadoReg) + "','" + str(empresa_id) + "',"  + str(usuarioRegistro_id) + ",'" + str(descripcion) + "',"   + str(tarifariosDescripcionProc_id) + "," + str(tarifariosDescripcionSum_id)  +  "," + str(tarifariosDescripcionHono_id) + ')'
 
-    return JsonResponse({'success': True, 'message': 'Convenio Creada satisfactoriamente!'})
+        print(comando)
+        curt.execute(comando)
 
+        miConexiont.commit()
+        curt.close()
+        miConexiont.close()
+
+        return JsonResponse({'success': True, 'message': 'Convenio Creada satisfactoriamente!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexiont:
+            print("Entro ha hacer el Rollback")
+            miConexiont.rollback()
+        raise error
+
+
+    finally:
+        if miConexiont:
+            curt.close()
+            miConexiont.close()
 
 
 def PostConsultaConvenios(request):
@@ -759,8 +793,6 @@ def GuardarConveniosProcedimientos( request):
         curt = miConexiont.cursor()
         comando = 'INSERT INTO contratacion_conveniosprocedimientos ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) values (' + "'" + str(codigoHomologado) + "'," + "'" + str(valor) + "'," + "'" + str(fechaRegistro) +"'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + "'" + str(cups) + "'," + "'" + str(tiposTarifa) + "'," + "'" + str(username_id) + "',"  + str(conceptos) + ")"
 
-
-
         print(comando)
 
         try:
@@ -771,12 +803,9 @@ def GuardarConveniosProcedimientos( request):
             #serialized1 = json.dumps(error)
             return JsonResponse({'success': True, 'message': 'Registro ya existe ¡'})
 
-
-
         miConexiont.commit()
+        curt.close()
         miConexiont.close()
-
-
 
         return JsonResponse({'success': True, 'message': 'Tarifa de convenio Creada satisfactoriamente!'})
 
@@ -840,24 +869,36 @@ def GuardarConvenio( request):
         #ultId = Convenios.objects.all().aggregate(maximo=Coalesce(Max('id'), 0 ))
         #ultId1 = (ultId['maximo']) + 1
 
-     
+        miConexiont = None
+        try:
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        curt = miConexiont.cursor()
+            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+            curt = miConexiont.cursor()
+            comando = 'INSERT INTO contratacion_convenios (nombre,empresa_id,"vigenciaDesde","vigenciaHasta","porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias,"consultaExterna",copago, moderadora, "tipofactura",agrupada,"facturacionSuministros","facturacionCups", "cuentaContable", requisitos,"fechaRegistro","estadoReg","usuarioRegistro_id") VALUES (' + "'" + str(nombre) + "'," + "'" + str(empresa) + "'," + "'" + str(vigenciaDesde) + "'," + "'" + str(vigenciaHasta) + "',"  +  str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + ","  + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipoFactura) + "'," + "'" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "'," + "'" + str(requisitos) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(username_id) + "')"
+            print(comando)
 
-        comando = 'INSERT INTO contratacion_convenios (nombre,empresa_id,"vigenciaDesde","vigenciaHasta","porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias,"consultaExterna",copago, moderadora, "tipofactura",agrupada,"facturacionSuministros","facturacionCups", "cuentaContable", requisitos,"fechaRegistro","estadoReg","usuarioRegistro_id") VALUES (' + "'" + str(nombre) + "'," + "'" + str(empresa) + "'," + "'" + str(vigenciaDesde) + "'," + "'" + str(vigenciaHasta) + "',"  +  str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + ","  + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipoFactura) + "'," + "'" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "'," + "'" + str(requisitos) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(username_id) + "')"
+            curt.execute(comando)
+            miConexiont.commit()
+            curt.close()
+            miConexiont.close()
 
+            return JsonResponse({'success': True, 'message': 'Convenio Creado satisfactoriamente!'})
 
+        except psycopg2.DatabaseError as error:
 
-        print(comando)
-        curt.execute(comando)
-        miConexiont.commit()
-        miConexiont.close()
+            print ("Entre por rollback" , error)
 
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
 
+            raise error
 
-        return JsonResponse({'success': True, 'message': 'Convenio Creado satisfactoriamente!'})
+        finally:
 
+            if miConexiont:
+                curt.close()
+                miConexiont.close()
 
 
 
@@ -922,25 +963,36 @@ def GuardarConvenio1( request):
         username_id = request.POST["username_id"]
         fechaRegistro = datetime.datetime.now()
 
+        miConexiont = None
+        try:
+
+            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+            curt = miConexiont.cursor()
+
+            #comando = 'UPDATE contratacion_convenios (nombre,empresa_id,"vigenciaDesde","vigenciaHasta",tarifa, "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias,"consultaExterna",copago, moderadora, "tipoFactura",agrupada,"facturacionSuministros","facturacionCups", "cuentaContable", requisitos,"fechaRegistro",estadoReg,"usuarioRegistro_id") VALUES (' + "'" + str(nombre) + "'," + "'" + str(empresa) + "'," + "'" + str(vigenciaDesde) + "'," + "'" + str(vigenciaHasta) + "'," + "'" + str(tarifa) + "'," + "'" + str(porcTarifario) + "'," + "'" + str(porcSuministros) + "'," + "'" + str(valorOxigeno) + "'," + "'" + str(porcEsterilizacion) + "'," + "'" + str(porcMaterial) + "'," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipoFactura) + "'," + "'" + str(agrupada) + "'," + "'" + str(acturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "'," + "'" + str(requisitos) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(username_id) + "'"
+            comando = 'UPDATE contratacion_convenios set nombre = ' + "'" + str(nombre) + "', empresa_id = " + str(empresa) + ","  + '"vigenciaDesde" = ' + "'" + str(vigenciaDesde) + "'," + '"vigenciaHasta" = ' + "'" + str(vigenciaHasta) + "'," + '"porcTarifario" = ' + str(porcTarifario) + "," + '"porcSuministros" = ' + str(porcSuministros) + "," + '"valorOxigeno" = ' + str(valorOxigeno) + "," + '"porcEsterilizacion" = ' + str(porcEsterilizacion) + "," + 'hospitalario = ' + "'" + str(hospitalario) + "'," + 'urgencias = ' + "'" + str(urgencias) + "'," + '"consultaExterna" = ' + "'" + str(consultaExterna) + "'," + 'copago = ' + "'" + str(copago) + "'," + 'moderadora = ' + "'" + str(moderadora) + "'," + 'agrupada = ' + "'" + str(agrupada) + "'," + '"facturacionSuministros" = ' + "'" + str(facturacionSuministros) + "'," + '"facturacionCups" = ' + "'" + str(facturacionCups) + "'," + '"cuentaContable" = ' + "'" + str(cuentaContable) + "'," + 'requisitos = ' + "'" + str(requisitos) + "'," + '"fechaRegistro" = ' + "'" + str(fechaRegistro) + "'," + '"estadoReg" = ' + "'" + str(estadoReg) + "'," + '"usuarioRegistro_id" = ' + "'" + str(username_id) + "'" + ' WHERE id = ' + "'" + str(convenioId) + "'"
 
 
-     
+            print(comando)
+            curt.execute(comando)
+            miConexiont.commit()
+            curt.close()
+            miConexiont.close()
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        curt = miConexiont.cursor()
+            return JsonResponse({'success': True, 'message': 'Convenio Creado satisfactoriamente!'})
 
-        #comando = 'UPDATE contratacion_convenios (nombre,empresa_id,"vigenciaDesde","vigenciaHasta",tarifa, "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias,"consultaExterna",copago, moderadora, "tipoFactura",agrupada,"facturacionSuministros","facturacionCups", "cuentaContable", requisitos,"fechaRegistro",estadoReg,"usuarioRegistro_id") VALUES (' + "'" + str(nombre) + "'," + "'" + str(empresa) + "'," + "'" + str(vigenciaDesde) + "'," + "'" + str(vigenciaHasta) + "'," + "'" + str(tarifa) + "'," + "'" + str(porcTarifario) + "'," + "'" + str(porcSuministros) + "'," + "'" + str(valorOxigeno) + "'," + "'" + str(porcEsterilizacion) + "'," + "'" + str(porcMaterial) + "'," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipoFactura) + "'," + "'" + str(agrupada) + "'," + "'" + str(acturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "'," + "'" + str(requisitos) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(username_id) + "'"
-        comando = 'UPDATE contratacion_convenios set nombre = ' + "'" + str(nombre) + "', empresa_id = " + str(empresa) + ","  + '"vigenciaDesde" = ' + "'" + str(vigenciaDesde) + "'," + '"vigenciaHasta" = ' + "'" + str(vigenciaHasta) + "'," + '"porcTarifario" = ' + str(porcTarifario) + "," + '"porcSuministros" = ' + str(porcSuministros) + "," + '"valorOxigeno" = ' + str(valorOxigeno) + "," + '"porcEsterilizacion" = ' + str(porcEsterilizacion) + "," + 'hospitalario = ' + "'" + str(hospitalario) + "'," + 'urgencias = ' + "'" + str(urgencias) + "'," + '"consultaExterna" = ' + "'" + str(consultaExterna) + "'," + 'copago = ' + "'" + str(copago) + "'," + 'moderadora = ' + "'" + str(moderadora) + "'," + 'agrupada = ' + "'" + str(agrupada) + "'," + '"facturacionSuministros" = ' + "'" + str(facturacionSuministros) + "'," + '"facturacionCups" = ' + "'" + str(facturacionCups) + "'," + '"cuentaContable" = ' + "'" + str(cuentaContable) + "'," + 'requisitos = ' + "'" + str(requisitos) + "'," + '"fechaRegistro" = ' + "'" + str(fechaRegistro) + "'," + '"estadoReg" = ' + "'" + str(estadoReg) + "'," + '"usuarioRegistro_id" = ' + "'" + str(username_id) + "'" + ' WHERE id = ' + "'" + str(convenioId) + "'"
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
+            raise error
 
+        finally:
+            if miConexiont:
+                curt.close()
+                miConexiont.close()
 
-        print(comando)
-        curt.execute(comando)
-        miConexiont.commit()
-        miConexiont.close()
-
-
-
-        return JsonResponse({'success': True, 'message': 'Convenio Creado satisfactoriamente!'})
 
 def GrabarTarifa( request):
 
@@ -965,68 +1017,79 @@ def GrabarTarifa( request):
 
         accion = request.POST["accion"]
 
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        curt = miConexiont.cursor()
-
-        if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' ):
-            print("Entre1")
-            comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast("codigoCups_id" as numeric), '  + str(tiposTarifa) + "," + "'" +  str(username_id) + "'" +  ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
-
-
-        if (accion == 'Crear' and porcentage != 0 and conceptos != '' and valorVariacion == '0'):
-            print("Entre2")
-            comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast("codigoCups_id" as numeric), ' +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
-
-
-        if (accion == 'Crear' and porcentage == '0'  and conceptos == '' and valorVariacion != '0'):
-            print("Entre3")
-            comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) +  "'," + ' cast("codigoCups_id" as numeric), '   +"'" + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
-
-
-        if (accion == 'Crear' and porcentage == '0'  and conceptos != '' and valorVariacion !='0'):
-            print("Entre4")
-            comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast("codigoCups_id" as numeric), '  +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
-
-
-        if (accion == 'Borrar' and conceptos == '' and valorVariacion == '0' ):
-            print("Entre11")
-            comando = 'DELETE FROM contratacion_conveniosProcedimientos  where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
-
-
-        if (accion == 'Borrar' and conceptos != '' and valorVariacion == '0'):
-            print("Entre12")
-            comando = 'DELETE FROM contratacion_conveniosProcedimientos where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
-
-
-        if (accion == 'Borrar' and conceptos == '' and valorVariacion != '0'):
-            print("Entre13")
-            comando = 'DELETE FROM contratacion_conveniosProcedimientos where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' and valor = " + "'" + str(valorVariacion) + "'"
-
-
-        if (accion == 'Borrar' and conceptos != '' and valorVariacion !='0'):
-            print("Entre14")
-            comando = 'DELETE FROM contratacion_conveniosProcedimientos where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "' AND valor = " + "'" +str(valorVariacion) + "'"
-
-
-        print(comando)
-
+        miConexion3 = None
         try:
 
-            curt.execute(comando)
 
-        except (Exception, psycopg2.DatabaseError) as error:
-        	print("Error = " ,error)
+                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                curt = miConexiont.cursor()
 
-        miConexiont.commit()
-        miConexiont.close()
+                if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' ):
+                    print("Entre1")
+                    comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast("codigoCups_id" as numeric), '  + str(tiposTarifa) + "," + "'" +  str(username_id) + "'" +  ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
 
 
-        if (accion == 'Crear'):
-	        return JsonResponse({'success': True, 'message': 'Tarifas de convenio actualizadas satisfactoriamente!'})
+                if (accion == 'Crear' and porcentage != 0 and conceptos != '' and valorVariacion == '0'):
+                    print("Entre2")
+                    comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast("codigoCups_id" as numeric), ' +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
 
-        if (accion == 'Borrar'):
-	        return JsonResponse({'success': True, 'message': 'Registros borrados satisfactoriamente!'})
+
+                if (accion == 'Crear' and porcentage == '0'  and conceptos == '' and valorVariacion != '0'):
+                    print("Entre3")
+                    comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) +  "'," + ' cast("codigoCups_id" as numeric), '   +"'" + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
+
+
+                if (accion == 'Crear' and porcentage == '0'  and conceptos != '' and valorVariacion !='0'):
+                    print("Entre4")
+                    comando = 'INSERT INTO contratacion_conveniosProcedimientos ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast("codigoCups_id" as numeric), '  +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifas where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
+
+
+                if (accion == 'Borrar' and conceptos == '' and valorVariacion == '0' ):
+                    print("Entre11")
+                    comando = 'DELETE FROM contratacion_conveniosProcedimientos  where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
+
+
+                if (accion == 'Borrar' and conceptos != '' and valorVariacion == '0'):
+                    print("Entre12")
+                    comando = 'DELETE FROM contratacion_conveniosProcedimientos where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
+
+
+                if (accion == 'Borrar' and conceptos == '' and valorVariacion != '0'):
+                    print("Entre13")
+                    comando = 'DELETE FROM contratacion_conveniosProcedimientos where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' and valor = " + "'" + str(valorVariacion) + "'"
+
+
+                if (accion == 'Borrar' and conceptos != '' and valorVariacion !='0'):
+                    print("Entre14")
+                    comando = 'DELETE FROM contratacion_conveniosProcedimientos where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "' AND valor = " + "'" +str(valorVariacion) + "'"
+
+
+                print(comando)
+
+                curt.execute(comando)
+
+                miConexiont.commit()
+                curt.close()
+                miConexiont.close()
+
+
+                if (accion == 'Crear'):
+                    return JsonResponse({'success': True, 'message': 'Tarifas de convenio actualizadas satisfactoriamente!'})
+
+                if (accion == 'Borrar'):
+                    return JsonResponse({'success': True, 'message': 'Registros borrados satisfactoriamente!'})
+
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
+            raise error
+
+        finally:
+            if miConexiont:
+                curt.close()
+                miConexiont.close()
 
 
 
@@ -1034,15 +1097,20 @@ def DeleteConveniosProcedimientos(request):
 
     print ("Entre DeleteConveniosProcedimientos" )
 
+    try:
+        with transaction.atomic():
 
-    id = request.POST["post_id"]
-    print ("el id es = ", id)
+            id = request.POST["post_id"]
+            print ("el id es = ", id)
 
-    post = ConveniosProcedimientos.objects.get(id=id)
-    post.delete()
+            post = ConveniosProcedimientos.objects.get(id=id)
+            post.delete()
 
-    return JsonResponse({'success': True, 'message': 'Registro Borrado !'})
+            return JsonResponse({'success': True, 'message': 'Registro Borrado !'})
 
+    except Exception as e:
+        # Aquí ya se hizo rollback automáticamente
+        print("Se hizo rollback por:", e)
 
 
 # Create your views here.
@@ -1123,29 +1191,34 @@ def GuardarConveniosSuministros( request):
         username_id = request.POST["username_id"]
         fechaRegistro = datetime.datetime.now()
 
-     
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        curt = miConexiont.cursor()
-        comando = 'INSERT INTO contratacion_conveniossuministros ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) values (' + "'" + str(codigoHomologado) + "'," + "'" + str(valor) + "'," + "'" + str(fechaRegistro) +"'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + "'" + str(suministro) + "'," + "'" + str(tiposTarifa) + "'," + "'" + str(username_id) + "',"  + str(conceptos) + ")"
-
-
-        print(comando)
-
-
+        miConexion3 = None
         try:
+
+            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+            curt = miConexiont.cursor()
+            comando = 'INSERT INTO contratacion_conveniossuministros ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) values (' + "'" + str(codigoHomologado) + "'," + "'" + str(valor) + "'," + "'" + str(fechaRegistro) +"'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + "'" + str(suministro) + "'," + "'" + str(tiposTarifa) + "'," + "'" + str(username_id) + "',"  + str(conceptos) + ")"
+            print(comando)
             curt.execute(comando)
-        except (Exception, psycopg2.DatabaseError) as error:
 
-            print("Error = " ,error)
-            #serialized1 = json.dumps(error)
-            return JsonResponse({'success': True, 'message': 'Registro ya existe ¡'})
+            miConexiont.commit()
+            curt.close()
+            miConexiont.close()
+
+            return JsonResponse({'success': True, 'message': 'Tarifa de convenio suministro Creada satisfactoriamente!'})
+
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
+            raise error
 
 
-        miConexiont.commit()
-        miConexiont.close()
+        finally:
+            if miConexiont:
+                curt.close()
+                miConexiont.close()
 
-        return JsonResponse({'success': True, 'message': 'Tarifa de convenio suministro Creada satisfactoriamente!'})
 
 
 def GrabarSuministro( request):
@@ -1171,69 +1244,78 @@ def GrabarSuministro( request):
 
         accion = request.POST["accion"]
 
-
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
-        curt = miConexiont.cursor()
-
-        if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' ):
-            print("Entre1")
-            comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast(suministro_id as numeric), '  + str(tiposTarifa) + "," + "'" +  str(username_id) + "'" +  ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
-
-
-        if (accion == 'Crear' and porcentage != 0 and conceptos != '' and valorVariacion == '0'):
-            print("Entre2")
-            comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast(suministro_id as numeric), ' +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
-
-
-        if (accion == 'Crear' and porcentage == '0'  and conceptos == '' and valorVariacion != '0'):
-            print("Entre3")
-            comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) +  "'," + ' cast(suministro_id as numeric), '   +"'" + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
-
-
-        if (accion == 'Crear' and porcentage == '0'  and conceptos != '' and valorVariacion !='0'):
-            print("Entre4")
-            comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast(suministro_id as numeric), '  +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
-
-
-        if (accion == 'Borrar' and conceptos == '' and valorVariacion == '0' ):
-            print("Entre11")
-            comando = 'DELETE FROM contratacion_conveniosSuministros  where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
-
-
-        if (accion == 'Borrar' and conceptos != '' and valorVariacion == '0'):
-            print("Entre12")
-            comando = 'DELETE FROM contratacion_conveniosSuministros where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
-
-
-        if (accion == 'Borrar' and conceptos == '' and valorVariacion != '0'):
-            print("Entre13")
-            comando = 'DELETE FROM contratacion_conveniosSuministros where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' and valor = " + "'" + str(valorVariacion) + "'"
-
-
-        if (accion == 'Borrar' and conceptos != '' and valorVariacion !='0'):
-            print("Entre14")
-            comando = 'DELETE FROM contratacion_conveniosSuministros where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "' AND valor = " + "'" +str(valorVariacion) + "'"
-
-
-        print(comando)
-
+        miConexion3 = None
         try:
 
-            curt.execute(comando)
+                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                curt = miConexiont.cursor()
 
-        except (Exception, psycopg2.DatabaseError) as error:
-        	print("Error = " ,error)
-
-        miConexiont.commit()
-        miConexiont.close()
+                if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' ):
+                    print("Entre1")
+                    comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast(suministro_id as numeric), '  + str(tiposTarifa) + "," + "'" +  str(username_id) + "'" +  ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
 
 
-        if (accion == 'Crear'):
-	        return JsonResponse({'success': True, 'message': 'Tarifas de convenio suministros actualizadas satisfactoriamente!'})
+                if (accion == 'Crear' and porcentage != 0 and conceptos != '' and valorVariacion == '0'):
+                    print("Entre2")
+                    comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round((+"valor" +"valor"*' + str(porcentage) + '/100)) subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast(suministro_id as numeric), ' +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
 
-        if (accion == 'Borrar'):
-	        return JsonResponse({'success': True, 'message': 'Registros borrados satisfactoriamente!'})
 
+                if (accion == 'Crear' and porcentage == '0'  and conceptos == '' and valorVariacion != '0'):
+                    print("Entre3")
+                    comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) +  "'," + ' cast(suministro_id as numeric), '   +"'" + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
+
+
+                if (accion == 'Crear' and porcentage == '0'  and conceptos != '' and valorVariacion !='0'):
+                    print("Entre4")
+                    comando = 'INSERT INTO contratacion_conveniosSuministros ("codigoHomologado", valor,  "fechaRegistro", "estadoReg",convenio_id,suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) select "codigoHomologado", round( ' + "'" + str(valorVariacion) + "')" + ' subido  ,' + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + ' cast(suministro_id as numeric), '  +"'"  + str(tiposTarifa)  + "'," + "'" + str(username_id) + "'" + ', concepto_id from tarifas_tarifassuministros where "tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
+
+
+                if (accion == 'Borrar' and conceptos == '' and valorVariacion == '0' ):
+                    print("Entre11")
+                    comando = 'DELETE FROM contratacion_conveniosSuministros  where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "'"
+
+
+                if (accion == 'Borrar' and conceptos != '' and valorVariacion == '0'):
+                    print("Entre12")
+                    comando = 'DELETE FROM contratacion_conveniosSuministros where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "'"
+
+
+                if (accion == 'Borrar' and conceptos == '' and valorVariacion != '0'):
+                    print("Entre13")
+                    comando = 'DELETE FROM contratacion_conveniosSuministros where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' and valor = " + "'" + str(valorVariacion) + "'"
+
+
+                if (accion == 'Borrar' and conceptos != '' and valorVariacion !='0'):
+                    print("Entre14")
+                    comando = 'DELETE FROM contratacion_conveniosSuministros where convenio_id =  ' + "'" + str(convenioId) + "' AND " + '"tipoTarifa_id" = ' + "'" + str(tiposTarifa) + "' AND concepto_id =" + "'" + str(conceptos) + "' AND valor = " + "'" +str(valorVariacion) + "'"
+
+
+                print(comando)
+
+                curt.execute(comando)
+                miConexiont.commit()
+                curt.close()
+                miConexiont.close()
+
+
+                if (accion == 'Crear'):
+                    return JsonResponse({'success': True, 'message': 'Tarifas de convenio suministros actualizadas satisfactoriamente!'})
+
+                if (accion == 'Borrar'):
+                    return JsonResponse({'success': True, 'message': 'Registros borrados satisfactoriamente!'})
+
+        except psycopg2.DatabaseError as error:
+            print ("Entre por rollback" , error)
+            if miConexiont:
+                print("Entro ha hacer el Rollback")
+                miConexiont.rollback()
+            raise error
+
+
+        finally:
+            if miConexiont:
+                curt.close()
+                miConexiont.close()
 
 
 
@@ -1258,11 +1340,15 @@ def DeleteConveniosHonorarios(request):
 
     id = request.POST["post_id"]
     print ("el id es = ", id)
+    try:
+        with transaction.atomic():
+            post = ConveniosLiquidacionTarifasHonorarios.objects.get(id=id)
+            post.delete()
 
-    post = ConveniosLiquidacionTarifasHonorarios.objects.get(id=id)
-    post.delete()
-
-    return JsonResponse({'success': True, 'message': 'Registro Borrado !'})
+            return JsonResponse({'success': True, 'message': 'Registro Borrado !'})
+    except Exception as e:
+        # Aquí ya se hizo rollback automáticamente
+        print("Se hizo rollback por:", e)
 
 
 def GrabarHonorarios( request):

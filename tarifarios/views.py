@@ -171,18 +171,35 @@ def GuardarDescripcionProcedimientos(request):
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
+    miConexion3 = None
+    try:
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "')"
+        comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "')"
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
 
-    return JsonResponse({'success': True, 'message': 'Tarifario Descripcon Procedimientos Actualizado!'})
+        return JsonResponse({'success': True, 'message': 'Tarifario Descripcon Procedimientos Actualizado!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        raise error
+
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 def CrearTarifarioProcedimientos(request):
 
@@ -201,59 +218,54 @@ def CrearTarifarioProcedimientos(request):
     productoId = TiposTarifaProducto.objects.get(nombre='PROCEDIMIENTOS')
     descripcion = TiposTarifa.objects.get(id=tiposTarifa_id ,tiposTarifaProducto_id=productoId.id)
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    cur3 = miConexion3.cursor()
-
-    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
-        'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
-        estadoReg) + "',"  "'" + str(descripcion.id) + "')"
-
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
-
-
-    #miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    #cur3 = miConexion3.cursor()
-
-    #comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "' RETURNING id"
-
-    #print(comando)
-    #cur3.execute(comando)
-
-    #tarifariosProcId = cur3.fetchone()[0]
-    #print("resultado = " , resultado)
-    #miConexion3.commit()
-    #miConexion3.close()
-
-
-    # Aqui Rutina carga archivo Excel
-
-    archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaProcedimientos\\datos1.xlsx'
-    df = pd.read_excel(archivo_excel)
-
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-
-
-    # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
-
+    miConexion3 = None
     try:
-        for index, row in df.iterrows():
-            query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-            valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCups_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
-            cur3.execute(query, valores)
+
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            cur3 = miConexion3.cursor()
+
+            comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
+                'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
+                estadoReg) + "',"  "'" + str(descripcion.id) + "')"
+
+            print(comando)
+            cur3.execute(comando)
+
+
+            # Aqui Rutina carga archivo Excel
+
+            archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaProcedimientos\\datos1.xlsx'
+            df = pd.read_excel(archivo_excel)
+
+
+            # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
+
+            #try:
+            for index, row in df.iterrows():
+                    query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                    valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCups_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
+                    cur3.execute(query, valores)
+
+
+            # Cerrar la conexión
             miConexion3.commit()
-    except DatabaseError as e:
-        transaction.rollback()
+            cur3.close()
+            miConexion3.close()
+            return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
 
-    # Cerrar la conexión
-    cur3.close()
-    miConexion3.close()
-    return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
 
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
 def CrearItemTarifario(request):
@@ -282,29 +294,33 @@ def CrearItemTarifario(request):
 
     conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-
-    comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
-
-    print(comando)
-
+    miConexion3 = None
     try:
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
+
+        print(comando)
+
         cur3.execute(comando)
-    except psycopg2.Error as e:
-        # get error code
-        error = e.pgcode
-        print ("Entre Error Base de datos" ,  error)
-        transaction.rollback()
+        miConexion3.commit()
+        cur3.close()
         miConexion3.close()
-        return JsonResponse({'success': True, 'message': 'Tarifa existente !'})
+        return JsonResponse({'success': True, 'message': 'Item Tarifario creado !'})
 
-    miConexion3.commit()
-    miConexion3.close()
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
 
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
-
-    return JsonResponse({'success': True, 'message': 'Item Tarifario creado !'})
 
 def AplicarTarifas(request):
 
@@ -346,8 +362,6 @@ def AplicarTarifas(request):
 
     conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
 
     print ("Comenzamos")
 
@@ -372,11 +386,33 @@ def AplicarTarifas(request):
 	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
     print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
 
-    return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Tarifario Sabana creado !'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        raise error
+
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
 
 def GuardarEditarTarifarioProcedimientos(request):
 
@@ -466,17 +502,36 @@ def GuardarEditarTarifarioProcedimientos(request):
 
     conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
 
-    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
+    miConexion3 = None
+    try:
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
 
-    return JsonResponse({'success': True, 'message': 'Tarifario Actualizado !'})
+        comando = 'UPDATE tarifarios_tarifariosprocedimientos SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
+
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Tarifario Actualizado !'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
 
 
 def TraerTarifarioProcedimientos(request):
@@ -639,59 +694,55 @@ def CrearTarifarioSuministros(request):
     descripcion = TiposTarifa.objects.get(id=tiposTarifa_id ,tiposTarifaProducto_id=productoId.id)
     print("descripcion = ", descripcion)
 
-
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    cur3 = miConexion3.cursor()
-
-    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
-        'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
-        estadoReg) + "',"  "'" + str(descripcion.id) + "')"
-
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
-
-
-    #miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    #cur3 = miConexion3.cursor()
-
-    #comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") SELECT ' + "'" + str(fechaRegistro) + "'," +   "'" + str(estadoReg) + "',"   + ' exa.id , ' +  "'" + str(conceptoId.id) + "','" +  str(tiposTarifa_id) + "','" +  str(username_id) + "'" + ' FROM clinico_examenes exa where exa."estadoReg" = ' + "'" + str('A') + "' RETURNING id"
-
-    #print(comando)
-    #cur3.execute(comando)
-
-    #tarifariosProcId = cur3.fetchone()[0]
-    #print("resultado = " , resultado)
-    #miConexion3.commit()
-    #miConexion3.close()
-
-
-    # Aqui Rutina carga archivo Excel
-
-    archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaSuministros\\datos2.xlsx'
-    df = pd.read_excel(archivo_excel)
-
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-
-
-    # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
-
+    miConexion3 = None
     try:
-        for index, row in df.iterrows():
-            query = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCum_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-            valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCum_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
-            cur3.execute(query, valores)
-            miConexion3.commit()
-    except DatabaseError as e:
-        transaction.rollback()
 
-    # Cerrar la conexión
-    cur3.close()
-    miConexion3.close()
-    return JsonResponse({'success': True, 'message': 'Tarifario Sabana Suministros creado !'})
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            cur3 = miConexion3.cursor()
+
+            comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
+                'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
+                estadoReg) + "',"  "'" + str(descripcion.id) + "')"
+
+            print(comando)
+            cur3.execute(comando)
+            # Aqui Rutina carga archivo Excel
+
+            archivo_excel = 'c:\\Entornospython\\Pos3\\vulner\\JSONCLINICA\\CargaSuministros\\datos2.xlsx'
+            df = pd.read_excel(archivo_excel)
+
+
+            # Crear una sentencia INSERT (ajustar según la estructura de la tabla)
+
+            #try:
+            for index, row in df.iterrows():
+                    query = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCum_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
+                    valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCum_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
+                    cur3.execute(query, valores)
+
+            #except DatabaseError as e:
+            #    transaction.rollback()
+
+            # Guardar y Cerrar la conexión
+            miConexion3.commit()
+            cur3.close()
+            miConexion3.close()
+            return JsonResponse({'success': True, 'message': 'Tarifario Sabana Suministros creado !'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
 def Load_datatarifariosDescripcionSuministros(request, data):
@@ -810,38 +861,53 @@ def AplicarTarifasSuministros(request):
 
     conceptoId =  Conceptos.objects.get(nombre='MEDICAMENTOS')
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
 
-    print ("Comenzamos")
+    miConexion3 = None
+    try:
 
-    if (codigoCums_id != '' and codigoCumsHasta_id != '' and porcentaje !='' ):
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            cur3 = miConexion3.cursor()
 
-        print("Entre porcentaje a Rango de CUMS")
-        comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCum_id" >= ' + str(codigoCums_id) + " AND "  + ' "codigoCum_id" <= ' +  str(codigoCumsHasta_id)
-    if (codigoCums_id != '' and codigoCumsHasta_id != '' and valorAplicar != ''):
+            print ("Comenzamos")
 
-        print("Entre Valor a aplicar  en rango de cums")
-        comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "' AND " + '"codigoCum_id" >= ' + str(codigoCums_id) + " AND "  + ' "codigoCum_id" <= '  + str(codigoCumsHasta_id)
+            if (codigoCums_id != '' and codigoCumsHasta_id != '' and porcentaje !='' ):
 
-    if ( codigoCums_id == '' and codigoCumsHasta_id == '' and porcentaje != ''):
+                print("Entre porcentaje a Rango de CUMS")
+                comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'" + ' AND "codigoCum_id" >= ' + str(codigoCums_id) + " AND "  + ' "codigoCum_id" <= ' +  str(codigoCumsHasta_id)
+            if (codigoCums_id != '' and codigoCumsHasta_id != '' and valorAplicar != ''):
 
-	    print ("Entre porcentaje Solito")
-	    comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+                print("Entre Valor a aplicar  en rango de cums")
+                comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "' AND " + '"codigoCum_id" >= ' + str(codigoCums_id) + " AND "  + ' "codigoCum_id" <= '  + str(codigoCumsHasta_id)
+
+            if ( codigoCums_id == '' and codigoCumsHasta_id == '' and porcentaje != ''):
+
+                print ("Entre porcentaje Solito")
+                comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = "colValorBase" +  "colValorBase" * ' + str(porcentaje) + '/100 WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
 
-    if (codigoCums_id == '' and codigoCumsHasta_id == '' and valorAplicar != ''):
+            if (codigoCums_id == '' and codigoCumsHasta_id == '' and valorAplicar != ''):
 
-	    print ("Entre valor a Aplicar Solito");
+                print ("Entre valor a Aplicar Solito");
 
-	    comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+                comando = 'UPDATE tarifarios_tarifariossuministros SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+            print(comando)
+            cur3.execute(comando)
 
-    return JsonResponse({'success': True, 'message': 'Tarifario Suministro Actualizado !'})
+            return JsonResponse({'success': True, 'message': 'Tarifario Suministro Actualizado !'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 
 def CrearItemTarifarioSuministros(request):
@@ -870,30 +936,46 @@ def CrearItemTarifarioSuministros(request):
 
     conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
-
-    comando = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCum_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCumsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
-
-    print(comando)
-
+    miConexion3 = None
     try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCum_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCumsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
+
+        print(comando)
+
+        #try:
         cur3.execute(comando)
-    except psycopg2.Error as e:
-        # get error code
-        error = e.pgcode
-        print ("Entre Error Base de datos" ,  error)
-        transaction.rollback()
+        #except psycopg2.Error as e:
+            # get error code
+            #error = e.pgcode
+            #print ("Entre Error Base de datos" ,  error)
+            #transaction.rollback()
+            #miConexion3.close()
+            #return JsonResponse({'success': True, 'message': 'Tarifa Suministro existente !'})
+
+        miConexion3.commit()
+        cur3.close()
         miConexion3.close()
-        return JsonResponse({'success': True, 'message': 'Tarifa Suministro existente !'})
-
-    miConexion3.commit()
-    miConexion3.close()
 
 
 
-    return JsonResponse({'success': True, 'message': 'Item Tarifario Suministro creado !'})
+        return JsonResponse({'success': True, 'message': 'Item Tarifario Suministro creado !'})
 
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 def GuardarEditarTarifarioSuministros(request):
 
@@ -983,17 +1065,34 @@ def GuardarEditarTarifarioSuministros(request):
 
     conceptoId =  Conceptos.objects.get(nombre='PROCEDIMIENTOS')
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
-    cur3 = miConexion3.cursor()
+    miConexion3 = None
+    try:
 
-    comando = 'UPDATE tarifarios_tarifariossuministros SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
 
-    print(comando)
-    cur3.execute(comando)
-    miConexion3.commit()
-    miConexion3.close()
+        comando = 'UPDATE tarifarios_tarifariossuministros SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
 
-    return JsonResponse({'success': True, 'message': 'Tarifario Actualizado !'})
+        print(comando)
+        cur3.execute(comando)
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Tarifario Actualizado !'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
 
 def TraerTarifarioSuministros(request):
     print("Entre TraerTarifarioSuministros")

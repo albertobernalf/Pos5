@@ -19,7 +19,9 @@ function arrancaTarifarios(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptionsProcedimientos  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -115,7 +117,9 @@ function arrancaTarifarios(valorTabla,valorData)
     {
 
         let dataTableOptionsSuministros  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -214,7 +218,9 @@ function arrancaTarifarios(valorTabla,valorData)
     if (valorTabla == 3)
     {
         let dataTableOptionsHonorarios  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -382,7 +388,9 @@ function arrancaTarifarios(valorTabla,valorData)
     if (valorTabla == 5)
     {
         let dataTableOptionsSuministros  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',

@@ -26,6 +26,7 @@ from rips.models import  RipsDestinoEgreso
 from cartera.models import FormasPagos, PagosFacturas
 import datetime
 from django.db import transaction, IntegrityError
+from django.db.models import Q
 
 # Create your views here.
 
@@ -5656,7 +5657,7 @@ def guardaCambioServicio(request):
             print("Aqui actualiza  : ",  dependenciaActualId.id);
 
 
-
+            #Aqui libera la que tenia ocupada creo
 
             grabo01 = Dependencias.objects.filter(id=dependenciaActualId.id).update(tipoDoc_id='', documento_id='',
                                                                                     consec=0, disponibilidad="L",
@@ -5672,6 +5673,7 @@ def guardaCambioServicio(request):
             print("consec =", consec )
 
 
+            #Aqui Ocupa la que tenia ocupada creonueva cama
 
             grabo02 = Dependencias.objects.filter(id=dependenciaFinalId.id).update(tipoDoc_id=tipoDocId.id,
                                                                                    documento_id=documentoId.id,
@@ -5687,23 +5689,34 @@ def guardaCambioServicio(request):
                                                                             serviciosActual_id=servicioFinalId.servicios_id)
             print("pase grabo03", grabo03)
 
-            # Registro el historico de dependencias
+            # Registro el historico de dependencias Esto para la dependencia que desocupa
 
-            grabo04 = HistorialDependencias(
+            grabo04 = Dependencias.objects.filter(id=dependenciaActualId.id).update(tipoDoc_id=tipoDocId.id,
+                                                                                   documento_id=documentoId.id,
+                                                                                   consec=consec, disponibilidad="L",
+                                                                                   fechaRegistro=fechaRegistro,
+                                                                                   fechaLiberacion=fechaRegistro)
+            grabo04.save()
+            print("yA grabe dependencias historico", grabo04.id)
+
+
+            # Registro el historico la nueca dependencia si es un INSERT
+
+            grabo05 = HistorialDependencias(
                 tipoDoc_id=tipoDocId.id,
                 documento_id=documentoId.id,
                 consec=consec,
-                dependencias_id=dependenciaActualId.id,
-                disponibilidad='L',
+                dependencias_id=servicioFinalId.id,
+                disponibilidad='O',
                 fechaRegistro=fechaRegistro,
                 usuarioRegistro_id=username_id,
-                fechaLiberacion=fechaRegistro,
+                #fechaLiberacion=fechaRegistro,
                 fechaOcupacion=dependenciaActualId.fechaOcupacion,
                 estadoReg='A'
-
             )
-            grabo04.save()
+            grabo05.save()
             print("yA grabe dependencias historico", grabo04.id)
+
 
             return JsonResponse(CambioServicio, safe=False)
 
@@ -5834,13 +5847,16 @@ def GuardaConvenioAdmision(request):
 
     sede = request.POST["sede2"]
     convenio = request.POST["convenio"]
+    username_id = request.POST["username33_id"]
     print ("ingresoId = ", ingresoId)
     print("sede = ", sede)
     print("convenio = ", convenio)
+    print("username_id = ", username_id)
 
     fechaRegistro = datetime.datetime.now()
 
     registroId = Ingresos.objects.get(id=ingresoId)
+    estadoReg='A'
     print  ("registroId documento =" , registroId.documento_id)
 
     ## falta usuarioRegistro_id
@@ -5860,18 +5876,26 @@ def GuardaConvenioAdmision(request):
 
             try:
                 with transaction.atomic():
-                    existeLiquidacion = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consec, convenio_id = convenio)
+                    existeLiquidacion = Liquidacion.objects.get(tipoDoc_id=registroId.tipoDoc_id, documento_id=registroId.documento_id, consecAdmision=registroId.consec, convenio_id__isnull=True)
                     hayLiquidacion=existeLiquidacion.id
+                    print("hayLiquidacion DENTRO DEL WITH=", hayLiquidacion)
 
             except Exception as e:
                 # Aquí No existe
                 print("Noexiste:", e)
                 hayLiquidacion = 0
 
+            print ("hayLiquidacion =", hayLiquidacion )
+
             if (hayLiquidacion==0):
-                comando2 = 'insert into facturacion_Liquidacion ("consecAdmision", fecha, "fechaRegistro",  "estadoRegistro", convenio_id, "tipoDoc_id" , documento_id,  "usuarioRegistro_id" ) VALUES ( ' + "'" + str(registroId.consec) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(fechaRegistro) + "','A'," + "'" + str(convenio) + "'," + "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(sede) + "')"
+
+
+                print ("Entre por hayliquidacion= 0, O sea creo liquidacion ")
+                comando2 = 'INSERT INTO facturacion_liquidacion ("sedesClinica_id", "tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(sede) + "'," +  "'" + str(registroId.tipoDoc_id) + "','" + str(registroId.documento_id) + "','" + str(registroId.consec) + "','" + str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(convenio) + ',' + "'" + str(username_id) + "',0) RETURNING id "
+
             else:
                 comando2 = 'UPDATE facturacion_Liquidacion SET convenio_id = ' + "'" + str(convenio) + "' WHERE id =" + str(hayLiquidacion)
+
             print("comando1= ", comando1)
             print("comando2= ", comando2)
 

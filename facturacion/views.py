@@ -299,9 +299,11 @@ def PostConsultaLiquidacion(request):
 
     miConexiont.close()
 
-    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion[0]['id'])
+    print ("OJOOOOO cabezoteLiquidacion"  , cabezoteLiquidacion)
 
-    cabezote = str(cabezoteLiquidacion[0]['id'])
+    cabezote = str(cabezoteLiquidacion)
+    cabezote = cabezote.replace("[", ' ')
+    cabezote = cabezote.replace("]", ' ')
     cabezote = cabezote.replace("(", ' ')
     cabezote = cabezote.replace(")", ' ')
     cabezote = cabezote.replace(",", ' ')
@@ -311,7 +313,7 @@ def PostConsultaLiquidacion(request):
     miConexiont = None
     try:
 
-      if (cabezote[0] == ''):
+      if (cabezoteLiquidacion == []):
                 print ("OJOOOOOO ENTRE AL CABEZOTE LIQUIDACION")
                 # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
 

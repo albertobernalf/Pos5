@@ -83,6 +83,40 @@
 
         }
 
+.contenedorSpan {
+  display: flex;
+  justify-content: space-between;
+  /* Otros estilos para el contenedor */
+}
+.izquierda {
+  /* Estilos para el span izquierdo */
+color:blue;
+ font-size:15px;
+ line-height:10px;
+ font-family: Calibri; 
+margin-left:10px;
+ float: left;
+}
+
+.derecha {
+  /* Estilos para el span derecho */
+color:blue;
+ font-size:15px; 
+line-height:10px; 
+font-family: Calibri; 
+margin-left:450px;
+ float: right;
+}
+
+.masderecha {
+  /* Estilos para el span derecho */
+color:blue;
+ font-size:15px; 
+line-height:10px; 
+font-family: Calibri; 
+margin-left:400px;
+ float: right;
+}
     </style>
 
 
@@ -106,11 +140,34 @@
 <input type="hidden" id="permisosDetalle" name="permisosDetalle" value = "{{PermisosDetalle}}">
 <input type="hidden" id="escogeModulo" name="escogeModulo" value = "{{EscogeModulo}}">
 
-{% block menu  %}
-<div class="marco">
 
-</div>
+{% block menu  %}
+<div class="marco" style="width:100%">
+       
+       <form class="form-inline my-2 my-lg-0">
+        	<div style="Text-align:right; line-height:10px;">
+
+	<div class="contenedorSpan" style="width=100%">
+
+	<span class="izquierda">  {{EscogeModulo}} </span>
+         
+		<span class="derecha">  Sede: {{NombreSede}}  </span>
+
+   
+		<span class="masderecha"> Colaborador : {{Profesional}} </span>
+
+	
+         	   <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+	            <a class="nav-link" href="/retornarMen/{{Sede}}, {{Username}}, {{Documento}}, {{NombreSede}}, {{Profesional}}">Retornar</a>
+		        </form>
+
+		  
+            </div>
+         </div>
+
+
 {% endblock %}
+
 
 
 
@@ -118,24 +175,6 @@
 <script>
 </script>
 {% endblock %}
-
-
-<div class="marco">
-    {% block usuarios %}
-
-		        <form class="form-inline my-2 my-lg-0">
-         	   <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
-	            <a class="nav-link" href="/retornarMen/{{Sede}}, {{Username}}, {{Documento}}, {{NombreSede}}, {{Profesional}}">Retornar</a>
-		        </form>
-
-         	<div style="Text-align:right;line-height:10px;">
-           <span style= "color:blue; font-size:18px; line-height:10px; font-family: Calibri; " > {{EscogeModulo}} </span>   Sede: {{NombreSede}} Colaborador : {{Profesional}} 
-		</div>
-    {% endblock %}
-
-
-</div>
-
 
 
 {% block content  %}

@@ -28,16 +28,27 @@
 </div>
 
 <style>
-div.dataTables_wrapper  div.dataTables_filter input {
-   height: 2px;
-   padding:10px;
-   border-radius:8px;
-}
 
 div.dataTables_filter input {
     width: 50px;
   }
+#tablaGlosas {
+     /*    font-family: 'Verdana', sans-serif;  */  /* Times*/
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+        font-size: 50px;
+	 padding: 1px;
+	 /* Alto de las celdas */
+	  height: 1px;
+    }
 
+table.dataTable tbody tr {
+  min-height: 60px;
+}
+
+
+.my-row-class {
+    height: 30px;
+}
 
 </style>
 
@@ -95,10 +106,11 @@ div.dataTables_filter input {
 
    			   <div class="row">
 				
-                                        <table  id= "tablaGlosas" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaGlosas" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
+					      <th>Seleccionar</th> 
                                             	<th>id</th>
 				                <th>FecRecep</th>
 				                <th>saldoFac</th>
@@ -122,42 +134,13 @@ div.dataTables_filter input {
 				                <th>NombreRecep</th>    
 				                <th>sede</th>    
 				                <th>Envio</th>
-	                                        <th>Seleccionar</th> 
+	                                  
 						</bold>                                  
                                             </tr>
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                            	<th>id</th>
-				                <th>FecRecep</th>
-				                <th>saldoFac</th>
-				                <th>Soportado</th>
-				                <th>Aceptado</th>
-				                <th>observa</th>
-				                <th>FecReg</th>
-				                <th>Estado</th>
-						<th>Conv</th>
-						<th>NombreConv</th>
-				                <th>usuarioReg</th>
-						<th>fact</th>
-						<th>FecResp</th>
-						<th>TipoGlosa</th>
-						<th>NombreTipo</th>
-						<th>UsuarioRecep</th>
-				                <th>UsuarioResp</th>
-				                <th>Valor</th>    
-				                <th>EstaRad</th>    
-				                <th>EstaRecep</th>    
-				                <th>NombreRecep</th>    
-				                <th>sede</th>    
-				                <th>Envio</th>
-                                                <th>Seleccionar</th> 
-						</bold>                                  
-                                            </tr>
-                                           </tfoot>
+                                      
                                         </table>
                                     </div>
                                 </div>
@@ -165,14 +148,15 @@ div.dataTables_filter input {
 
 	            <!-- Espacio Modales  Glosas-->
 
-            <div class="modal fade" id="crearModelGlosas" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" modal-lg>
+            <div class="modal fade" id="crearModelGlosas" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-scrollable  modal-dialog-center" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
-                             <h4 class="modal-title" id="modelHeadingGlosas"> </h4> 
+	     <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Crear Glosa</font> </div>
+                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
 			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosas" onclick="CrearGlosas()">Grabar!</button> 
                         </div>
-		<div style="width:500px; heigth:100px; ">
+		
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
                                 <ul class="mb-0"></ul>
@@ -287,7 +271,12 @@ div.dataTables_filter input {
                             </form>
 
                         </div> <!-- CIERRA BODY -->
-			</div> <!-- CIERRA DIV TAMANO -->			
+			<div class="modal-footer">
+				<span id="mensajesErrorModalGlosas" name="mensajesErrorModalGlosas" style= "color:red; font-size:15px; line-height:35px; font-family: Calibri;" > </span>
+				  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+				<button type="button" class="btn btn-primary" id="saveBtnCrearGlosas" onclick="CrearGlosas()">Grabar!</button> 
+                        
+			    </div> <!-- CIERRA FOOTER -->			
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
@@ -487,7 +476,7 @@ div.dataTables_filter input {
 
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaGlosasDetalle" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaGlosasDetalle" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -513,29 +502,7 @@ div.dataTables_filter input {
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-				<th>tipo</th>
-				<th>id</th>
-				<th>consec</th>
-				<th>itemFactura</th>
-				<th>codigo</th>
-				<th>nombre</th>
-				<th>vrServicio</th>
-				<th>glosaNombre</th>
-				<th>cantidadGlosada</th>
-				<th>cantidadAceptada</th>	
-				<th>cantidadSoportado</th>
-				<th>valorGlosado</th>
-				<th>vAceptado</th>
-				<th>valorSoportado</th>
-				<th>notasCreditoGlosa</th>	
-				<th>Accion </th>
-				</bold>                                  
-                                            </tr>
-                                            </tfoot>
-
+                                     
                                         </table>
                                     </div>
                                 </div>
@@ -546,11 +513,14 @@ div.dataTables_filter input {
 
 	            <!-- Espacio Modales Detalle Glosas -->
 
-            <div class="modal fade" id="crearModelGlosasDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" modal-lg>
+            <div class="modal fade" id="crearModelGlosasDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-scrollable" role="document" modal-lg>
                     <div class="modal-content">
                         <div class="modal-header">
-                             <h4 class="modal-title" id="modelHeadingGlosasDetalle"> </h4> 
+                         <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Detalle Glosa</font> </div>
+                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
 			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosasDetalle" onclick="GuardarGlosasDetalle()">Grabar!</button> 
                         </div>
 		<div style="width:500px; heigth:100px; ">
@@ -716,6 +686,16 @@ div.dataTables_filter input {
                             </form>
 
                         </div> <!-- CIERRA BODY -->
+     			 <div class="modal-footer">
+
+					  <span id="mensajesErrorDetalleModal" name="mensajesErrorDetalleModal" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+
+	<button type="button" class="btn btn-primary" id="saveBtnCrearGlosasDetalle" onclick="GuardarGlosasDetalle()">Grabar!</button> 
+
+                                    </div> <!-- CIERRA FOOTER -->
+
 			</div> <!-- CIERRA DIV TAMANO -->			
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
@@ -733,7 +713,7 @@ div.dataTables_filter input {
             <!-- INICIO TABLE DE  EL DATATABLE  -->
  	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaGlosasTransaccion" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaGlosasTransaccion" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -752,22 +732,7 @@ div.dataTables_filter input {
                                             </thead>
                                             <tbody>
                                             </tbody>
- 						<tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>NumeroDocObligatorio</th>
-                                                <th>NumNota</th>
-                                                <th>FechaRegistro</th>
-                                                <th>TipoNota</th>
-                                                <th>UsuarioRegistro</th>
-                                                <th>Envio Rips # </th>
-						<th>Sedes # </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+ 					
                                         </table>
                                     </div>
                                 </div>
@@ -781,7 +746,7 @@ div.dataTables_filter input {
 <article id="RipsUsuarios">
 	<div class="container my-2">          
    			   <div class="row">
-                                         <table  id= "tablaGlosasUsuarios" class=" display table table-striped" style="width: 100%";>
+                                         <table  id= "tablaGlosasUsuarios" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -809,30 +774,7 @@ div.dataTables_filter input {
                                             <tbody>
 
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>tipoDocumento </th>
-                                                <th>tipoUsuario </th>
-                                                <th>FechaNacimiento </th>
-                                                <th>CodSexo </th>
-                                                <th>CodZonaTerritorial </th>
-                                                <th>Incapacidad </th>
-						<th>Consecutivo </th>
-                                                <th>FechaRegistro </th>
-                                                <th>CodMunicipio</th>
-                                                <th>CodPaisOrigen </th>
-                                                <th>CodPaisResidencia </th>
-                                                <th>UsuarioRegistro </th>
-                                                <th>NumDocumentoIdentifica </th>
-                                                <th>RipsDetalleId </th>
-                                                <th>RipsTransaccionId </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                         
 
                                         </table>
                                     </div>
@@ -845,7 +787,7 @@ div.dataTables_filter input {
 
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaGlosasHospitalizacion" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaGlosasHospitalizacion" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -876,34 +818,7 @@ div.dataTables_filter input {
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Prestador </th>
-                                                <th>fechaAtn </th>
-                                                <th>Aut </th>
-                                                <th>Egreso </th>
-                                                <th>consec </th>
-						<th>Fec.Reg </th>
-                                                <th>CausaMotivo </th>
-                                                <th>Complica</th>
-                                                <th>DxMuerte </th>
-                                                <th>DxPrincipalI </th>
-                                                <th>DxPrincipalE </th>
-                                                <th>DxRel1</th>
-                                                <th>DxRel2</th>
-                                                <th>DxRel3 </th>
-                                                <th>DestEgreso </th>
-                                                <th>UsuReg </th>
-                                                <th>ViaIngreso </th>
-                                                <th>RipsDetalle_id </th>
-                                                <th>ripsTipos_id </th>
-						<th>Accion </th>
-						</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                         
 
                                         </table>
                                     </div>
@@ -919,7 +834,7 @@ div.dataTables_filter input {
 	<div class="container my-2">          
    			   <div class="row">
 
-					<table id="tablaGlosasUrgencias" class="display table table-striped" style="width:100%";>
+					<table id="tablaGlosasUrgencias" class="display table table-striped table-sm fs-6 nowrap" style="width:100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -947,30 +862,7 @@ div.dataTables_filter input {
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-						<th>codPrestador</th>
-						<th>fechaInicioAtencion</th>
-						<th>fechaEgreso</th>
-						<th>consecutivo</th>
-						<th>fechaRegistro</th>
-						<th>causaMotivoAtencion_id</th>
-						<th>codDiagnosticoCausaMuerte_id</th>
-						<th>codDiagnosticoPrincipal_id</th>
-						<th>codDiagnosticoPrincipalE_id</th>
-						<th>codDiagnosticoRelacionadoE1_id</th>
-						<th>codDiagnosticoRelacionadoE2_id</th>
-						<th>codDiagnosticoRelacionadoE3_id</th>
-						<th>condicionDestinoUsuarioEgreso_id</th>
-						<th>usuarioRegistro_id</th>
-						<th>ripsDetalle_id</th>
-						<th>ripsTipos_id</th>
-						<th>ripsTransaccion_id</th>
-						<th>Accion </th>
-						</bold>                                  
-                                            </tr>
-                                            </tfoot>
+                                      
                                         </table>
                                     </div>
                                 </div>
@@ -991,7 +883,7 @@ div.dataTables_filter input {
 	<div class="container my-2">          
    			   <div class="row">
 
-					<table id="tablaGlosasProcedimientos" class="display table table-striped" style="width:100%";>
+					<table id="tablaGlosasProcedimientos" class="display table table-striped table-sm fs-6 nowrap" style="width:100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -1024,36 +916,7 @@ div.dataTables_filter input {
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-                                                <th>id</th>
-                                                <th>Prestador </th>
-                                                <th>fechaAtn </th>
-                                                <th>MIPRES</th>
-                                                <th>Aut </th>
-                                                <th>Identif </th>
-                                                <th>vr </th>
-						<th>Moderadora </th>                                               
-                                                <th>consec</th>
-                                                <th>Complicacion </th>
-                                                <th>Principal </th>
-                                                <th>Relacionado </th>
-                                                <th>Proced</th>
-                                                <th>Servicio </th>
-                                                <th>concepto </th>
-                                                <th>FinalTecSalud </th>
-                                                <th>grupoServ </th>
-                                                <th>modGrupoServ </th>
-                                                <th>tipoIdent </th>
-                                                <th>usuario </th>
-                                                <th>viaIngreso </th>
-                                                <th>ripsDetalle </th>
-                                                <th>tipoModerado </th>
-						<th>Accion </th>
-						</bold>                                  
-                                            </tr>
-                                            </tfoot>
+                                           
                                         </table>
                                     </div>
                                 </div>
@@ -1064,7 +927,7 @@ div.dataTables_filter input {
 <article id="RipsMedicamentos">
 	<div class="container my-2">          
    			   <div class="row">
-                                        <table  id= "tablaGlosasMedicamentos" class=" display table table-striped" style="width: 100%";>
+                                        <table  id= "tablaGlosasMedicamentos" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                                  
@@ -1097,36 +960,7 @@ div.dataTables_filter input {
                                             </thead>
                                             <tbody>
                                             </tbody>
-                                           <tfoot>
-                                            <tr>    
-						<bold>                                  
-				<th>id</th>
-			<th>itemFac</th>
-			<th>nomTecno</th>
-			<th> MIPRES</th>
-			<th> cums</th>
-			<th> concentra</th>
-			<th> cantidad</th>
-			<th> vrUnit</th>
-			<th> vrServicio</th>
-			<th>  consRips</th>
-			<th> tipoMed</th>
-			<th> undMed_id</th>
-			<th> cantGlosada</th>
-			<th> cantAceptada</th>
-			<th> cantSoportado</th>
-			<th> valorGlosado</th>
-			<th>vAceptado</th>
-			<th> valorSoportado </th>
-			<th> motivoGlosa_id</th>
-			<th> notasCreditoGlosa</th>
-			<th> notasCreditoOtras</th>
-			<th> notasDebito</th>
-			<th>Accion </th>				
-				</bold>                                  
-
-                                            </tr>
-                                            </tfoot>
+                                       
 
                                         </table>
                                     </div>

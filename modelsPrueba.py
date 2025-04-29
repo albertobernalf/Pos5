@@ -676,7 +676,7 @@ BIBLIOGRAFIA:
 
 
 -- mañana 11 / abril
--- 1. No acualizo  anular items de liquidacionDetralle al final del traslado
+-- 1. No acualizo  anular items de liquidacionDetalle al final del traslado
 -- 3. Hacer pruebas d etraslados de suministros que no habian para el caso no recuerdo el motivo VERIFICAR.
 -- 4. Todo esto en el supuesto que no hay nada en el nuevo conveio, o sea esta en blmaco. Que pasa si yahay cupscreados allip
 -- 7. finalmente ver terminar rips PROBAR 
@@ -693,12 +693,8 @@ BIBLIOGRAFIA:
 
 
 -- Para el dia Lunes 21 de Abril :
-  -- Terminar crear admision desde triage Problema AJAX
+
   -- Seguir puesta ba punta historia clinica : Transaccionalidad, velocidad, datatables pequeños,excel izquiera,etc
-  -- Seguir Apoyo terapeutico
-  -- Seguri Facturacion, traifarios, rips, glosas, contratacion
-  -- Ojo recuerda que los form ponen lento la pagina y a lo mejor sea necesarfio acar el furips para otra parte evaluar
-  -- Ops recuerda qy corregir que los abonos estan ahora amarrados a convenio - liqudaciones
 
 - OJO al editar una dmision hay erorres por ejemplo si no toca responsables o acompanates los blanquea
 
@@ -725,18 +721,6 @@ campos por ej: eror de loalidad hasta ta que graba
 --  Toca ver como las modales crear admisiondesde triage y crear usuarios en triage validen la data antes de emviar. por ajax
 -- ojo el historial de dependencias fechaLiberacion siempre tiene fecha ALGO PASA esta mal VERIFICAR
 
-
--- Dia lunes 28 de Abril
-	ops , cambiar la logica de la funcion: PostConsultaLiquidacion, GRAVE ERROR : La consulta de la pantalla liquidacion, es a base de la tabla ingresos
-        y pacienteingresossfacturacion, o sea nada que ver con la tabla facturacion_loquiacion ANTON
-        Hay que buscar el convenioID que viene en la llave [0] del ingreso y pregunatar por esa llave,, de pronto cuando se crea UN conveion
-           si hay una Facturacion_liquidacion ques esta null se le carga o se actualiza a esa liquidacion pasando de convenio:_id null a una con valor
-          OPS YA HICE UN ARREGLO VALIDAR SI SI QUEDO BIEN PARA LIQUIDCIONES NULAS INICIALMENTE SIN CONVENIO,
-		--OPS PERO FALTA LA ÄRTE POSTCONSULTALIQUIDAION aqui meter lo mismo que se hco en admisiones.views GUARDA CONVEIOADMISION AH Y PROBARLO NO ? QUE NOO HE PROBADO
-           -- ops cuando hay de arrancada una sin convenio y selecionan en facturacion_lñiquidacion inmediataenmte ERROR PAILAS VERIFICAR ETSO ojo
-                error ñlinea 367 de facturacion.vies
-		MEJOR DICHO CAMBIO LA LOGIACA ESA FUNCION HAY QUE MOCHARLE UNA PARTE , COMO YA TRAIGO EL CONVEIO o CERO SI NO TRRAE
-                      ES COMO SE HIXO EN ADMISIONES, PRIMERO SE VERIFICA SI HAY O NO QUE CREAR CABEZOTE SI ES CERO SE CREA CON CONVENIO NULL y SI TRAE CONVENIO SE CREA CON CONVENIO
 
 
 -- oJO CUANDO CREA UNA aDMISION LOS indicadores NO LOS TRAE SE PIERDEN

@@ -19,9 +19,8 @@
         if miConexion3:
             print("Entro ha hacer el Rollback")
             miConexion3.rollback()
+	raise error
 
-        print ("Voy a hacer el jsonresponde")
-        return JsonResponse({'success': False, 'Mensaje': error})
 
     finally:
         if miConexion3:

@@ -54,7 +54,9 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 1)
     {
         let dataTableOptionsGlosas  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -86,12 +88,7 @@ function arrancaGlosas(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-        		     btn = btn + " <input type='radio' name='glosa' class='miGlosa form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-                       return btn;
-                    },
-
+		{   
                     "targets": 23
                }
             ],
@@ -122,6 +119,15 @@ function arrancaGlosas(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+		{
+		  "render": function ( data, type, row ) {
+                        var btn = '';
+        		     btn = btn + " <input type='radio' name='glosa' class='miGlosa form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+                       return btn;
+                    },
+
+		},
+
                 { data: "fields.id"},
                 { data: "fields.fechaRecepcion"},
                 { data: "fields.saldoFactura"},
@@ -158,7 +164,9 @@ function arrancaGlosas(valorTabla,valorData)
     if (valorTabla == 2)
     {
         let dataTableOptionsGlosasDetalle  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -270,7 +278,9 @@ function arrancaGlosas(valorTabla,valorData)
     {
 
         let dataTableOptionsGlosasTransaccion  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -365,7 +375,9 @@ function arrancaGlosas(valorTabla,valorData)
     {
 
         let dataTableOptionsGlosasUsuarios  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -468,7 +480,9 @@ function arrancaGlosas(valorTabla,valorData)
     {
 
         let dataTableOptionsGlosasProcedimientos  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -581,7 +595,9 @@ function arrancaGlosas(valorTabla,valorData)
     {
 
         let dataTableOptionsGlosasHospitalizacion  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -688,7 +704,9 @@ function arrancaGlosas(valorTabla,valorData)
     {
 
         let dataTableOptionsGlosasMedicamentos  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -795,7 +813,9 @@ function arrancaGlosas(valorTabla,valorData)
     {
 
         let dataTableOptionsGlosasUrgencias  ={
-  dom: 'Bfrtilp',
+   dom: "<'row mb-1'<'col-sm-3'B><'col-sm-3'><'col-sm-6'f>>" + // B = Botones a la izquierda, f = filtro a la derecha
+             "<'row'<'col-sm-12'tr>>" +
+             "<'row mt-3'<'col-sm-5'i><'col-sm-7'p>>",
   buttons: [
     {
       extend: 'excelHtml5',
@@ -1092,7 +1112,8 @@ window.addEventListener('load', async () => {
 		 $('#crearModelGlosasDetalle').modal('show');
                 },
             error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesErrorModalGlosasDetalle").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
             });
 
@@ -1203,7 +1224,8 @@ function GuardarGlosasDetalle()
 
                 },
             error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesErrorModalGlosasDetalle").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
             });
 
@@ -1268,7 +1290,8 @@ function GuardaGlosasEstados()
 		document.getElementById("mensajesError").innerHTML = data2.message;
                 },
             error: function (request, status, error) {
-			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
             });
 
@@ -1374,11 +1397,13 @@ function CrearGlosas()
 			    dataTableGlosasMedicamentosInitialized = true;
 		            $('#crearModelGlosas').modal('hide');
 
-
+		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + data2.message;
 		document.getElementById("mensajesError").innerHTML = data2.message;
+
                 },
             error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
 	   	    	}
             });
 
