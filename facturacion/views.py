@@ -1324,7 +1324,9 @@ def FacturarCuenta(request):
 
                 comando4 = 'UPDATE admisiones_ingresos SET "fechaSalida" = ' + "'" +  str(fechaRegistro) + "'" + ', factura = ' + str(facturacionId)  +  ', "dependenciasSalida_id" = "dependenciasActual_id" ' +  ' WHERE id =' + str(ingresoId.id)
                 cur3.execute(comando4)
-
+        else:
+            comando4 = 'UPDATE admisiones_ingresos SET "salidaDefinitiva" = ' + "'" + str('N') + "'" + ', factura = ' + str(facturacionId)  + ' WHERE id =' + str(ingresoId.id)
+            cur3.execute(comando4)
 
         # AHORA EL DETALLE
 
@@ -1607,7 +1609,7 @@ def ReFacturar(request):
                ##  Aquip hacer el INSERT a la tabla facturacion_refactura
 
 
-                comando3 = 'INSERT INTO facturacion_refacturacion (documento_id,"consecAdmision" ,fecha ,  "facturaAnulada" ,  "facturaNueva" ,  "fechaRegistro" ,  "estadoRegistro" ,  "tipoDoc_id" ,  "usuarioRegistro_id" ) values (' + str(facturacionId2.documento_id) + "," + str(facturacionId2.consecAdmision) + ","  + "'" + str(fechaRegistro) + "'," + str(facturacionId2.id) + ',0,' + "'" + str(fechaRegistro) + "'," + "'" + str('A') + "'," +  "'" + str(facturacionId2.tipoDoc_id) + "','" +  str(usuarioRegistro) + "')"
+                comando3 = 'INSERT INTO facturacion_refacturacion (documento_id,"consecAdmision" ,fecha ,  "facturaAnulada" ,  "facturaNueva" ,  "fechaRegistro" ,  "estadoRegistro" ,  "tipoDoc_id" ,  "usuarioRegistro_id" , "sedesClinica_id") values (' + str(facturacionId2.documento_id) + "," + str(facturacionId2.consecAdmision) + ","  + "'" + str(fechaRegistro) + "'," + str(facturacionId2.id) + ',0,' + "'" + str(fechaRegistro) + "'," + "'" + str('A') + "'," +  "'" + str(facturacionId2.tipoDoc_id) + "','" +  str(usuarioRegistro) + "','"+ str(facturacionId2.sedesClinica_id) + "')"
                 print(comando3)
                 cur3.execute(comando3)
 
@@ -1622,7 +1624,7 @@ def ReFacturar(request):
                 cur3.close()
                 miConexion3.close()
 
-                return JsonResponse({'success': True, 'message': 'Factura Anulada!'})
+                return JsonResponse({'success': True, 'message': 'Factura Refacturada!'})
 
     except psycopg2.DatabaseError as error:
         print ("Entre por rollback" , error)
