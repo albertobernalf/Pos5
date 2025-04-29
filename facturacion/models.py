@@ -313,8 +313,6 @@ class Facturacion(models.Model):
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
-    class Meta:
-        unique_together = (('tipoDoc','documento', 'consecAdmision', 'convenio'),)
 
 
     def __str__(self):
@@ -408,9 +406,6 @@ class Liquidacion(models.Model):
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     estadoRegistro = models.CharField(max_length=1, blank=True,null= True, editable=True,)
 
-
-    class Meta:
-        unique_together = (('tipoDoc','documento', 'consecAdmision', 'convenio'),)
 
 
     def __str__(self):

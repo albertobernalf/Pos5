@@ -724,3 +724,6 @@ campos por ej: eror de loalidad hasta ta que graba
 
 
 -- oJO CUANDO CREA UNA aDMISION LOS indicadores NO LOS TRAE SE PIERDEN
+
+-- Ops ojop la refacturacion no coloco la sede clinica VERIFICAR DESUES DE ALMUERO
+-- Ops no me lee toda la cuenta liquidaciondetalle ver despues de almuezo

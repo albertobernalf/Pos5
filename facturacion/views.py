@@ -1592,7 +1592,7 @@ def ReFacturar(request):
 
                 # Aquip hacer los INSERT A LIQUIDACION a partir de facturacion
 
-                comando1 = 'INSERT INTO facturacion_liquidacion (id, documento_id ,  "consecAdmision" ,  fecha ,  "totalCopagos" ,  "totalCuotaModeradora" ,  "totalProcedimientos" ,  "totalSuministros" ,  "totalLiquidacion" ,  "valorApagar" ,  anulado ,  "fechaCorte" ,  anticipos ,  "detalleAnulacion" ,  "fechaAnulacion" ,  observaciones ,  "fechaRegistro" ,  "estadoRegistro" ,  convenio_id ,  "tipoDoc_id" ,  "usuarioAnula_id" , "usuarioRegistro_id" ,  "totalAbonos" ,  "totalRecibido" ) SELECT ' + "'" + str(liquidacionId) + "'," + ' documento_id ,  "consecAdmision" ,  "fechaFactura" ,  "totalCopagos" ,  "totalCuotaModeradora" ,  "totalProcedimientos" ,  "totalSuministros" ,  "totalFactura" ,  "valorApagar" ,  anulado ,  "fechaCorte" ,  anticipos ,  "detalleAnulacion" ,  "fechaAnulacion" ,  observaciones ,  "fechaRegistro" ,  "estadoReg" ,  convenio_id ,  "tipoDoc_id" ,  "usuarioAnula_id" , "usuarioRegistro_id" ,  "totalAbonos" ,  "totalRecibido"  FROM facturacion_facturacion WHERE id =  ' + facturacionId
+                comando1 = 'INSERT INTO facturacion_liquidacion (id, documento_id ,  "consecAdmision" ,  fecha ,  "totalCopagos" ,  "totalCuotaModeradora" ,  "totalProcedimientos" ,  "totalSuministros" ,  "totalLiquidacion" ,  "valorApagar" ,  anulado ,  "fechaCorte" ,  anticipos ,  "detalleAnulacion" ,  "fechaAnulacion" ,  observaciones ,  "fechaRegistro" ,  "estadoRegistro" ,  convenio_id ,  "tipoDoc_id" ,  "usuarioAnula_id" , "usuarioRegistro_id" ,  "totalAbonos" ,  "totalRecibido", "sedesClinica_id" ) SELECT ' + "'" + str(liquidacionId) + "'," + ' documento_id ,  "consecAdmision" ,  "fechaFactura" ,  "totalCopagos" ,  "totalCuotaModeradora" ,  "totalProcedimientos" ,  "totalSuministros" ,  "totalFactura" ,  "valorApagar" ,  anulado ,  "fechaCorte" ,  anticipos ,  "detalleAnulacion" ,  "fechaAnulacion" ,  observaciones ,  "fechaRegistro" ,  "estadoReg" ,  convenio_id ,  "tipoDoc_id" ,  "usuarioAnula_id" , "usuarioRegistro_id" ,  "totalAbonos" ,  "totalRecibido" , "sedesClinica_id" FROM facturacion_facturacion WHERE id =  ' + facturacionId
                 print(comando1)
                 cur3.execute(comando1)
 
@@ -1613,7 +1613,7 @@ def ReFacturar(request):
 
                 ## Actualiza campo salidaDefinitiva = R
 
-                ingresoId = Ingresos.object.get(tipoDoc_id=facturacionId2.tipoDoc_id  , documento_id= facturacionId2.documento_id , consec = facturacionId2.consecAdmision)
+                ingresoId = Ingresos.objects.get(tipoDoc_id=facturacionId2.tipoDoc_id  , documento_id= facturacionId2.documento_id , consec = facturacionId2.consecAdmision)
 
                 comando4 = 'UPDATE admisiones_ingresos SET "salidaDefinitiva"= ' + "'" + str('R') + "'" + ' WHERE  id = ' + str(ingresoId.id)
                 print(comando4)
