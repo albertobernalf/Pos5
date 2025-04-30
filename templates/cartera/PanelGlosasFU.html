@@ -116,6 +116,8 @@ table.dataTable tbody tr {
 				                <th>saldoFac</th>
 				                <th>Soportado</th>
 				                <th>Aceptado</th>
+						 <th>Tot.Glo</th>
+				                <th>Nc</th>
 				                <th>observa</th>
 				                <th>FecReg</th>
 				                <th>Estado</th>
@@ -314,49 +316,58 @@ table.dataTable tbody tr {
 					
 					Factura:                                 	                              
 					<span class="miTexto" name="factura_idGlo" id="factura_idGlo"></span>
-				 <!--  	 <input type="text" class="form-control input-sm form-control-sm " id="factura_idGlo" name="factura_idGlo"  readonly >  -->
-                             
+				                             
 			</div>
-				<div class="col-2">
+				<div class="col-3">
 					Fecha Recepcion:    
 					<span class="miTexto" name="fechaRecepcionGlo" id="fechaRecepcionGlo"></span>                            	                               
-				 <!-- 	 <input type="text" class="form-control input-sm form-control-sm " id="fechaRecepcionGlo" name="fechaRecepcionGlo"  readonly > -->
+
                                
 			</div>
 
 				<div class="col-2">
 					ValorGlosa
-                                   	 <label for="valorGlosaGlo">Valor Glosa:</label>
+
                                		<span class="miTexto" name="valorGlosaGlo" id="valorGlosaGlo"></span>
-					 <!--   <input type="text" class="form-control form-control-sm" id="valorGlosaGlo" name="valorGlosaGlo"  readonly > -->
+					
                               
 
 				</div>
+				<div class="col-2">
+					AcuGlosa
+
+                               		<span class="miTexto" name="totalGlosaGlo" id="totalGlosaGlo"></span>
+                            
+				</div>
+
 
 				<div class="col-2">
-					TotalSoportado:
-                                   	 <label class="visually-hidden" for="totalSoportadoGlo">TotalSoportado:</label>
+					Soportado:
                                		<span class="miTexto" name="totalSoportadoGlo" id="totalSoportadoGlo"></span>
-					<!--  <input type="text" class="form-control form-control-sm" id="totalSoportadoGlo" name="totalSoportadoGlo"  readonly > -->
+
                                 </div>
 
 
 				<div class="col-2">
-					TotalAceptado:
-                                   	 <label class="visually-hidden" for="totalAceptadoGlo">TotalSoportado:</label>
+					Aceptado:
+                                   	
                                	<span class="miTexto" name="totalAceptadoGlo" id="totalAceptadoGlo"></span>
 					<!--  <input type="text" class="form-control form-control-sm" id="totalAceptadoGlo" name="totalAceptadoGlo"  readonly > -->
                                 </div>
+				<div class="col-2">
+					NCredito
 
-				<div class="col-1">
+                               		<span class="miTexto" name="totalNotasCreditoGlo" id="totalNotasCreditoGlo"></span>
+                            
+				</div>
+
+				<div class="col-3">
 					SaldoFactura:
-                                   	 <label class="visually-hidden" for="saldoFacturaGlo">SaldoFactura:</label>
                                	<span class="miTexto" name="saldoFacturaGlo" id="saldoFacturaGlo"></span>
 					<!--  <input type="text" class="form-control form-control-sm" id="saldoFacturaGlo" name="saldoFacturaGlo"  readonly > -->
                                 </div>
 				<div class="col-1">
 					Observaciones:
-                                   	 <label class="visually-hidden" for="observacionesGlo">Observa:</label>
                               	<span class="miTexto" name="observacionesGlo" id="observacionesGlo"></span>
 					<!-- <input type="text" class="form-control form-control-sm" id="observacionesGlo" name="observacionesGlo" preadonly > -->
                                 </div>
@@ -364,9 +375,9 @@ table.dataTable tbody tr {
 			
 
 
-			<div class="col-1">
+			<div class="col-3">
 					fechaRegistro:
-                                   	 <label class="visually-hidden" for="fechaRegistroGlo">FecRegistro:</label>
+
                                <span class="miTexto" name="fechaRegistroGlo" id="fechaRegistroGlo"></span>
 					<!--  <input type="text" class="form-control form-control-sm" id="fechaRegistroGlo" name="fechaRegistroGlo"  readonly > -->
                                 </div>
@@ -401,7 +412,7 @@ table.dataTable tbody tr {
 					<!--  <input type="text" class="form-control form-control-sm" id="usuarioRespuesta_idGlo" name="usuarioRespuesta_idGlo"  readonly > -->
                                 </div>
 
-<div class="col-1">
+			<div class="col-1">
 					EstadoReg:
                                    	 <label class="visually-hidden" for="estadoRegGlo">EstadoReg:</label>
                                 <span class="miTexto" name="estadoRegGlo" id="estadoRegGlo"></span>
@@ -422,7 +433,7 @@ table.dataTable tbody tr {
                                 </div>
 		
 
-<div class="col-1">
+				<div class="col-1">
                                     Convenio:
 				<select class="select-css"  id="convenio_idGlo"  name="convenio_idGlo" disabled>
                                                            {% for convenios in Convenios %}
@@ -459,8 +470,6 @@ table.dataTable tbody tr {
                                 </div>
 		
 
-
-
 		<div class="col-1">
 			<button type="button" class="btn btn-primary btn-sm" id="saveBtnGuardarGlosa" onclick="GuardaGlosasEstados()">Guardar !</button> 
 		 </div>
@@ -470,11 +479,12 @@ table.dataTable tbody tr {
                             </form>
 	</div>
 
+
 <!-- FIN ENCABEZADO -->
 		<!-- AQUI DATATABLE GENERALPARA DETALLE GLOSAS -->
 
 
-	<div class="container my-2">          
+	<div class="container my-2" style="margin-top:200px;">          
    			   <div class="row">
                                         <table  id= "tablaGlosasDetalle" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
@@ -569,7 +579,7 @@ table.dataTable tbody tr {
 				
                                    	 <label  for="codigoGloDet">Codigo:</label>
                                			 <span class="miTexto" name="codigoGloDet" id="codigoGloDet"></span>
-					 <!-- <input type="text"  class="form-control form-control-sm" id="codigoGloDet" name="codigoGloDet" readonly  > -->
+
                                 </div>
 
 

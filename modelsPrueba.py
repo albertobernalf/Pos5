@@ -725,3 +725,6 @@ campos por ej: eror de loalidad hasta ta que graba
 
 -- oJO CUANDO CREA UNA aDMISION LOS indicadores NO LOS TRAE SE PIERDEN
 -- AL REFACTURAR como se tratan los abonos SE ANULAN ? Se restaura PENSAR COMO HACER CON ESTO y la ADMISION INGRESO QUE PASA YA NO SE VE ?? O SEA NO VOY A 
+-- En contratacion la modla crear convenio crear mensaje de erro modal de la ventana, ver en elmain
+-- en glosas falta actualzir el saldo de la factura en la glosa, y enviar la data a glosasdetalle
+-- en glosas colocar los campos  el totalglosado y el total notascredito

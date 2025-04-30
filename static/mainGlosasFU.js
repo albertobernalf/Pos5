@@ -89,7 +89,7 @@ function arrancaGlosas(valorTabla,valorData)
 	    { width: '10%', targets: [2,3] },
 
 		{   
-                    "targets": 23
+                    "targets": 25
                }
             ],
 	 pageLength: 3,
@@ -133,6 +133,9 @@ function arrancaGlosas(valorTabla,valorData)
                 { data: "fields.saldoFactura"},
                 { data: "fields.totalSoportado"},
                 { data: "fields.totalAceptado"},
+                { data: "fields.totalGlosa"},
+                { data: "fields.totalNotasCredito"},
+
                 { data: "fields.observaciones"},
                 { data: "fields.fechaRegistro"},
                 { data: "fields.estadoReg"},
@@ -1044,6 +1047,11 @@ window.addEventListener('load', async () => {
 	document.getElementById("estadoRegGlo").innerHTML = dato3.estadoReg;
 	document.getElementById("totalSoportadoGlo").innerHTML= dato3.totalSoportado;
 	document.getElementById("totalAceptadoGlo").innerHTML = dato3.totalAceptado;
+
+	document.getElementById("totalGlosaGlo").innerHTML= dato3.totalGlosa;
+	document.getElementById("totalNotasCreditoGlo").innerHTML = dato3.totalNotasCredito;
+
+
 	document.getElementById("saldoFacturaGlo").innerHTML = dato3.saldoFactura;
 	document.getElementById("observacionesGlo").innerHTML = dato3.observaciones;
 

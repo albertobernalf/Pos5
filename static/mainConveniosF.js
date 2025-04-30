@@ -12,8 +12,28 @@ let dataTableConveniosHonorariosInitialized = false;
 
 
 $(document).ready(function() {
+	var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+
+	// alert("fecha = " + today);
+
+
+
+ document.getElementById("vigenciaDesdeC").value = today;
+ document.getElementById("vigenciaHastaC").value = today;
+
+var desde = document.getElementById("vigenciaDesdeC").value
+desde.valueAsDate = today;
+
+
+
     
 var table = $('#tablaConvenios').DataTable();
+
     
        $('#search').on('keyup', function() {
         var searchValue = this.value.split(' '); // Supongamos que los términos de búsqueda están separados por espacios

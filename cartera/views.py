@@ -97,17 +97,17 @@ def load_dataGlosas(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT glo.id, "fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, glo."fechaRegistro", glo."estadoReg", convenio_id,  conv.nombre nombreConvenio,glo."usuarioRegistro_id", factura_id, "fechaRespuesta", "tipoGlosa_id", tipglo.nombre nombreTipoGlosa,  "usuarioRecepcion_id", "usuarioRespuesta_id", "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id", estGlosa.nombre estadoGlosaRecepcion, glo."sedesClinica_id", "ripsEnvio_id" FROM public.cartera_glosas glo, cartera_estadosglosas estGlosa , contratacion_convenios conv, cartera_tiposglosas tipglo WHERE glo."sedesClinica_id" = ' + "'" + str(sede) + "'" + 'AND tipglo.id = glo."tipoGlosa_id"   AND  conv.id = glo.convenio_id AND estGlosa.id =  glo."estadoRecepcion_id" AND estGlosa.tipo = ' + "'" + str('RECEPCION') + "'"
+    detalle = 'SELECT glo.id, "fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", "totalGlosa",  "totalNotasCredito", observaciones, glo."fechaRegistro", glo."estadoReg", convenio_id,  conv.nombre nombreConvenio,glo."usuarioRegistro_id", factura_id, "fechaRespuesta", "tipoGlosa_id", tipglo.nombre nombreTipoGlosa,  "usuarioRecepcion_id", "usuarioRespuesta_id", "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id", estGlosa.nombre estadoGlosaRecepcion, glo."sedesClinica_id", "ripsEnvio_id" FROM public.cartera_glosas glo, cartera_estadosglosas estGlosa , contratacion_convenios conv, cartera_tiposglosas tipglo WHERE glo."sedesClinica_id" = ' + "'" + str(sede) + "'" + 'AND tipglo.id = glo."tipoGlosa_id"   AND  conv.id = glo.convenio_id AND estGlosa.id =  glo."estadoRecepcion_id" AND estGlosa.tipo = ' + "'" + str('RECEPCION') + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id,  fechaRecepcion, saldoFactura, totalSoportado, totalAceptado, observaciones, fechaRegistro, estadoReg, convenio_id, nombreConvenio, usuarioRegistro_id, factura_id,  fechaRespuesta, tipoGlosa_id,nombreTipoGlosa, usuarioRecepcion_id, usuarioRespuesta_id,  valorGlosa, estadoRadicacion_id , estadoRecepcion_id, estadoGlosaRecepcion,  sedesClinica_id, ripsEnvio_id in curx.fetchall():
+    for id,  fechaRecepcion, saldoFactura, totalSoportado, totalAceptado,totalGlosa, totalNotasCredito, observaciones, fechaRegistro, estadoReg, convenio_id, nombreConvenio, usuarioRegistro_id, factura_id,  fechaRespuesta, tipoGlosa_id,nombreTipoGlosa, usuarioRecepcion_id, usuarioRespuesta_id,  valorGlosa, estadoRadicacion_id , estadoRecepcion_id, estadoGlosaRecepcion,  sedesClinica_id, ripsEnvio_id in curx.fetchall():
         glosas.append(
             {"model": "cartera.glosas", "pk": id, "fields":
                 {'id': id, 'fechaRecepcion': fechaRecepcion, 'saldoFactura': saldoFactura, 'totalSoportado': totalSoportado,'totalAceptado':totalAceptado,
-                 'observaciones': observaciones, 'fechaRegistro': fechaRegistro,'estadoReg': estadoReg, 'convenio_id': convenio_id,'nombreConvenio':nombreConvenio, 'usuarioRegistro_id': usuarioRegistro_id, 'factura_id' : factura_id,
+                 'totalGlosa':totalGlosa,  'totalNotasCredito':totalNotasCredito, 'observaciones': observaciones, 'fechaRegistro': fechaRegistro,'estadoReg': estadoReg, 'convenio_id': convenio_id,'nombreConvenio':nombreConvenio, 'usuarioRegistro_id': usuarioRegistro_id, 'factura_id' : factura_id,
                  'factura_id': factura_id, 'fechaRespuesta': fechaRespuesta,
                  'tipoGlosa_id': tipoGlosa_id,'nombreTipoGlosa' :nombreTipoGlosa, 'usuarioRecepcion_id': usuarioRecepcion_id,'estadoGlosaRecepcion':estadoGlosaRecepcion, 'usuarioRespuesta_id': usuarioRespuesta_id,
                  'valorGlosa': valorGlosa, 'estadoRadicacion_id': estadoRadicacion_id, 'estadoRecepcion_id': estadoRecepcion_id,
@@ -616,14 +616,14 @@ def GuardarGlosasDetalle(request):
 
             # TOTALES MEDICAMENTOS
 
-            comando2 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            comando2 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado , sum("valorGlosado") totalGlosa , sum("notasCreditoGlosa") totalNotasCredito  FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
             print(comando2)
             cur3.execute(comando2)
 
             traeSum = []
 
-            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
-                traeSum.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+            for vAceptado, valorSoportado, valorGlosado, totalGlosa, totalNotasCredito  in cur3.fetchall():
+                traeSum.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado,'totalGlosa':totalGlosa,'totalNotasCredito':totalNotasCredito})
 
             totalAceptadoMed = traeSum[0]['vAceptado']
             totalAceptadoMed = str(totalAceptadoMed)
@@ -649,6 +649,24 @@ def GuardarGlosasDetalle(request):
             totalGlosadoMed = totalGlosadoMed.replace("'", ' ')
             totalGlosadoMed = totalGlosadoMed.replace("Decimal", ' ')
 
+            totalGlosaMed = traeSum[0]['totalGlosa']
+            totalGlosaMed = str(totalGlosaMed)
+            totalGlosaMed = totalGlosaMed.replace("(", ' ')
+            totalGlosaMed = totalGlosaMed.replace(")", ' ')
+            totalGlosaMed = totalGlosaMed.replace(",", ' ')
+            totalGlosaMed = totalGlosaMed.replace("'", ' ')
+            totalGlosaMed = totalGlosaMed.replace("Decimal", ' ')
+
+            totalNotasCreditoMed = traeSum[0]['totalNotasCredito']
+            totalNotasCreditoMed = str(totalNotasCreditoMed)
+            totalNotasCreditoMed = totalNotasCreditoMed.replace("(", ' ')
+            totalNotasCreditoMed = totalNotasCreditoMed.replace(")", ' ')
+            totalNotasCreditoMed = totalNotasCreditoMed.replace(",", ' ')
+            totalNotasCreditoMed = totalNotasCreditoMed.replace("'", ' ')
+            totalNotasCreditoMed = totalNotasCreditoMed.replace("Decimal", ' ')
+
+
+
             print("totalAceptadoMed = ", totalAceptadoMed)
             print("totalSoportadoMed = ", totalSoportadoMed)
             print("totalGlosadoMed = ", totalGlosadoMed)
@@ -656,14 +674,14 @@ def GuardarGlosasDetalle(request):
 
             ## Procedimientos
 
-            comando3 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsProcedimientos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            comando3 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado , sum("valorGlosado") totalGlosa , sum("notasCreditoGlosa") totalNotasCredito  FROM RIPS_RipsProcedimientos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
             print(comando3)
             cur3.execute(comando3)
 
             traeProc = []
 
-            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
-                traeProc.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+            for vAceptado, valorSoportado, valorGlosado , totalGlosa, totalNotasCredito in cur3.fetchall():
+                traeProc.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado,'totalGlosa':totalGlosa,'totalNotasCredito':totalNotasCredito})
 
             totalAceptadoProc = traeProc[0]['vAceptado']
             totalAceptadoProc = str(totalAceptadoProc)
@@ -689,20 +707,36 @@ def GuardarGlosasDetalle(request):
             totalGlosadoProc = totalGlosadoProc.replace("'", ' ')
             totalGlosadoProc = totalGlosadoProc.replace("Decimal", ' ')
 
+            totalGlosaProc = traeProc[0]['totalGlosa']
+            totalGlosaProc = str(totalGlosaProc)
+            totalGlosaProc = totalGlosaProc.replace("(", ' ')
+            totalGlosaProc = totalGlosaProc.replace(")", ' ')
+            totalGlosaProc = totalGlosaProc.replace(",", ' ')
+            totalGlosaProc = totalGlosaProc.replace("'", ' ')
+            totalGlosaProc = totalGlosaProc.replace("Decimal", ' ')
+
+            totalNotasCreditoProc = traeProc[0]['totalNotasCredito']
+            totalNotasCreditoProc = str(totalNotasCreditoProc)
+            totalNotasCreditoProc = totalNotasCreditoProc.replace("(", ' ')
+            totalNotasCreditoProc = totalNotasCreditoProc.replace(")", ' ')
+            totalNotasCreditoProc = totalNotasCreditoProc.replace(",", ' ')
+            totalNotasCreditoProc = totalNotasCreditoProc.replace("'", ' ')
+            totalNotasCreditoProc = totalNotasCreditoProc.replace("Decimal", ' ')
+
             print("totalAceptadoProc = ", totalAceptadoProc)
             print("totalSoportadoProc = ", totalSoportadoProc)
             print("totalGlosadoProc = ", totalGlosadoProc)
 
             # OTROS SERVICIOS
 
-            comando4 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            comando4 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado , sum("valorGlosado") totalGlosa , sum("notasCreditoGlosa") totalNotasCredito FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
             print(comando4)
             cur3.execute(comando4)
 
             traeOtr = []
 
-            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
-                traeOtr.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+            for vAceptado, valorSoportado, valorGlosado , totalGlosa, totalNotasCredito in cur3.fetchall():
+                traeOtr.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado,'totalGlosa':totalGlosa,'totalNotasCredito':totalNotasCredito})
 
             totalAceptadoOtrosServ = traeOtr[0]['vAceptado']
             totalAceptadoOtrosServ = str(totalAceptadoOtrosServ)
@@ -728,6 +762,24 @@ def GuardarGlosasDetalle(request):
             totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace("'", ' ')
             totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace("Decimal", ' ')
 
+            totalGlosaOtrosServ = traeOtr[0]['totalGlosa']
+            totalGlosaOtrosServ = str(totalGlosaOtrosServ)
+            totalGlosaOtrosServ = totalGlosaOtrosServ.replace("(", ' ')
+            totalGlosaOtrosServ = totalGlosaOtrosServ.replace(")", ' ')
+            totalGlosaOtrosServ = totalGlosaOtrosServ.replace(",", ' ')
+            totalGlosaOtrosServ = totalGlosaOtrosServ.replace("'", ' ')
+            totalGlosaOtrosServ = totalGlosaOtrosServ.replace("Decimal", ' ')
+
+            totalNotasCreditoOtrosServ = traeOtr[0]['totalNotasCredito']
+            totalNotasCreditoOtrosServ = str(totalNotasCreditoOtrosServ)
+            totalNotasCreditoOtrosServ = totalNotasCreditoOtrosServ.replace("(", ' ')
+            totalNotasCreditoOtrosServ = totalNotasCreditoOtrosServ.replace(")", ' ')
+            totalNotasCreditoOtrosServ = totalNotasCreditoOtrosServ.replace(",", ' ')
+            totalNotasCreditoOtrosServ = totalNotasCreditoOtrosServ.replace("'", ' ')
+            totalNotasCreditoOtrosServ = totalNotasCreditoOtrosServ.replace("Decimal", ' ')
+
+
+
             print("totalAceptadoOtrosServ = ", totalAceptadoOtrosServ)
             print("totalSoportadoOtrosServ = ", totalSoportadoOtrosServ)
             print("totalGlosadoOtrosServ = ", totalGlosadoOtrosServ)
@@ -741,7 +793,7 @@ def GuardarGlosasDetalle(request):
             traeCons = []
 
             for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
-                traeCons.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+                traeCons.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado,'totalGlosa':totalGlosa,'totalNotasCredito':totalNotasCredito})
 
             totalAceptadoCons = traeCons[0]['vAceptado']
             totalAceptadoCons = str(totalAceptadoCons)
@@ -766,6 +818,22 @@ def GuardarGlosasDetalle(request):
             totalGlosadoCons = totalGlosadoCons.replace(",", ' ')
             totalGlosadoCons = totalGlosadoCons.replace("'", ' ')
             totalGlosadoCons = totalGlosadoCons.replace("Decimal", ' ')
+
+            totalGlosaCons = traeCons[0]['totalGlosa']
+            totalGlosaCons = str(totalGlosaCons)
+            totalGlosaCons = totalGlosaCons.replace("(", ' ')
+            totalGlosaCons = totalGlosaCons.replace(")", ' ')
+            totalGlosaCons = totalGlosaCons.replace(",", ' ')
+            totalGlosaCons = totalGlosaCons.replace("'", ' ')
+            totalGlosaCons = totalGlosaCons.replace("Decimal", ' ')
+
+            totalNotasCreditoCons = traeCons[0]['totalNotasCredito']
+            totalNotasCreditoCons = str(totalNotasCreditoCons)
+            totalNotasCreditoCons = totalNotasCreditoCons.replace("(", ' ')
+            totalNotasCreditoCons = totalNotasCreditoCons.replace(")", ' ')
+            totalNotasCreditoCons = totalNotasCreditoCons.replace(",", ' ')
+            totalNotasCreditoCons = totalNotasCreditoCons.replace("'", ' ')
+            totalNotasCreditoCons = totalNotasCreditoCons.replace("Decimal", ' ')
 
             print("totalAceptadoMed = ", totalAceptadoMed)
             print("totalSoportadoMed = ", totalSoportadoMed)
@@ -801,7 +869,7 @@ def GuardarGlosasDetalle(request):
             if (totalGlosadoMed == '' or totalGlosadoMed=='None'):
                 totalGlosadoMed = 0.0
 
-            if (totalGlosadoProc == '' or totalGlosadoProc):
+            if (totalGlosadoProc == '' or totalGlosadoProc=='None'):
                 totalGlosadoProc = 0.0
 
             if (totalGlosadoOtrosServ == '' or totalGlosadoOtrosServ=='None'):
@@ -810,10 +878,39 @@ def GuardarGlosasDetalle(request):
             if (totalGlosadoCons == '' or totalGlosadoCons=='None'):
                 totalGlosadoCons = 0.0
 
+            if (totalGlosaMed == '' or totalGlosaMed=='None'):
+                totalGlosaMed = 0.0
+
+            if (totalGlosaProc == '' or totalGlosaProc=='None'):
+                totalGlosaProc = 0.0
+
+            if (totalGlosaCons == '' or totalGlosaCons=='None'):
+                totalGlosaCons = 0.0
+
+            if (totalGlosaOtrosServ == '' or totalGlosaOtrosServ=='None'):
+                totalGlosaOtrosServ = 0.0
+
+            if (totalNotasCreditoMed == '' or totalNotasCreditoMed == 'None'):
+                totalNotasCreditoMed = 0.0
+
+            if (totalNotasCreditoProc == '' or totalNotasCreditoProc == 'None'):
+                totalNotasCreditoProc = 0.0
+
+            if (totalNotasCreditoCons == '' or totalNotasCreditoCons == 'None'):
+                totalNotasCreditoCons = 0.0
+
+            if (totalNotasCreditoOtrosServ == '' or totalNotasCreditoOtrosServ == 'None'):
+                totalNotasCreditoOtrosServ = 0.0
+
+
+
+
 
             totalAceptado = float(totalAceptadoMed) + float(totalAceptadoProc) + float(totalAceptadoOtrosServ) + float(totalAceptadoCons)
             totalSoportado = float(totalSoportadoMed) + float(totalSoportadoProc) + float(totalSoportadoOtrosServ) + float(totalSoportadoCons)
             totalGlosado = float(totalGlosadoMed) + float(totalGlosadoProc) + float(totalGlosadoOtrosServ) + float(totalGlosadoCons)
+            totalGlosa = float(totalGlosaMed) + float(totalGlosaProc) + float(totalGlosaOtrosServ) + float(totalGlosaCons)
+            totalNotasCredito = float(totalNotasCreditoMed) + float(totalNotasCreditoProc) + float(totalNotasCreditoOtrosServ) + float(totalNotasCreditoCons)
 
             print ("totalAceptado = ",totalAceptado)
             print("totalSoportado = ", totalSoportado)
@@ -824,7 +921,7 @@ def GuardarGlosasDetalle(request):
 
             # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES / PENDIENTE SALDO FACTURA
 
-            comando6 = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"totalGlosa" = ' + "'" + str(totalGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
+            comando6 = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"totalGlosa" = ' + "'" + str(totalGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'," +  '"totalNotasCredito" = ' + "'" + str(totalNotasCredito) + "'"   +  '   WHERE id = ' + str(glosaId)
 
             print(comando6)
             cur3.execute(comando6)

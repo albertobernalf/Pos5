@@ -30,6 +30,8 @@ select  * from facturacion_liquidacion where documento_id=26;
 
 delete from facturacion_liquidacion where id=154;
 
+
+
 select  * from facturacion_liquidacion where documento_id=39;
 
 select * from facturacion_liquidacion where documento_id = 34;
@@ -51,6 +53,8 @@ select convenio_id,* from facturacion_facturacion where id = 60;
 select * from facturacion_refacturacion;
 
 select * from rips_ripsenvios;
+
+select * from rips_ripsdetalle;
 select * from rips_ripstransaccion where "ripsEnvio_id" =55
 select * from rips_ripsprocedimientos where "ripsTransaccion_id" =176
 select * from rips_ripsmedicamentos where "ripsTransaccion_id" =172
@@ -98,3 +102,11 @@ INSERT INTO rips_ripsprocedimientos ("codPrestador", "fechaInicioAtencion", "idM
 
 
 select generaEnvioRipsJSON(55,'FACTURA')
+
+select * from cartera_glosas;
+
+
+select * from cartera_glosasdetalle;
+select * from rips_ripsprocedimientos;
+
+update rips_ripsprocedimientos set "cantidadAceptada"=0,"notasCreditoGlosa"=0,"vAceptado" = 0,"valorGlosado"=0, "valorSoportado" =0, glosa_id=null
