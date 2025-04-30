@@ -196,12 +196,7 @@ function arrancaGlosas(valorTabla,valorData)
             paging:false,
             columnDefs: [
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
-		{     "render": function ( data, type, row ) {
-                        var btn = '';
-                          btn = btn + " <input type='radio' name='glosaDetalle' class='miGlosaDetalle form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
-
-                       return btn;
-                    },
+		{     
                     "targets": 15
                }
             ],
@@ -230,6 +225,15 @@ function arrancaGlosas(valorTabla,valorData)
                  dataSrc: ""
             },
             columns: [
+		{
+"render": function ( data, type, row ) {
+                        var btn = '';
+                          btn = btn + " <input type='radio' name='glosaDetalle' class='miGlosaDetalle form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+                       return btn;
+                    },
+		},
+
 		 { data: "fields.tipo"},
 		 { data: "fields.id"},
              	 { data: "fields.consec"},

@@ -131,7 +131,7 @@ table.dataTable tbody tr {
 		<!-- Modal Editar Convenio -->
 
          <div class="modal fade" id="editarModelConvenios" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-                <div class="modal-dialog modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" modal-lg>
+                <div class="modal-dialog modal-lg modal-dialog-scrollable  "  modal-dialog-center role="document" >
                     <div class="modal-content">
                         <div class="modal-header">
 	     <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Editar Convenios</font> </div>
@@ -340,14 +340,15 @@ table.dataTable tbody tr {
 		<!-- Modal Crear Convenio -->
 
 
-       <div class="modal fade" id="crearModelConvenios" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" modal-lg>
+       <div class="modal fade" id="crearModelConvenios" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
                     <div class="modal-content">
                         <div class="modal-header">
-                             <h4 class="modal-title" id="modelHeadingCrearConvenios"> </h4> 
+		     <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Creacion Convenios</font> </div>
+                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
 			<button type="button" class="btn btn-primary" id="saveBtnCrearConvenios1" onclick="CrearGuardarConvenios()">Grabar!</button> 
                         </div>
-		<div style="width:500px; heigth:100px; ">
+
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
                                 <ul class="mb-0"></ul>
@@ -550,7 +551,16 @@ table.dataTable tbody tr {
                             </form>
 
                         </div> <!-- CIERRA BODY -->
-			</div> <!-- CIERRA DIV TAMANO -->			
+
+		    <div class="modal-footer">
+					  <span id="mensajesErrorModalConvenios" name="mensajesErrorModalConvenios" style= "color:red; font-size:15px; line-height:35px; font-family: Calibri;" > </span>
+			  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+		<button type="button" class="btn btn-primary" id="saveBtnCrearConvenios1" onclick="CrearGuardarConvenios()">Grabar!</button>                 
+
+
+                               </div>
+
+
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->

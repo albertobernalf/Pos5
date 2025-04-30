@@ -46,13 +46,13 @@ select * from contratacion_convenios;
 
 select * from facturacion_empresas;
 
-select convenio_id,* from facturacion_facturacion where id = 58;
+select convenio_id,* from facturacion_facturacion where id = 60;
 
 select * from facturacion_refacturacion;
 
 select * from rips_ripsenvios;
 select * from rips_ripstransaccion where "ripsEnvio_id" =55
-select * from rips_ripsprocedimientos where "ripsTransaccion_id" =172
+select * from rips_ripsprocedimientos where "ripsTransaccion_id" =176
 select * from rips_ripsmedicamentos where "ripsTransaccion_id" =172
 
 select * from facturacion_facturaciondetalle where facturacion_id=60;	
@@ -76,7 +76,7 @@ INSERT INTO rips_ripsprocedimientos ("codPrestador", "fechaInicioAtencion", "idM
 	(select max(ripsmoderadora.id) from cartera_pagos pagos, cartera_formaspagos formapago, rips_ripstipospagomoderador ripsmoderadora where  i."tipoDoc_id" =  pagos."tipoDoc_id" and i.documento_id = pagos.documento_id and i.consec = pagos.consec and pagos."formaPago_id" = formapago.id and ripsmoderadora."codigoAplicativo" = cast(formapago.id as text)), '172' 
 	FROM sitios_sedesclinica sed 
 	inner join facturacion_facturacion fac ON (fac."sedesClinica_id" = sed.id) 
-	inner join  facturacion_facturaciondetalle facdet ON (facdet.facturacion_id = fac.id and facdet."examen_id" is not null and facdet."estadoRegistro" = 'A' and "tipoRegistro" = 'SISTEMA')
+	inner join  facturacion_facturaciondetalle facdet ON (facdet.facturacion_id = fac.id and facdet."examen_id" is not null and facdet."estadoRegistro" = 'A' ) -- and "tipoRegistro" = 'SISTEMA')
 	left join clinico_examenes exa ON (exa.id = facdet."examen_id" ) 
 	inner join admisiones_ingresos i on (i.factura = fac.id and i."tipoDoc_id" = fac."tipoDoc_id" and i.documento_id = fac.documento_id and i.consec = fac."consecAdmision") 
 	left join rips_ripsviasingresosalud ingreso ON (ingreso.id = i."ripsViaIngresoServicioSalud_id")
@@ -89,9 +89,12 @@ INSERT INTO rips_ripsprocedimientos ("codPrestador", "fechaInicioAtencion", "idM
 	inner join usuarios_tiposdocumento tipdoc ON (tipdoc.id = fac."tipoDoc_id" ) 
 	left join rips_ripstiposdocumento tipdocrips on (tipdocrips.id=tipdoc."tipoDocRips_id" )
 	inner join usuarios_usuarios usu ON (usu."tipoDoc_id" = fac."tipoDoc_id" and usu.id = fac.documento_id )
-	inner join clinico_historia his ON (his."tipoDoc_id" = i."tipoDoc_id" and his.documento_id = i.documento_id and his."consecAdmision" = i.consec )
-	inner join clinico_historiaexamenes hisexa ON (hisexa.historia_id=his.id and hisexa."codigoCups" = exa."codigoCups" and hisexa."consecutivoLiquidacion" = facdet."consecutivoFactura"  )
+	left join clinico_historia his ON (his."tipoDoc_id" = i."tipoDoc_id" and his.documento_id = i.documento_id and his."consecAdmision" = i.consec )
+	left join clinico_historiaexamenes hisexa ON (hisexa.historia_id=his.id and hisexa."codigoCups" = exa."codigoCups" and hisexa."consecutivoLiquidacion" = facdet."consecutivoFactura"  )
 	left join autorizaciones_autorizaciones aut on (aut.historia_id = his.id)
 	left join autorizaciones_autorizacionesdetalle autdet on (autdet.autorizaciones_id = aut.id and autdet.examenes_id = facdet.examen_id)
 	where sed.id = '2' and e.id = '55' and fac.id = 60
 
+
+
+select generaEnvioRipsJSON(55,'FACTURA')

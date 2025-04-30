@@ -169,7 +169,7 @@ def GuardaGlosas(request):
     cur3 = miConexion3.cursor()
 
     try:
-        comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ) VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null)"
+        comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalNotasCredito", "totalGlosa" , "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ) VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null)"
 
         print(comando)
         cur3.execute(comando)
@@ -509,10 +509,11 @@ def GuardarGlosasDetalle(request):
     if (cantidadSoportado==''):
         cantidadSoportado=0.0
 
-
     valorGlosado = request.POST['valorGlosadoGloDet']
-    valorGlosado = float(valorGlosado)
+    #valorGlosado = float(valorGlosado)
 
+    if (valorGlosado==''):
+        valorGlosado=0.0
 
     print ("valorGlosado =", valorGlosado)
 
@@ -525,7 +526,7 @@ def GuardarGlosasDetalle(request):
     if (vAceptado==''):
         vAceptado=0.0
 
-    valorSoportado = float(request.POST['valorSoportadoGloDet'])
+    valorSoportado = request.POST['valorSoportadoGloDet']
     print ("valorSoportado=",valorSoportado)
 
     if (valorSoportado==''):
@@ -538,37 +539,48 @@ def GuardarGlosasDetalle(request):
         notasCreditoGlosa=0.0
 
  
-    vrServicioGloDet = float(request.POST['vrServicioGloDet'])
+    vrServicioGloDet = request.POST['vrServicioGloDet']
     print ("vrServicioGloDet=", vrServicioGloDet)
 
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
-    if ( valorGlosado > vrServicioGloDet ):
+    if ( float(valorGlosado) > float(vrServicioGloDet) ):
         print ("Entre 1")
         print("valorGlosado=", valorGlosado)
         print("vrServicioGloDet=", vrServicioGloDet)
         return JsonResponse({'success': False, 'Error' :'Si', 'message': 'Valor Glosa mayor que el valor del servicio!'})
 
-    if ( valorSoportado > vrServicioGloDet ):
+    if ( float(valorSoportado) > float(vrServicioGloDet) ):
         print ("Entre 4")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor Soportado mayor que el valor del servicio!'})
 
-    if ( vAceptado > vrServicioGloDet ):
+    if ( float(vAceptado) > float(vrServicioGloDet) ):
         print ("Entre 5")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor aceptado mayor que el valor del servicio!'})
 
-    if ( cantidadAceptada > cantidadGlosada ):
+    if ( float(cantidadAceptada) > float(cantidadGlosada) ):
         print ("Entre 2")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Cantidad aceptada mayor que el valor del glosado!'})
 
-    if ( cantidadSoportado > cantidadGlosada ):
+    if ( float(cantidadSoportado) > float(cantidadGlosada) ):
         print ("Entre 3")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Cantidad soportada mayor que el valor del glosado!'})
 
+    if (float(notasCreditoGlosa) > float(vAceptado)):
+        print("Entre 3")
+        return JsonResponse(
+            {'success': False, 'Error': 'Si', 'message': 'La nota credito no puede ser mayor que el valor soportado!'})
 
-    if ( (vAceptado + valorSoportado) > vrServicioGloDet ):
+    if (float(notasCreditoGlosa) > float(valorGlosado)):
+        print("Entre 3")
+        return JsonResponse(
+            {'success': False, 'Error': 'Si', 'message': 'La nota credito no puede ser mayor que el valor glosado!'})
+
+
+
+    if ( float((float(vAceptado) + float(valorSoportado))) > float(vrServicioGloDet) ):
         print ("Entre 3")
         return JsonResponse({'success': False, 'Error' :'Si','message': 'Valor soportado mas valor aceptado mayor que el valor del servicio!'})
 
@@ -599,40 +611,226 @@ def GuardarGlosasDetalle(request):
             print(comando)
             cur3.execute(comando)
 
-            # TOTALES
-            totalAceptadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-            totalSoportadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-            totalGlosadoMed = RipsMedicamentos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
 
-            totalAceptadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-            totalSoportadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-            totalGlosadoProc = RipsProcedimientos.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+            #TOTALES NOTAS CREDITO
 
-            totalAceptadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-            totalSoportadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-            totalGlosadoOtrosServ = RipsOtrosServicios.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+            # TOTALES MEDICAMENTOS
 
-            totalAceptadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalA=Coalesce(Sum('vAceptado'), 0))
-            totalSoportadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalS=Coalesce(Sum('valorSoportado'), 0))
-            totalGlosadoCons = RipsConsultas.objects.all().filter(glosa_id=glosaId).aggregate(totalG=Coalesce(Sum('valorGlosado'), 0))
+            comando2 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            print(comando2)
+            cur3.execute(comando2)
+
+            traeSum = []
+
+            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
+                traeSum.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+
+            totalAceptadoMed = traeSum[0]['vAceptado']
+            totalAceptadoMed = str(totalAceptadoMed)
+            totalAceptadoMed = totalAceptadoMed.replace("(", ' ')
+            totalAceptadoMed = totalAceptadoMed.replace(")", ' ')
+            totalAceptadoMed = totalAceptadoMed.replace(",", ' ')
+            totalAceptadoMed = totalAceptadoMed.replace("'", ' ')
+            totalAceptadoMed = totalAceptadoMed.replace("Decimal", ' ')
+
+            totalSoportadoMed = traeSum[0]['valorSoportado']
+            totalSoportadoMed = str(totalSoportadoMed)
+            totalSoportadoMed = totalSoportadoMed.replace("(", ' ')
+            totalSoportadoMed = totalSoportadoMed.replace(")", ' ')
+            totalSoportadoMed = totalSoportadoMed.replace(",", ' ')
+            totalSoportadoMed = totalSoportadoMed.replace("'", ' ')
+            totalSoportadoMed = totalSoportadoMed.replace("Decimal", ' ')
+
+            totalGlosadoMed = traeSum[0]['valorGlosado']
+            totalGlosadoMed = str(totalGlosadoMed)
+            totalGlosadoMed = totalGlosadoMed.replace("(", ' ')
+            totalGlosadoMed = totalGlosadoMed.replace(")", ' ')
+            totalGlosadoMed = totalGlosadoMed.replace(",", ' ')
+            totalGlosadoMed = totalGlosadoMed.replace("'", ' ')
+            totalGlosadoMed = totalGlosadoMed.replace("Decimal", ' ')
+
+            print("totalAceptadoMed = ", totalAceptadoMed)
+            print("totalSoportadoMed = ", totalSoportadoMed)
+            print("totalGlosadoMed = ", totalGlosadoMed)
 
 
-            totalAceptado = totalAceptadoMed['totalA'] + totalAceptadoProc['totalA'] + totalAceptadoOtrosServ['totalA'] + totalAceptadoCons['totalA']
-            totalSoportado = totalSoportadoMed['totalS'] + totalSoportadoProc['totalS'] + totalSoportadoOtrosServ['totalS'] + totalSoportadoCons['totalS']
-            totalGlosado = totalGlosadoMed['totalG'] + totalGlosadoProc['totalG'] + totalGlosadoOtrosServ['totalG'] + totalGlosadoCons['totalG']
+            ## Procedimientos
+
+            comando3 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsProcedimientos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            print(comando3)
+            cur3.execute(comando3)
+
+            traeProc = []
+
+            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
+                traeProc.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+
+            totalAceptadoProc = traeProc[0]['vAceptado']
+            totalAceptadoProc = str(totalAceptadoProc)
+            totalAceptadoProc = totalAceptadoProc.replace("(", ' ')
+            totalAceptadoProc = totalAceptadoProc.replace(")", ' ')
+            totalAceptadoProc = totalAceptadoProc.replace(",", ' ')
+            totalAceptadoProc = totalAceptadoProc.replace("'", ' ')
+            totalAceptadoProc = totalAceptadoProc.replace("Decimal", ' ')
+
+            totalSoportadoProc = traeProc[0]['valorSoportado']
+            totalSoportadoProc = str(totalSoportadoProc)
+            totalSoportadoProc = totalSoportadoProc.replace("(", ' ')
+            totalSoportadoProc = totalSoportadoProc.replace(")", ' ')
+            totalSoportadoProc = totalSoportadoProc.replace(",", ' ')
+            totalSoportadoProc = totalSoportadoProc.replace("'", ' ')
+            totalSoportadoProc = totalSoportadoProc.replace("Decimal", ' ')
+
+            totalGlosadoProc = traeProc[0]['valorGlosado']
+            totalGlosadoProc = str(totalGlosadoProc)
+            totalGlosadoProc = totalGlosadoProc.replace("(", ' ')
+            totalGlosadoProc = totalGlosadoProc.replace(")", ' ')
+            totalGlosadoProc = totalGlosadoProc.replace(",", ' ')
+            totalGlosadoProc = totalGlosadoProc.replace("'", ' ')
+            totalGlosadoProc = totalGlosadoProc.replace("Decimal", ' ')
+
+            print("totalAceptadoProc = ", totalAceptadoProc)
+            print("totalSoportadoProc = ", totalSoportadoProc)
+            print("totalGlosadoProc = ", totalGlosadoProc)
+
+            # OTROS SERVICIOS
+
+            comando4 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            print(comando4)
+            cur3.execute(comando4)
+
+            traeOtr = []
+
+            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
+                traeOtr.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+
+            totalAceptadoOtrosServ = traeOtr[0]['vAceptado']
+            totalAceptadoOtrosServ = str(totalAceptadoOtrosServ)
+            totalAceptadoOtrosServ = totalAceptadoOtrosServ.replace("(", ' ')
+            totalAceptadoOtrosServ = totalAceptadoOtrosServ.replace(")", ' ')
+            totalAceptadoOtrosServ = totalAceptadoOtrosServ.replace(",", ' ')
+            totalAceptadoOtrosServ = totalAceptadoOtrosServ.replace("'", ' ')
+            totalAceptadoOtrosServ = totalAceptadoOtrosServ.replace("Decimal", ' ')
+
+            totalSoportadoOtrosServ = traeOtr[0]['valorSoportado']
+            totalSoportadoOtrosServ = str(totalSoportadoOtrosServ)
+            totalSoportadoOtrosServ = totalSoportadoOtrosServ.replace("(", ' ')
+            totalSoportadoOtrosServ = totalSoportadoOtrosServ.replace(")", ' ')
+            totalSoportadoOtrosServ = totalSoportadoOtrosServ.replace(",", ' ')
+            totalSoportadoOtrosServ = totalSoportadoOtrosServ.replace("'", ' ')
+            totalSoportadoOtrosServ = totalSoportadoOtrosServ.replace("Decimal", ' ')
+
+            totalGlosadoOtrosServ = traeOtr[0]['valorGlosado']
+            totalGlosadoOtrosServ = str(totalGlosadoOtrosServ)
+            totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace("(", ' ')
+            totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace(")", ' ')
+            totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace(",", ' ')
+            totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace("'", ' ')
+            totalGlosadoOtrosServ = totalGlosadoOtrosServ.replace("Decimal", ' ')
+
+            print("totalAceptadoOtrosServ = ", totalAceptadoOtrosServ)
+            print("totalSoportadoOtrosServ = ", totalSoportadoOtrosServ)
+            print("totalGlosadoOtrosServ = ", totalGlosadoOtrosServ)
+
+            # OTRAS CONSULTAS
+
+            comando5 = 'SELECT sum("vAceptado")  vAceptado, sum("valorSoportado") valorSoportado, sum("valorGlosado") valorGlosado  FROM RIPS_RipsMedicamentos WHERE glosa_id = ' + "'" + str(glosaId) + "'"
+            print(comando5)
+            cur3.execute(comando5)
+
+            traeCons = []
+
+            for vAceptado, valorSoportado, valorGlosado  in cur3.fetchall():
+                traeCons.append({'vAceptado':vAceptado,'valorSoportado':valorSoportado,'valorGlosado':valorGlosado})
+
+            totalAceptadoCons = traeCons[0]['vAceptado']
+            totalAceptadoCons = str(totalAceptadoCons)
+            totalAceptadoCons = totalAceptadoCons.replace("(", ' ')
+            totalAceptadoCons = totalAceptadoCons.replace(")", ' ')
+            totalAceptadoCons = totalAceptadoCons.replace(",", ' ')
+            totalAceptadoCons = totalAceptadoCons.replace("'", ' ')
+            totalAceptadoCons = totalAceptadoCons.replace("Decimal", ' ')
+
+            totalSoportadoCons = traeCons[0]['valorSoportado']
+            totalSoportadoCons = str(totalSoportadoCons)
+            totalSoportadoCons = totalSoportadoCons.replace("(", ' ')
+            totalSoportadoCons = totalSoportadoCons.replace(")", ' ')
+            totalSoportadoCons = totalSoportadoCons.replace(",", ' ')
+            totalSoportadoCons = totalSoportadoCons.replace("'", ' ')
+            totalSoportadoCons = totalSoportadoCons.replace("Decimal", ' ')
+
+            totalGlosadoCons = traeCons[0]['valorGlosado']
+            totalGlosadoCons = str(totalGlosadoCons)
+            totalGlosadoCons = totalGlosadoCons.replace("(", ' ')
+            totalGlosadoCons = totalGlosadoCons.replace(")", ' ')
+            totalGlosadoCons = totalGlosadoCons.replace(",", ' ')
+            totalGlosadoCons = totalGlosadoCons.replace("'", ' ')
+            totalGlosadoCons = totalGlosadoCons.replace("Decimal", ' ')
+
+            print("totalAceptadoMed = ", totalAceptadoMed)
+            print("totalSoportadoMed = ", totalSoportadoMed)
+            print("totalGlosadoMed = ", totalGlosadoMed)
+
+            if (totalAceptadoMed == '' or totalAceptadoMed=='None'):
+                totalAceptadoMed = 0.0
+
+            if (totalAceptadoProc == '' or totalAceptadoProc=='None' ):
+                totalAceptadoProc = 0.0
+
+            if (totalAceptadoOtrosServ == '' or totalAceptadoOtrosServ=='None'):
+                totalAceptadoOtrosServ = 0.0
+
+            if (totalAceptadoCons == '' or totalAceptadoCons=='None'):
+                totalAceptadoCons = 0.0
+
+            if (totalAceptadoMed == ''  or totalAceptadoMed=='None'):
+                totalAceptadoMed = 0.0
+
+            if (totalSoportadoMed == '' or totalSoportadoMed=='None'):
+                totalSoportadoMed = 0.0
+
+            if (totalSoportadoProc == '' or totalSoportadoProc=='None'):
+                totalSoportadoProc = 0.0
+
+            if (totalSoportadoOtrosServ == '' or totalSoportadoOtrosServ=='None'):
+                totalSoportadoOtrosServ = 0.0
+
+            if (totalSoportadoCons == '' or totalSoportadoCons=='None'):
+                totalSoportadoCons = 0.0
+
+            if (totalGlosadoMed == '' or totalGlosadoMed=='None'):
+                totalGlosadoMed = 0.0
+
+            if (totalGlosadoProc == '' or totalGlosadoProc):
+                totalGlosadoProc = 0.0
+
+            if (totalGlosadoOtrosServ == '' or totalGlosadoOtrosServ=='None'):
+                totalGlosadoOtrosServ = 0.0
+
+            if (totalGlosadoCons == '' or totalGlosadoCons=='None'):
+                totalGlosadoCons = 0.0
+
+
+            totalAceptado = float(totalAceptadoMed) + float(totalAceptadoProc) + float(totalAceptadoOtrosServ) + float(totalAceptadoCons)
+            totalSoportado = float(totalSoportadoMed) + float(totalSoportadoProc) + float(totalSoportadoOtrosServ) + float(totalSoportadoCons)
+            totalGlosado = float(totalGlosadoMed) + float(totalGlosadoProc) + float(totalGlosadoOtrosServ) + float(totalGlosadoCons)
 
             print ("totalAceptado = ",totalAceptado)
             print("totalSoportado = ", totalSoportado)
             print("totalGlosado = ", totalGlosado)
 
             saldoFactura = 0
+            # AQUI FALTA ACTUALIZAR EL SALDO DE LA FACTURA
 
             # TIENE QUE ACTUALIZAR CARTERA_GLOSAS LOS TOTALES / PENDIENTE SALDO FACTURA
 
-            comando = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"valorGlosa" = ' + "'" + str(valorGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
+            comando6 = 'UPDATE cartera_glosas SET "totalSoportado"= ' +"'" + str(totalSoportado) + "'," + '"totalGlosa" = ' + "'" + str(totalGlosado) + "'," + ' "totalAceptado" = ' + "'" +str(totalAceptado) + "'," + '"saldoFactura" = ' + "'" + str(saldoFactura) + "'" + '   WHERE id = ' + str(glosaId)
 
-            print(comando)
-            cur3.execute(comando)
+            print(comando6)
+            cur3.execute(comando6)
+
+            ## AQUI FALTA EL INSERT A LA TABLA GLOSASDETALLE
+
             miConexion3.commit()
             cur3.close()
             miConexion3.close()

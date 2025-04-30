@@ -651,7 +651,7 @@ function EditarGuardarConvenios()
 
                 },
                  error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+		document.getElementById("mensajesErrorModalConvenios").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}
             });
@@ -666,7 +666,7 @@ function AdicionarConvenio()
 	
             $('#post_id').val('');
             $('#postFormCrearConvenios').trigger("reset");
-            $('#modelHeadingCrearConvenios').html("Creacion Envios Rips");
+            $('#modelHeadingCrearConvenios').html("Creacion Convenio");
             $('#crearModelConvenios').modal('show');
         
 }

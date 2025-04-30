@@ -144,6 +144,7 @@ function arrancaEnviosRips(valorTabla,valorData)
 
                 { data: "fields.id"},
                 { data: "fields.sedesClinica_id"},
+		   { data: "fields.tipoNota"}, 
                 { data: "fields.empresa_id"},
                 { data: "fields.nombreEmpresa"},
                 { data: "fields.fechaEnvio"},
@@ -156,7 +157,7 @@ function arrancaEnviosRips(valorTabla,valorData)
 		 { data: "fields.usuarioRegistro_id"},
 		 { data: "fields.nombreRegistra"},
 		  { data: "fields.nombreClinica"},
-                { data: "fields.tipoNota"},            ]
+                        ]
             }
 	        dataTable = $('#tablaEnviosRips').DataTable(dataTableOptions);
 

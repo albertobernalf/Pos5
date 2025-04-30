@@ -479,7 +479,8 @@ table.dataTable tbody tr {
                                         <table  id= "tablaGlosasDetalle" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
-						<bold>                                  
+						<bold>      
+				<th>Accion </th>                            
 				<th>tipo</th>
 				<th>id</th>
 				<th>consec</th>
@@ -495,7 +496,7 @@ table.dataTable tbody tr {
 				<th>vAceptado</th>
 				<th>valorSoportado</th>
 				<th>notasCreditoGlosa</th>	
-				<th>Accion </th>
+			
 						</bold>                                  
 
                                             </tr>
@@ -513,15 +514,16 @@ table.dataTable tbody tr {
 
 	            <!-- Espacio Modales Detalle Glosas -->
 
-            <div class="modal fade" id="crearModelGlosasDetalle" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
-                <div class="modal-dialog modal-dialog-scrollable" role="document" modal-lg>
+            <div class="modal fade" id="crearModelGlosasDetalle" tabindex="-1" role="dialog"  aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-dialog-scrollable" modal-dialog-center  role="document" >
                     <div class="modal-content">
                         <div class="modal-header">
                          <div  class="modal-title" id="exampleModalLabel" style="text-align:center;"><font gont-family="Times New roman" size=5">Detalle Glosa</font> </div>
-                                        <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close">
+                                        
+			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosasDetalle" onclick="GuardarGlosasDetalle()">Grabar!</button> 
+			<button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
-			<button type="button" class="btn btn-primary" id="saveBtnCrearGlosasDetalle" onclick="GuardarGlosasDetalle()">Grabar!</button> 
                         </div>
 		<div style="width:500px; heigth:100px; ">
                         <div class="modal-body">
@@ -549,14 +551,14 @@ table.dataTable tbody tr {
                                     <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="{{Sede}}" readonly></input>
                                 </div>
 						  
-			 <div class="col-2">
+			 <div class="col-6">
 				tipo Rips:
 			 <span class="miTexto" name="tipoGloDet" id="tipoGloDet"></span>
 
 			   </div>
 
 
-				<div class="col-2">
+				<div class="col-6">
 					
                                    	 <label  for="itemFacturaGloDet">itemFactura:</label>
                        			 <span class="miTexto" name="itemFacturaGloDet" id="itemFacturaGloDet"></span>
