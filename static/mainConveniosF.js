@@ -584,8 +584,13 @@ $('#tarifariosDescripcionHono_id').val(info[0].fields.tarifariosDescripcionHono_
 $('#tarifariosDescripcionSum_id').val(info[0].fields.tarifariosDescripcionSum_id);
 			
 
+
+
+
             $('#modelHeadingEditarConvenios').html("Convenios");
             $('#editarModelConvenios').modal('show');
+
+
 
                 },
                  error: function (request, status, error) {
@@ -688,6 +693,20 @@ function AdicionarConvenio()
             $('#postFormCrearConvenios').trigger("reset");
             $('#modelHeadingCrearConvenios').html("Creacion Convenio");
             $('#crearModelConvenios').modal('show');
+// aqui inicializo el campo date
+
+var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+ document.getElementById("vigenciaDesdeC").value = today;
+ document.getElementById("vigenciaHastaC").value = today;
+
+//var desde = document.getElementById("vigenciaDesdeC").value
+//desde.valueAsDate = today;
+
         
 }
 

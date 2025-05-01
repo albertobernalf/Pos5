@@ -708,23 +708,17 @@ BIBLIOGRAFIA:
 	-- Ojo cuando va a hacer un traslado y no encuentra una descripcion saca erro ver como escribirlo y decirlo a l usuario final que se debe crear el tarifario nuevo a donde se va a trasladar
         -- Ojo el total de los nuevos suministros, proced, liqui a pagar son los del nuevo tarifario OPS ERroR GRAVISSISMOI REVISAR YA ARREGLADO
          -- ops si un paciente tiene dos convenios y al dar salida clinica a una ya no puede facturar la segunda cuenta (colocar control pero a donde OPS)
-
         -- Al hacer una factura debe dejar en la primera pantallaliquidacion y mostrar el nro de la factura jay que limipiar liquidacion/ abonos/ y traslados
       -- Que pasa con los baono de un lado aotro yo diria se anulan de ua y se pasan alotro ??
-
      -- ops al facturar a eumelia con dos convenios se le dio salida clinca, pero despues me la saco de la apantalla de liquidacion y no pude facturar la cuneta de compensar COMO LE PARECE GRAVISSISIMO
 ---  en creacion de usuarios en crear admision debe obligar a llenar 
-campos por ej: eror de loalidad hasta ta que graba 
 -- OPS no me trae el amompañamte y el reonsable de la cuenta en paciente sede americas OJOOOOOOOO
   -- en sede americas meti una moderadora aunque mero la cuota moderadora nop actualizo el valor recibido
---  sepierde el combo de clasificaion triage cunado crea uh triage
---  Toca ver como las modales crear admisiondesde triage y crear usuarios en triage validen la data antes de emviar. por ajax
 -- ojo el historial de dependencias fechaLiberacion siempre tiene fecha ALGO PASA esta mal VERIFICAR
-
-
 
 -- oJO CUANDO CREA UNA aDMISION LOS indicadores NO LOS TRAE SE PIERDEN
 -- AL REFACTURAR como se tratan los abonos SE ANULAN ? Se restaura PENSAR COMO HACER CON ESTO y la ADMISION INGRESO QUE PASA YA NO SE VE ?? O SEA NO VOY A 
 -- En contratacion la modla crear convenio crear mensaje de erro modal de la ventana, ver en elmain
--- en glosas falta actualzir el saldo de la factura en la glosa, y enviar la data a glosasdetalle
--- en glosas colocar los campos  el totalglosado y el total notascredito
+-- en glosas falta actualizar el saldo de la factura en la glosa, y enviar la data a glosasdetalle
+
+-- OJO EL DIA VIERNES 2 DE MAYO TAMBIEN COMENZAR CON LOS MODELOS DE CIRUGIA/PANTALLAS

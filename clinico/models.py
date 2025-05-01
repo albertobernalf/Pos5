@@ -478,11 +478,12 @@ class HistorialIncapacidades(models.Model):
     historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='DocumentoHistoriaDiag10')
     #ordenMedica = models.CharField(max_length=80, blank=True, null=True)
     tiposIncapacidad =  models.ForeignKey('clinico.TiposIncapacidad',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
-    desdeFecha = models.DateTimeField(default=now ,blank=True, null=True)
-    hastaFecha = models.DateTimeField(default=now ,blank=True, null=True)
+    desdeFecha = models.DateField(default=now ,blank=True, null=True)
+    hastaFecha = models.DateField(default=now ,blank=True, null=True)
     numDias  = models.IntegerField(editable=True, null=True, blank=True)
     descripcion = models.CharField(max_length=4000 ,blank=True, null=True)
     diagnosticosIncapacidad = models.ForeignKey('clinico.Diagnosticos',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
+    fechaRegistro = models.DateTimeField(default=now, editable=False)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):

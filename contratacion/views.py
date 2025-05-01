@@ -88,7 +88,7 @@ def load_dataConvenios(request, data):
     #convenios.append({"model":"conceptos.conceptos","pk":id,"fields":{'Conceptos':conceptos}})
 
 
-    serialized1 = json.dumps(convenios, default=serialize_datetime)
+    serialized1 = json.dumps(convenios, default=str)
 
 
     return HttpResponse(serialized1, content_type='application/json')

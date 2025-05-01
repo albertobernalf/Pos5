@@ -21,11 +21,6 @@
 -- implementacin codigo de barra en farmcia -- desde el almacen
 
 
-
-La arquitectura en diseño
-para nuevos aplicativos esta a cargo de desarrollo
-backend, que en la nueva version 
-
 -- unificacion tema de tarifarios
 -- lista de chequeo sala de cirugias
     -- consentimientos informados en el sistema
@@ -33,7 +28,7 @@ backend, que en la nueva version
 	-- Fichas- formatos//implantables
 
 -- Revisar medicamentos regulados
--- genreracion automatica de los informes regulatorios
+-- genereracion automatica de los informes regulatorios
 -- Mejorar traslado de cargo
 -- Facturacion - Glosas masivas
 -- Farmacia valida calcullo en balance de liquidos
@@ -42,8 +37,7 @@ backend, que en la nueva version
 -- validar por tiempo consulta externa
 -- restrccion acceso hc
 -- todas las consultas del dia se deben cerrar a media noche
--- dejar consistyentes ñlas admisiones legan dats
-    y el paciente muerto
+-- dejar consistentes las admisiones legan datos    y el paciente muerto
 
 -- Nutricion y medicamentos
 -- Apertura de admisiones
