@@ -955,7 +955,9 @@ def GuardarResultado ( request):
         rutaImagen = request.POST["rutaImagen"]
         rutaVideo = request.POST["rutaVideo"]
         estadoExamen = request.POST["estadoExamen"]
-        dependenciasRealizado = request.POST["dependenciasRealizado"]
+        #dependenciasRealizado = request.POST["dependenciasRealizado"]
+        serviciosAdministrativos = request.POST["serviciosAdministrativos"]
+
 
         if observaciones == '':
            observaciones="null"
@@ -984,6 +986,11 @@ def GuardarResultado ( request):
         if dependenciasRealizado == '':
             dependenciasRealizado ="null"
 
+        if serviciosAdministrativos == '':
+            serviciosAdministrativos ="null"
+
+
+
         estadoReg= 'A'
         usuarioToma = request.POST["usuarioToma"]
         fechaReporte = datetime.datetime.now()
@@ -1004,7 +1011,7 @@ def GuardarResultado ( request):
 
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
                 curt = miConexiont.cursor()
-                comando = 'UPDATE clinico_historiaexamenes set interpretacion1 = ' + str(interpretacion1) + "," +  '"fechaInterpretacion1" = '  + "'" + str(fechaInterpretacion1) + "'," + ' "medicoInterpretacion1_id" = ' +  str(medicoInterpretacion1) + ","  + '"medicoReporte_id" = ' + str(medicoReporte) + ","  + '  interpretacion2 = '  + str(interpretacion2) + "," + '"fechaInterpretacion2"  = '  + "'"   + str(fechaInterpretacion2) + "'," + ' "medicoInterpretacion2_id" = ' + str(medicoInterpretacion2) + ","  + ' observaciones = ' + "'" +   str(observaciones) + "'," + '"rutaImagen" = ' + "'" + str(rutaImagen) +  "'" + ',"rutaVideo" = ' + "'" + str(rutaVideo) + "'," +  '"fechaReporte" = ' + "'" + str(fechaReporte) + "'," + ' "usuarioToma_id" = ' + "'" + str(usuarioToma) + "'," + '"dependenciasRealizado_id" = ' + str(dependenciasRealizado) + "," + '"estadoExamenes_id" = ' + "'" + str(estadoExamen) + "'" + ' WHERE id = ' + "'" + str(examId) + "'"
+                comando = 'UPDATE clinico_historiaexamenes set interpretacion1 = ' + str(interpretacion1) + "," +  '"fechaInterpretacion1" = '  + "'" + str(fechaInterpretacion1) + "'," + ' "medicoInterpretacion1_id" = ' +  str(medicoInterpretacion1) + ","  + '"medicoReporte_id" = ' + str(medicoReporte) + ","  + '  interpretacion2 = '  + str(interpretacion2) + "," + '"fechaInterpretacion2"  = '  + "'"   + str(fechaInterpretacion2) + "'," + ' "medicoInterpretacion2_id" = ' + str(medicoInterpretacion2) + ","  + ' observaciones = ' + "'" +   str(observaciones) + "'," + '"rutaImagen" = ' + "'" + str(rutaImagen) +  "'" + ',"rutaVideo" = ' + "'" + str(rutaVideo) + "'," +  '"fechaReporte" = ' + "'" + str(fechaReporte) + "'," + ' "usuarioToma_id" = ' + "'" + str(usuarioToma) + "'," + '"serviciosAdministrativos_id" = ' + str(serviciosAdministrativos) + "," + '"estadoExamenes_id" = ' + "'" + str(estadoExamen) + "'" + ' WHERE id = ' + "'" + str(examId) + "'"
                 print(comando)
                 curt.execute(comando)
                 miConexiont.commit()

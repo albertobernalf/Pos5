@@ -1157,9 +1157,11 @@ function guardarResultado() {
          var medicoReporte = document.getElementById("medicoReporte").value;
          var rutaImagen = document.getElementById("rutaImagen").value;
          var rutaVideo = document.getElementById("rutaVideo").value;
-	 var dependenciasRealizado = document.getElementById("dependenciasRealizado").value;
+	 //var dependenciasRealizado = document.getElementById("dependenciasRealizado").value;
 	 var username_id = document.getElementById("username_id").value;	
 	 var estadoExamen = document.getElementById("estadoExamen").value;
+	 var serviciosAdministrativos = document.getElementById("serviciosAdministrativos").value;
+
 
 
 	 $.ajax({
@@ -1174,9 +1176,9 @@ function guardarResultado() {
 			medicoReporte:medicoReporte,
                         rutaImagen:rutaImagen,
 			rutaVideo:rutaVideo,
-			dependenciasRealizado:dependenciasRealizado,
                         usuarioToma: username_id ,
-			estadoExamen:estadoExamen
+			estadoExamen:estadoExamen,
+			serviciosAdministrativos:serviciosAdministrativos,
 			},
 	           type: 'POST',
 	           dataType : 'json',

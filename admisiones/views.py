@@ -318,11 +318,11 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     curt = miConexiont.cursor()
 
     # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
-    comando = 'select m.id id, m.nombre nombre FROM sitios_serviciosAdministrativos m  where m."sedesClinica_id" = ' + "'" + str(
-        sede) + "'"
+    comando = 'select m.id id, m.nombre||' + "'" + str(' ') + "'||" + ' u.nombre nombre FROM sitios_serviciosAdministrativos m, sitios_ubicaciones u where m.ubicaciones_id= u.id AND m."sedesClinica_id" = ' + str(sede)
 
-    curt.execute(comando)
     print(comando)
+    curt.execute(comando)
+
 
     serviciosAdministrativos = []
 
@@ -1569,6 +1569,27 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # FIN Combo Dx Complicacion
 
+        # Combo ServiciosAdministrativos
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = 'select m.id id, m.nombre||' + "'" + str(' ') + "'||" + ' u.nombre nombre FROM sitios_serviciosAdministrativos m, sitios_ubicaciones u where m.ubicaciones_id= u.id AND m."sedesClinica_id" = ' + str(sede)
+
+        print(comando)
+        curt.execute(comando)
+
+        serviciosAdministrativos = []
+
+        for id, nombre in curt.fetchall():
+            serviciosAdministrativos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("ServiciosAdministrativos = " , serviciosAdministrativos)
+        context['ServiciosAdministrativos'] = serviciosAdministrativos
+
+        # Fin Combo ServiciosAdministrativos
 
         ## FIN CONTEXTO
         return render(request, "clinico/panelClinicoF.html", context)
@@ -4011,6 +4032,11 @@ def crearAdmisionDef(request):
         print(" empresa = ", empresa)
 
 
+        serviciosAdministrativos = request.POST["serviciosAdministrativos"]
+        print(" serviciosAdministrativos = ", serviciosAdministrativos)
+
+
+
         Username_id = request.POST["username_id"]
         print("Username_id = ", Username_id)
         context['Username_id'] = Username_id
@@ -4036,11 +4062,13 @@ def crearAdmisionDef(request):
         consecAdmision = (consec['maximo'] + 1)
         print("ultimo ingreso = ", consecAdmision)
 
-        now = datetime.datetime.now()
-        dnow = now.strftime("%Y-%m-%d %H:%M:%S")
-        print("NOW  = ", dnow)
 
-        fechaIngreso = dnow
+        now = datetime.datetime.now()
+        print("NOW  = ", now)
+        fechaRegistro = now
+
+
+        fechaIngreso = fechaRegistro
         print("fechaIngreso = ", fechaIngreso)
 
         #fechaSalida = "0001-01-01 00:00:00"
@@ -4089,7 +4117,7 @@ def crearAdmisionDef(request):
         documento_llave = Usuarios.objects.get(tipoDoc_id=tipoDoc,   documento=documento.strip())
         print("el id del dopcumento = ", documento_llave.id)
 
-        usernameId = Planta.objects.get(documento=username)
+        usernameId = Planta.objects.get(documento=username, sedesClinica_id=sede)
         print("el id del planta = ", usernameId.id)
 
         viasIngreso   = request.POST["viasIngreso"]
@@ -4139,6 +4167,7 @@ def crearAdmisionDef(request):
                                  #fechaSalida=NULL,
                                  factura=factura,
                                  numcita=numcita,
+                                 serviciosAdministrativos_id=serviciosAdministrativos,
                                  serviciosIng_id=  busServicio2,
                                  dependenciasIngreso_id=dependenciasIngreso,
                                  dxIngreso_id=dxIngreso,
@@ -4300,7 +4329,7 @@ def crearAdmisionDef(request):
         curt = miConexiont.cursor()
 
         # comando = "select opc.id id_opc, opc.perfilesClinicaId_id id_perfilesClinica,opc.modulosElementosDefId_id id_elmentosDef, elem_nombre, elem.url url ,modelem.nombre nombreElemento from seguridad_perfilesusu usu, seguridad_perfilesclinicaopciones opc, planta_planta planta, seguridad_moduloselementosdef elem, seguridad_moduloselementos modelem where usu.estadoReg = 'A' and usu.plantaId_id =  planta.id and planta.documento = '" + str(username) + "' and opc.id = usu.perfilesclinicaOpcionesId_id and elem.id =opc.modulosElementosDefId_id and modelem.id = opc.modulosElementosDefId_id "
-        comando = 'select opc.id id_opc, opc."perfilesClinicaId_id" id_perfilesClinica,opc."modulosElementosDefId_id" id_elmentosDef,modulos.nombre nombre_modulo ,elem.nombre nombre_defelemento , elem.url url ,modelem.nombre nombreElemento from seguridad_perfilesusu usu, seguridad_perfilesclinicaopciones opc, planta_planta planta, seguridad_moduloselementosdef elem, seguridad_moduloselementos modelem , seguridad_perfilesclinica perfcli, seguridad_perfilesgralusu gralusu, seguridad_modulos modulos, sitios_sedesClinica  sedes where gralusu."perfilesClinicaId_id" = perfcli.id and usu."plantaId_id" = gralusu."plantaId_id" and usu."plantaId_id" =  planta.id and usu."estadoReg" = ' + "'" + 'A' + "'" + ' and  opc.id = usu."perfilesClinicaOpcionesId_id" and elem.id =opc."modulosElementosDefId_id" and modulos.id = perfcli."modulosId_id" and elem."modulosId_id" = perfcli."modulosId_id"  and sedes.id = planta."sedesClinica_id"  and planta.documento =  ' + "'" + '19465673' + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
+        comando = 'select opc.id id_opc, opc."perfilesClinicaId_id" id_perfilesClinica,opc."modulosElementosDefId_id" id_elmentosDef,modulos.nombre nombre_modulo ,elem.nombre nombre_defelemento , elem.url url ,modelem.nombre nombreElemento from seguridad_perfilesusu usu, seguridad_perfilesclinicaopciones opc, planta_planta planta, seguridad_moduloselementosdef elem, seguridad_moduloselementos modelem , seguridad_perfilesclinica perfcli, seguridad_perfilesgralusu gralusu, seguridad_modulos modulos, sitios_sedesClinica  sedes where gralusu."perfilesClinicaId_id" = perfcli.id and usu."plantaId_id" = gralusu."plantaId_id" and usu."plantaId_id" =  planta.id and usu."estadoReg" = ' + "'" + 'A' + "'" + ' and  opc.id = usu."perfilesClinicaOpcionesId_id" and elem.id =opc."modulosElementosDefId_id" and modulos.id = perfcli."modulosId_id" and elem."modulosId_id" = perfcli."modulosId_id"  and sedes.id = planta."sedesClinica_id"  and planta.documento =  ' + "'"  + '19465673' + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
         curt.execute(comando)
         print(comando)

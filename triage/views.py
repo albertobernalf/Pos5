@@ -67,6 +67,10 @@ def crearTriage(request):
         print(" Profesional = " , Profesional)
         context['Profesional'] = Profesional
 
+        serviciosAdministrativos = request.POST["serviciosAdministrativos"]
+        print(" serviciosAdministrativos = " , serviciosAdministrativos)
+
+
 
         busServicioT = request.POST["busServicioX"]
         print(" busServicioT = ", busServicioT)
@@ -152,7 +156,7 @@ def crearTriage(request):
         documento_llave = Usuarios.objects.get(documento=documento)
         print("el id del documento = ", documento_llave.id)
 
-        usernameId = Planta.objects.get(documento=username)
+        usernameId = Planta.objects.get(documento=username, sedesClinica_id=sede)
         print("el id del planta = ", usernameId.id)
 
         try:
@@ -163,6 +167,7 @@ def crearTriage(request):
                                  tipoDoc_id=tipoDoc,
                                  documento_id=documento_llave.id,
                                  consec=0,
+                                 serviciosAdministrativos_id=serviciosAdministrativos,
                                  fechaSolicita=fechaRegistro,
                                  serviciosSedes_id=  busServicioT,
                                  subServiciosSedes_id=busSubServicioT,

@@ -156,6 +156,9 @@ def GuardaGlosas(request):
     estadoRecepcion_id = request.POST['estadoRecepcion_id']
     print ("estadoRecepcion_id =", estadoRecepcion_id)
 
+    serviciosAdministrativos_id = request.POST['serviciosAdministrativos_id']
+    print ("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
 
     usuarioRegistro_id = request.POST['usuarioRegistro_id']
     print ("usuarioRegistro_id =", usuarioRegistro_id)
@@ -169,7 +172,7 @@ def GuardaGlosas(request):
     cur3 = miConexion3.cursor()
 
     try:
-        comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalNotasCredito", "totalGlosa" , "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ) VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null)"
+        comando = 'INSERT INTO cartera_glosas ("fechaRecepcion", "saldoFactura", "totalNotasCredito", "totalGlosa" , "totalSoportado", "totalAceptado", observaciones, "fechaRegistro", "estadoReg", convenio_id, "usuarioRegistro_id", factura_id,  "tipoGlosa_id", "usuarioRecepcion_id",  "valorGlosa", "estadoRadicacion_id", "estadoRecepcion_id","sedesClinica_id", "ripsEnvio_id" ,"serviciosAdministrativos_id") VALUES (' + "'" + str(fechaRecepcion) + "'" + ', 0,0,0,0,0,' + "'" + str(observaciones) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(convenio_id) + "','"  + str(usuarioRegistro_id) + "', '" + str(factura_id) + "', '" + str(tipoGlosa_id) + "', '" + str(usuarioRegistro_id) + "','" + str(valorGlosa) + "', null, '" + str(estadoRecepcion_id) + "', '" + str(sedesClinica_id)  + "',null,'" + str(serviciosAdministrativos_id) + "'" +  ')'
 
         print(comando)
         cur3.execute(comando)

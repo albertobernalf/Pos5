@@ -1402,7 +1402,10 @@ formHistoriaClinica.addEventListener('submit', e=>{
 
          var tratamiento =           document.getElementById("id_tratamiento").value;
          var causasExterna = document.getElementById("causasExterna").value;
-         var dependenciasRealizado = document.getElementById("dependenciasRealizado").value;
+         //var dependenciasRealizado = document.getElementById("dependenciasRealizado").value;
+         var serviciosAdministrativos = document.getElementById("serviciosAdministrativos").value;
+
+
          var usuarioRegistro = document.getElementById("usuarioRegistro").value;
          var ingresoPaciente=document.getElementById("ingresoPaciente1").value;
 
@@ -1450,7 +1453,7 @@ formHistoriaClinica.addEventListener('submit', e=>{
                             'analisis':analisis,
                             'plan':plan,
 	                        'causasExterna':causasExterna,
-	                        'dependenciasRealizado':dependenciasRealizado,
+	                        'serviciosAdministrativos':serviciosAdministrativos,
 			                'usuarioRegistro':usuarioRegistro,
 			                'ingresoPaciente':ingresoPaciente,
 			                'profesional':profesional,
@@ -1510,7 +1513,8 @@ formHistoriaClinica.addEventListener('submit', e=>{
                                 'ordenMedicaTer':ordenMedicaTer,
                                 'ordenMedicaMed':ordenMedicaMed,
                                 'ordenMedicaOxi':ordenMedicaOxi,
-                                'ordenMedicaInt':ordenMedicaInt
+                                'ordenMedicaInt':ordenMedicaInt,
+				'serviciosAdministrativos':serviciosAdministrativos,
 
 				   },
  	      		success: function (respuesta2) {

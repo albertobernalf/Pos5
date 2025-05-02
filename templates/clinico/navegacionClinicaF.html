@@ -118,11 +118,19 @@
   Usuario:
             {{Profesional}}
 
-             <select class="form-select  h-40 w-10" aria-label="" id="dependenciasRealizado" name="dependenciasRealizado">
-                {% for dependenciasRealizado in DependenciasRealizado %}
-                <option value="{{dependenciasRealizado.id}}">{{dependenciasRealizado.nombre}}</option>
-                {% endfor %}
-            </select>
+
+                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
+                                                    name="serviciosAdministrativos"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+					        </div>
+
+
 
           
         </div>

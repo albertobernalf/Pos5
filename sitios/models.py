@@ -250,7 +250,7 @@ class ServiciosAdministrativos(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return (self.nombre+ ' ' + str(self.ubicaciones))
+        return '%s %s' % (self.nombre , self.ubicaciones)
 
 
 class Bodegas(models.Model):

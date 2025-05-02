@@ -859,6 +859,21 @@ th ,tr{
                                                    name="busDocumentoSelTriage" required>
                                         </div>
 
+				  <div class="col">
+                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
+                                                    name="serviciosAdministrativos"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
                                     </div>
                                     <div class="form-row">
 
@@ -1038,7 +1053,7 @@ th ,tr{
 
                                             <div class="col">
                                                 <label for="fechaNacio" class="col-form-label">Fecha Nacio:</label>
-                                                <input type="datetime" class="form-control" id="fechaNacio"
+                                                <input type="datetime-local" class="form-control" id="fechaNacio"
                                                        name="fechaNacio">
                                             </div>
 

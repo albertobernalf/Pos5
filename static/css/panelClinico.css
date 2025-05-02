@@ -144,3 +144,40 @@ input[type="date"] {
     filter:invert(1);
   }
 }
+
+input[type="datetime-local"] {
+  --color: gray;
+
+  border: 2px solid var(--color);
+  font-size: 1rem;
+  background: #f8f9f9;
+  color: #fff;
+  padding: 6px;
+  border-radius: 6px;
+
+  &::-webkit-datetime-edit {
+    margin-right: 0.5rem;
+  }
+
+  &::-webkit-datetime-edit-fields-wrapper {
+    background: #000;
+    border-radius: 8px;
+    padding: 4px 10px;
+  }
+
+  &::-webkit-datetime-edit-text {
+    color: cyan;
+  }
+
+  &::-webkit-datetime-edit-day-field:focus,
+  &::-webkit-datetime-edit-month-field:focus,
+  &::-webkit-datetime-edit-year-field:focus {
+    background: indigo;
+  }
+
+  &::-webkit-calendar-picker-indicator {
+    filter:invert(1);
+  }
+}
+
+

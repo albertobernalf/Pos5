@@ -1382,10 +1382,11 @@ function CrearGlosas()
 	        var valorGlosa = document.getElementById("valorGlosa").value;
 	        var estadoRecepcion_id = document.getElementById("estadoRecepcion_id").value;
 	        var usuarioRegistro_id = document.getElementById("usuarioRegistro_id").value;
+	        var serviciosAdministrativos_id = document.getElementById("serviciosAdministrativos_id").value;
 
 
             $.ajax({
-                data: {'convenio_id':convenio_id,'sedesClinica_id':sedesClinica_id, 'fechaRecepcion':fechaRecepcion, 'observaciones':observaciones,'factura_id':factura_id,  'fechaRespuesta':fechaRespuesta, 'tipoGlosa_id':tipoGlosa_id, 'valorGlosa':valorGlosa, 'estadoRecepcion_id':estadoRecepcion_id, 'usuarioRegistro_id':usuarioRegistro_id },
+                data: {'serviciosAdministrativos_id':serviciosAdministrativos_id, 'convenio_id':convenio_id,'sedesClinica_id':sedesClinica_id, 'fechaRecepcion':fechaRecepcion, 'observaciones':observaciones,'factura_id':factura_id,  'fechaRespuesta':fechaRespuesta, 'tipoGlosa_id':tipoGlosa_id, 'valorGlosa':valorGlosa, 'estadoRecepcion_id':estadoRecepcion_id, 'usuarioRegistro_id':usuarioRegistro_id },
 	        url: "/guardaGlosas/",
                 type: "POST",
                 dataType: 'json',
@@ -1424,7 +1425,7 @@ function CrearGlosas()
 
                 },
             error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+		document.getElementById("mensajesErrorModalGlosas").innerHTML =  'Error' + ': ' + request.responseText;
 
 	   	    	}
             });

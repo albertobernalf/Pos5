@@ -251,8 +251,14 @@ def crearHistoriaClinica(request):
 
 
             print ("tiposfolios Seleccionado = " , tiposFolio)
-            dependenciasRealizado = request.POST["dependenciasRealizado"]
-            print("dependenciasRealizado", dependenciasRealizado)
+            #dependenciasRealizado = request.POST["dependenciasRealizado"]
+            serviciosAdministrativos = request.POST["serviciosAdministrativos"]
+            print("serviciosAdministrativos", serviciosAdministrativos)
+
+
+            if (serviciosAdministrativos==''):
+                serviciosAdministrativos="null"
+
             causasExterna = request.POST["causasExterna"]
             print("causasExterna", causasExterna)
             espMedico = request.POST["espMedico"]
@@ -260,7 +266,7 @@ def crearHistoriaClinica(request):
             plantados = request.POST["planta"]
             print("plantaDos = ", plantados)
 
-            plantaId = Planta.objects.get(documento=plantados.strip())
+            plantaId = Planta.objects.get(documento=plantados.strip(), sedesClinica_id=sede)
             print("plantaId =", plantaId.id)
 
             medicoId = Medicos.objects.get(planta_id= plantaId.id)
@@ -413,7 +419,9 @@ def crearHistoriaClinica(request):
 
             jsonDDiagnosticos = json.loads(diagnosticos)
             elementosDiagnosticos = len (jsonDDiagnosticos)
-            print ("elementosDiagnosticos = ", elementosDiagnosticos ) 
+            print ("elementosDiagnosticos = ", elementosDiagnosticos )
+
+
 
             if (elementosDiagnosticos== 1):
 
@@ -441,7 +449,7 @@ def crearHistoriaClinica(request):
                             miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                             curt = miConexiont.cursor()
 
-                            comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "dependenciasRealizado_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "','" + str(dependenciasRealizado) + "','" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'"   +  ") RETURNING id ;"
+                            comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "serviciosAdministrativos_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "'," + str(serviciosAdministrativos) + ",'" + str(espMedico) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'"   +  ") RETURNING id ;"
 
                             ## fin tentativo insert
 
@@ -523,7 +531,7 @@ def crearHistoriaClinica(request):
                 print("sin espacioos convenioId =", convenioId)
 
                 if convenioId.strip()=='None':
-                   convenioId="null"
+                   convenioId=0
                    print ("Entre a MODIFICAR convenioID") 
 
                 print("ULTIMO valor de convenioId= ", convenioId)

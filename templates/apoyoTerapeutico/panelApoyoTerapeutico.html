@@ -170,20 +170,20 @@ Mayor a un dia
                                                name="nombreExamen" value="" readonly>
 
                                     </div>
-
-				          <div class="col">
-                                        <label for="dependenciasRealizado" class="col-sm-6 control-label">RealizadoEnDependencia:</label>
-
-                                        <select class="form-select  h-40 w-10" id="dependenciasRealizado"
-                                                name="dependenciasRealizado">
-                                            {% for dependenciasRealizado in DependenciasRealizado %}
-                                            <option value="{{dependenciasRealizado.id}}">
-                                                {{dependenciasRealizado.nombre}}
-                                            </option>
-                                            {% endfor %}
-                                        </select>
+				  <div class="col">
+                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
+                                                    name="serviciosAdministrativos"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
 
                                     </div>
+
 				
                                     <div class="col">
                                         <label for="cantidad" class="col-sm-1 control-label"> Cantidad:</label>

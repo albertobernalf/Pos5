@@ -724,5 +724,8 @@ BIBLIOGRAFIA:
 -- OJO involucrar en todo lados serviciosadministrativos
 -- crear tablas cirugua
 -- en tarifario ver ventanas modales
+-- el comobo servicioisadministrativos en clinico no sale no funciona ??? FALTA AUN, terapeutico (Probar es duro de pelar), autorizaciones, tarifas, contratacion
+-- No hay boton para borrar una glosa maluca..--> crearlo
+--
 
--- OJO EL DIA VIERNES 2 DE MAYO TAMBIEN COMENZAR CON LOS MODELOS DE CIRUGIA
+-- OJO EL DIA VIERNES 5 DE MAYO TAMBIEN COMENZAR CON LOS MODELOS DE CIRUGIA

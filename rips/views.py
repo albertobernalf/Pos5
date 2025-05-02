@@ -147,7 +147,8 @@ def GuardaEnviosRips(request):
     print ("cantidadPasaron =", cantidadPasaron)
     cantidadRechazadas = request.POST['cantidadRechazadas']
     print ("cantidadRechazadas =", cantidadRechazadas)
-
+    serviciosAdministrativos = request.POST['serviciosAdministrativos']
+    print ("serviciosAdministrativos =", serviciosAdministrativos)
 
     estadoMinisterio = request.POST['estadoMinisterio']
     print ("estadoMinisterio =", estadoMinisterio)
@@ -164,7 +165,7 @@ def GuardaEnviosRips(request):
 
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
-        comando = 'insert into rips_ripsEnvios  ("fechaEnvio","cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","ripsEstados_id", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion") values ('  + "'" + str(fechaEnvio) + "',"  +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoRips.id) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "');"
+        comando = 'insert into rips_ripsEnvios  ("fechaEnvio","cantidadFacturas", "cantidadPasaron", "cantidadRechazadas","ripsEstados_id", "fechaRegistro", "estadoReg", "usuarioRegistro_id", empresa_id, "sedesClinica_id", "ripsTiposNotas_id", "fechaCreacion","serviciosAdministrativos_id") values ('  + "'" + str(fechaEnvio) + "',"  +  "'" + str(cantidadFacturas) + "'" + ' , '  + "'" + str(cantidadPasaron) + "'" + ', ' + "'" + str(cantidadRechazadas) + "'" + '  , ' + "'" + str(estadoRips.id) + "'" + '  , '  "'" + str(fechaRegistro) + "','"   + str(estadoReg) + "'," + "'" + str(usuarioRegistro_id) + "','" + str(empresa_id) + "','" + str(sedesClinica_id) + "','" + str(tipoRips) +  "','" + str(fechaRegistro) + "','" + str(serviciosAdministrativos) + "'" + ');'
         print(comando)
         cur3.execute(comando)
         miConexion3.commit()
