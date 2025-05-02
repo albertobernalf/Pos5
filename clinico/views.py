@@ -1484,7 +1484,7 @@ def crearHistoriaClinica(request):
 
                     if tiposIncapacidad != "":
                         g = HistorialIncapacidades(tiposIncapacidad_id=tiposIncapacidad, diagnosticosIncapacidad_id=diagnosticosIncapacidad,
-                                          descripcion=descripcion,desdeFecha=desdeFecha,  hastaFecha=hastaFecha, numDias=numDias,  historia_id=historiaId,estadoReg='A')
+                                          descripcion=descripcion,desdeFecha=desdeFecha,  hastaFecha=hastaFecha, numDias=numDias,  historia_id=historiaId,estadoReg='A', fechaRegistro=fechaRegistro)
                         g.save()
 
 

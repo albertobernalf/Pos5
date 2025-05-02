@@ -26,7 +26,7 @@ SECRET_KEY = 'fab%(kxkg02cu$elh-*5w0l)6yu$basu4rm41^^z@ct-9vrv1+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '192.168.5.130', '175.16.0.100','127.0.0.1','172.16.0.224','192.168.79.133']
+ALLOWED_HOSTS = ['localhost', '192.168.5.130', '175.16.0.100','127.0.0.1','172.16.0.224','192.168.79.133','192.168.0.224']
 
 
 # Application definition
@@ -63,6 +63,7 @@ INSTALLED_APPS = [
     'rips',
     'tarifas',
     'tarifarios',
+    'inventarios',
 ]
 
 MIDDLEWARE = [

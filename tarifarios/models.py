@@ -33,6 +33,7 @@ class TiposHonorarios(models.Model):
 
 class TarifariosDescripcion (models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm30')
     tiposTarifa = models.ForeignKey('tarifarios.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TipoTarifa11')
     columna =  models.CharField(max_length=15,  blank=True,null= True, editable=True)
     descripcion = models.CharField(max_length=100, blank=True, null=True, editable=True)
@@ -45,6 +46,7 @@ class TarifariosDescripcion (models.Model):
 
 class TarifariosProcedimientos (models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm31')
     tiposTarifa = models.ForeignKey('tarifarios.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TipoTarifa171')
     codigoCups = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Cups10121')
     codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)
@@ -77,6 +79,7 @@ class TarifariosProcedimientos (models.Model):
 
 class TarifariosProcedimientosHonorarios (models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm33')
     tiposTarifa = models.ForeignKey('tarifarios.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TipoTarifa1711')
     codigoCups = models.ForeignKey('clinico.Examenes', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Cups101211')
     #tipoHonorario = models.ForeignKey('tarifarios.TiposHonorarios', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TipoHonorario1122')
@@ -113,6 +116,7 @@ class TarifariosProcedimientosHonorarios (models.Model):
 
 class TarifariosSuministros (models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm34')
     tiposTarifa = models.ForeignKey('tarifarios.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TipoTarifa172')
     codigoCum = models.ForeignKey('facturacion.Suministros', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Suministro10121')
     codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)

@@ -228,3 +228,38 @@ class Localidades(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Ubicaciones(models.Model):
+    id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    nombre = models.CharField(max_length=50)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return self.nombre
+
+
+class ServiciosAdministrativos(models.Model):
+    id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    ubicaciones = models.ForeignKey('sitios.Ubicaciones', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    dependenciaTipo =  models.ForeignKey('sitios.DependenciasTipo', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    nombre = models.CharField(max_length=50)
+    fechaRegistro = models.DateTimeField(default=now, editable=False)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return (self.nombre+ ' ' + str(self.ubicaciones))
+
+
+class Bodegas(models.Model):
+    id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    nombre = models.CharField(max_length=50)
+    fechaRegistro = models.DateTimeField(default=now, editable=False)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return self.nombre

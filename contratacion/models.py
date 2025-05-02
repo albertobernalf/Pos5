@@ -13,6 +13,7 @@ from tarifas.models import Tarifas
 
 class Convenios (models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm15')
     tarifariosDescripcionProc = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion0121')
     tarifariosDescripcionSum = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion0123')
     tarifariosDescripcionHono = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion0124')
@@ -49,6 +50,7 @@ class Convenios (models.Model):
 
 class ConveniosTarifasHonorarios (models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm16')
     convenio = models.ForeignKey('contratacion.Convenios', blank=True,null= True, editable=True, on_delete=models.PROTECT)        
     tipoTarifa = models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT)    
     tipoHonorario =  models.ForeignKey('tarifas.TiposHonorarios', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TipoHonorario05')
@@ -75,6 +77,7 @@ class ConveniosSuministros(models.Model):
         (No, 'No'),
     )
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm17')
     convenio = models.ForeignKey('contratacion.Convenios', blank=True,null= True, editable=True, on_delete=models.PROTECT)        
     #tipoTarifa = models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT)    
     #codigoHomologado = models.CharField(max_length=10, blank=True, null=True, editable=True)
@@ -94,6 +97,7 @@ class ConveniosSuministros(models.Model):
 
 class ConveniosLiquidacionTarifasHonorarios(models.Model):
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm18')
     convenio = models.ForeignKey('contratacion.Convenios', blank=True,null= True, editable=True, on_delete=models.PROTECT)  
     tipoTarifa =  models.ForeignKey('tarifas.TiposTarifa', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TipoTarifa037')
     codigoHomologado = models.CharField(max_length=10, blank=True,null= True , editable=True )

@@ -12,6 +12,7 @@ class Autorizaciones(models.Model):
     #documento = models.ForeignKey('usuarios.Usuarios',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento7')
     #hClinica = models.CharField(max_length=20,blank=True,null= True, editable=True,)
     #consec    = models.IntegerField()
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm03')
     historia =  models.ForeignKey('clinico.Historia',  blank=True, null=True, editable=True, on_delete=models.PROTECT,   related_name='Historia476')  
     fechaSolicitud = models.DateTimeField( editable=True, null=True, blank=True)
     empresa = models.ForeignKey('facturacion.Empresas',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='empresa765')

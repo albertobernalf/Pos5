@@ -14,6 +14,7 @@ class Triage(models.Model):
     )
     id = models.AutoField(primary_key=True)
     sedesClinica   = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica1')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm02')
     serviciosSedes = models.ForeignKey('sitios.ServiciosSedes', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='Serv21')
     subServiciosSedes = models.ForeignKey('sitios.SubServiciosSedes', blank=True, null=True, editable=True, on_delete=models.PROTECT, related_name='SubServ21')
     dependencias = models.ForeignKey('sitios.Dependencias', blank=True, null=True, editable=True,   on_delete=models.PROTECT, related_name='depCli01')

@@ -255,6 +255,7 @@ class LiquidacionCirugias(models.Model):
 class Facturacion(models.Model):
     id  = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica398')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm20')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TiposDoc101')
     #documento = models.CharField(max_length=30, blank=True,null= True, editable=True,)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoFac2')
@@ -381,6 +382,7 @@ class FacturacionDetalle(models.Model):
 class Liquidacion(models.Model):
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica789')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm21')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TiposDoc120')
     #documento = models.CharField(max_length=30, blank=True,null= True, editable=True,)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoFac3')
@@ -452,6 +454,7 @@ class LiquidacionDetalle(models.Model):
 class Refacturacion(models.Model):
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica',   blank=True,null= True, on_delete=models.PROTECT ,related_name ='sedesClinica667')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm51')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name='TiposDoc145')
     #documento = models.CharField(max_length=30, blank=True,null= True, editable=True,)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoFac4')

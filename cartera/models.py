@@ -22,6 +22,7 @@ class Pagos(models.Model):
 
     id = models.AutoField(primary_key=True)
     fecha = models.DateTimeField(editable=True, null=True, blank=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm05')
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     documento = models.ForeignKey('usuarios.Usuarios',blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='Documento77')
     consec    = models.IntegerField()
@@ -43,6 +44,7 @@ class Pagos(models.Model):
 class PagosFacturas(models.Model):
 
     id = models.AutoField(primary_key=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm06')
     pago = models.ForeignKey('cartera.Pagos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     facturaAplicada  =  models.ForeignKey('facturacion.facturacion',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     valorAplicado = models.DecimalField( max_digits=20, decimal_places=2)
@@ -95,6 +97,7 @@ class MotivosGlosas(models.Model):
 class Radicaciones(models.Model):
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica762')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm08')
     fecha = models.DateTimeField(editable=True, null=True, blank=True)
     remision= models.CharField(max_length=20, null=False)
     radicacion= models.CharField(max_length=20, null=False)
@@ -141,6 +144,7 @@ class EstadosGlosas (models.Model):
 class Glosas(models.Model):
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica764')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm10')
     convenio = models.ForeignKey('contratacion.Convenios',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     ripsEnvio =  models.ForeignKey('rips.RipsEnvios',blank=True,null= True, editable=True, on_delete=models.PROTECT )
     fechaRecepcion = models.DateTimeField(editable=True, null=True, blank=True)
@@ -191,6 +195,7 @@ class NotasCredito(models.Model):
 
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica765')	
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm11')
     empresa = models.ForeignKey('facturacion.Empresas',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     fechaNota = models.DateTimeField(editable=True, null=True, blank=True)
     factura = models.ForeignKey('facturacion.Facturacion',blank=True,null= True, editable=True, on_delete=models.PROTECT ,  related_name='facturacion103')
@@ -236,6 +241,7 @@ class NotasDebito(models.Model):
 
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica760')	
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm12')
     empresa = models.ForeignKey('facturacion.Empresas',blank=True,null= True, editable=True, on_delete=models.PROTECT)
     fechaNota = models.DateTimeField(editable=True, null=True, blank=True)
     factura = models.ForeignKey('facturacion.Facturacion',blank=True,null= True, editable=True, on_delete=models.PROTECT ,  related_name='facturacion07')

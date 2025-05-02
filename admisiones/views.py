@@ -112,7 +112,7 @@ def validaAcceso(request):
 
     miConexion0 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur0 = miConexion0.cursor()
-    comando = 'select p.id  Username_id , p.nombre profesional , p."sedesClinica_id" , p.contrasena contrasena from planta_planta p where p.documento = ' + "'"  + username + "'"
+    comando = 'select p.id  Username_id , p.nombre profesional , p."sedesClinica_id" , p.contrasena contrasena from planta_planta p where p.documento = ' + "'"  + username + "'" + ' AND p."sedesClinica_id" = ' + "'" + str(sede) + "'"
     cur0.execute(comando)
     print(comando)
     planta = []
@@ -156,7 +156,7 @@ def validaAcceso(request):
 
             miConexion2 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
             cur2 = miConexion2.cursor()
-            comando =  'select perfcli.id perfil1 from seguridad_perfilesgralusu gral, sitios_sedesClinica sedes, seguridad_perfilesclinica perfcli, planta_planta planta where planta."sedesClinica_id" = sedes.id and planta.id=gral."plantaId_id" and perfcli.id = gral."perfilesClinicaId_id" and sedes.id = ' + "'" +  str(sede) + "'" +   ' AND  planta.documento = ' + "'" + str(username) + "'"
+            comando =  'select perfcli.id perfil1 from seguridad_perfilesgralusu gral, sitios_sedesClinica sedes, seguridad_perfilesclinica perfcli, planta_planta planta where planta."sedesClinica_id" = sedes.id and planta.id=gral."plantaId_id" and perfcli.id = gral."perfilesClinicaId_id" and sedes.id = ' + "'" +  str(sede) + "'" +   ' AND  planta.documento = ' + "'" + str(username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
             print(comando)
             cur2.execute(comando)
 
@@ -203,7 +203,7 @@ def validaAcceso(request):
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
-                comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(username) + "'"
+                comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(username) + "'" + ' and planta."sedesClinica_id" =' + "'" + str(sede) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
                 curt.execute(comando)
                 print(comando)
@@ -225,7 +225,7 @@ def validaAcceso(request):
                 miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
-                comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'"  + username + "'"
+                comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'"  + username + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
                 curt.execute(comando)
                 print(comando)
@@ -265,8 +265,11 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print("profesional= ", profesional)
 
     ## username_id
-    usernameLlave = Planta.objects.get(documento=username.strip())
+    usernameLlave = Planta.objects.get(documento=username.strip() , sedesClinica_id=sede)
     username_id= usernameLlave.id
+
+
+
 
 
     # Combo PermisosGrales
@@ -276,7 +279,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     curt = miConexiont.cursor()
 
     # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
-    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(username) + "'"
+    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
     print(comando)
@@ -307,6 +310,31 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     context['Username_id'] = username_id
 
     # aqui la manada de combos organizarlo segun necesidades
+
+    # Combo ServiciosAdministrativos
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
+    comando = 'select m.id id, m.nombre nombre FROM sitios_serviciosAdministrativos m  where m."sedesClinica_id" = ' + "'" + str(
+        sede) + "'"
+
+    curt.execute(comando)
+    print(comando)
+
+    serviciosAdministrativos = []
+
+    for id, nombre in curt.fetchall():
+        serviciosAdministrativos.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(serviciosAdministrativos)
+    context['ServiciosAdministrativos'] = serviciosAdministrativos
+
+    # Fin Combo ServiciosAdministrativos
+
 
     # Combo de Servicios
 
@@ -693,7 +721,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
     # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
     comando =   'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
-        username) + "'"
+        username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
     print(comando)
@@ -718,7 +746,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'"
+    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
     print(comando)
@@ -1461,7 +1489,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         print ("username = ", username)
 
-        documento_llave = Planta.objects.get(documento=username)
+        documento_llave = Planta.objects.get(documento=username, sedesClinica_id=sede)
 
         print("el id del dopcumento = ", documento_llave.id)
 
@@ -2703,19 +2731,27 @@ def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
     return render(request, "admisiones/panelAdmisiones.html", context)
 
 
-def retornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
+def RetornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
 
     print("Voy a RETORNAR AL MENU")
 
-
+    context = {}
     username = Username.strip()
 
     documento = Documento
     sede = Sede
     nombreSede = NombreSede
     profesional = Profesional
-    context = {}
+
+
+    username = Username
+    username = username.strip()
     print(username)
+    print(sede)
+    print(nombreSede)
+    print(profesional)
+    print(username)
+
 
     miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
@@ -2739,7 +2775,6 @@ def retornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
     context['NombreSede'] = nombreSede
     context['Profesional'] = profesional
 
-
     # Combo PermisosGrales
 
     miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -2747,11 +2782,10 @@ def retornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
     curt = miConexiont.cursor()
 
     # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
-    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
-        username) + "'"
+    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
-    print(comando)
+    print("CONSULTA PERMISOS GENERALES = " ,comando)
 
     permisosGrales = []
 
@@ -2773,7 +2807,7 @@ def retornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'"
+    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
     print(comando)
@@ -2792,8 +2826,86 @@ def retornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
 
     # Fin Combo PermisosDetalle
 
-    return render(request, "inicio/PantallaPrincipal.html", context)
+    # Consigo la sede Nombre
 
+    miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    cur = miConexion.cursor()
+    comando = "SELECT id, nombre   FROM sitios_sedesClinica WHERE id ='" + sede + "'"
+    cur.execute(comando)
+    print(comando)
+
+    nombreSede = []
+
+    for id, nombre  in cur.fetchall():
+        nombreSede.append({'id':id , 'nombre' : nombre})
+
+    miConexion.close()
+    print("ESTA ES EL NOMBRE DE LA SEDE :")
+    print (nombreSede[0]['nombre'])
+
+    context['NombreSede'] =  nombreSede[0]['nombre']
+
+    # esta consulta por que se pierde de otras pantallas
+
+    miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    cur = miConexion.cursor()
+    comando = "SELECT id ,nombre FROM sitios_sedesClinica"
+    cur.execute(comando)
+    print(comando)
+
+    sedes = []
+
+    for id, nombre in cur.fetchall():
+        sedes.append({'id': id, 'nombre': nombre})
+
+    miConexion.close()
+    print(sedes)
+
+    context['Sedes'] = sedes
+
+    miConexion0 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    cur0 = miConexion0.cursor()
+    comando = 'select p.id  Username_id , p.nombre profesional , p."sedesClinica_id" , p.contrasena contrasena from planta_planta p where p.documento = ' + "'"  + username + "'" + ' AND p."sedesClinica_id" = ' + "'" + str(sede) + "'"
+    cur0.execute(comando)
+    print(comando)
+    planta = []
+    profesional = ''
+
+    for Username_id, profesional, sedesClinica_id , contrasena in cur0.fetchall():
+        planta.append({'Username_id': Username_id, 'profesional': profesional, 'sedesClinica_id': sedesClinica_id, 'contrasena':contrasena})
+        context['Username_id'] = Username_id
+        profesional = profesional
+
+    context['Profesional'] = profesional
+    print ("Profesional = ", context['Profesional'] )
+    miConexion0.close()
+
+    # Combo Modulos
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT c.id id,c.nombre nombre, c.nomenclatura nomenclatura, c.logo logo FROM seguridad_modulos c"
+
+    curt.execute(comando)
+    print(comando)
+
+    modulos = []
+
+    for id, nombre, nomenclatura, logo in curt.fetchall():
+        modulos.append({'id': id, 'nombre': nombre, 'nomenclatura': nomenclatura, 'logo': logo})
+
+    miConexiont.close()
+    print(modulos)
+
+    context['Modulos'] = modulos
+
+    # Fin combo Modulos
+
+    print ("Voy de Regreso Context = ", context)
+
+    return render(request, "inicio/PantallaPrincipal.html", context)
 
 
 def validaPassword(request, username, contrasenaAnt,contrasenaNueva,contrasenaNueva2):
@@ -3353,7 +3465,7 @@ def buscarAdmision(request):
 
 
     comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
-        username) + "'"
+        username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
     print(comando)
@@ -3378,7 +3490,7 @@ def buscarAdmision(request):
                                    password="123456")
     curt = miConexiont.cursor()
 
-    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'"
+    comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
     curt.execute(comando)
     print(comando)
@@ -4153,7 +4265,7 @@ def crearAdmisionDef(request):
 
         # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
         comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
-            username) + "'"
+            username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
         curt.execute(comando)
         print(comando)
@@ -4188,7 +4300,7 @@ def crearAdmisionDef(request):
         curt = miConexiont.cursor()
 
         # comando = "select opc.id id_opc, opc.perfilesClinicaId_id id_perfilesClinica,opc.modulosElementosDefId_id id_elmentosDef, elem_nombre, elem.url url ,modelem.nombre nombreElemento from seguridad_perfilesusu usu, seguridad_perfilesclinicaopciones opc, planta_planta planta, seguridad_moduloselementosdef elem, seguridad_moduloselementos modelem where usu.estadoReg = 'A' and usu.plantaId_id =  planta.id and planta.documento = '" + str(username) + "' and opc.id = usu.perfilesclinicaOpcionesId_id and elem.id =opc.modulosElementosDefId_id and modelem.id = opc.modulosElementosDefId_id "
-        comando = 'select opc.id id_opc, opc."perfilesClinicaId_id" id_perfilesClinica,opc."modulosElementosDefId_id" id_elmentosDef,modulos.nombre nombre_modulo ,elem.nombre nombre_defelemento , elem.url url ,modelem.nombre nombreElemento from seguridad_perfilesusu usu, seguridad_perfilesclinicaopciones opc, planta_planta planta, seguridad_moduloselementosdef elem, seguridad_moduloselementos modelem , seguridad_perfilesclinica perfcli, seguridad_perfilesgralusu gralusu, seguridad_modulos modulos, sitios_sedesClinica  sedes where gralusu."perfilesClinicaId_id" = perfcli.id and usu."plantaId_id" = gralusu."plantaId_id" and usu."plantaId_id" =  planta.id and usu."estadoReg" = ' + "'" + 'A' + "'" + ' and  opc.id = usu."perfilesClinicaOpcionesId_id" and elem.id =opc."modulosElementosDefId_id" and modulos.id = perfcli."modulosId_id" and elem."modulosId_id" = perfcli."modulosId_id"  and sedes.id = planta."sedesClinica_id"  and planta.documento =  ' + "'" + '19465673' + "'"
+        comando = 'select opc.id id_opc, opc."perfilesClinicaId_id" id_perfilesClinica,opc."modulosElementosDefId_id" id_elmentosDef,modulos.nombre nombre_modulo ,elem.nombre nombre_defelemento , elem.url url ,modelem.nombre nombreElemento from seguridad_perfilesusu usu, seguridad_perfilesclinicaopciones opc, planta_planta planta, seguridad_moduloselementosdef elem, seguridad_moduloselementos modelem , seguridad_perfilesclinica perfcli, seguridad_perfilesgralusu gralusu, seguridad_modulos modulos, sitios_sedesClinica  sedes where gralusu."perfilesClinicaId_id" = perfcli.id and usu."plantaId_id" = gralusu."plantaId_id" and usu."plantaId_id" =  planta.id and usu."estadoReg" = ' + "'" + 'A' + "'" + ' and  opc.id = usu."perfilesClinicaOpcionesId_id" and elem.id =opc."modulosElementosDefId_id" and modulos.id = perfcli."modulosId_id" and elem."modulosId_id" = perfcli."modulosId_id"  and sedes.id = planta."sedesClinica_id"  and planta.documento =  ' + "'" + '19465673' + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
         curt.execute(comando)
         print(comando)
@@ -4628,7 +4740,7 @@ def crearAdmisionDef(request):
 
         # comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + username + "'" + ' and  perfcli."sedesClinica_id" = ' + "'" + str(Sede) + "'"
         comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo ,perfcli."modulosId_id" modulo_id , m.nombre modulo_nombre from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli where planta.id = gral."plantaId_id" and  gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and planta.documento =' + "'" + str(
-            username) + "'"
+            username) + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
         curt.execute(comando)
         print(comando)
@@ -4653,7 +4765,7 @@ def crearAdmisionDef(request):
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'"
+        comando = 'select m.id id, m.nombre nombre , m.nomenclatura nomenclatura, m.logo logo, modeledef.nombre nombreOpcion ,elemen.nombre nombreElemento from seguridad_modulos m, seguridad_perfilesgralusu gral, planta_planta planta, seguridad_perfilesclinica perfcli, seguridad_perfilesclinicaopciones perfopc, seguridad_perfilesusu perfdet, seguridad_moduloselementosdef modeledef, seguridad_moduloselementos elemen where planta.id= 1 and  planta.id = gral."plantaId_id" and gral."perfilesClinicaId_id" = perfcli.id and perfcli."modulosId_id" = m.id and gral.id = perfdet."plantaId_id" and perfdet."perfilesClinicaOpcionesId_id" = perfopc.id and perfopc."perfilesClinicaId_id" =perfcli.id and  perfopc."modulosElementosDefId_id" = modeledef.id and elemen.id = modeledef."modulosElementosId_id"  and planta.documento = ' + "'" + username + "'" + ' AND gral."plantaId_id"=planta.id AND planta."sedesClinica_id"=' + "'" + str(sede) + "'"
 
         curt.execute(comando)
         print(comando)

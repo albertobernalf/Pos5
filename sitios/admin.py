@@ -2,7 +2,9 @@ from django.contrib import admin
 
 # Register your models here.
 
-from sitios.models import Departamentos, Ciudades, Centros, SedesClinica, DependenciasTipo, Dependencias,  ServiciosSedes, SubServiciosSedes, HistorialDependencias, Municipios, Paises, Localidades
+from sitios.models import Departamentos, Ciudades, Centros, SedesClinica, DependenciasTipo, Dependencias,  ServiciosSedes, SubServiciosSedes, HistorialDependencias, Municipios, Paises, Localidades,  ServiciosAdministrativos, Ubicaciones, Bodegas
+
+
 
 @admin.register(SedesClinica)
 class sedesClinicaAdmin(admin.ModelAdmin):
@@ -122,6 +124,42 @@ class localidadesAdmin(admin.ModelAdmin):
     search_fields = ("id", "nombre", "localidadCodigoDian", "municipio", "fechaRegistro")
     # Filtrar
     list_filter = ("id", "nombre", "localidadCodigoDian", "municipio", "fechaRegistro")
+
+
+@admin.register(ServiciosAdministrativos)
+class serviciosAdministrativosAdmin(admin.ModelAdmin):
+
+
+    list_display = ("id","sedesClinica", "ubicaciones","dependenciaTipo", "nombre")
+    search_fields = ("id","sedesClinica", "ubicaciones","dependenciaTipo", "nombre")
+    # Filtrar
+    list_filter = ("id","sedesClinica", "ubicaciones","dependenciaTipo", "nombre")
+
+
+@admin.register(Ubicaciones)
+class ubicacionesAdmin(admin.ModelAdmin):
+
+
+    list_display = ("id","sedesClinica", "nombre")
+    search_fields = ("id","sedesClinica", "nombre")
+    # Filtrar
+    list_filter = ("id","sedesClinica", "nombre")
+
+
+@admin.register(Bodegas)
+class bodegasAdmin(admin.ModelAdmin):
+
+    list_display = ("id","sedesClinica","serviciosAdministrativos", "nombre")
+    search_fields = ("id","sedesClinica","serviciosAdministrativos", "nombre")
+    # Filtrar
+    list_filter = ("id","sedesClinica","serviciosAdministrativos", "nombre")
+
+
+
+
+
+
+
 
 admin.site.site_header = 'Clinica Vulnerable'
 admin.site.index_title = 'Panel de control '

@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from cirugia.models import OrganosCirugias, IntervencionCirugias, TiposHeridasOperatorias, PlanificacionCirugia,  FinalidadCirugia, GravedadCirugia, ZonasCirugia
+from cirugia.models import OrganosCirugias, IntervencionCirugias, TiposHeridasOperatorias, PlanificacionCirugia,  FinalidadCirugia, GravedadCirugia, ZonasCirugia, EstadosCirugias
 
 
 @admin.register(OrganosCirugias)
@@ -56,6 +56,15 @@ class zonasCirugiaAdmin(admin.ModelAdmin):
 
 @admin.register(GravedadCirugia)
 class gravedadCirugiaAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre")
+    search_fields = ("id", "nombre")
+    # Filtrar
+    list_filter = ('nombre',)
+
+
+
+@admin.register(EstadosCirugias)
+class estadosCirugiasAdmin(admin.ModelAdmin):
     list_display = ("id", "nombre")
     search_fields = ("id", "nombre")
     # Filtrar

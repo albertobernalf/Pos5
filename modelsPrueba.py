@@ -721,4 +721,8 @@ BIBLIOGRAFIA:
 -- En contratacion la modla crear convenio crear mensaje de erro modal de la ventana, ver en elmain
 -- en glosas falta actualizar el saldo de la factura en la glosa, y enviar la data a glosasdetalle
 
--- OJO EL DIA VIERNES 2 DE MAYO TAMBIEN COMENZAR CON LOS MODELOS DE CIRUGIA/PANTALLAS
+-- OJO involucrar en todo lados serviciosadministrativos
+-- crear tablas cirugua
+-- en tarifario ver ventanas modales
+
+-- OJO EL DIA VIERNES 2 DE MAYO TAMBIEN COMENZAR CON LOS MODELOS DE CIRUGIA

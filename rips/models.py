@@ -25,6 +25,7 @@ class RipsEnvios (models.Model):
 
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'SedesClinica759')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm26')
     ripsTiposNotas = models.ForeignKey('rips.RipsTiposNotas', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = 'RipsTipóNotas01')
     empresa =  models.ForeignKey('facturacion.Empresas', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name = "empre12")
     fechaCreacion  =  models.DateTimeField(default=now, blank=True, null=True, editable=True)	

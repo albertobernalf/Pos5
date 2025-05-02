@@ -15,6 +15,7 @@ class Ingresos(models.Model):
     fechaSalida = models.DateTimeField(editable=True, null=True, blank=True)
     factura  = models.IntegerField(default=0)
     numcita  =  models.IntegerField(default=0)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm01')
     serviciosIng = models.ForeignKey('clinico.Servicios', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='id9')
     dependenciasIngreso = models.ForeignKey('sitios.Dependencias', blank=True,null= True, editable=True, on_delete=models.PROTECT,   related_name='id0')
     dxIngreso = models.ForeignKey('clinico.Diagnosticos', blank=True,null= True, editable=True, on_delete=models.PROTECT,   related_name='id3')

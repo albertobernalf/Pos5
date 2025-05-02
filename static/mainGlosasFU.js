@@ -1326,6 +1326,16 @@ function ModalGlosas()
             $('#post_id').val('');
             $('#postFormCrearEnviosRips').trigger("reset");
             $('#modelHeadingEnviosRips').html("Creacion Envios Rips");
+var now = new Date();
+
+    var day = ("0" + now.getDate()).slice(-2);
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+ document.getElementById("fechaRecepcion").value = today;
+ document.getElementById("fechaRecepcionGlo").value = today;
+
+
             $('#crearModelEnviosRips').modal('show');
         
 }

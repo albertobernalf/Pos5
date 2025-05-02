@@ -126,10 +126,10 @@ class historialDiagnosticosAdmin(admin.ModelAdmin):
 @admin.register(Historia)
 class historiaAdmin(admin.ModelAdmin):
 
-        list_display = ("id", "tipoDoc", "documento","folio","fecha","causasExterna","dependenciasRealizado")
-        search_fields = ("id", "tipoDoc", "documento","folio","fecha","causasExterna","dependenciasRealizado")
+        list_display = ("id", "tipoDoc", "documento","folio","fecha","causasExterna")
+        search_fields = ("id", "tipoDoc", "documento","folio","fecha","causasExterna")
         # Filtrar
-        list_filter = ('id', 'tipoDoc', 'documento', 'folio', 'fecha', 'causasExterna','dependenciasRealizado')
+        list_filter = ('id', 'tipoDoc', 'documento', 'folio', 'fecha', 'causasExterna')
 
 
 
