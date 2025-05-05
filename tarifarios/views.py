@@ -168,6 +168,13 @@ def GuardarDescripcionProcedimientos(request):
     descripcion = request.POST["descripcion"]
     print ("descripcion =", descripcion)
 
+    serviciosAdministrativos = request.POST["serviciosAdministrativos"]
+    print ("serviciosAdministrativos =", serviciosAdministrativos)
+
+    if serviciosAdministrativos == '':
+        serviciosAdministrativos = "null"
+
+
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
@@ -177,7 +184,7 @@ def GuardarDescripcionProcedimientos(request):
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
-        comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "')"
+        comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id","serviciosAdministrativos_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "'," + str(serviciosAdministrativos) + ")"
 
         print(comando)
         cur3.execute(comando)
@@ -210,6 +217,11 @@ def CrearTarifarioProcedimientos(request):
 
     username_id = request.POST.get('username_id')
     print ("username_id =", username_id)
+    serviciosAdministrativos_id = request.POST.get('serviciosAdministrativosC_id')
+    print ("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+    if serviciosAdministrativos_id == '':
+        serviciosAdministrativos_id = "null"
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
@@ -225,9 +237,9 @@ def CrearTarifarioProcedimientos(request):
                                            password="123456")
             cur3 = miConexion3.cursor()
 
-            comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
+            comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id","serviciosAdministrativos__id") VALUES (' + "'" + str(
                 'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
-                estadoReg) + "',"  "'" + str(descripcion.id) + "')"
+                estadoReg) + "','" + str(descripcion.id) + "'," + str(serviciosAdministrativos_id) + ')'
 
             print(comando)
             cur3.execute(comando)
@@ -243,8 +255,8 @@ def CrearTarifarioProcedimientos(request):
 
             #try:
             for index, row in df.iterrows():
-                    query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto_id,    "tiposTarifa_id"  ) VALUES (%s, %s, %s, %s, %s, %s, %s)'
-                    valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCups_id"] , row["concepto_id"] ,  row["tiposTarifa_id"] )
+                    query = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg"  ,"codigoCups_id"  , concepto_id,    "tiposTarifa_id" ,"serviciosAdministrativos_id" ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)'
+                    valores = (row["codigoHomologado"], row["colValorBase"], row["fechaRegistro"],row["estadoReg"], row["codigoCups_id"] , row["concepto_id"] ,  row["tiposTarifa_id"], row["serviciosAdministrativos_id"] )
                     cur3.execute(query, valores)
 
 
@@ -289,6 +301,14 @@ def CrearItemTarifario(request):
     username_id = request.POST.get('username_id')
     print ("username_id =", username_id)
 
+    serviciosAdministrativos_id = request.POST.get('serviciosAdministrativos_id')
+    print ("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+    if (serviciosAdministrativos_id ==''):
+        serviciosAdministrativos_id='null'
+
+
+
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
@@ -299,7 +319,7 @@ def CrearItemTarifario(request):
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
-        comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
+        comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id","serviciosAdministrativos_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "'," + str(serviciosAdministrativos_id) + ")"
 
         print(comando)
 
@@ -345,6 +365,14 @@ def AplicarTarifas(request):
     columnaAplicar = request.POST.get('columnaAplicar')
     print ("columnaAplicar =", columnaAplicar)
 
+
+
+    serviciosAdministrativosO = request.POST.get('serviciosAdministrativosO')
+    print ("serviciosAdministrativosO =", serviciosAdministrativosO)
+
+    if (serviciosAdministrativosO ==''):
+        serviciosAdministrativosO='null'
+
     codigoCups_id = request.POST.get('codigoCups_id')
     print ("codigoCups_id =", codigoCups_id)
 
@@ -383,7 +411,7 @@ def AplicarTarifas(request):
 
 	    print ("Entre valor a Aplicar Solito");
 
-	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'"  + '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
+	    comando = 'UPDATE tarifarios_tarifariosprocedimientos SET ' + '"' + str(columnaAplicar) + '"'  + ' = ' + "'" + str(valorAplicar) + "'" + ',"serviciosAdministrativosO" = ' + str(serviciosAdministrativosO) +  '  WHERE "tiposTarifa_id" = ' + "'" + str(tipoTarifario.id) + "'"
 
     print(comando)
 
@@ -802,6 +830,14 @@ def GuardarDescripcionSuministros(request):
     descripcion = request.POST["descripcion"]
     print ("descripcion =", descripcion)
 
+    serviciosAdministrativos_id = request.POST["serviciosAdministrativosS"]
+    print ("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+
+    if serviciosAdministrativos_id == '':
+        serviciosAdministrativos_id = "null"
+
+
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
@@ -809,7 +845,7 @@ def GuardarDescripcionSuministros(request):
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "')"
+    comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id", "serviciosAdministrativos_id" ) VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "'," + str(serviciosAdministrativos_id)  + "')"
 
     print(comando)
     cur3.execute(comando)

@@ -241,6 +241,11 @@ def EditarGuardarConvenios(request):
     descripcion = request.POST.get('descripcion')
     print("descripcion =", descripcion)
 
+    serviciosAdministrativos_id = request.POST.get('serviciosAdministrativos_id')
+    print("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+    if (serviciosAdministrativos_id == ''):
+        serviciosAdministrativos_id = 'null'
 
 
     estadoReg = 'A'
@@ -254,7 +259,7 @@ def EditarGuardarConvenios(request):
                                            password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'UPDATE contratacion_Convenios SET nombre = ' + "'" + str(nombreConvenio) + "'," + '"vigenciaDesde" = ' + "'" + str(vigenciaDesde) + "'," + '"vigenciaHasta" = ' + "'" + str(vigenciaHasta) + "'," + '"porcTarifario" = ' + str(porcTarifario) + "," + '"porcSuministros" = ' + str(porcSuministros) + "," + '"valorOxigeno" = ' + str(valorOxigeno) + "," + '"porcEsterilizacion" = ' + str(porcEsterilizacion) + "," + '"porcMaterial" = ' + str(porcMaterial) + "," + '"hospitalario" = ' + "'" + str(hospitalario) + "'," + '"urgencias" = ' + "'" + str(urgencias) + "'," + '"ambulatorio" = ' + "'" + str(ambulatorio) + "'," + '"consultaExterna" = ' + "'" + str(consultaExterna) + "'," + '"copago" = ' + "'" + str(copago) + "'," + '"moderadora" = ' + "'" + str(moderadora) + "'," + '"tipofactura" = ' + "'" + str(tipofactura) + "'," + '"facturacionSuministros" = ' + "'" + str(facturacionSuministros) + "'," + '"facturacionCups" = ' + "'" + str(facturacionCups) + "'," + '"cuentaContable" = ' + "'" + str(cuentaContable) + "',"  + '"requisitos" = ' + "'" + str(requisitos) + "'," + '"empresa_id" = ' + "'" + str(empresa_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(usuarioRegistro_id) + "'," + '"tarifariosDescripcionProc_id" = ' + str(tarifariosDescripcionProc_id) + "," + '"tarifariosDescripcionSum_id" = ' + str(tarifariosDescripcionSum_id) + ", descripcion = " + "'" + str(descripcion) + "'," + '"tarifariosDescripcionHono_id" = '  + str(tarifariosDescripcionHono_id) + " WHERE id = " + "'" + str(convenioId) + "'"
+        comando = 'UPDATE contratacion_Convenios SET nombre = ' + "'" + str(nombreConvenio) + "'," + '"vigenciaDesde" = ' + "'" + str(vigenciaDesde) + "'," + '"vigenciaHasta" = ' + "'" + str(vigenciaHasta) + "'," + '"porcTarifario" = ' + str(porcTarifario) + "," + '"porcSuministros" = ' + str(porcSuministros) + "," + '"valorOxigeno" = ' + str(valorOxigeno) + "," + '"porcEsterilizacion" = ' + str(porcEsterilizacion) + "," + '"porcMaterial" = ' + str(porcMaterial) + "," + '"hospitalario" = ' + "'" + str(hospitalario) + "'," + '"urgencias" = ' + "'" + str(urgencias) + "'," + '"ambulatorio" = ' + "'" + str(ambulatorio) + "'," + '"consultaExterna" = ' + "'" + str(consultaExterna) + "'," + '"copago" = ' + "'" + str(copago) + "'," + '"moderadora" = ' + "'" + str(moderadora) + "'," + '"tipofactura" = ' + "'" + str(tipofactura) + "'," + '"facturacionSuministros" = ' + "'" + str(facturacionSuministros) + "'," + '"facturacionCups" = ' + "'" + str(facturacionCups) + "'," + '"cuentaContable" = ' + "'" + str(cuentaContable) + "',"  + '"requisitos" = ' + "'" + str(requisitos) + "'," + '"empresa_id" = ' + "'" + str(empresa_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(usuarioRegistro_id) + "'," + '"tarifariosDescripcionProc_id" = ' + str(tarifariosDescripcionProc_id) + "," + '"tarifariosDescripcionSum_id" = ' + str(tarifariosDescripcionSum_id) + ", descripcion = " + "'" + str(descripcion) + "'," + '"tarifariosDescripcionHono_id" = '  + str(tarifariosDescripcionHono_id)  + ',"serviciosAdministrativos"= ' + str(serviciosAdministrativos_id)  + " WHERE id = " + "'" + str(convenioId) + "'"
 
         print(comando)
         curt.execute(comando)
@@ -376,6 +381,11 @@ def CrearGuardarConvenios(request):
     if (tarifariosDescripcionSum_id == ''):
         tarifariosDescripcionSum_id = 'null'
 
+    serviciosAdministrativos_id = request.POST.get('serviciosAdministrativos_id')
+    print("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+    if (serviciosAdministrativos_id == ''):
+        serviciosAdministrativos_id = 'null'
 
     tarifariosDescripcionHono_id = request.POST.get('tarifariosDescripcionHono_id')
     print("tarifariosDescripcionHono_id =", tarifariosDescripcionHono_id)
@@ -400,7 +410,7 @@ def CrearGuardarConvenios(request):
                                            password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'INSERT INTO contratacion_Convenios (nombre, "vigenciaDesde", "vigenciaHasta", "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial", hospitalario, urgencias, ambulatorio, "consultaExterna", copago, moderadora, tipofactura, agrupada, "facturacionSuministros", "facturacionCups", "cuentaContable", requisitos, "fechaRegistro", "estadoReg", empresa_id, "usuarioRegistro_id", descripcion, "tarifariosDescripcionProc_id", "tarifariosDescripcionHono_id", "tarifariosDescripcionSum_id") VALUES (' + "'" + str(nombreConvenio) + "'," + "'" + str(vigenciaDesde) + "','" + str(vigenciaHasta) + "'," + str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + "," + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(ambulatorio) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipofactura) + "','" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "','"  + str(requisitos)   + "'," + "'" +  str(fechaRegistro) + "'," + "'" +  str(estadoReg) + "','" + str(empresa_id) + "',"  + str(usuarioRegistro_id) + ",'" + str(descripcion) + "',"   + str(tarifariosDescripcionProc_id) + "," + str(tarifariosDescripcionSum_id)  +  "," + str(tarifariosDescripcionHono_id) + ')'
+        comando = 'INSERT INTO contratacion_Convenios (nombre, "vigenciaDesde", "vigenciaHasta", "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial", hospitalario, urgencias, ambulatorio, "consultaExterna", copago, moderadora, tipofactura, agrupada, "facturacionSuministros", "facturacionCups", "cuentaContable", requisitos, "fechaRegistro", "estadoReg", empresa_id, "usuarioRegistro_id", descripcion, "tarifariosDescripcionProc_id", "tarifariosDescripcionHono_id", "tarifariosDescripcionSum_id", "serviciosAdministrativos") VALUES (' + "'" + str(nombreConvenio) + "'," + "'" + str(vigenciaDesde) + "','" + str(vigenciaHasta) + "'," + str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + "," + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(ambulatorio) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipofactura) + "','" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "','"  + str(requisitos)   + "'," + "'" +  str(fechaRegistro) + "'," + "'" +  str(estadoReg) + "','" + str(empresa_id) + "',"  + str(usuarioRegistro_id) + ",'" + str(descripcion) + "',"   + str(tarifariosDescripcionProc_id) + "," + str(tarifariosDescripcionSum_id)  +  "," + str(tarifariosDescripcionHono_id) + "','"  + str(serviciosAdministrativos_id) + "'" + ')'
 
         print(comando)
         curt.execute(comando)

@@ -144,9 +144,8 @@ class Dependencias(models.Model):
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     dependenciasTipo= models.ForeignKey('sitios.DependenciasTipo', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     serviciosSedes = models.ForeignKey('sitios.ServiciosSedes', blank=True,null= True, editable=True, on_delete=models.PROTECT, related_name ='serviciosSedes1')
-    #servicios = ChainedForeignKey(ServiciosSedes, chained_field='serviciosSedes', chained_model_field='serviciosSedes',  show_all=False, related_name="dos")
-    #subServicios = ChainedForeignKey(ServiciosSedes, chained_field='servicios', chained_model_field='servicios', show_all=False)
     subServiciosSedes = models.ForeignKey('sitios.SubServiciosSedes', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     numero =  models.CharField(max_length=50, default="")
     nombre = models.CharField(max_length=50)
     descripcion = models.CharField(max_length=50)
@@ -263,3 +262,18 @@ class Bodegas(models.Model):
 
     def __str__(self):
         return self.nombre
+
+class Salas(models.Model):
+    id = models.AutoField(primary_key=True)
+    sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    ubicaciones = models.ForeignKey('sitios.Ubicaciones', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    dependenciaTipo =  models.ForeignKey('sitios.DependenciasTipo', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    numero =  models.CharField(max_length=50, default="")
+    nombre = models.CharField(max_length=50)
+    serviciosAdministrativos = models.ForeignKey('sitios.Serviciosadministrativos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    estadoSala = models.ForeignKey('cirugia.EstadosSalas', blank=True, null=True, editable=True,   on_delete=models.PROTECT) 
+    fechaRegistro = models.DateTimeField(default=now, editable=False)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return '%s %s' % (self.nombre , self.ubicaciones)

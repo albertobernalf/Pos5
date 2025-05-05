@@ -151,7 +151,23 @@ table.dataTable tbody tr {
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
 				<div class="col-12">
-                                    
+
+ 				 <div class="col-12">
+                                        <label for="serviciosAdministrativos_id" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos_id"  tabindex= "0"
+                                                    name="serviciosAdministrativos_id"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+                                    		
+
+
 				 <label  for="nombreConvenio">Convenio:</label>
                                     <input type="text" class="form-control form-control-sm" id="nombreConvenio" name="nombreConvenio" value="0" placeholder="nombreConvenio:" readonly></input>
                                 </div>
@@ -359,6 +375,22 @@ table.dataTable tbody tr {
                                 <input type="text" name="postConvenioC_id" id="postConvenioC_id" readonly>
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+				  <div class="col-12">
+                                        <label for="serviciosAdministrativosC_id" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativosC_id"  tabindex= "0"
+                                                    name="serviciosAdministrativosC_id"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
 
 				<div class="col-12">
                                     

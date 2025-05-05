@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from sitios.models import Departamentos, Ciudades, Centros, SedesClinica, DependenciasTipo, Dependencias,  ServiciosSedes, SubServiciosSedes, HistorialDependencias, Municipios, Paises, Localidades,  ServiciosAdministrativos, Ubicaciones, Bodegas
+from sitios.models import Departamentos, Ciudades, Centros, SedesClinica, DependenciasTipo, Dependencias,  ServiciosSedes, SubServiciosSedes, HistorialDependencias, Municipios, Paises, Localidades,  ServiciosAdministrativos, Ubicaciones, Bodegas, Salas
 
 
 
@@ -155,6 +155,14 @@ class bodegasAdmin(admin.ModelAdmin):
     list_filter = ("id","sedesClinica","serviciosAdministrativos", "nombre")
 
 
+@admin.register(Salas)
+class salasAdmin(admin.ModelAdmin):
+
+
+    list_display = ("id","sedesClinica", "ubicaciones","dependenciaTipo", "numero", "nombre","serviciosAdministrativos")
+    search_fields = ("id","sedesClinica", "ubicaciones","dependenciaTipo", "numero", "nombre", "serviciosAdministrativos")
+    # Filtrar
+    list_filter = ("id","sedesClinica", "ubicaciones","dependenciaTipo",  "numero","nombre", "serviciosAdministrativos")
 
 
 

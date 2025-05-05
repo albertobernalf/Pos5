@@ -776,6 +776,7 @@ function CrearItemTarifario()
  	var codigoCupsItem_id = document.getElementById("codigoCupsItem_id").value;
 
  	var colValorBaseItem = document.getElementById("colValorBaseItem").value;
+ 	var serviciosAdministrativos_id = document.getElementById("serviciosAdministrativosX").value;
 
 
 
@@ -785,7 +786,7 @@ function CrearItemTarifario()
 
 	        url: "/crearItemTarifario/",
 
-	    	data: {'codigoHomologadoItem':codigoHomologadoItem , 'tiposTarifaItem_id' :tiposTarifaItem_id, 'codigoCupsItem_id' : codigoCupsItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id},
+	    	data: {'codigoHomologadoItem':codigoHomologadoItem , 'tiposTarifaItem_id' :tiposTarifaItem_id, 'codigoCupsItem_id' : codigoCupsItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id,'serviciosAdministrativos_id':serviciosAdministrativos_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -837,6 +838,7 @@ function AplicarTarifario()
 	var columnaAplicar = document.getElementById("columnaAplicar").value ;
 	var codigoCups_id = document.getElementById("codigoCups_id").value ;
 	var codigoCupsHasta_id = document.getElementById("codigoCupsHasta_id").value ;
+	var serviciosAdministrativosO = document.getElementById("serviciosAdministrativosO").value ;
 
 
 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
@@ -850,7 +852,7 @@ function AplicarTarifario()
 
 	        url: "/aplicarTarifas/",
 		data: {'post_id' : post_id, 'tiposTarifaTarifario_id':tiposTarifaTarifario_id, 'porcentaje':porcentaje,'valorAplicar':valorAplicar,
-		'columnaAplicar':columnaAplicar,'codigoCupsHasta_id':codigoCupsHasta_id,'codigoCups_id':codigoCups_id },
+		'columnaAplicar':columnaAplicar,'codigoCupsHasta_id':codigoCupsHasta_id,'codigoCups_id':codigoCups_id,'serviciosAdministrativosO':serviciosAdministrativosO },
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -902,13 +904,14 @@ function GuardarDescripcionProcedimientos()
         var tiposTarifa_id = document.getElementById("tiposTarifa_id").value;
         var columna = document.getElementById("columna").value;
         var descripcion = document.getElementById("descripcion").value;
+        var serviciosAdministrativos = document.getElementById("serviciosAdministrativos").value;
 
 
 
             $.ajax({
 
 	        url: "/guardarDescripcionProcedimientos/",
-		data: {'tiposTarifa_id':tiposTarifa_id,'columna':columna, 'descripcion':descripcion},
+		data: {'tiposTarifa_id':tiposTarifa_id,'columna':columna, 'descripcion':descripcion'serviciosAdministrativos':serviciosAdministrativos},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -966,13 +969,14 @@ function CrearTarifarioProcedimientos()
     	var sede = document.getElementById("sede").value;
         var tiposTarifa1_id = document.getElementById("tiposTarifa1_id").value;
 	var usuarioRegistro_id = document.getElementById("usuarioRegistro_id").value;
+	var serviciosAdministrativosC_id = document.getElementById("serviciosAdministrativosC").value;
 	    alert( "este es eltiposTarifa1_id QUE VOY A CREAR  =" + tiposTarifa1_id) ;
 
 
             $.ajax({
 
 	        url: "/crearTarifarioProcedimientos/",
-    		data: {'tiposTarifa_id':tiposTarifa1_id,'username_id':username_id},
+    		data: {'tiposTarifa_id':tiposTarifa1_id,'username_id':username_id,'serviciosAdministrativosC_id';serviciosAdministrativosC_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -1158,13 +1162,14 @@ function GuardarDescripcionSuministros()
         var tiposTarifa_id = document.getElementById("tiposTarifaSuministros1_id").value;
         var columna = document.getElementById("columna").value;
         var descripcion = document.getElementById("descripcionSuministros").value;
+        var serviciosAdministrativosS = document.getElementById("serviciosAdministrativosS").value;
 
 
 
             $.ajax({
 
 	        url: "/guardarDescripcionSuministros/",
-		data: {'tiposTarifa_id':tiposTarifa_id,'columna':columna, 'descripcion':descripcion},
+		data: {'tiposTarifa_id':tiposTarifa_id,'columna':columna, 'descripcion':descripcion,'serviciosAdministrativosS':serviciosAdministrativosS},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {

@@ -636,6 +636,7 @@ function EditarGuardarConvenios()
   	var tarifariosDescripcionProc_id = document.getElementById("tarifariosDescripcionProc_id").value;
   	var tarifariosDescripcionSum_id = document.getElementById("tarifariosDescripcionSum_id").value;
   	var tarifariosDescripcionHono_id = document.getElementById("tarifariosDescripcionHono_id").value;
+  	var serviciosAdministrativos_id = document.getElementById("serviciosAdministrativos_id").value;
 
 	$.ajax({
 
@@ -644,7 +645,7 @@ function EditarGuardarConvenios()
 			 'porcEsterilizacion':porcEsterilizacion,'porcMaterial':porcMaterial, 'hospitalario':hospitalario,  'urgencias':urgencias,'ambulatorio':ambulatorio,'consultaExterna':consultaExterna,'copago':copago,
 			'moderadora':moderadora, 'tipofactura':tipofactura, 'facturacionSuministros':facturacionSuministros,'facturacionCups':facturacionCups, 'cuentaContable':cuentaContable, 'requisitos':requisitos,
 			'empresa_id':empresa_id, 'facturacionCups':facturacionCups,'usuarioRegistro_id':usuarioRegistro_id, 'tarifariosDescripcionProc_id':tarifariosDescripcionProc_id, 'tarifariosDescripcionSum_id':tarifariosDescripcionSum_id,
-			'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id },
+			'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id,'serviciosAdministrativos_id':serviciosAdministrativos_id },
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
@@ -746,6 +747,7 @@ function CrearGuardarConvenios()
   	var tarifariosDescripcionProc_id = document.getElementById("tarifariosDescripcionProcC_id").value;
   	var tarifariosDescripcionSum_id = document.getElementById("tarifariosDescripcionSumC_id").value;
   	var tarifariosDescripcionHono_id = document.getElementById("tarifariosDescripcionHonoC_id").value;
+  	var serviciosAdministrativos_id = document.getElementById("serviciosAdministrativosC_id").value;
 
 	$.ajax({
 
@@ -754,7 +756,7 @@ function CrearGuardarConvenios()
 			 'porcEsterilizacion':porcEsterilizacion,'porcMaterial':porcMaterial, 'hospitalario':hospitalario,  'urgencias':urgencias,'ambulatorio':ambulatorio,'consultaExterna':consultaExterna,'copago':copago,
 			'moderadora':moderadora, 'tipofactura':tipofactura, 'agrupada':agrupada, 'facturacionSuministros':facturacionSuministros,'facturacionCups':facturacionCups, 'cuentaContable':cuentaContable, 'requisitos':requisitos,
 			'empresa_id':empresa_id, 'facturacionCups':facturacionCups,'usuarioRegistro_id':usuarioRegistro_id, 'tarifariosDescripcionProc_id':tarifariosDescripcionProc_id, 'tarifariosDescripcionSum_id':tarifariosDescripcionSum_id,
-			'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id },
+			'tarifariosDescripcionHono_id':tarifariosDescripcionHono_id,'serviciosAdministrativos_id':serviciosAdministrativos },
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {

@@ -722,10 +722,13 @@ BIBLIOGRAFIA:
 -- en glosas falta actualizar el saldo de la factura en la glosa, y enviar la data a glosasdetalle
 
 -- OJO involucrar en todo lados serviciosadministrativos
--- crear tablas cirugua
 -- en tarifario ver ventanas modales
 -- el comobo servicioisadministrativos en clinico no sale no funciona ??? FALTA AUN, terapeutico (Probar es duro de pelar), autorizaciones, tarifas, contratacion
 -- No hay boton para borrar una glosa maluca..--> crearlo
 --
 
--- OJO EL DIA VIERNES 5 DE MAYO TAMBIEN COMENZAR CON LOS MODELOS DE CIRUGIA
+-- DOCUMENTOS DE INVENTARIOS : (Factura der compra, Remisiones, Devoluciones, Aprovechamiento, Donaciones, Traslados, Notas Debito, Inventarios) (Notas credito, despacho a servicios , hoja de gastos)
+-- ENFERMERIA YO CREO ELLAS CREAN FOLIO por HC y debe habier un modulo para: 1) Mostart pacientes hosp,urge,amb, 2) pantalla m,uestra todos los estidos delapciente, medicamen,paraclini,notas, etc
+  -- 3) pantalla para Aplicar medicamentos, pantalla devolucion de insumos y medicamentos a farmacia)
+
+--falta CrearItemTarifarioSuministros y CrearTarifarioSuministros

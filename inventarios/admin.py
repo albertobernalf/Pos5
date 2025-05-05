@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 
-from inventarios.models import Kardex, Movimientos
+from inventarios.models import Kardex, Movimientos, TiposDocumentos
 
 
 @admin.register(Kardex)
@@ -24,3 +24,10 @@ class movimientosAdmin(admin.ModelAdmin):
    list_filter =  ("id", "sedesClinica", "tipo", "bodegasEntrada", "bodegasSalida","suministros","cantidad","valor")
 
 
+@admin.register(TiposDocumentos)
+class tiposDocumentosAdmin(admin.ModelAdmin):
+
+   list_display = ("id", "nombre","fechaRegistro")
+   search_fields =  ("id", "nombre","fechaRegistro")
+   # Filtrar
+   list_filter =  ("id", "nombre","fechaRegistro")

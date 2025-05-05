@@ -4,6 +4,7 @@ from django.contrib import admin
 
 from cirugia.models import OrganosCirugias, IntervencionCirugias, TiposHeridasOperatorias, PlanificacionCirugia,  FinalidadCirugia, GravedadCirugia, ZonasCirugia, EstadosCirugias
 
+from cirugia.models import ProgramacionCirugias, EstadosSalas, HojasDeGastos,RecordAnestesico, CirugiasParticipantes, CirugiasProcedimientos, EstadosProgramacion
 
 @admin.register(OrganosCirugias)
 class organosCirugiasAdmin(admin.ModelAdmin):
@@ -65,6 +66,51 @@ class gravedadCirugiaAdmin(admin.ModelAdmin):
 
 @admin.register(EstadosCirugias)
 class estadosCirugiasAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre")
+    search_fields = ("id", "nombre")
+    # Filtrar
+    list_filter = ('nombre',)
+
+
+
+@admin.register(EstadosSalas)
+class estadosSalasAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre")
+    search_fields = ("id", "nombre")
+    # Filtrar
+    list_filter = ('nombre',)
+
+
+@admin.register(HojasDeGastos)
+class hojasDeGastosAdmin(admin.ModelAdmin):
+    list_display = ("id", "cirugia")
+    search_fields = ("id", "cirugia")
+    # Filtrar
+    list_filter = ('cirugia',)
+
+@admin.register(RecordAnestesico)
+class recordAnestesicoAdmin(admin.ModelAdmin):
+    list_display = ("id", "cirugia","fecha")
+    search_fields = ("id", "cirugia","fecha")
+    # Filtrar
+    list_filter = ("id", "cirugia","fecha")
+
+@admin.register(CirugiasProcedimientos)
+class cirugiasProcedimientosAdmin(admin.ModelAdmin):
+    list_display = ("id", "cirugia","cups","finalidad", "fechaRegistro")
+    search_fields = ("id", "cirugia","cups","finalidad", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "cirugia","cups","finalidad", "fechaRegistro")
+
+@admin.register(CirugiasParticipantes)
+class cirugiasParticipantesAdmin(admin.ModelAdmin):
+    list_display = ("id", "cirugia","tipoHonorarios", "finalidad", "fechaRegistro")
+    search_fields = ("id", "cirugia","tipoHonorarios", "finalidad", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "cirugia","tipoHonorarios", "finalidad", "fechaRegistro")
+
+@admin.register(EstadosProgramacion)
+class estadosProgramacionAdmin(admin.ModelAdmin):
     list_display = ("id", "nombre")
     search_fields = ("id", "nombre")
     # Filtrar
