@@ -756,6 +756,23 @@ table.dataTable tbody tr {
 				  <div class="col-12">
 				  </div>
 
+				 <div class="col-12">
+                                        <label for="serviciosAdministrativosIt_id" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativosIt_id"  tabindex= "0"
+                                                    name="serviciosAdministrativosIt_id"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
+
+
 
 				  <div class="col-12">
 				           		                         
@@ -983,6 +1000,22 @@ table.dataTable tbody tr {
                <input type="hidden" id="username2_id" name="username2_id" value="{{Username_id}}">
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+			 <div class="col-12">
+                                        <label for="serviciosAdministrativosY" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativosY"  tabindex= "0"
+                                                    name="serviciosAdministrativosY"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
 
 				
 				<div class="col-12">

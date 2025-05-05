@@ -1097,13 +1097,16 @@ function CrearTarifarioSuministros()
     	var sede = document.getElementById("sede").value;
         var tiposTarifa_id = document.getElementById("tiposTarifaSuministros2_id").value;
 	var usuarioRegistro_id = document.getElementById("usuarioRegistro_id").value;
+	var serviciosAdministrativos_id = document.getElementById("serviciosAdministrativosY").value;
+
+
 	    alert( "este es eltiposTarifa_id de Suministros QUE VOY A CREAR  =" + tiposTarifa_id) ;
 
 
             $.ajax({
 
 	        url: "/crearTarifarioSuministros/",
-    		data: {'tiposTarifa_id':tiposTarifa_id,'username_id':username_id},
+    		data: {'tiposTarifa_id':tiposTarifa_id,'username_id':username_id,'serviciosAdministrativos_id':serviciosAdministrativos_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
@@ -1358,6 +1361,7 @@ function CrearItemTarifarioSuministros()
  	var codigoCumsItem_id = document.getElementById("codigoCumsItem_id").value;
 
  	var colValorBaseItem = document.getElementById("colValorBaseItemSuministros").value;
+ 	var serviciosAdministrativos_id = document.getElementById("serviciosAdministrativosIt_id").value;
 
 
 
@@ -1368,7 +1372,7 @@ function CrearItemTarifarioSuministros()
 	        url: "/crearItemTarifarioSuministros/",
 
 	    	data: {'codigoHomologadoItem':codigoHomologadoItem , 'tiposTarifaItem_id' :tiposTarifaItem_id, 
-			'codigoCumsItem_id' : codigoCumsItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id},
+			'codigoCumsItem_id' : codigoCumsItem_id, 'colValorBaseItem':colValorBaseItem, 'username_id': username_id,'serviciosAdministrativos_id':serviciosAdministrativos_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {

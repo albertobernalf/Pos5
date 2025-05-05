@@ -195,7 +195,7 @@ class EstadosProgramacion(models.Model):
 
 class ProgramacionCirugias(models.Model):
     id = models.AutoField(primary_key=True)
-    sedesClinica_id = models.ForeignKey('sitios.Sedesclinica', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    sedesClinica = models.ForeignKey('sitios.Sedesclinica', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     sala = models.ForeignKey('sitios.Salas', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     #estadoSala = models.ForeignKey('cirugia.EstadosSalas', blank=True, null=True, editable=True,   on_delete=models.PROTECT) 
     estadoProgramacion = models.ForeignKey('cirugia.EstadosProgramacion', blank=True, null=True, editable=True,   on_delete=models.PROTECT) 

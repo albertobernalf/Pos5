@@ -37,6 +37,7 @@ from contratacion import views as viewsConvenios
 from tarifarios import views as viewsTarifarios
 from rips import views as viewsRips
 from cartera import views as viewsCartera
+from cirugia import views as viewsCirugia
 
 from autorizaciones import views as viewsAutorizaciones
 #from mecanicosPacientes import views as viewsmecanicosPacientes
@@ -321,6 +322,8 @@ urlpatterns = [
     path('load_dataTarifariosSuministros1/<str:data>', viewsConvenios.Load_dataTarifariosSuministros1,     name='Load_dataTarifariosSuministros1'),
     path('load_datatarifariosDescripcionSuministros1/<str:data>',   viewsConvenios.Load_datatarifariosDescripcionSuministros1,   name='Load_data_tarifariosDescripcionSuministros1'),
 
+    # Cirugia
+    path('load_dataProgramacionCirugia/<str:data>', viewsCirugia.Load_dataProgramacionCirugia,  name='Load_dataProgramacion_cirugia'),
 
     # Citas Medicas
 

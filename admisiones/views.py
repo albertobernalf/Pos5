@@ -1899,6 +1899,16 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         return render(request, "facturacion/panelFacturacionF.html", context)
 
+
+    if (escogeModulo == 'CIRUGIA'):
+        print("ENTRE PERMSISO CIRUGIA")
+        ## Aqui contexto para solo Facturacion
+
+        ## FIN CONTEXTO
+
+        return render(request, "cirugia/panelCirugiaF.html", context)
+
+
     if (escogeModulo == 'CONTRATACION'):
         print("ENTRE PERMSISO FACTURACION")
         ## Aqui contexto para solo Facturacion

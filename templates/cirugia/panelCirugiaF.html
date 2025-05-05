@@ -1,0 +1,369 @@
+{% extends "cirugia/menuCirugiaF.html" %}
+{% load static %}
+
+{% block head %}
+
+
+<link rel="stylesheet" type="text/css" href={% static 'css/panelCirugia.css' %}>
+<link rel="stylesheet" type="text/css" href={% static 'css/fontawesome.css' %}>
+<link rel="stylesheet" type="text/css"  href = {% static 'css/litle.css' %} >
+<script src={% static 'js/panelTabsRips.js' %} defer >         </script>
+
+<!-- Datatable extension SELECT 
+<link href="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.css" rel="stylesheet" integrity="sha384-2vMryTPZxTZDZ3GnMBDVQV8OtmoutdrfJxnDTg0bVam9mZhi7Zr3J1+lkVFRr71f" crossorigin="anonymous">
+<script src="https://cdn.datatables.net/v/dt/dt-2.2.2/datatables.min.js" integrity="sha384-2Ul6oqy3mEjM7dBJzKOck1Qb/mzlO+k/0BQv3D3C7u+Ri9+7OBINGa24AeOv5rgu" crossorigin="anonymous"></script>
+-->
+
+
+<div class="marco">
+    <ul class="tabs">
+
+        <li><a href="#ProgramacionCirugia"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Programacion de Cirugia </a></li>
+        <li><a href="#CirugiaDetalle"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle de Cirugia</a></li>
+        <li><a href="#DescripcionQx"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Descripcion QuirurgicaGenerar Json Rips </a></li>
+        <li><a href="#RecordAnestesico"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Record Anestesico </a></li>
+	<li><a href="#HojaDeGasto"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Hoja De Gasto </a></li>
+	<li><a href="#Facturacion"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Facturacion </a></li>
+
+    </ul>
+</div>
+
+
+<style>
+div.dataTables_wrapper  div.dataTables_filter input {
+   height: 2px;
+   padding:10px;
+   border-radius:8px;
+}
+
+div.dataTables_filter input {
+    width: 50px;
+  }
+
+
+#tablaProgramacionCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+table.dataTable tbody tr {
+  min-height: 60px;
+}
+
+
+.my-row-class {
+    height: 30px;
+}
+
+</style>
+
+
+{% endblock %}
+
+{% block encabezado %}
+
+
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="marco">
+    <div class="secciones">
+
+        <article id="ProgramacionCirugias">
+      
+	
+            <form action="/programacionCirugiaps/" method="get" id="FormEnviosRips">
+
+                <input type="hidden" id="username" name="username" value="{{Username}}">
+                <input type="hidden" id="sedeSeleccionada" name="sedeSeleccionada" value="{{SedeSeleccionada}}">
+                <input type="hidden" id="numreporte" name="numreporte" value="{{numreporte}}">
+                <input type="hidden" id="grupo" name="grupo" value="{{Grupo}}">
+                <input type="hidden" id="subGrupo" name="subGrupo" value="{{SubGrupo}}">
+                <!--  Estos si de la Aplixcacion base -->
+                <input type="hidden" id="sede" name="sede" value="{{Sede}}">
+                <input type="hidden" id="documento" name="documento" value="{{Documento}}">
+                <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+                <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}">
+                <input type="hidden" id="permisosGrales" name="permisosGrales" value="{{PermisosGrales}}">
+                <input type="hidden" id="permisosDetalle" name="permisosDetalle" value="{{PermisosDetalle}}">
+                <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
+                <input type="hidden" id="username_id" name="username_id" value="{{Username_id}}">
+
+                <input type="hidden" id="tipoDocId" name="tipoDocId" value="">
+                <input type="hidden" id="nombreTipoDoc" name="nombreTipoDoc" value="">
+                <input type="hidden" id="documentoId" name="documentoId" value="">
+                <input type="hidden" id="documento2" name="documento2" value="">
+                <input type="hidden" id="consec" name="consec" value="">
+                <input type="hidden" id="tipoIng" name="tipoIng" value="{{tipoIng}}">
+		<input type="hidden" id="convenioId" name="convenioId" value="{{convenioId}}">
+	
+            </form>
+
+            <!-- INICIO TABLE DE  EL DATATABLE  -->
+		<div class="container my-2">
+             
+		<div align="right" height="15px" width="50px">
+               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnProgramacionCirugia"  name="BtnProgramacionCirugia" value="Adicionar" onclick= "ProgramacionCirugia()" >				    
+		</div>
+
+   			   <div class="row">
+				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
+
+                                        <table  id= "tablaProgramacionCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Opcion</th>                                               
+					     <th>id</th>
+					     <th>tipoDoc_id</th>
+					     <th>tipoNota</th>
+					     <th>documento</th>
+					     <th>paciente</th>
+					     <th>estadoProg</th>
+					     <th>numero</th>
+					     <th>sala</th>
+					     <th>inicia</th>
+					     <th>horaInicia</th>
+					     <th>Termina</th>
+					     <th>horaTermina</th>
+					     <th>cups1_id</th>
+					     <th>examen1</th>
+					     <th>cups2_id</th>
+					     <th>examen2</th>
+					     <th>cups3_id</th>
+					     <th>examen3</th>
+				              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+                                </div>
+
+    <!-- Modales Cirugia -->
+
+
+            <div class="modal fade" id="crearModelProgramacionCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document" modal-lg>
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingProgramacionCirugia"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia" onclick="CrearProgramacionCirugia()">Grabar!</button> 
+                        </div>
+		<div style="width:500px; heigth:100px; ">
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormProgramacionCirugia" name="postFormProgramacionCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+
+				  <div class="col-12">
+					
+                                    
+                                    <input type="text" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="1" readonly></input>
+                                </div>
+
+			  <div class="col-12">
+                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
+                                                    name="serviciosAdministrativos"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+
+				<div class="col-12">
+                                    Empresa:
+				<select class="select-css"  id="empresa_id"
+                                                                name="empresa_id">
+                                                            {% for empresas in Empresas %}
+                                                            <option value="{{empresas.id}}">
+                                                                {{empresas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
+
+
+				<div class="col-12">
+                                    Tipo Nota:
+				<select class="select-css"  id="ripsTiposNotas"  name="ripsTiposNotas">
+                                                           {% for ripsTiposNotas in RipsTiposNotas %}
+                                                            <option value="{{ripsTiposNotas.id}}">
+                                                                {{ripsTiposNotas.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
+                                </div>
+                          
+				<div class="col-12">
+				  <label class="visually-hidden" for="fechaEnvio">Fecha Envio:</label>
+                                   	 <label class="visually-hidden" for="fechaEnvio">FechaEnvio:</label>
+                               
+					 <input type="datetime-local"  class="form-control form-control-sm" id="fechaEnvio" name="fechaEnvio" placeholder="fechaEnvio"  >
+                                </div>
+
+				<div class="col-12">
+				 <label class="visually-hidden" for="fechaRespuesta">Fecha Respuesta:</label>
+                                    
+					 <input type="datetime-local"  class="form-control form-control-sm" id="fechaRespuesta" name="fechaRespuesta" placeholder="fechaRespuesta"  readonly>
+                                </div>
+
+				<div class="col-12">
+                                    
+				 <label  for="cantidadFacturas">CantidadFacturas:</label>
+                                    <input type="text" class="form-control form-control-sm" id="cantidadFacturas" name="cantidadFacturas" value="0" placeholder="CantidadFacturas:" readonly></input>
+                                </div>
+				<div class="col-12">
+				
+                                    Pasaron:
+                                    <input type="text" id="cantidadPasaron" name="cantidadPasaron" value="0" readonly></input>
+                                </div>
+				<div class="col-12">
+				<label  for="cantidadFacturas">CantidadRechazadas:</label>
+
+                                    
+                                    <input type="text" class="form-control form-control-sm" id="cantidadRechazadas" name="cantidadRechazadas" value="0" placeholder="CantidadRechazadas:"  readonly></input>
+	                                </div>
+
+
+                                <div class="col-12">
+                                    Estado:
+                                    <input type="text" id="estadoMinisterio" name="estadoMinisterio" value="PENDIENTE" readonly></input>
+                                </div>
+           
+                                <div class="col-12">
+                                   
+                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+                                </div>
+
+
+
+                                <div class="col-12">
+				 <label  for="estadoReg">EstadoRegistro:</label>
+                                    
+                                    <input type="text" class="form-control form-control-sm" id="estadoReg" name="estadoReg" value="A" placeholder="CantidadRechazadas:"  estadoReg> </input>
+                                </div>
+
+
+
+                                <div class="col-12">
+                                    Usuario:
+                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
+                                </div>
+
+			<!--
+                                <div class="col-12">
+                                    <center> 
+					<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia"   value="create" onclick="CrearProgramacionCirugia()">Guardar </button> 
+					</center> 
+                                </div>
+
+			-->
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			</div> <!-- CIERRA DIV TAMANO -->			
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- MODAL PARA MOSTRAT EL JSON DEL ENVIO  ->
+
+     <!-- FIN Espacio Modales  -->
+
+
+        </article>
+
+
+<article id="CirugiaDetalle">
+
+</article>
+
+<article id="DescripcionQx">
+        	
+		
+
+</article>
+
+<article id="RecordAnestesico">
+        	
+		
+
+</article>
+
+<article id="Hoja de Gasto">
+        	
+		
+
+</article>
+<article id="Facturacion">
+        	
+		
+
+</article>
+
+<article id="OcupacionSalas">
+        	
+		
+
+</article>
+
+
+     
+    </div>
+</div>
+
+{% endblock %}
+
+{% block mensajeria %}
+<div class="marco">
+     <span id="mensajes" name="mensajes" style= "color:blue; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
+     <span id="mensajesError" name="mensajesError" style= "color:red; font-size:18px; line-height:35px; font-family: Calibri;" > </span>
+
+
+</div>
+{% endblock %}
+
+
+
+{% block footer %}
+
+<div class="marco">
+    <ul class="tabs">
+
+        <li><a href="#OcupacionSalas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Ocupacion salas </a></li>
+
+    </ul>
+</div>
+
+{% endblock %}
+
+
+
+

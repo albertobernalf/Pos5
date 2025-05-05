@@ -718,7 +718,7 @@ BIBLIOGRAFIA:
 
 -- oJO CUANDO CREA UNA aDMISION LOS indicadores NO LOS TRAE SE PIERDEN
 -- AL REFACTURAR como se tratan los abonos SE ANULAN ? Se restaura PENSAR COMO HACER CON ESTO y la ADMISION INGRESO QUE PASA YA NO SE VE ?? O SEA NO VOY A 
--- En contratacion la modla crear convenio crear mensaje de erro modal de la ventana, ver en elmain
+-- En contratacion la modal crear convenio crear mensaje de erro modal de la ventana, ver en elmain
 -- en glosas falta actualizar el saldo de la factura en la glosa, y enviar la data a glosasdetalle
 
 -- OJO involucrar en todo lados serviciosadministrativos
@@ -731,4 +731,4 @@ BIBLIOGRAFIA:
 -- ENFERMERIA YO CREO ELLAS CREAN FOLIO por HC y debe habier un modulo para: 1) Mostart pacientes hosp,urge,amb, 2) pantalla m,uestra todos los estidos delapciente, medicamen,paraclini,notas, etc
   -- 3) pantalla para Aplicar medicamentos, pantalla devolucion de insumos y medicamentos a farmacia)
 
---falta CrearItemTarifarioSuministros y CrearTarifarioSuministros
+

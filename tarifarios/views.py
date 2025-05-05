@@ -710,6 +710,13 @@ def CrearTarifarioSuministros(request):
     tiposTarifa_id = request.POST.get('tiposTarifa_id')
     print ("tiposTarifa_id =", tiposTarifa_id)
 
+
+    serviciosAdministrativos_id = request.POST.get('serviciosAdministrativos_id')
+    print ("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+    if (serviciosAdministrativos_id == ''):
+        serviciosAdministrativos_id = 'null'
+
     username_id = request.POST.get('username_id')
     print ("username_id =", username_id)
 
@@ -729,9 +736,9 @@ def CrearTarifarioSuministros(request):
                                            password="123456")
             cur3 = miConexion3.cursor()
 
-            comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id") VALUES (' + "'" + str(
+            comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id","serviciosAdministrativos_id") VALUES (' + "'" + str(
                 'colValorBase') + "'," + "'" + str(descripcion.nombre) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(
-                estadoReg) + "',"  "'" + str(descripcion.id) + "')"
+                estadoReg) + "',"  "'" + str(descripcion.id) + "'," + str(serviciosAdministrativos_id) + ")"
 
             print(comando)
             cur3.execute(comando)
@@ -967,6 +974,14 @@ def CrearItemTarifarioSuministros(request):
     username_id = request.POST.get('username_id')
     print ("username_id =", username_id)
 
+    serviciosAdministrativos_id = request.POST.get('serviciosAdministrativos_id')
+    print ("serviciosAdministrativos_id =", serviciosAdministrativos_id)
+
+    if (serviciosAdministrativos_id == ''):
+        serviciosAdministrativos_id = 'null'
+
+
+
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
 
@@ -978,7 +993,7 @@ def CrearItemTarifarioSuministros(request):
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
-        comando = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCum_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCumsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "')"
+        comando = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCum_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id","serviciosAdministrativos_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCumsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "'," + str(serviciosAdministrativos_id)   + ")"
 
         print(comando)
 
