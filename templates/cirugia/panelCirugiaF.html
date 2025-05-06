@@ -17,10 +17,10 @@
 
 <div class="marco">
     <ul class="tabs">
-
+	<li><a href="#SolicitarCirugia"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Solicitar Cirugia </a></li>
         <li><a href="#ProgramacionCirugia"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Programacion de Cirugia </a></li>
         <li><a href="#CirugiaDetalle"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle de Cirugia</a></li>
-        <li><a href="#DescripcionQx"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Descripcion QuirurgicaGenerar Json Rips </a></li>
+        <li><a href="#InformeQx"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Informe Quirurgico </a></li>
         <li><a href="#RecordAnestesico"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Record Anestesico </a></li>
 	<li><a href="#HojaDeGasto"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Hoja De Gasto </a></li>
 	<li><a href="#Facturacion"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Facturacion </a></li>
@@ -48,6 +48,14 @@ div.dataTables_filter input {
   height: 1px;
     }
 
+#tablaSalasCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+
 table.dataTable tbody tr {
   min-height: 60px;
 }
@@ -74,7 +82,7 @@ table.dataTable tbody tr {
 <div class="marco">
     <div class="secciones">
 
-        <article id="ProgramacionCirugias">
+        <article id="ProgramacionCirugia">
       
 	
             <form action="/programacionCirugiaps/" method="get" id="FormEnviosRips">
@@ -112,12 +120,12 @@ table.dataTable tbody tr {
 		</div>
 
    			   <div class="row">
-				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
-
+				
                                         <table  id= "tablaProgramacionCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
 						<bold>                
+					     <th>Opcion</th>                                               
 					     <th>Opcion</th>                                               
 					     <th>id</th>
 					     <th>tipoDoc_id</th>
@@ -159,7 +167,7 @@ table.dataTable tbody tr {
                              <h4 class="modal-title" id="modelHeadingProgramacionCirugia"> </h4> 
 			<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia" onclick="CrearProgramacionCirugia()">Grabar!</button> 
                         </div>
-		<div style="width:500px; heigth:100px; ">
+		
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
                                 <ul class="mb-0"></ul>
@@ -175,7 +183,7 @@ table.dataTable tbody tr {
 				  <div class="col-12">
 					
                                     
-                                    <input type="text" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  value="1" readonly></input>
+                                    <input type="text" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  readonly></input>
                                 </div>
 
 			  <div class="col-12">
@@ -189,126 +197,142 @@ table.dataTable tbody tr {
                                                 {% endfor %}
                                             </select>
                                         </div>
-
                                     </div>
 
-
 				<div class="col-12">
-                                    Empresa:
-				<select class="select-css"  id="empresa_id"
-                                                                name="empresa_id">
-                                                            {% for empresas in Empresas %}
-                                                            <option value="{{empresas.id}}">
-                                                                {{empresas.nombre}}
+                                    Sala:
+				<select class="select-css"  id="sala" name="sala">
+                                                            {% for salas in Salas %}
+                                                            <option value="{{salas.id}}">
+                                                                {{salas.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
                                 </div>
 
+                          
+				<div class="col-12">
+				<label  for="fechaProgramacionInicia">Fecha Inicio:</label>                               	                               
+					 <input type="datetime"  class="form-control form-control-sm" id="fechaProgramacionInicia" name="fechaProgramacionInicia" placeholder="fecha Inicia"  >
+                                </div>
+
 
 				<div class="col-12">
-                                    Tipo Nota:
-				<select class="select-css"  id="ripsTiposNotas"  name="ripsTiposNotas">
-                                                           {% for ripsTiposNotas in RipsTiposNotas %}
-                                                            <option value="{{ripsTiposNotas.id}}">
-                                                                {{ripsTiposNotas.nombre}}
+				<label  for="horaProgramacionInicia">Hora Inicio:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="horaProgramacionInicia" name="horaProgramacionInicia" placeholder="hora Inicia"  >
+                                </div>
+
+
+				<div class="col-12">
+				<label  for="fechaProgramacionFin">Fecha Fin:</label>                               	                               
+					 <input type="datetime"  class="form-control form-control-sm" id="fechaProgramacionFin" name="fechaProgramacionFin" placeholder="fecha Fin"  >
+                                </div>
+
+
+				<div class="col-12">
+				<label  for="horaProgramacionFin">Hora Fin:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="horaProgramacionFin" name="horaProgramacionFin" placeholder="hora Fin"  >
+                                </div>
+
+				<div class="col-12">
+                                    Ingreso:
+				<select class="select-css"  id="ingresosCirugia"  name="ingresosCirugia">
+                                                           {% for ingresosCirugia in IngresosCirugia %}
+                                                            <option value="{{ingresosCirugia.id}}">
+                                                                {{ingresosCirugia.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                           
                                                         </select>
                                 </div>
-                          
+
+
 				<div class="col-12">
-				  <label class="visually-hidden" for="fechaEnvio">Fecha Envio:</label>
-                                   	 <label class="visually-hidden" for="fechaEnvio">FechaEnvio:</label>
-                               
-					 <input type="datetime-local"  class="form-control form-control-sm" id="fechaEnvio" name="fechaEnvio" placeholder="fechaEnvio"  >
+                                    Cups1:
+				<select class="select-css"  id="cups1_id"  name="cups1_id">
+                                                           {% for examenes in Examenes %}
+                                                            <option value="{{examenes.id}}">
+                                                                {{examenes.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
+                                </div>
+
+
+				<div class="col-12">
+                                    Cups2:
+				<select class="select-css"  id="cups2_id"  name="cups2_id">
+                                                           {% for examenes in Examenes %}
+                                                            <option value="{{examenes.id}}">
+                                                                {{examenes.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
+                                </div>
+
+
+				<div class="col-12">
+                                    Cups3:
+				<select class="select-css"  id="cups3_id"  name="cups3_id">
+                                                           {% for examenes in Examenes %}
+                                                            <option value="{{examenes.id}}">
+                                                                {{examenes.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
 
 				<div class="col-12">
-				 <label class="visually-hidden" for="fechaRespuesta">Fecha Respuesta:</label>
-                                    
-					 <input type="datetime-local"  class="form-control form-control-sm" id="fechaRespuesta" name="fechaRespuesta" placeholder="fechaRespuesta"  readonly>
-                                </div>
-
-				<div class="col-12">
-                                    
-				 <label  for="cantidadFacturas">CantidadFacturas:</label>
-                                    <input type="text" class="form-control form-control-sm" id="cantidadFacturas" name="cantidadFacturas" value="0" placeholder="CantidadFacturas:" readonly></input>
+                                    Estado
+				<select class="select-css"  id="estadoProgramacion_id"  name="estadoProgramacion_id">
+                                                           {% for estadosProgramacion in EstadosProgramacion %}
+                                                            <option value="{{estadosProgramacion.id}}">
+                                                                {{estadosProgramacion.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
                                 </div>
 				<div class="col-12">
 				
-                                    Pasaron:
-                                    <input type="text" id="cantidadPasaron" name="cantidadPasaron" value="0" readonly></input>
-                                </div>
-				<div class="col-12">
-				<label  for="cantidadFacturas">CantidadRechazadas:</label>
-
-                                    
-                                    <input type="text" class="form-control form-control-sm" id="cantidadRechazadas" name="cantidadRechazadas" value="0" placeholder="CantidadRechazadas:"  readonly></input>
-	                                </div>
-
-
-                                <div class="col-12">
-                                    Estado:
-                                    <input type="text" id="estadoMinisterio" name="estadoMinisterio" value="PENDIENTE" readonly></input>
-                                </div>
-           
-                                <div class="col-12">
-                                   
-                                    <input type="hidden" id="fechaRegistro" name="fechaRegistro" value="" > </input>
+					 <input type="hidden"  class="form-control form-control-sm" id="username2_id" name="username2_id" >
                                 </div>
 
 
 
-                                <div class="col-12">
-				 <label  for="estadoReg">EstadoRegistro:</label>
-                                    
-                                    <input type="text" class="form-control form-control-sm" id="estadoReg" name="estadoReg" value="A" placeholder="CantidadRechazadas:"  estadoReg> </input>
-                                </div>
-
-
-
-                                <div class="col-12">
-                                    Usuario:
-                                    <input type="text" id="usuarioRegistro_id" name="usuarioRegistro_id" value="{{Username_id}}" readonly > </input>
-                                </div>
-
-			<!--
                                 <div class="col-12">
                                     <center> 
 					<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia"   value="create" onclick="CrearProgramacionCirugia()">Guardar </button> 
 					</center> 
                                 </div>
 
-			-->
+
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
 
                         </div> <!-- CIERRA BODY -->
-			</div> <!-- CIERRA DIV TAMANO -->			
+						
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
 
 
-	<!-- MODAL PARA MOSTRAT EL JSON DEL ENVIO  ->
-
      <!-- FIN Espacio Modales  -->
 
-
-        </article>
+		
+   </article>
 
 
 <article id="CirugiaDetalle">
 
 </article>
 
-<article id="DescripcionQx">
-        	
-		
-
+<article id="InformeQx">
+   			
 </article>
 
 <article id="RecordAnestesico">
@@ -327,9 +351,44 @@ table.dataTable tbody tr {
 		
 
 </article>
+<article id="SolicitarCirugia">
+        	
+		
+
+</article>
+
 
 <article id="OcupacionSalas">
         	
+		<div class="container my-2">
+             
+   			   <div class="row">
+				 <!--  <input type="button" style="height:15px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnEnviosRips"  name="BtnEnviosRips" value="Adicionar" onclick= "EnvioRips()" >				      -->
+
+                                        <table  id= "tablaSalasCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Opcion</th>                                               
+					     <th>Opcion</th>                                               
+					     <th>Id</th>   
+					     <th>Numero</th>
+					     <th>Nombre</th>
+					     <th>Ubicacion</th>
+					     <th>Servicio</th>
+					     <th>Estado</th>
+				              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+                                </div>
+
 		
 
 </article>

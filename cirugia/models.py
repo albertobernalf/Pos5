@@ -5,14 +5,11 @@ from datetime import date
 
 class Cirugias(models.Model):
     id = models.AutoField(primary_key=True)
+    sedesClinica_id = models.ForeignKey('sitios.Sedesclinica', blank=True, null=True, editable=True,     on_delete=models.PROTECT)
     tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
     documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='DocumentoHistoria54')
     consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
-    sedesClinica_id = models.ForeignKey('sitios.Sedesclinica', blank=True, null=True, editable=True,     on_delete=models.PROTECT)
-    serviciosSedes_id = models.ForeignKey('sitios.Serviciossedes', blank=True, null=True, editable=True,      on_delete=models.PROTECT)
-    subServiciosSedes_id = models.ForeignKey('sitios.Subserviciossedes', blank=True, null=True, editable=True,  on_delete=models.PROTECT)
-    numero = models.CharField(max_length=50, blank=True, null=True, editable=True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm126')
     especialidad = models.ForeignKey('clinico.Especialidades', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
     urgente = models.CharField(max_length=1, blank=True, null=True, editable=True)
     tipoQx = models.CharField(max_length=20, blank=True, null=True, editable=True)
@@ -40,14 +37,22 @@ class Cirugias(models.Model):
     describeOtros = models.CharField(max_length=2000, blank=True, null=True, editable=True)
     fechaProg = models.DateField(default=date.today,  editable=True)
     HoraProg = models.CharField(max_length=5, blank=True, null=True, editable=True)
+    ingresoQuirofano = models.DateField(default=date.today,  editable=True)
+    horaIngresoQuirofano = models.CharField(max_length=5, blank=True, null=True, editable=True)
+    fechaIniAnestesia = models.DateField(default=date.today,  editable=True)
+    HoraIniAnestesia = models.CharField(max_length=5, blank=True, null=True, editable=True)
     fechaQxInicial = models.DateField(default=date.today,  editable=True)
     horaQxInicial = models.CharField(max_length=5, blank=True, null=True, editable=True)
     fechaQxFinal = models.DateField(default=date.today,  editable=True)
     horaQxFinal = models.CharField(max_length=5, blank=True, null=True, editable=True)
-    fechaIniAnestesia = models.DateField(default=date.today,  editable=True)
-    HoraIniAnestesia = models.CharField(max_length=5, blank=True, null=True, editable=True)
     fechaFinAnestesia = models.DateField(default=date.today,  editable=True)
     horaFinAnestesia = models.CharField(max_length=5, blank=True, null=True, editable=True)
+    salidaQuirofano = models.DateField(default=date.today,  editable=True)
+    horaSalidaQuirofano = models.CharField(max_length=5, blank=True, null=True, editable=True)
+    ingresoRecuperacion = models.DateField(default=date.today,  editable=True)
+    horaIngresoRecuperacion = models.CharField(max_length=5, blank=True, null=True, editable=True)
+    salidaRecuperacion = models.DateField(default=date.today,  editable=True)
+    horaSalidaRecuperacion = models.CharField(max_length=5, blank=True, null=True, editable=True)
     intervencion = models.CharField(max_length=100, blank=True, null=True, editable=True)
     riesgos = models.CharField(max_length=3000, blank=True, null=True, editable=True)
     observaciones = models.CharField(max_length=5000, blank=True, null=True, editable=True)
@@ -58,7 +63,7 @@ class Cirugias(models.Model):
     dxRel2 = models.ForeignKey('clinico.Diagnosticos', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Dx55')
     dxRel3 = models.ForeignKey('clinico.Diagnosticos', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Dx56')
     descripcionQx = models.CharField(max_length=10000, blank=True, null=True, editable=True)
-    dxComplicacion = models.CharField(max_length=4, blank=True, null=True, editable=True)
+    dxComplicacion =models.ForeignKey('clinico.Diagnosticos', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Dx555')
     complicaciones = models.CharField(max_length=3000, blank=True, null=True, editable=True)
     patologia = models.CharField(max_length=500, blank=True, null=True, editable=True)
     formaRealiza = models.CharField(max_length=15, blank=True, null=True, editable=True)
@@ -73,7 +78,7 @@ class Cirugias(models.Model):
     motivoReprogramada = models.CharField(max_length=500, blank=True, null=True, editable=True)
     tipoCancela = models.CharField(max_length=15, blank=True, null=True, editable=True)
     motivoCancela = models.CharField(max_length=500, blank=True, null=True, editable=True)
-    timepoMaxQx = models.CharField(max_length=10, blank=True, null=True, editable=True)
+    tiempoMaxQx = models.CharField(max_length=10, blank=True, null=True, editable=True)
     observacionesProgramacion = models.CharField(max_length=500, blank=True, null=True, editable=True)
     usuarioPrograma = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Usuario41')
     fechaPrograma = models.DateTimeField()
@@ -84,6 +89,8 @@ class Cirugias(models.Model):
     intensificador = models.CharField(max_length=1, blank=True, null=True, editable=True)
     tipofactura = models.CharField(max_length=30, blank=True, null=True, editable=True)
     recomendacionenfermeria = models.CharField(max_length=2000, blank=True, null=True, editable=True)
+    folioEvolucionPreQx = models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True, editable=True)
+    folioEvolucionPostQx= models.DecimalField(max_digits=7, decimal_places=0, blank=True, null=True, editable=True)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='planta39')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
@@ -125,7 +132,7 @@ class EstadosCirugias(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class TiposAnestesia(models.Model):
     id = models.AutoField(primary_key=True)
@@ -134,7 +141,7 @@ class TiposAnestesia(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class CirugiasMaterialQx(models.Model):
     id = models.AutoField(primary_key=True)
@@ -151,9 +158,6 @@ class CirugiasMaterialQx(models.Model):
 class RecordAnestesico(models.Model):
     id = models.AutoField(primary_key=True)
     cirugia = models.ForeignKey('cirugia.Cirugias', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
-    #tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True, on_delete=models.PROTECT)
-    #documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,   on_delete=models.PROTECT, related_name='DocumentoHistoria122')
-    #consecAdmision = models.IntegerField(default=0)
     fecha = models.DateTimeField()
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
@@ -166,7 +170,8 @@ class RecordAnestesico(models.Model):
 class HojasDeGastos(models.Model):
     id = models.AutoField(primary_key=True)
     cirugia = models.ForeignKey('cirugia.Cirugias', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='cirugias17')
-
+    suministro = models.ForeignKey('facturacion.Suministros', blank=True, null=True, editable=True,  on_delete=models.PROTECT)
+    cantidad = models.DecimalField(max_digits=10, decimal_places=3, blank=True, null=True, editable=True)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
@@ -181,7 +186,7 @@ class EstadosSalas(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class EstadosProgramacion(models.Model):
     id = models.AutoField(primary_key=True)
@@ -190,8 +195,7 @@ class EstadosProgramacion(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
-
+        return str(self.nombre)
 
 class ProgramacionCirugias(models.Model):
     id = models.AutoField(primary_key=True)
@@ -232,7 +236,7 @@ class OrganosCirugias(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 
 class IntervencionCirugias(models.Model):
@@ -242,7 +246,7 @@ class IntervencionCirugias(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class TiposHeridasOperatorias(models.Model):
     id = models.AutoField(primary_key=True)
@@ -251,7 +255,7 @@ class TiposHeridasOperatorias(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class FinalidadCirugia(models.Model):
     id = models.AutoField(primary_key=True)
@@ -260,7 +264,7 @@ class FinalidadCirugia(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class PlanificacionCirugia(models.Model):
     id = models.AutoField(primary_key=True)
@@ -269,7 +273,7 @@ class PlanificacionCirugia(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)
 
 class ZonasCirugia(models.Model):
     id = models.AutoField(primary_key=True)
@@ -278,7 +282,7 @@ class ZonasCirugia(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombred)
 
 
 class GravedadCirugia(models.Model):
@@ -288,4 +292,4 @@ class GravedadCirugia(models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.nombre)

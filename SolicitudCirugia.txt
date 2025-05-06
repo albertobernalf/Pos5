@@ -1,0 +1,75 @@
+Informe Quirurgico: (la descricionqx es parte)
+	tiene : personal que opero
+		cups operados
+		material qx y osteosisnte
+		pre-operatorio
+      		post-operatori
+		impresion dx
+		complicaiones cie
+		descricionqx
+		hallasgos clincios
+		Forma realizaacion ??
+		tejidos enviados a patoloagia
+		tipo de fractura
+		uso de intensificador
+		
+		NOTA OPERATORIA
+		Analisis
+		Plan
+
+
+
+Solicitud: Admision, Fecha solic, Serv, Cama, paciente, cc,
+           nacio, edad, genero,empresa, tel
+
+dxnosticos
+
+procedimeintos nombre, cups
+
+Tiempo maximo para prog ciru
+Cirujano,  especialidad , ayudantye ?
+Tiempo qx 2 ,minutos  Tipo ciru limpis, tipo anestesia regional
+
+requerimiento especiales:
+
+reservca sangre  cula  cuantas , cama uci ?? , Material osteositesis ?
+microscopi,  rx,  autosutura, biopsia por congelacion,  malla  otro
+
+descripcion material solicitado
+
+tornillos largos de 3.5 /7 set de clavos de k
+
+Fecha y hora de prog cirugia 06/05/2025  07:00
+
+
+
+
+Material Qx: Consumo de dispositivos medicos especiales y material de osteosintesis
+
+Hoja de gastos : medicamntos // insumos
+
+prescripcion medica: medicamentos
+
+sabana de enfermria : confirmar grupo qx (cirujano-anestesio, atydante etc)
+                      tiempos qx:
+			Ingreso pac a quirofano
+			ini anestesia
+			ini ciru
+			fin ciru
+			fin anes
+			salida quirofano
+			tiempo qx total
+			tiempo anestesico total
+			tiemp toal en sala
+			ingreso arecupera
+			salida recuperacion
+			timpo total recuperacion
+
+Bitacoras de cirugia : es cxoimo un seguimiento es texot
+
+
+Las boletas qx son como resumenes aspectos de las cirugias
+
+
+
+		

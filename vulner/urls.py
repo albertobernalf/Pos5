@@ -324,6 +324,10 @@ urlpatterns = [
 
     # Cirugia
     path('load_dataProgramacionCirugia/<str:data>', viewsCirugia.Load_dataProgramacionCirugia,  name='Load_dataProgramacion_cirugia'),
+    path('load_dataSalasCirugia/<str:data>', viewsCirugia.Load_dataSalasCirugia, name='Load_dataSalas_Cirugia'),
+    path('crearProgramacionCirugia/', viewsCirugia.CrearProgramacionCirugia, name='crearProgramacion_Cirugia'),
+
+
 
     # Citas Medicas
 
