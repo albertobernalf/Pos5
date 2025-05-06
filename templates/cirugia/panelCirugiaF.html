@@ -82,6 +82,202 @@ table.dataTable tbody tr {
 <div class="marco">
     <div class="secciones">
 
+	<article id="SolicitarCirugia">
+        	
+            <!-- INICIO TABLE DE  EL DATATABLE  -->
+		<div class="container my-2">
+
+
+
+
+
+             
+		<div align="right" height="15px" width="50px">
+               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarCirugia"  name="BtnAdicionarCirugia" value="Adicionar" onclick= "SolicitudCirugia()" >				    
+		</div>
+
+   			   <div class="row">
+				
+                                        <table  id= "tablaSolicitudCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Sel</th>                                               
+					     <th>Proced</th>                                               
+						 <th>Participa</th>                                               
+					<th>sede</th> 
+					<th>cirugia</th> 
+					<th>tipoDoc</th>  
+					<th>documento</th> 
+					<th>paciente </th> 
+					<th>nacimiento</th> 
+					<th>genero</th>  
+					<th>edad</th> 
+					<th>ingreso</th> 
+					<th>solicita</th>  
+					<th>cama</th>	
+					<th>empresa</th>
+					<th>telefono</th>
+					<th>solicitaSangre</th>		
+					<th>describeSangre</th>
+					<th>cantidadSangre</th>
+					<th>solicitaCamaUci</th>
+					<th>solicitaMicroscopio</th>
+					<th>solicitaRx</th>
+					<th>solicitaAutoSutura</th>
+					<th>solicitaOsteosintesis</th>
+					<th>solicitaBiopsia</th>
+					<th>solicitaMalla</th>
+					<th>solicitaOtros</th>
+					<th>estadoProg </th>
+					<th>anestesia</th>
+				              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+                                </div>
+
+ <!-- Modales Cirugia -->
+
+
+            <div class="modal fade" id="crearModelSolicitudCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingSolicitudCirugia"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearSolicitudonCirugia" onclick="CrearSolicitudCirugia()">Grabar!</button> 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormSolicitudCirugia" name="postFormSolicitudCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+			     <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+		
+				<div class="col-12">
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaIngresosCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Sel</th>                                               
+					<th>id</th> 
+					<th>tipoDoc</th>  
+					<th>documento</th> 
+					<th>paciente </th> 
+					<th>consecutivo </th> 
+					<th>genero</th>  
+					<th>edad</th> 
+					<th>nacimiento</th> 
+					<th>cama</th>	
+					<th>telefono</th>
+					<th>empresa</th>
+				              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				 </div>
+
+			<!-- Fin Data table -->
+
+			  <div class="col-4">
+                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
+                                                    name="serviciosAdministrativos"
+                                                    required>
+                                                {% for serviciosAdministrativos in ServiciosAdministrativos %}
+                                                <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                                    
+				<div class="col-5">
+                                    Estado
+				<select class="select-css"  id="estadoProgramacion_id"  name="estadoProgramacion_id">
+                                                           {% for estadosProgramacion in EstadosProgramacion %}
+                                                            <option value="{{estadosProgramacion.id}}">
+                                                                {{estadosProgramacion.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                          
+                                                        </select>
+                                </div>
+
+				<div class="col-1">
+						uno                              
+                                </div>
+
+				<div class="col-1">
+					dos                              
+                                </div>
+
+				<div class="col-1">
+						tres                              
+                                </div>
+
+
+
+				<div class="col-12">
+				
+					 <input type="hidden"  class="form-control form-control-sm" id="username3_id" name="username3_id" >
+                                </div>
+
+
+
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalSolicitud" name="mensajesErrorModalSolicitud" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearSolicitudonCirugia" onclick="CrearSolicitudCirugia()">Grabar!</button> 
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+     <!-- FIN Espacio Modales  -->
+
+
+
+		
+
+	</article>
+
+
         <article id="ProgramacionCirugia">
       
 	
@@ -160,13 +356,14 @@ table.dataTable tbody tr {
     <!-- Modales Cirugia -->
 
 
-            <div class="modal fade" id="crearModelProgramacionCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document" modal-lg>
+            <div class="modal fade" id="crearModelProgramacionCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingProgramacionCirugia"> </h4> 
 			<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia" onclick="CrearProgramacionCirugia()">Grabar!</button> 
-                        </div>
+		 <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>                    
+    </div>
 		
                         <div class="modal-body">
                             <div class="alert alert-danger error-msg" style="display:none">
@@ -302,20 +499,21 @@ table.dataTable tbody tr {
                                 </div>
 
 
-
-                                <div class="col-12">
-                                    <center> 
-					<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia"   value="create" onclick="CrearProgramacionCirugia()">Guardar </button> 
-					</center> 
-                                </div>
-
-
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+                           </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
                             </form>
 
                         </div> <!-- CIERRA BODY -->
-						
+			
+			<div class="modal-footer">
+
+					  <span id="mensajesErrorModalProgramacion" name="mensajesErrorModalProgramacion" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                  	<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia" onclick="CrearProgramacionCirugia()">Grabar!</button> 
+                                    </div>
+
+			
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
@@ -351,11 +549,7 @@ table.dataTable tbody tr {
 		
 
 </article>
-<article id="SolicitarCirugia">
-        	
-		
 
-</article>
 
 
 <article id="OcupacionSalas">

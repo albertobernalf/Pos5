@@ -4,7 +4,7 @@ from django.contrib import admin
 
 from cirugia.models import OrganosCirugias, IntervencionCirugias, TiposHeridasOperatorias, PlanificacionCirugia,  FinalidadCirugia, GravedadCirugia, ZonasCirugia, EstadosCirugias
 
-from cirugia.models import ProgramacionCirugias, EstadosSalas, HojasDeGastos,RecordAnestesico, CirugiasParticipantes, CirugiasProcedimientos, EstadosProgramacion
+from cirugia.models import ProgramacionCirugias, EstadosSalas, HojasDeGastos,RecordAnestesico, CirugiasParticipantes, CirugiasProcedimientos, EstadosProgramacion, TiposAnestesia, TiposCirugia
 
 @admin.register(OrganosCirugias)
 class organosCirugiasAdmin(admin.ModelAdmin):
@@ -111,6 +111,21 @@ class cirugiasParticipantesAdmin(admin.ModelAdmin):
 
 @admin.register(EstadosProgramacion)
 class estadosProgramacionAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre")
+    search_fields = ("id", "nombre")
+    # Filtrar
+    list_filter = ('nombre',)
+
+
+@admin.register(TiposAnestesia)
+class tiposAnestesiaAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre")
+    search_fields = ("id", "nombre")
+    # Filtrar
+    list_filter = ('nombre',)
+
+@admin.register(TiposCirugia)
+class tiposCirugiaAdmin(admin.ModelAdmin):
     list_display = ("id", "nombre")
     search_fields = ("id", "nombre")
     # Filtrar
