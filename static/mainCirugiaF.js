@@ -307,7 +307,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 28
+                    "targets": 29
                }
             ],
 	 pageLength: 3,
@@ -371,7 +371,7 @@ function arrancaCirugia(valorTabla,valorData)
                     },
 
 	},
-
+		{ data: "fields.id"},
 		{ data: "fields.sede"},
                 { data: "fields.cirugia"},
                 { data: "fields.tipoDoc"},
@@ -493,10 +493,10 @@ function arrancaCirugia(valorTabla,valorData)
 	    scrollCollapse: true,
             paging:false,
             columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 11
+                    "targets": 4
                }
             ],
 	 pageLength: 3,
@@ -536,10 +536,7 @@ function arrancaCirugia(valorTabla,valorData)
                     },
 
 	},
-
-
-		{ data: "fields.id"},
-                { data: "fields.cirugiaId"},
+		{ data: "fields.id"},              
                 { data: "fields.cups_id"},
                 { data: "fields.exaNombre"},
                 { data: "fields.finalNombre"},
@@ -726,39 +723,36 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarProcedimientos', func
 		alert("ENTRE miAdicionarProcedimientos");
 
 	     var post_id = $(this).data('pk');
+	cirugiaId3 =   post_id;
+	alert("cirugiaId3 = " +  cirugiaId3);
 	
-	var row = $(this).closest('tr'); // Encuentra la fila
-
-	// Nop estop toca por el DOM - html traer el valopr d ela columna
-
-
-
-	cirugiaId =   post_id;
-	alert("cirugiaId = " +  cirugiaId);
-
-     
-	$.ajax({
-
-	        url: "/traerProcedimientosCirugia/",
-                data: {'cirugiaId':cirugiaId},
-                type: "POST",
-                dataType: 'json',
-                success: function (info) {
 
             $('#postFormProcedimientosCirugia').trigger("reset");
 
- 			//	$('#valorJsonP').val(info[0].fields.valorJson);
-			//	$('#envioRipsIdP').val(envioRipsId);
-				
-
             $('#modelHeadingProcedimientosCirugia').html("Detalle Procedimientos Cirugia");
             $('#crearModelProcedimientosCirugia').modal('show');
+		document.getElementById("cirugiaId3").value = cirugiaId3 ;
+		username_id = document.getElementById("username_id").value   ;
+		alert("username_id = " + username_id );
+		document.getElementById("username4_id").value = username_id ;
 
-                },
-                 error: function (request, status, error) {
-			document.getElementById("mensajesErrorProcedimientosCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
-	   	    	}
-            });
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = cirugiaId3;
+ 	    data = JSON.stringify(data);
+
+		     arrancaCirugia(5,data);
+		     	dataTableProcedimientosCirugiaInitialized = true;
+	
       
   });
 
@@ -766,26 +760,16 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarParticipantes', funct
 
 		alert("ENTRE miAdicionarParticipantes");
 
-	     var post_id = $(this).data('pk');
-	
-	var row = $(this).closest('tr'); // Encuentra la fila
-
-	// Nop estop toca por el DOM - html traer el valopr d ela columna
+	         var post_id = $(this).data('pk');
+	cirugiaId3 =   post_id;
+	alert("cirugiaId4 = " +  cirugiaId4);
 
 
 
 	cirugiaId =   post_id;
 	alert("cirugiaId = " +  cirugiaId);
 
-     
-	$.ajax({
-
-	        url: "/traerParticipantesCirugia/",
-                data: {'cirugiaId':cirugiaId},
-                type: "POST",
-                dataType: 'json',
-                success: function (info) {
-
+  
             $('#postFormParticipantesCirugia').trigger("reset");
 
  			//	$('#valorJsonP').val(info[0].fields.valorJson);
@@ -795,12 +779,29 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarParticipantes', funct
             $('#modelHeadingParticipantesCirugia').html("Detalle Participantes Cirugia");
             $('#crearModelParticipantesCirugia').modal('show');
 
-                },
-                 error: function (request, status, error) {
-			document.getElementById("mensajesErrorParticipantesCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
-	   	    	}
-            });
-      
+		document.getElementById("cirugiaId4").value = cirugiaId4 ;
+		username_id = document.getElementById("username_id").value   ;
+		alert("username_id = " + username_id );
+		document.getElementById("username4_id").value = username_id ;      
+
+  	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = cirugiaId4;
+ 	    data = JSON.stringify(data);
+
+		     arrancaCirugia(6,data);
+		     	dataTableParticipantesCirugiaInitialized = true;
+
+
   });
 
 $('#tablaIngresosCirugia tbody').on('click', '.miSolicitudCirugia2', function() {
@@ -981,5 +982,96 @@ function CrearSolicitudCirugia()
 
 
 }
+
+function CrearProcedimientosCirugia()
+{
+
+	alert("CrearProcedimientosCirugia");
+
+	var sede = document.getElementById("sede").value;
+	document.getElementById("sedesClinica_id").value =  sede;
+	cirugiaId3  = document.getElementById("cirugiaId3").value ;
+
+            $.ajax({
+                data: $('#postFormProcedimientosCirugia').serialize(),
+	        url: "/crearProcedimientosCirugia/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+                  $('#postFormProcedimientosCirugia').trigger("reset");
+		var data =  {}   ;
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		data['cirugiaId'] =cirugiaId3;
+	        data = JSON.stringify(data);
+	
+
+	     arrancaCirugia(5,data);
+	    dataTableProcedimientosCirugiaInitialized = true;
+
+	  
+
+
+ 		// $('#crearModelProcedimientosCirugia').modal('hide');
+		 $("#mensajesModalProcedimientosCirugia").html(data2.message);
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalProcedimientosCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}
+
+function CrearParticipantesCirugia()
+{
+	var sede = document.getElementById("sede").value;
+	document.getElementById("sedesClinica_id").value =  sede;
+
+            $.ajax({
+                data: $('#postFormParticipantesCirugia').serialize(),
+	        url: "/crearParticipantessCirugia/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+                  $('#postFormParticipantesCirugia').trigger("reset");
+	var data =  {}   ;
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		data['cirugiaId'] =cirugiaId3;
+	        data = JSON.stringify(data);
+	
+
+	  	
+
+	     arrancaCirugia(6,data);
+	    dataTableParticipantesCirugiaInitialized = true;
+
+	  
+
+
+ 		 // $('#crearModelParticipantesCirugia').modal('hide');
+		 $("#mensajesModalParticipantesCirugia").html(data2.message);
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalParticipantesCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}
+
 
 

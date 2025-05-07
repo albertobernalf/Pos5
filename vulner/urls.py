@@ -329,9 +329,10 @@ urlpatterns = [
     path('load_dataSolicitudCirugia/<str:data>', viewsCirugia.Load_dataSolicitudCirugia, name='load_dataSolicitud_Cirugia'),
     path('load_dataIngresosCirugia/<str:data>', viewsCirugia.Load_dataIngresosCirugia,    name='load_dataIngresos_Cirugia'),
     path('crearSolicitudCirugia/', viewsCirugia.CrearSolicitudCirugia, name='CrearSolicitudCirugia'),
-    path('traerProcedimientosCirugia/', viewsCirugia.TraerProcedimientosCirugia, name='TraerProcedimiento_Cirugia'),
-    path('traerParticipantesCirugia/', viewsCirugia.TraerParticipantesCirugia, name='TraerParticipantes_Cirugia'),
-
+    path('traerProcedimientosCirugia/<str:data>', viewsCirugia.TraerProcedimientosCirugia, name='TraerProcedimiento_Cirugia'),
+    path('traerParticipantesCirugia/<str:data>', viewsCirugia.TraerParticipantesCirugia, name='TraerParticipantes_Cirugia'),
+    path('crearProcedimientosCirugia/', viewsCirugia.CrearProcedimientosCirugia, name='CrearProcedimiento_Cirugia'),
+    path('crearParticipantesCirugia/', viewsCirugia.CrearParticipantesCirugia, name='CrearParticipantes_Cirugia'),
 
     # Citas Medicas
 

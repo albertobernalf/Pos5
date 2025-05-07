@@ -5,6 +5,9 @@ select * FROM CIRUGIA_ESTADOScIRUGIAS;
 select * FROM CIRUGIA_ESTADOSPROGRAMACION;
 select * From sitios_salas;
 select * from cirugia_cirugias;
+select * from cirugia_tiposanestesia;
+select * from cirugia_tiposcirugia;
+select * from clinico_diagnosticos;
 
 select * from clinico_historia;
 
@@ -67,3 +70,32 @@ detalle = 'SELECT i."tipoDoc_id" tipoDoc_id, u.documento documento,u.nombre paci
 
 	SELECT i.id id,  i."tipoDoc_id"||' '|| u.documento||' '||u.nombre||' '||i.consec||' '||u.genero||' '||((now() - u."fechaNacio")/360)||' '||u."fechaNacio"||' '||dep.nombre||' '||cast(u.telefono as text)||' ' ||emp.nombre PACIENTE
 	FROM admisiones_ingresos i INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id =  i.documento_id) LEFT JOIN sitios_dependencias dep ON (dep.id = i."dependenciasActual_id") LEFT JOIN facturacion_empresas emp	 ON (emp.id = i.empresa_id ) where i."sedesClinica_id" = 1 ORDER BY i."dependenciasActual_id"
+
+INSERT INTO cirugia_cirugia ("consecAdmision", "fechaSolicita", "solicitaHospitalizacion", "solicitaAyudante", "solicitaTiempoQx", "solicitatipoQx", "solicitaAnestesia", "solicitaSangre", "describeSangre", "cantidadSangre", 
+"solicitaCamaUci", "solicitaMicroscopio", "solicitaRx", "solicitaAutoSutura", "solicitaOsteosintesis", "solicitaSoporte", "solicitaBiopsia", "solicitaMalla", "solicitaOtros", "describeOtros", "tiempoMaxQx", "fechaRegistro", "estadoReg", anestesia_id, documento_id,  "dxPreQx_id", "dxPrinc_id", "dxRel1_id", "dxRel2_id", "dxRel3_id", especialidad_id, "sedesClinica_id", "tipoDoc_id", "usuarioRegistro_id",
+ "usuarioSolicita_id", "serviciosAdministrativos_id", "estadoProgramacion_id", "tiposCirugia_id") VALUES
+
+select * from clinico_especialidadesmedicos;
+select * from cirugia_cirugiasprocedimientos;
+select * from cirugia_cirugiasparticipantes;
+select * from cirugia_finalidadcirugia;
+select * from tarifarios_tiposhonorarios;clinico_especialidades
+	select * from clinico_especialidades;
+
+SELECT * FROM cirugia_cirugias;
+
+
+select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id, exa.nombre, final.nombre
+FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final
+WHERE cirproc.cirugia_id = 1 and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id
+
+
+
+
+select * from cirugia_cirugiasparticipantes;
+
+	
+select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre, med.nombre, esp.nombre FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp
+WHERE cirpart.cirugia_id = 1 and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id
+
+comando = 'select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre, med.nombre, esp.nombre FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp WHERE cirpart.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id'

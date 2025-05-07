@@ -83,6 +83,34 @@ table.dataTable tbody tr {
     <div class="secciones">
 
 	<article id="SolicitarCirugia">
+
+  <form action="/solicitudCiru/" method="get" id="solicitudCiru">
+
+                <input type="hidden" id="username" name="username" value="{{Username}}">
+                <input type="hidden" id="sedeSeleccionada" name="sedeSeleccionada" value="{{SedeSeleccionada}}">
+                <input type="hidden" id="numreporte" name="numreporte" value="{{numreporte}}">
+                <input type="hidden" id="grupo" name="grupo" value="{{Grupo}}">
+                <input type="hidden" id="subGrupo" name="subGrupo" value="{{SubGrupo}}">
+                <!--  Estos si de la Aplixcacion base -->
+                <input type="hidden" id="sede" name="sede" value="{{Sede}}">
+                <input type="hidden" id="documento" name="documento" value="{{Documento}}">
+                <input type="hidden" id="nombreSede" name="nombreSede" value="{{NombreSede}}">
+                <input type="hidden" id="profesional" name="profesional" value="{{Profesional}}">
+                <input type="hidden" id="permisosGrales" name="permisosGrales" value="{{PermisosGrales}}">
+                <input type="hidden" id="permisosDetalle" name="permisosDetalle" value="{{PermisosDetalle}}">
+                <input type="hidden" id="escogeModulo" name="escogeModulo" value="{{EscogeModulo}}">
+                <input type="hidden" id="username_id" name="username_id" value="{{Username_id}}">
+
+                <input type="hidden" id="tipoDocId" name="tipoDocId" value="">
+                <input type="hidden" id="nombreTipoDoc" name="nombreTipoDoc" value="">
+                <input type="hidden" id="documentoId" name="documentoId" value="">
+                <input type="hidden" id="documento2" name="documento2" value="">
+                <input type="hidden" id="consec" name="consec" value="">
+                <input type="hidden" id="tipoIng" name="tipoIng" value="{{tipoIng}}">
+		<input type="hidden" id="convenioId" name="convenioId" value="{{convenioId}}">
+	
+            </form>
+
         	
             <!-- INICIO TABLE DE  EL DATATABLE  -->
 		<div class="container my-2">
@@ -101,7 +129,8 @@ table.dataTable tbody tr {
                                         <table  id= "tablaSolicitudCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
                                            <thead>
                                             <tr>    
-						<bold>                
+						<bold> 
+ 						  <th>id</th>                             
 					     <th>Sel</th>                                               
 					     <th>Proced</th>                                               
 						 <th>Participa</th>                                               
@@ -467,7 +496,7 @@ table.dataTable tbody tr {
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingProcedimientosCirugia"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosonCirugia" onclick="CrearProcedimientosCirugia()">Grabar!</button> 
+			 
                          <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
 			</div>
 		
@@ -480,11 +509,48 @@ table.dataTable tbody tr {
 
                                 <input type="hidden" name="post_id" id="post_id">
 			     <input type="hidden" class="form-control" id="sedesClinica_id2" name="sedesClinica_id2"  readonly></input>
+			Cirugia No : 
+			<input type="text"  id="cirugiaId3" name="cirugiaId3"  readonly></input>
+
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
-		
-				<div class="col-12">
+			 <div class="col-4">
+
+			</div>
+
+			  <div class="col-4">
+                                        <label for="cups" class="col-sm-1 control-label">Cups:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="cups"  tabindex= "0"  name="cups"  required>
+                                                {% for cupsCirugia in CupsCirugia %}
+                                                <option value="{{cupsCirugia.id}}"> {{cupsCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+			
+			<div class="col-4">
+                                        <label for="cups" class="col-sm-1 control-label">Finalidad:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="finalidad"  tabindex= "0"  name="finalidad"  required>
+                                                {% for finalidadCirugia in FinalidadCirugia %}
+                                                <option value="{{finalidadCirugia.id}}"> {{finalidadCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+			  <div class="col-4">
+			<input type="hidden" class="form-control" id="username4_id" name="username4_id"  ></input>
+                         </div>
+
+
+			 <div class="col-4">
+				<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosCirugia" onclick="CrearProcedimientosCirugia()">Adicionar!</button> 
+			</div>
+		</div>
+			
 			<!-- Aqui Data Table  -->
 				 <div class="row">
 				
@@ -492,10 +558,11 @@ table.dataTable tbody tr {
                                            <thead>
                                             <tr>    
 						<bold>                
-					     <th>Sel</th>                                               
-					<th>cups</th>
-					<th>nombre</th>
-					<th>finalidad</th>  
+					    	<th>Sel</th>  
+						<th>id</th>                                             
+						<th>cups</th>
+						<th>nombre</th>
+						<th>finalidad</th>  
 			              
 					</bold>                                  
 
@@ -506,23 +573,12 @@ table.dataTable tbody tr {
                                      
                                         </table>
                                     </div>
-				 </div>
+				
 
 			<!-- Fin Data table -->
 
-			  <div class="col-4">
-                                        <label for="cups" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="cups"  tabindex= "0"
-                                                    name="cups"
-                                                    required>
-                                                {% for cups in Cups %}
-                                                <option value="{{cups.id}}"> {{cups.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+			
+                            
 
                             </form>
 
@@ -565,6 +621,8 @@ table.dataTable tbody tr {
 
                                 <input type="hidden" name="post_id" id="post_id">
 			     <input type="hidden" class="form-control" id="sedesClinica_id4" name="sedesClinica_id4"  readonly></input>
+<input type="text"  id="cirugiaId4" name="cirugiaId4"  readonly></input>
+
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 

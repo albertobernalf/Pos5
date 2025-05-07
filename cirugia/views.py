@@ -245,13 +245,13 @@ def Load_dataSolicitudCirugia(request, data):
     curx = miConexionx.cursor()
 
 
-    detalle = 'SELECT i."sedesClinica_id" sede,cir.id cirugia, u."tipoDoc_id" tipoDoc_id, u.documento documento, u.nombre paciente , i.consec consecutivo, u."fechaNacio" nacimiento,u.genero genero, (now() - u."fechaNacio" ) edad, i.id ingreso, cir."fechaSolicita" solicita, dep.nombre cama,	emp.nombre empresa	, u.telefono,cir."solicitaSangre", cir."describeSangre", "cantidadSangre","solicitaCamaUci",cir."solicitaMicroscopio","solicitaRx","solicitaAutoSutura","solicitaOsteosintesis",	"solicitaBiopsia", cir"solicitaMalla", cir"solicitaOtros", estprog.nombre estadoProg,tiposAnes.nombre anestesia FROM admisiones_ingresos i INNER JOIN  usuarios_usuarios u ON ( u."tipoDoc_id" = i."tipoDoc_id" and  u.id = i.documento_id ) INNER JOIN  cirugia_cirugias cir ON (cir."sedesClinica_id" = i."sedesClinica_id" and cir."tipoDoc_id"=i."tipoDoc_id" AND cir.documento_id = i.documento_id AND cir."consecAdmision"= i.consec) INNER JOIN sitios_dependencias dep ON (dep.id =  i."dependenciasActual_id") LEFT JOIN  facturacion_empresas emp ON (emp.id = i.empresa_id ) LEFT JOIN  sitios_serviciosadministrativos serv ON (serv.id = cir."serviciosAdministrativos_id" ) LEFT JOIN  cirugia_estadosprogramacion estprog ON (estprog.id = cir."estadoProgramacion_id" ) LEFT JOIN  cirugia_tiposanestesia tiposAnes ON (tiposAnes.id = cir.anestesia_id ) LEFT JOIN  cirugia_tiposcirugia tiposCiru ON (tiposCiru.id = cir."tiposCirugia_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'"
+    detalle = 'SELECT cir.id id, i."sedesClinica_id" sede, u."tipoDoc_id" tipoDoc_id, u.documento documento, u.nombre paciente , i.consec consecutivo, u."fechaNacio" nacimiento,u.genero genero, (now() - u."fechaNacio" ) edad, i.id ingreso, cir."fechaSolicita" solicita, dep.nombre cama,	emp.nombre empresa	, u.telefono,cir."solicitaSangre", cir."describeSangre", "cantidadSangre","solicitaCamaUci",cir."solicitaMicroscopio","solicitaRx","solicitaAutoSutura","solicitaOsteosintesis",	"solicitaBiopsia", cir"solicitaMalla", cir"solicitaOtros", estprog.nombre estadoProg,tiposAnes.nombre anestesia FROM admisiones_ingresos i INNER JOIN  usuarios_usuarios u ON ( u."tipoDoc_id" = i."tipoDoc_id" and  u.id = i.documento_id ) INNER JOIN  cirugia_cirugias cir ON (cir."sedesClinica_id" = i."sedesClinica_id" and cir."tipoDoc_id"=i."tipoDoc_id" AND cir.documento_id = i.documento_id AND cir."consecAdmision"= i.consec) INNER JOIN sitios_dependencias dep ON (dep.id =  i."dependenciasActual_id") LEFT JOIN  facturacion_empresas emp ON (emp.id = i.empresa_id ) LEFT JOIN  sitios_serviciosadministrativos serv ON (serv.id = cir."serviciosAdministrativos_id" ) LEFT JOIN  cirugia_estadosprogramacion estprog ON (estprog.id = cir."estadoProgramacion_id" ) LEFT JOIN  cirugia_tiposanestesia tiposAnes ON (tiposAnes.id = cir.anestesia_id ) LEFT JOIN  cirugia_tiposcirugia tiposCiru ON (tiposCiru.id = cir."tiposCirugia_id") WHERE i."sedesClinica_id" = ' + "'" + str(sede) + "'"
 
     print(detalle)
 
     curx.execute(detalle)
 
-    for id, sede, tipoDoc_id, documento,  paciente, consecutivo, nacimiento, genero, edad, ingreso, solicita, cama, empresa, telefono, solicitaSangre, describeSangre, cantidadSangre, solicitaCamUci, solicitaMicroscopio,solicitaRx,solicitaAutoSutura, solicitaOsteosintesis, solicitaBiopsia, solicitaMalla,solicitaOtros, estadoProg, anestesia  in curx.fetchall():
+    for id, sede, tipoDoc_id, documento,  paciente, consecutivo, nacimiento, genero, edad, ingreso, solicita, cama, empresa, telefono, solicitaSangre, describeSangre, cantidadSangre, solicitaCamaUci, solicitaMicroscopio,solicitaRx,solicitaAutoSutura, solicitaOsteosintesis, solicitaBiopsia, solicitaMalla,solicitaOtros, estadoProg, anestesia  in curx.fetchall():
         solicitudCirugias.append(
             {"model": "cirugia.cirugia", "pk": id, "fields":
                 {'id': id, 'sede':sede, 'tipoDoc_id': tipoDoc_id, 'documento': documento,
@@ -371,6 +371,8 @@ def CrearSolicitudCirugia(request):
     print ("solicitaAyudante =", solicitaAyudante)
     solicitaTiempoQx = request.POST["solicitaTiempoQx"]
     print ("solicitaTiempoQx =", solicitaTiempoQx)
+
+
     solicitaTipoQx = request.POST["solicitatipoQx"]
     print ("solicitatipoQx =", solicitaTipoQx)
     solicitaAnestesia = request.POST["solicitaAnestesia"]
@@ -408,7 +410,7 @@ def CrearSolicitudCirugia(request):
     print ("dxRel2 =", dxRel2)
 
     dxPostQx = "null"
-    dxRel3 = "NULL"
+    dxRel3 = 'null'
 
     if dxPreQx == '':
         dxPreQx = "null"
@@ -429,7 +431,7 @@ def CrearSolicitudCirugia(request):
     estadoProgramacion = EstadosProgramacion.objects.get(nombre='Solicitud')
     #estadoSala = EstadosSalas.objetcs.get(nombre='OCUPADA')
     estadoReg = 'A'
-    fechaRegistro = datetime.datetime.now()
+    fechaRegistro = datetime.datetime.now()  ## esta e la fecha que funcionap copiar a demas programas a ver que pasa
     fechaSolicita = datetime.datetime.now()
 
     ingresoId = request.POST["ingresoId2"]
@@ -444,7 +446,7 @@ def CrearSolicitudCirugia(request):
         cur3 = miConexion3.cursor()
 
 
-        comando = 'INSERT INTO cirugia_cirugias ("consecAdmision", "fechaSolicita", "solicitaHospitalizacion", "solicitaAyudante", "solicitaTiempoQx",  "solicitaAnestesia", "solicitaSangre", "describeSangre", "cantidadSangre", "solicitaCamaUci", "solicitaMicroscopio", "solicitaRx", "solicitaAutoSutura", "solicitaOsteosintesis",  "solicitaBiopsia", "solicitaMalla", "solicitaOtros", "describeOtros", "tiempoMaxQx", "fechaRegistro", "estadoReg", anestesia_id, documento_id,  "dxPreQx_id", "dxPrinc_id", "dxRel1_id", "dxRel2_id", "dxRel3_id", especialidad_id, "sedesClinica_id", "tipoDoc_id", "usuarioRegistro_id", "usuarioSolicita_id", "serviciosAdministrativos_id", "estadoProgramacion_id", "tiposCirugia_id") VALUES (' + "'" + str(registroIngreso.consec) + "','" + str(fechaSolicita) + "','" + str(solicitaHospitalizacion) + "','" + str(solicitaAyudante) + "','" + str(solicitaTiempoQx) + "','"  + str(solicitaAnestesia) + "','" + str(solicitaSangre) + "','" + str(describeSangre) + "','" + str(cantidadSangre) + "','" + str(solicitaCamaUci) + "','" + str(solicitaMicroscopio) + "','" + str(solicitaRx) + "','" + str(solicitaAutoSutura) + "','" + str(solicitaOsteosintesis) + "','"  + str(solicitaBiopsia) + "','" + str(solicitaMalla) + "','" + str(solicitaOtros) + "','" + str(describeOtros) + "','" + str(tiempoMaxQx) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(anestesia) + "','" + str(registroIngreso.documento_id) + "','" + str(dxPreQx) + "','" + str(dxPrinc) + "','" + str(dxRel1) + "','" + str(dxRel2) + "','" + str(dxRel3) + "','" + str(especialidadX) + "','" + str(sedesClinica_id) + "','" + str(registroIngreso.tipoDoc_id) + "','" + str(username) + "','" + str(username) + "','" + str(serviciosAdministrativos) + "','" + str(estadoProgramacion.id) + "','" + str(tiposCirugia) + "')"
+        comando = 'INSERT INTO cirugia_cirugias ("consecAdmision", "fechaSolicita", "solicitaHospitalizacion", "solicitaAyudante", "solicitaTiempoQx",  "solicitaAnestesia", "solicitaSangre", "describeSangre", "cantidadSangre", "solicitaCamaUci", "solicitaMicroscopio", "solicitaRx", "solicitaAutoSutura", "solicitaOsteosintesis",  "solicitaBiopsia", "solicitaMalla", "solicitaOtros", "describeOtros", "tiempoMaxQx", "fechaRegistro", "estadoReg", anestesia_id, documento_id,  "dxPreQx_id", "dxPrinc_id", "dxRel1_id", "dxRel2_id", "dxRel3_id", especialidad_id, "sedesClinica_id", "tipoDoc_id", "usuarioRegistro_id", "usuarioSolicita_id", "serviciosAdministrativos_id", "estadoProgramacion_id", "tiposCirugia_id") VALUES (' + "'" + str(registroIngreso.consec) + "','" + str(fechaSolicita) + "','" + str(solicitaHospitalizacion) + "','" + str(solicitaAyudante) + "','" + str(solicitaTiempoQx) + "','"  + str(solicitaAnestesia) + "','" + str(solicitaSangre) + "','" + str(describeSangre) + "','" + str(cantidadSangre) + "','" + str(solicitaCamaUci) + "','" + str(solicitaMicroscopio) + "','" + str(solicitaRx) + "','" + str(solicitaAutoSutura) + "','" + str(solicitaOsteosintesis) + "','"  + str(solicitaBiopsia) + "','" + str(solicitaMalla) + "','" + str(solicitaOtros) + "','" + str(describeOtros) + "','" + str(tiempoMaxQx) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(anestesia) + "','" + str(registroIngreso.documento_id) + "','" + str(dxPreQx) + "','" + str(dxPrinc) + "','" + str(dxRel1) + "','" + str(dxRel2) + "'," + str(dxRel3) + ",'" + str(especialidadX) + "','" + str(sedesClinica_id) + "','" + str(registroIngreso.tipoDoc_id) + "','" + str(username) + "','" + str(username) + "','" + str(serviciosAdministrativos) + "','" + str(estadoProgramacion.id) + "','" + str(tiposCirugia) + "')"
 
 
         print(comando)
@@ -470,10 +472,22 @@ def CrearSolicitudCirugia(request):
             cur3.close()
             miConexion3.close()
 
-def TraerProcedimientosCirugia(request):
+def TraerProcedimientosCirugia(request, data):
     print("Entre TraerProcedimientosCirugia")
 
-    cirugiaId = request.POST.get('cirugiaId')
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    cirugiaId = d['cirugiaId']
     print("cirugiaId =", cirugiaId)
 
     procedimientosCirugia = []
@@ -482,15 +496,16 @@ def TraerProcedimientosCirugia(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    comando = 'select cirproc.id id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
 
     print(comando)
     cur3.execute(comando)
 
-    for id, cirugiaId, cups_id, exaNombre, finalNombre  in cur3.fetchall():
+    for id,  cups_id, exaNombre, finalNombre  in cur3.fetchall():
         procedimientosCirugia.append(
             {"model": "cirugia.procedimientos", "pk": id, "fields":
-                {'id': id, 'cirugia_id': cirugia_id, 'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
+                {'id': id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
 
     miConexion3.close()
     print(procedimientosCirugia)
@@ -500,7 +515,7 @@ def TraerProcedimientosCirugia(request):
     return HttpResponse(serialized1, content_type='application/json')
 
 
-def TraerParticipantesCirugia(request):
+def TraerParticipantesCirugia(request, data):
     print("Entre TraerParticipantesCirugia")
 
     cirugiaId = request.POST.get('cirugiaId')
@@ -529,3 +544,105 @@ def TraerParticipantesCirugia(request):
     serialized1 = json.dumps(participantesCirugia, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+def CrearProcedimientosCirugia(request):
+
+    print ("Entre CrearProcedimientosCirugia" )
+
+    cirugiaId = request.POST.get('cirugiaId3')
+    print ("cirugiaId =", cirugiaId)
+
+    finalidad = request.POST.get('finalidad')
+    print("finalidad =", finalidad)
+
+    cups = request.POST["cups"]
+    print ("cups =", cups)
+
+    username_id = request.POST["username4_id"]
+    print ("username_id =", username_id)
+
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuarioRegistro_id") VALUES (' + "'" + str(finalidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "')"
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Procedimiento Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
+def CrearParticipantesCirugia(request):
+
+    print ("Entre CrearParticipantesCirugia" )
+
+    cirugiaId = request.POST('cirugiaId3')
+    print ("cirugiaId =", cirugiaId)
+
+    finalidadId = request.POST('finalidad')
+    print("finalidadId =", finalidadId)
+
+    cups = request.POST["cups"]
+    print ("cups =", cups)
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuaioRegistro_id") VALUES (' + "'" + str(finalidad) + "'," + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "')"
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Procedikmiento Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()

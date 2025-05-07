@@ -2004,6 +2004,53 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Fin combo especialidadesCirugia
 
+	# Combo cupsCirugia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  clinico_examenes  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        cupsCirugia = []
+
+
+        for id, nombre in curt.fetchall():
+            cupsCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("cupsCirugia", cupsCirugia)
+
+        context['CupsCirugia'] = cupsCirugia
+
+        # Fin combo cupsCirugia
+
+	# Combo finalidadCirugia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  cirugia_finalidadcirugia  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        finalidadCirugia = []
+
+
+        for id, nombre in curt.fetchall():
+            finalidadCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("finalidadCirugia", finalidadCirugia)
+
+        context['FinalidadCirugia'] = finalidadCirugia
+
+        # Fin combo finalidadCirugia
 
         return render(request, "cirugia/panelCirugiaF.html", context)
 
@@ -2107,9 +2154,6 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         context['TarifariosDescripcionHono'] = tarifariosDescripcionHono
 
         # Fin combo tarifariosDescripcionHono
-
-
-
 
         ## FIN CONTEXTO
 
