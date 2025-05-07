@@ -25,12 +25,12 @@ from admisiones.models import Ingresos
 from facturacion.models import ConveniosPacienteIngresos, Liquidacion, LiquidacionDetalle, Facturacion, FacturacionDetalle, Conceptos
 from cartera.models import TiposPagos, FormasPagos, Pagos, PagosFacturas, Glosas
 from triage.models import Triage
-from clinico.models import Servicios
+from clinico.models import Servicios, EspecialidadesMedicos
 from rips.models import RipsTransaccion, RipsUsuarios, RipsEnvios, RipsDetalle, RipsTiposNotas
 from tarifarios.models import TiposTarifa, TiposTarifaProducto
 import io
 import pandas as pd
-from cirugia.models import EstadosCirugias, EstadosSalas
+from cirugia.models import EstadosCirugias, EstadosSalas, EstadosProgramacion
 
 
 # Create your views here.
@@ -238,9 +238,6 @@ def Load_dataSolicitudCirugia(request, data):
     # print("data = ", request.GET('data'))
 
 
-
-
-
     solicitudCirugias = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -268,7 +265,7 @@ def Load_dataSolicitudCirugia(request, data):
 
     miConexionx.close()
     print(solicitudCirugias)
-    solicitudCirugias['ingresosCirugia'] = ingresosCirugia
+    #solicitudCirugias['ingresosCirugia'] = ingresosCirugia
 
     serialized1 = json.dumps(solicitudCirugias, default=str)
 
@@ -314,5 +311,221 @@ def Load_dataIngresosCirugia(request, data):
     print(ingresosCirugia)
 
     serialized1 = json.dumps(ingresosCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def CrearSolicitudCirugia(request):
+
+    print ("Entre CrearSolicitudCirugia" )
+
+    serviciosAdministrativos = request.POST.get("serviciosAdministrativosI")
+    print ("serviciosAdministrativos =", serviciosAdministrativos)
+
+    solicitaSangre = request.POST["solicitaSangre"]
+    print ("solicitaSangre =", solicitaSangre)
+
+    describeSangre = request.POST["describeSangre"]
+    print ("describeSangre =", describeSangre)
+
+    cantidadSangre = request.POST["cantidadSangre"]
+    print ("cantidadSangre =", cantidadSangre)
+
+    solicitaCamaUci = request.POST["solicitaCamaUci"]
+    print ("solicitaCamaUci =", solicitaCamaUci)
+
+    solicitaMicroscopio = request.POST["solicitaMicroscopio"]
+    print ("olicitaMicroscopio =", solicitaMicroscopio)
+
+
+    solicitaCamaUci = request.POST["solicitaCamaUci"]
+    print ("solicitaCamaUci =", solicitaCamaUci)
+
+    solicitaRx = request.POST["solicitaRx"]
+    print ("solicitaRx =", solicitaRx)
+
+    solicitaCamaUci = request.POST["solicitaCamaUci"]
+    print ("solicitaCamaUci =", solicitaCamaUci)
+
+    solicitaOsteosintesis = request.POST["solicitaOsteosintesis"]
+    print ("solicitaOsteosintesis =", solicitaOsteosintesis)
+    solicitaBiopsia = request.POST["solicitaBiopsia"]
+    print ("solicitaBiopsia =", solicitaBiopsia)
+    solicitaMalla = request.POST["solicitaMalla"]
+    print ("solicitaMalla =", solicitaMalla)
+    solicitaOtros = request.POST["solicitaOtros"]
+    print ("solicitaOtros =", solicitaOtros)
+
+    anestesia = request.POST["anestesia"]
+    print ("anestesia =", anestesia)
+    sedesClinica_id = request.POST["sedesClinica_id"]
+    print("sedesClinica_id =", sedesClinica_id)
+
+    username = request.POST["username3_id"]
+    print("username =", username)
+
+
+    solicitaHospitalizacion = request.POST["solicitaHospitalizacion"]
+    print ("solicitaHospitalizacion =", solicitaHospitalizacion)
+    solicitaAyudante = request.POST["solicitaAyudante"]
+    print ("solicitaAyudante =", solicitaAyudante)
+    solicitaTiempoQx = request.POST["solicitaTiempoQx"]
+    print ("solicitaTiempoQx =", solicitaTiempoQx)
+    solicitaTipoQx = request.POST["solicitatipoQx"]
+    print ("solicitatipoQx =", solicitaTipoQx)
+    solicitaAnestesia = request.POST["solicitaAnestesia"]
+    print ("solicitaAnestesia =", solicitaAnestesia)
+    solicitaOtros = request.POST["solicitaOtros"]
+    print ("solicitaOtros =", solicitaOtros)
+    tiempoMaxQx = request.POST["tiempoMaxQx"]
+    print ("tiempoMaxQx =", tiempoMaxQx)
+    solicitaAutoSutura = request.POST["solicitaAutoSutura"]
+    print ("solicitaAutoSutura =", solicitaAutoSutura)
+
+    solicitaSoporte = request.POST["solicitaSoporte"]
+    print ("solicitaSoporte =", solicitaSoporte)
+
+    describeOtros = request.POST["describeOtros"]
+    print ("describeOtros =", describeOtros)
+
+    especialidadX = request.POST["especialidadX"]
+    print("especialidadX =", especialidadX)
+
+    tiposCirugia = request.POST["tiposCirugia"]
+    print ("tiposCirugia =", tiposCirugia)
+
+    dxPreQx = request.POST["dxPreQx"]
+    print ("dxPreQx =", dxPreQx)
+
+
+    dxPrinc = request.POST["dxPrinc"]
+    print ("dxPrinc =", dxPrinc)
+
+    dxRel1 = request.POST["dxRel1"]
+    print ("dxRel1 =", dxRel1)
+
+    dxRel2 = request.POST["dxRel2"]
+    print ("dxRel2 =", dxRel2)
+
+    dxPostQx = "null"
+    dxRel3 = "NULL"
+
+    if dxPreQx == '':
+        dxPreQx = "null"
+
+    if dxPostQx == '':
+        dxPostQx = "null"
+
+    if dxPrinc == '':
+        dxPrinc = "null"
+    if dxRel1 == '':
+        dxRel1 = "null"
+    if dxRel2 == '':
+        dxRel2 = "null"
+
+    #especialidadId = EspecialidadesMedicos.objects.get(planta_id=username)
+
+    estadoCirugia = EstadosCirugias.objects.get(nombre='PENDIENTE')
+    estadoProgramacion = EstadosProgramacion.objects.get(nombre='Solicitud')
+    #estadoSala = EstadosSalas.objetcs.get(nombre='OCUPADA')
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+    fechaSolicita = datetime.datetime.now()
+
+    ingresoId = request.POST["ingresoId2"]
+    print("ingresoId =", ingresoId)
+
+    registroIngreso = Ingresos.objects.get(id=ingresoId)
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+
+        comando = 'INSERT INTO cirugia_cirugias ("consecAdmision", "fechaSolicita", "solicitaHospitalizacion", "solicitaAyudante", "solicitaTiempoQx",  "solicitaAnestesia", "solicitaSangre", "describeSangre", "cantidadSangre", "solicitaCamaUci", "solicitaMicroscopio", "solicitaRx", "solicitaAutoSutura", "solicitaOsteosintesis",  "solicitaBiopsia", "solicitaMalla", "solicitaOtros", "describeOtros", "tiempoMaxQx", "fechaRegistro", "estadoReg", anestesia_id, documento_id,  "dxPreQx_id", "dxPrinc_id", "dxRel1_id", "dxRel2_id", "dxRel3_id", especialidad_id, "sedesClinica_id", "tipoDoc_id", "usuarioRegistro_id", "usuarioSolicita_id", "serviciosAdministrativos_id", "estadoProgramacion_id", "tiposCirugia_id") VALUES (' + "'" + str(registroIngreso.consec) + "','" + str(fechaSolicita) + "','" + str(solicitaHospitalizacion) + "','" + str(solicitaAyudante) + "','" + str(solicitaTiempoQx) + "','"  + str(solicitaAnestesia) + "','" + str(solicitaSangre) + "','" + str(describeSangre) + "','" + str(cantidadSangre) + "','" + str(solicitaCamaUci) + "','" + str(solicitaMicroscopio) + "','" + str(solicitaRx) + "','" + str(solicitaAutoSutura) + "','" + str(solicitaOsteosintesis) + "','"  + str(solicitaBiopsia) + "','" + str(solicitaMalla) + "','" + str(solicitaOtros) + "','" + str(describeOtros) + "','" + str(tiempoMaxQx) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(anestesia) + "','" + str(registroIngreso.documento_id) + "','" + str(dxPreQx) + "','" + str(dxPrinc) + "','" + str(dxRel1) + "','" + str(dxRel2) + "','" + str(dxRel3) + "','" + str(especialidadX) + "','" + str(sedesClinica_id) + "','" + str(registroIngreso.tipoDoc_id) + "','" + str(username) + "','" + str(username) + "','" + str(serviciosAdministrativos) + "','" + str(estadoProgramacion.id) + "','" + str(tiposCirugia) + "')"
+
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Solicitud Actualizada satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+def TraerProcedimientosCirugia(request):
+    print("Entre TraerProcedimientosCirugia")
+
+    cirugiaId = request.POST.get('cirugiaId')
+    print("cirugiaId =", cirugiaId)
+
+    procedimientosCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, cirugiaId, cups_id, exaNombre, finalNombre  in cur3.fetchall():
+        procedimientosCirugia.append(
+            {"model": "cirugia.procedimientos", "pk": id, "fields":
+                {'id': id, 'cirugia_id': cirugia_id, 'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
+
+    miConexion3.close()
+    print(procedimientosCirugia)
+
+    serialized1 = json.dumps(procedimientosCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def TraerParticipantesCirugia(request):
+    print("Entre TraerParticipantesCirugia")
+
+    cirugiaId = request.POST.get('cirugiaId')
+    print("cirugiaId =", cirugiaId)
+
+    participantesCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    comando = 'select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre honNombre, med.nombre medicoNombre, esp.nombre especialidadNombre FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp WHERE cirpart.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id'
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, cirugiaId, honNombre, medicoNombre, especialidadNombre  in cur3.fetchall():
+        participantesCirugia.append(
+            {"model": "cirugia.procedimientos", "pk": id, "fields":
+                {'id': id, 'cirugia_id': cirugia_id, 'honNombre': honNombre, 'medicoNombre': medicoNombre, 'especialidadNombre': especialidadNombre      }})
+
+    miConexion3.close()
+    print(participantesCirugia)
+
+    serialized1 = json.dumps(participantesCirugia, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')

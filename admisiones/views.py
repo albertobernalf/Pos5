@@ -1906,6 +1906,105 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         ## FIN CONTEXTO
 
+
+   	# Combo tiposAnestesia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM  cirugia_tiposanestesia  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        tiposAnestesia = []
+
+
+        for id, nombre in curt.fetchall():
+            tiposAnestesia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tiposAnestesia", tiposAnestesia)
+
+        context['TiposAnestesia'] = tiposAnestesia
+
+        # Fin combo tiposAnestesia
+
+
+   	# Combo tiposCirugia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM  cirugia_tiposcirugia  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        tiposCirugia = []
+
+
+        for id, nombre in curt.fetchall():
+            tiposCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tiposCirugia", tiposCirugia)
+
+        context['TiposCirugia'] = tiposCirugia
+
+        # Fin combo tiposCirugia
+
+	# Combo diagnosticos
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM  clinico_diagnosticos  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        diagnosticosCirugia = []
+
+
+        for id, nombre in curt.fetchall():
+            diagnosticosCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("diagnosticosCirugia", diagnosticosCirugia)
+
+        context['DiagnosticosCirugia'] = diagnosticosCirugia
+
+        # Fin combo diagnosticosCirugia
+
+	# Combo especialidadesCirugia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM  clinico_especialidades  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        especialidadesCirugia = []
+
+
+        for id, nombre in curt.fetchall():
+            especialidadesCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("especialidadesCirugia", especialidadesCirugia)
+
+        context['EspecialidadesCirugia'] = especialidadesCirugia
+
+        # Fin combo especialidadesCirugia
+
+
         return render(request, "cirugia/panelCirugiaF.html", context)
 
 

@@ -53,7 +53,7 @@ urlpatterns = [
     path('medicalReport/', viewsReportes.menuAcceso),
 
     #path('validaAcceso/', viewsReportes.validaAcceso),
-    path('salir/', viewsReportes.salir),
+    path('salir/', viewsAdmisiones.menuAcceso),
     path('pantallaSubgrupos/<str:username>, <str:sedeSeleccionada>, <str:grupo>', viewsReportes.pantallaSubgrupos),
     path('emergenteGrupos/<str:username>, <str:sedeSeleccionada>, <str:grupo>', viewsReportes.emergenteGrupos),
     path('combo/<str:username>, <str:sedeSeleccionada>, <str:grupo>, <str:subGrupo>', viewsReportes.combo),
@@ -328,7 +328,9 @@ urlpatterns = [
     path('crearProgramacionCirugia/', viewsCirugia.CrearProgramacionCirugia, name='crearProgramacion_Cirugia'),
     path('load_dataSolicitudCirugia/<str:data>', viewsCirugia.Load_dataSolicitudCirugia, name='load_dataSolicitud_Cirugia'),
     path('load_dataIngresosCirugia/<str:data>', viewsCirugia.Load_dataIngresosCirugia,    name='load_dataIngresos_Cirugia'),
-
+    path('crearSolicitudCirugia/', viewsCirugia.CrearSolicitudCirugia, name='CrearSolicitudCirugia'),
+    path('traerProcedimientosCirugia/', viewsCirugia.TraerProcedimientosCirugia, name='TraerProcedimiento_Cirugia'),
+    path('traerParticipantesCirugia/', viewsCirugia.TraerParticipantesCirugia, name='TraerParticipantes_Cirugia'),
 
 
     # Citas Medicas

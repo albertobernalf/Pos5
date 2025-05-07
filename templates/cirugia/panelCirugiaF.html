@@ -163,6 +163,8 @@ table.dataTable tbody tr {
   			  <form id="postFormSolicitudCirugia" name="postFormSolicitudCirugia">
 
                                 <input type="hidden" name="post_id" id="post_id">
+                                <input type="text" name="cirugiaId2" id="cirugiaId2">
+                                <input type="text" name="ingresoId2" id="ingresoId2">
 			     <input type="hidden" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  readonly></input>
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
@@ -203,10 +205,10 @@ table.dataTable tbody tr {
 			<!-- Fin Data table -->
 
 			  <div class="col-4">
-                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <label for="serviciosAdministrativosI" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
                                         <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
-                                                    name="serviciosAdministrativos"
+                                            <select class="select-css h-40 w-20" id="serviciosAdministrativosI"  tabindex= "0"
+                                                    name="serviciosAdministrativosI"
                                                     required>
                                                 {% for serviciosAdministrativos in ServiciosAdministrativos %}
                                                 <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
@@ -214,33 +216,221 @@ table.dataTable tbody tr {
                                             </select>
                                         </div>
                                     </div>
+	
+				  <div class="col-4">
+                                        <label for="anestesia" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="anestesia"  tabindex= "0"
+                                                    name="anestesia"
+                                                    required>
+                                                {% for tiposAnestesia in TiposAnestesia %}
+                                                <option value="{{tiposAnestesia.id}}"> {{tiposAnestesia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                                    
-				<div class="col-5">
-                                    Estado
-				<select class="select-css"  id="estadoProgramacion_id"  name="estadoProgramacion_id">
-                                                           {% for estadosProgramacion in EstadosProgramacion %}
-                                                            <option value="{{estadosProgramacion.id}}">
-                                                                {{estadosProgramacion.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
+				  <div class="col-4">
+                                        <label for="tiposCirugia" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="tiposCirugia"  tabindex= "0"
+                                                    name="tiposCirugia"
+                                                    required>
+                                                {% for tiposCirugia in TiposCirugia %}
+                                                <option value="{{tiposCirugia.id}}"> {{tiposCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+  				<div class="col-4">
+                                        <label for="dxPreQx" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="dxPreQx"  tabindex= "0"
+                                                    name="dxPreQx"
+                                                    required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+				<div class="col-3">
+                                        <label for="dxPrinc" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="dxPrinc"  tabindex= "0"
+                                                    name="dxPrinc"
+                                                    required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+				<div class="col-3">
+                                        <label for="dxRel1" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="dxRel1"  tabindex= "0"
+                                                    name="dxRel1"
+                                                    required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+	
+				<div class="col-3">
+                                        <label for="dxRel2" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="dxRel2"  tabindex= "0"
+                                                    name="dxRel2"
+                                                    required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+				<div class="col-3">
+                                        <label for="especialidadX" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="especialidadX"  tabindex= "0"
+                                                    name="especialidadX"
+                                                    required>
+                                                {% for especialidadesCirugia in EspecialidadesCirugia %}
+                                                <option value="{{especialidadesCirugia.id}}"> {{especialidadesCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                                   
+				
+				<div class="col-1">
+					                          	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaHospitalizacion" name="solicitaHospitalizacion" size="7" placeholder="SolHosp"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitaAyudante">solicitaAyudante:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaAyudante" name="solicitaAyudante" placeholder="solicitaAyudante"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitaTiempoQx">solicitaTiempoQx:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaTiempoQx" name="solicitaTiempoQx" placeholder="solicitaTiempoQx"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitatipoQx">solicitatipoQx:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitatipoQx" name="solicitatipoQx" placeholder="solicitatipoQx"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitaAnestesia">solicitaAnestesia:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaAnestesia" name="solicitaAnestesia" placeholder="solicitaAnestesia"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitaOtros">solicitaOtros:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaOtros" name="solicitaOtros" placeholder="solicitaOtros"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="tiempoMaxQx">tiempoMaxQx:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="tiempoMaxQx" name="tiempoMaxQx" placeholder="tiempoMaxQx"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitaAutoSutura">solicitaAutoSutura:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaAutoSutura" name="solicitaAutoSutura" placeholder="solicitaAutoSutura"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="solicitaSoporte">solicitaSoporte:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaSoporte" name="solicitaSoporte" placeholder="solicitaAutoSutura"  >
+
+                                </div>
+				<div class="col-1">
+					<label  for="describeOtros">describeOtros:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="describeOtros" name="describeOtros" placeholder="describeOtros"  >
+
+                                </div>
+
+
+				<div class="col-1">
+					<label  for="solicitaSangre">solicitaSangre:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaSangre" name="solicitaSangre" placeholder="solicitaSangre"  >
+
+                                </div>
+						
+
+				<div class="col-1">
+					<label  for="describeSangre">describeSangre:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="describeSangre" name="describeSangre" placeholder="describeSangre"  >
+
                                 </div>
 
 				<div class="col-1">
-						uno                              
+					<label  for="cantidadSangre">cantidadSangre:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="cantidadSangre" name="cantidadSangre" placeholder="cantidadSangre"  >
+
                                 </div>
 
 				<div class="col-1">
-					dos                              
+					<label  for="solicitaCamaUci">solicitaCamaUci:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaCamaUci" name="solicitaCamaUci" placeholder="solicitaCamaUci"  >
+
                                 </div>
 
+								<div class="col-1">
+					<label  for="solicitaMicroscopio">solicitaMicroscopio:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaMicroscopio" name="solicitaMicroscopio" placeholder="solicitaMicroscopio"  >
+
+                                </div>
+			<div class="col-1">
+					<label  for="solicitaCamaUci">solicitaCamaUci:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaCamaUci" name="solicitaCamaUci" placeholder="solicitaCamaUci"  >
+
+                                </div>
+			<div class="col-1">
+					<label  for="solicitaRx">solicitaRx:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaRx" name="solicitaRx" placeholder="solicitaRx"  >
+
+                                </div>
+			<div class="col-1">
+					<label  for="solicitaCamaUci">solicitaCamaUci:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaCamaUci" name="solicitaCamaUci" placeholder="solicitaCamaUci"  >
+
+                                </div>
+			<div class="col-1">
+					<label  for="solicitaOsteosintesis">solicitaOsteosintesis:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaOsteosintesis" name="solicitaOsteosintesis" placeholder="solicitaOsteosintesis"  >
+
+                                </div>
+			<div class="col-1">
+					<label  for="solicitaBiopsia">solicitaBiopsia:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaBiopsia" name="solicitaBiopsia" placeholder="solicitaBiopsia"  >
+
+	                         </div>
 				<div class="col-1">
-						tres                              
+					<label  for="solicitaMalla">solicitaMalla:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaMalla" name="solicitaMalla" placeholder="solicitaMalla"  >
+
                                 </div>
+				<div class="col-1">
+					<label  for="solicitaOtros">solicitaOtros:</label>                               	                               
+					 <input type="text"  class="form-control form-control-sm" id="solicitaOtros" name="solicitaOtros" placeholder="solicitaOtros"  >
 
+                                </div>
+			
 
+					
 
 				<div class="col-12">
 				
@@ -268,6 +458,176 @@ table.dataTable tbody tr {
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
 
+
+
+	<!-- Modal Procedimiento Cirugia -->
+
+   <div class="modal fade" id="crearModelProcedimientosCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingProcedimientosCirugia"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosonCirugia" onclick="CrearProcedimientosCirugia()">Grabar!</button> 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormProcedimientosCirugia" name="postFormSolicitudCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+			     <input type="hidden" class="form-control" id="sedesClinica_id2" name="sedesClinica_id2"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+		
+				<div class="col-12">
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaProcedimientosCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Sel</th>                                               
+					<th>cups</th>
+					<th>nombre</th>
+					<th>finalidad</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				 </div>
+
+			<!-- Fin Data table -->
+
+			  <div class="col-4">
+                                        <label for="cups" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="cups"  tabindex= "0"
+                                                    name="cups"
+                                                    required>
+                                                {% for cups in Cups %}
+                                                <option value="{{cups.id}}"> {{cups.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalProcedimientos" name="mensajesErrorModalProcedimientos" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosdonCirugia" onclick="CrearProcedimientosCirugia()">Grabar!</button> 
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- Modal Procedimiento Cirugia -->
+
+
+	<!-- Modal Participantes Cirugia -->
+
+   <div class="modal fade" id="crearModelParticipantesCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingParticipantesCirugia"> </h4> 
+			<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia" onclick="CrearParticipantesCirugia()">Grabar!</button> 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormParticipantesCirugia" name="postFormParticipantesCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+			     <input type="hidden" class="form-control" id="sedesClinica_id4" name="sedesClinica_id4"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+		
+				<div class="col-12">
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaParticipantesCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Sel</th>                                               
+					<th>cups</th>
+					<th>nombre</th>
+					<th>finalidad</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				 </div>
+
+			<!-- Fin Data table -->
+
+			  <div class="col-4">
+                                        <label for="medico" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="medico"  tabindex= "0"
+                                                    name="medico"
+                                                    required>
+                                                {% for especialidadesMedicos in EspecialidadesMedicos %}
+                                                <option value="{{especialidadesMedicos.id}}"> {{especialidadesMedicos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalParticipantes" name="mensajesErrorModalParticipantes" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia" onclick="CrearParticipantesCirugia()">Grabar!</button> 
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- Modal Participantes Cirugia -->
 
      <!-- FIN Espacio Modales  -->
 
