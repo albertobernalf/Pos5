@@ -1906,6 +1906,32 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         ## FIN CONTEXTO
 
+   	# Combo salas
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre  nombre FROM  sitios_salas  p"
+
+        curt.execute(comando)
+        print(comando)
+
+        salasCirugia = []
+
+
+        for id, nombre in curt.fetchall():
+            salasCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("salasCirugia", salasCirugia)
+
+        context['SalasCirugia'] = salasCirugia
+
+        # Fin combo salas
+
+
+
 
    	# Combo tiposAnestesia
 

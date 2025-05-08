@@ -25,9 +25,22 @@ LEFT JOIN CLINICO_EXAMENES exa2 ON (exa2.id= prog.cups2_id)
 LEFT JOIN CLINICO_EXAMENES exa3 ON (exa3.id= prog.cups3_id)
 WHERE sed.id = '2' 
 order by sala.numero, inicia
-
+ 
 	select * from cirugia_estadossalas;
 select * from sitios_salas;
+
+SELECT prog.id id,  u."tipoDoc_id" tipoDoc_id , u.documento documento, i.consec consecutivo, u.nombre paciente,estprog.nombre estadoProg,sala.numero,
+	sala.nombre sala, prog."fechaProgramacionInicia" inicia, prog."horaProgramacionInicia" horaInicia, prog."fechaProgramacionFin" Termina,
+	prog."horaProgramacionFin" horaTermina 
+	FROM cirugia_programacioncirugias prog 
+	INNER JOIN sitios_sedesclinica sed	on (sed.id = prog."sedesClinica_id")
+	INNER JOIN admisiones_ingresos i ON (i."tipoDoc_id" =prog."tipoDoc_id" AND i.documento_id =  prog.documento_id AND i.consec= prog."consecAdmision" ) 
+	INNER JOIN usuarios_usuarios u ON (u.id = i.documento_id )
+	INNER JOIN cirugia_estadosprogramacion estprog ON (estprog.id = prog."estadoProgramacion_id" )
+	LEFT JOIN sitios_salas sala ON (sala.id =prog.sala_id ) 
+	WHERE sed.id = '1' order by sala.numero, inicia
+
+	select * from cirugia_programacioncirugias;
 
 
 comando = 'SELECT prog.id,  u."tipoDoc_id", u.documento, u.nombre paciente,estprog.nombre estado,sala.numero, sala.nombre sala, prog."fechaProgramacionInicia" inicia, prog."horaProgramacionInicia" horaInicia, prog."fechaProgramacionFin" Termina, prog."horaProgramacionFin" horaTermina,prog.cups1_id, exa1.nombre, prog.cups2_id,exa2.nombre, prog.cups3_id, exa3.nombre FROM cirugia_programacioncirugias prog INNER JOIN sitios_sedesclinica sed	on (sed.id = prog."sedesClinica_id") INNER JOIN admisiones_ingresos i ON (i."tipoDoc_id" =prog."tipoDoc_id" AND i.documento_id =  prog.documento_id AND i.consec= prog."consecAdmision" ) INNER JOIN usuarios_usuarios u ON (u.id = i.documento_id ) INNER JOIN cirugia_estadosprogramacion estprog ON (estprog.id = prog."estadoProgramacion_id" ) INNER JOIN sitios_salas sala ON (sala.id =prog.sala_id ) LEFT JOIN CLINICO_EXAMENES exa1 ON (exa1.id= prog.cups1_id) LEFT JOIN CLINICO_EXAMENES exa2 ON (exa2.id= prog.cups2_id)  LEFT JOIN CLINICO_EXAMENES exa3 ON (exa3.id= prog.cups3_id) WHERE sed.id = ' + "'" + str(sede) + "'"
@@ -79,8 +92,11 @@ select * from clinico_especialidadesmedicos;
 select * from cirugia_cirugiasprocedimientos;
 select * from cirugia_cirugiasparticipantes;
 select * from cirugia_finalidadcirugia;
-select * from tarifarios_tiposhonorarios;clinico_especialidades
+select * from tarifarios_tiposhonorarios;
+clinico_especialidades
 	select * from clinico_especialidades;
+
+select * from clinico_especialidadesmedicos;
 
 SELECT * FROM cirugia_cirugias;
 select * from cirugia_finalidadcirugia;
@@ -109,6 +125,33 @@ FROM cirugia_cirugiasprocedimientos cirproc
 INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id)
 LEFT JOIN	cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id)
 WHERE cirproc.cirugia_id = '10' 
+select * FROM CIRUGIA_ESTADOScIRUGIAS;
+select * FROM CIRUGIA_ESTADOSPROGRAMACION;
+update cirugia_cirugias set "estadoCirugia_id"=1;
+select "estadoProgramacion_id","estadoCirugia_id",* from cirugia_cirugias;
+select "estadoProgramacion_id",* from cirugia_programacioncirugias;
 
 
-comando = 'select cirproc.id id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+select * from sitios_salas;
+select * from sitios_serviciosAdministrativos;
+
+select * from facturacion_tipossuministro;
+select * from facturacion_suministros;
+select * from cirugia_CirugiasMaterialQx;
+select * from tarifarios_tiposhonorarios;
+select * from cirugia_cirugiasparticipantes;
+
+select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre honNombre, med.nombre medicoNombre, esp.nombre especialidadNombre
+	FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp 
+	WHERE cirpart.cirugia_id = '10' and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id
+
+select * from sitios_salas;
+select * from cirugia_programacioncirugias;
+
+
+detalle ='SELECT prog.id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,prog."horaProgramacionInicia", prog."horaProgramacionFin" FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'"
+
+
+SELECT *
+FROM cirugia_programacioncirugias cir
+where sala_id = 1 AND    '2025-05-08' BETWEEN  "fechaProgramacionInicia" AND  "fechaProgramacionFin" AND '06:00' BETWEEN 

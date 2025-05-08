@@ -19,7 +19,6 @@
     <ul class="tabs">
 	<li><a href="#SolicitarCirugia"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Solicitar Cirugia </a></li>
         <li><a href="#ProgramacionCirugia"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Programacion de Cirugia </a></li>
-        <li><a href="#CirugiaDetalle"><span class="fa-solid fa-user-doctor-message"></span> <span   class="tab-text"> </span> Detalle de Cirugia</a></li>
         <li><a href="#InformeQx"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Informe Quirurgico </a></li>
         <li><a href="#RecordAnestesico"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Record Anestesico </a></li>
 	<li><a href="#HojaDeGasto"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Hoja De Gasto </a></li>
@@ -196,7 +195,7 @@ table.dataTable tbody tr {
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingSolicitudCirugia"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearSolicitudonCirugia" onclick="CrearSolicitudCirugia()">Grabar!</button> 
+			
                          <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
 			</div>
 		
@@ -495,11 +494,13 @@ table.dataTable tbody tr {
 					
 					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
                                    
-                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearSolicitudonCirugia" onclick="CrearSolicitudCirugia()">Grabar!</button> 
+                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearSolicitudCirugia" onclick="CrearSolicitudCirugia()">Grabar!</button> 
                                     </div>
 
 						
                         </div> <!-- CIERRA MODAL CONTENTE -->
+
+
                     </div> <!-- CIERRA MODAL DIALOG -->
                 </div>  <!-- CIERRA MODAL FADE -->
 
@@ -643,21 +644,21 @@ table.dataTable tbody tr {
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
 				  <div class="col-3">
-                                        <label for="medico" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
-                                        <div class="col-sm-2">
-                                            <select class="select-css h-40 w-20" id="medico"  tabindex= "0"
-                                                    name="medico"
-                                                    required>
+                                        <label for="medico" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20"  id="medico"  tabindex= "0"  name="medico" required>
                                                 {% for especialidadesMedicos in EspecialidadesMedicos %}
                                                 <option value="{{especialidadesMedicos.id}}"> {{especialidadesMedicos.nombre}}</option>
                                                 {% endfor %}
                                             </select>
+					  </div>
                                         </div>
+
 
 			<div class="col-3">
                                         <label for="finalidadParticipantesCirugia" class="col-sm-1 control-label">Finalidad:</label>
-                                        <div class="col-sm-2">
-                                            <select class="select-css h-40 w-20" id="finalidadParticipantesCirugia"  tabindex= "0"  name="finalidadParticipantesCirugia"  required>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20"  id="finalidadParticipantesCirugia"  tabindex= "0"  name="finalidadParticipantesCirugia"  required>
                                                 {% for finalidadCirugia in FinalidadCirugia %}
                                                 <option value="{{finalidadCirugia.id}}"> {{finalidadCirugia.nombre}}</option>
                                                 {% endfor %}
@@ -667,7 +668,7 @@ table.dataTable tbody tr {
 
 			<div class="col-3">
                                         <label for="tipoHonorarios" class="col-sm-1 control-label">TipoHonorarios:</label>
-                                        <div class="col-sm-2">
+                                        <div class="col-sm-8">
                                             <select class="select-css h-40 w-20" id="tipoHonorarios"  tabindex= "0"  name="tipoHonorarios"  required>
                                                 {% for tiposHonorarios in TiposHonorarios %}
                                                 <option value="{{tiposHonorarios.id}}"> {{tiposHonorarios.nombre}}</option>
@@ -680,16 +681,16 @@ table.dataTable tbody tr {
 
 
 			  <div class="col-1">
-			 <input type="hidden" class="form-control" id="usernamePrarticipantesCirugia_id" name="usernamePrarticipantesCirugia_id"  ></input>
+			 <input type="hidden" class="form-control" id="usernameParticipantesCirugia_id" name="usernameParticipantesCirugia_id"  ></input>
                          </div>
 
 
-                                    </div>
-
+                                    
 			 <div class="col-2">
 				<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia"  onclick="CrearParticipantesCirugia()">Adicionar!</button>
 			</div>
 
+		
 
 
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
@@ -918,12 +919,7 @@ table.dataTable tbody tr {
 					     <th>horaInicia</th>
 					     <th>Termina</th>
 					     <th>horaTermina</th>
-					     <th>cups1_id</th>
-					     <th>examen1</th>
-					     <th>cups2_id</th>
-					     <th>examen2</th>
-					     <th>cups3_id</th>
-					     <th>examen3</th>
+					  
 				              
 					</bold>                                  
 
@@ -944,7 +940,7 @@ table.dataTable tbody tr {
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingProgramacionCirugia"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia" onclick="CrearProgramacionCirugia()">Grabar!</button> 
+			
 		 <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>                    
     </div>
 		
@@ -957,13 +953,53 @@ table.dataTable tbody tr {
 
                                 <input type="hidden" name="post_id" id="post_id">
 
+
+				<!-- Aqui DATA TABLE PARA DISPONIBILIDAD DE SALA A CIRUGIA -->
+ <!-- INICIO TABLE DE  EL DATATABLE  -->
+		<div class="container my-2">
+             
+		   <div class="row">
+				
+                                        <table  id= "tablaDisponibilidadSala" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					                                             
+					     <th>Opcion</th>                                               
+					     <th>id</th>
+					     <th>numero</th>
+					     <th>nombre</th>
+					     <th>fec.inicia</th>
+					     <th>fec.Fin</th>
+					     <th>horaInicio</th>
+					     <th>horaFin</th>
+					    <th>Estado</th>
+				
+					  
+				              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+				<!-- Fin Data table -->
+
+
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
 
 				  <div class="col-12">
 					
                                     
-                                    <input type="hidden" class="form-control" id="sedesClinicaProgramacioncirugia_id" name="sedesClinicaProgramacioncirugia_id"  readonly></input>
+                                    <input type="hidden" class="form-control" id="sedesClinicaProgramacionCirugia_id" name="sedesClinicaProgramacionCirugia_id"  readonly></input>
                                     <input type="text" class="form-control" id="programacionId" name="programacionId"  readonly></input>
                                 </div>
 
@@ -983,9 +1019,9 @@ table.dataTable tbody tr {
 				<div class="col-12">
                                     Sala:
 				<select class="select-css"  id="sala" name="sala">
-                                                            {% for salas in Salas %}
-                                                            <option value="{{salas.id}}">
-                                                                {{salas.nombre}}
+                                                            {% for salasCirugia in SalasCirugia %}
+                                                            <option value="{{salasCirugia.id}}">
+                                                                {{salasCirugia.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
@@ -994,7 +1030,7 @@ table.dataTable tbody tr {
                           
 				<div class="col-12">
 				<label  for="fechaProgramacionInicia">Fecha Inicio:</label>                               	                               
-					 <input type="datetime"  class="form-control form-control-sm" id="fechaProgramacionInicia" name="fechaProgramacionInicia" placeholder="fecha Inicia"  >
+					 <input type="date"  class="form-control form-control-sm" id="fechaProgramacionInicia" name="fechaProgramacionInicia" placeholder="fecha Inicia"  >
                                 </div>
 
 
@@ -1006,7 +1042,7 @@ table.dataTable tbody tr {
 
 				<div class="col-12">
 				<label  for="fechaProgramacionFin">Fecha Fin:</label>                               	                               
-					 <input type="datetime"  class="form-control form-control-sm" id="fechaProgramacionFin" name="fechaProgramacionFin" placeholder="fecha Fin"  >
+					 <input type="date"  class="form-control form-control-sm" id="fechaProgramacionFin" name="fechaProgramacionFin" placeholder="fecha Fin"  >
                                 </div>
 
 
@@ -1015,28 +1051,14 @@ table.dataTable tbody tr {
 					 <input type="text"  class="form-control form-control-sm" id="horaProgramacionFin" name="horaProgramacionFin" placeholder="hora Fin"  >
                                 </div>
 
-
-				<!-- Aqui DATA TABLE PARA DISPONIBILIDAD DE SALA A CIRUGIA -->
-
-				<!-- Fin Data table -->
 			
 
 
+				
 
 				<div class="col-12">
-                                    Estado
-				<select class="select-css"  id="estadoProgramacion"  name="estadoProgramacion">
-                                                           {% for estadosProgramacion in EstadosProgramacion %}
-                                                            <option value="{{estadosProgramacion.id}}">
-                                                                {{estadosProgramacion.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
-                                </div>
-				<div class="col-12">
 				
-					 <input type="hidden"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id" >
+					 <input type="text"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id" >
                                 </div>
 
 
@@ -1065,10 +1087,6 @@ table.dataTable tbody tr {
 		
    </article>
 
-
-<article id="CirugiaDetalle">
-
-</article>
 
 <article id="InformeQx">
    			

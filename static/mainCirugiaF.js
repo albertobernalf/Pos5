@@ -192,7 +192,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 18
+                    "targets": 12
                }
             ],
 	 pageLength: 3,
@@ -258,12 +258,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ data: "fields.horaInicia"},
                 { data: "fields.Termina"},
 		 { data: "fields.horaTermina"},
-		 { data: "fields.cups1_id"},
-		 { data: "fields.examen1"},
-		  { data: "fields.cups2_id"},
-		 { data: "fields.examen2"},
-		  { data: "fields.cups3_id"},
-		 { data: "fields.examen3"},
+		
                         ]
             }
 
@@ -631,7 +626,7 @@ function arrancaCirugia(valorTabla,valorData)
 
     if (valorTabla == 7)
     {
-        let dataTableOptionsDicponibilidadSala  ={
+        let dataTableOptionsDisponibilidadSala  ={
 	  lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
@@ -640,10 +635,10 @@ function arrancaCirugia(valorTabla,valorData)
 	    scrollCollapse: true,
             paging:false,
             columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
+		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 11
+                    "targets": 8
                }
             ],
 	 pageLength: 3,
@@ -686,16 +681,13 @@ function arrancaCirugia(valorTabla,valorData)
 
 
 		{ data: "fields.id"},
-                { data: "fields.tipoDoc_id"},
-                { data: "fields.documento"},
-                { data: "fields.paciente"},
-                { data: "fields.consecutivo"},
-                { data: "fields.genero"},
-                { data: "fields.edad"},
-                { data: "fields.nacimiento"},
-                { data: "fields.cama"},
-                { data: "fields.telefono"},
-                { data: "fields.empresa"},
+                { data: "fields.numero"},
+                { data: "fields.nombre"},
+                { data: "fields.fechaProgramacionInicia"},
+                { data: "fields.fechaProgramacionFin"},
+                { data: "fields.horaProgramacionInicia"},
+                { data: "fields.horaProgramacionFin"},
+                { data: "fields.estado"},
                         ]
             }
 
@@ -821,45 +813,9 @@ window.addEventListener('load', async () => {
 
 $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', function() {
 
-		alert("ENTRE Programacion Cirugiaio");
+		alert("ENTRE Programacion Cirugia");
 
 	     var post_id = $(this).data('pk');
-	var envioRipsId = document.getElementById("envioRipsId").value ;
-	var row = $(this).closest('tr'); // Encuentra la fila
-
-	// Nop estop toca por el DOM - html traer el valopr d ela columna
-
-
-
-	tipoRips =   document.getElementById("tipoRips2").value ;
-	alert("tipoRips = " +  tipoRips);
-
-     
-	$.ajax({
-
-	        url: "/traerProgramacionCirugia/",
-                data: {'envioRipsId':envioRipsId,'tipoRips':tipoRips},
-                type: "POST",
-                dataType: 'json',
-                success: function (info) {
-
-            $('#postFormRipsEnvioJson').trigger("reset");
-
-  	
- 				$('#valorJsonP').val(info[0].fields.valorJson);
-				$('#envioRipsIdP').val(envioRipsId);
-
-
-				
-
-            $('#modelHeadingRipsEnvioJson').html("Detalle Envios Rips");
-            $('#crearModelRipsEnvioJson').modal('show');
-
-                },
-                 error: function (request, status, error) {
-			document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
-	   	    	}
-            });
       
   });
 
@@ -872,19 +828,19 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
 
 	     var post_id = $(this).data('pk');
 	alert("programacion : " + post_id);
-		programacionId = post_id;
+		
  	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
-
+	document.getElementById("sedesClinicaProgramacionCirugia_id").value = sede ;
 
      
 	$.ajax({
 
 	        url: "/buscaProgramacionCirugia/",
-                data: {'programacionId':programacionId,'sede':sede, 'username_id':username_id},
+                data: {'programacionId':post_id,'sede':sede, 'username_id':username_id},
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
@@ -895,12 +851,42 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
             $('#horaProgramacionInicia').val(info.horaInicia);
             $('#fechaProgramacionInicia').val(info.termina);
             $('#horaProgramacionFin').val(info.horaTermina);
-	    $('#estadoProgramacion').val('info.estado_id');
-	   $('#programacionId').val('info.id');
+	    $('#estadoProgramacion').val(info.estado_id);
+	   $('#programacionId').val(post_id);
 
 
             $('#modelHeadingProgramacionCirugia').html("Creacion Programacion de Cirugia");
             $('#crearModelProgramacionCirugia').modal('show');      
+
+		var now = new Date();
+
+		    var day = ("0" + now.getDate()).slice(-2);
+		    var month = ("0" + (now.getMonth() + 1)).slice(-2);
+		    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+
+	 document.getElementById("fechaProgramacionInicia").value = today;
+	 document.getElementById("fechaProgramacionFin").value = today;
+
+	username_id = document.getElementById("username_id").value   ;
+		alert("username_id = " + username_id );
+	
+	document.getElementById("usernameProgramacionCirugia_id").value = username_id;
+
+var data =  {}   ;
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		
+	        data = JSON.stringify(data);
+	
+
+	     arrancaCirugia(7,data);
+	    dataTableDisponibilidadSalaInitialized = true;
+
+
 
 				                },
                  error: function (request, status, error) {
@@ -974,7 +960,7 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarParticipantes', funct
 		username_id = document.getElementById("username_id").value   ;
 
 		alert("username_id = " + username_id );
-		document.getElementById("usernamePrarticipantesCirugia_id").value = username_id ;      
+		document.getElementById("usernameParticipantesCirugia_id").value = username_id ;      
 
   	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
@@ -1123,6 +1109,9 @@ function CrearProgramacionCirugia()
 	var sede = document.getElementById("sede").value;
 	document.getElementById("sedesClinica_id").value =  sede;
 
+	// Validaciones de ocupacion
+		
+
             $.ajax({
                 data: $('#postFormProgramacionCirugia').serialize(),
 	        url: "/crearProgramacionCirugia/",
@@ -1143,10 +1132,15 @@ function CrearProgramacionCirugia()
 	    dataTableProgramacionCirugiaInitialized = true;
 
 	     arrancaCirugia(1,data);
-	    dataTablesalasCirugiaInitialized = true;
+	    dataTableSalasCirugiaInitialized = true;
 
- 		 $('#crearModelProgramacionCirugia').modal('hide');
-		 $("#mensajes").html(data2.message);
+ 		// $('#crearModelProgramacionCirugia').modal('hide');
+		 $("#mensajesErrorModalProgramacion").html(data2.message);
+
+	
+	  
+
+
 
                 },
             error: function (request, status, error) {
@@ -1232,6 +1226,11 @@ function CrearProcedimientosCirugia()
                 success: function (data2) {
 		  
                   $('#postFormProcedimientosCirugia').trigger("reset");
+
+	document.getElementById("cirugiaIdModalProcedimientos").value  = cirugiaIdModalProcedimientos ;
+	document.getElementById("usernameProcedimientosCirugia_id").value = user;
+
+
 		var data =  {}   ;
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;
@@ -1266,6 +1265,7 @@ function CrearParticipantesCirugia()
 	var sede = document.getElementById("sede").value;
 	document.getElementById("sedesClinica_id").value =  sede;
 	var cirugiaId = document.getElementById("cirugiaIdModalParticipantes").value;
+	var user  = document.getElementById("usernameParticipantesCirugia_id").value ;
 
 
             $.ajax({
@@ -1276,6 +1276,9 @@ function CrearParticipantesCirugia()
                 success: function (data2) {
 		  
                   $('#postFormParticipantesCirugia').trigger("reset");
+	  document.getElementById("cirugiaIdModalParticipantes").value = cirugiaId;
+	 document.getElementById("usernameParticipantesCirugia_id").value  = user;
+
 	var data =  {}   ;
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;
@@ -1313,6 +1316,8 @@ function CrearMaterialCirugia()
 	var sede = document.getElementById("sede").value;
 	document.getElementById("sedesClinica_id").value =  sede;
 	cirugiaIdModalMaterial  = document.getElementById("cirugiaIdModalMaterial").value ;
+	var user  = document.getElementById("usernameMaterialCirugia_id").value ;
+
 
             $.ajax({
                 data: $('#postFormMaterialCirugia').serialize(),
@@ -1322,6 +1327,9 @@ function CrearMaterialCirugia()
                 success: function (data2) {
 		  
                   $('#postFormMaterialCirugia').trigger("reset");
+	   document.getElementById("cirugiaIdModalMaterial").value = cirugiaIdModalMaterial;
+	 document.getElementById("usernameMaterialCirugia_id").value =  user;
+
 		var data =  {}   ;
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;

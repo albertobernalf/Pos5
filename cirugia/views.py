@@ -144,7 +144,7 @@ def CrearProgramacionCirugia(request):
     programacionId = request.POST["programacionId"]
     print ("programacionId =", programacionId)
 
-    serviciosAdministrativos = request.POST('serviciosAdministrativos')
+    serviciosAdministrativos = request.POST.get('serviciosAdministrativos')
     print ("serviciosAdministrativos =", serviciosAdministrativos)
 
     sala = request.POST["sala"]
@@ -169,14 +169,16 @@ def CrearProgramacionCirugia(request):
     username_id = request.POST["usernameProgramacionCirugia_id"]
     print("username_id =", username_id)
 
-    estadoProgramacion = request.POST["estadoProgramacion"]
-    print("estadoProgramacion =", estadoProgramacion)
 
 
-    estadoCirugia = EstadosCirugias.objetcs.get(nombre='PENDIENTE')
-    estadoSala = EstadosSalas.objetcs.get(nombre='OCUPADA')
+    estadoProgramacion = EstadosProgramacion.objects.get(nombre='Programada')
+    estadoCirugia = EstadosCirugias.objects.get(nombre='PENDIENTE')
+    estadoSala = EstadosSalas.objects.get(nombre='OCUPADA')
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
+
+    # Aqui validar si las feca-hora de la sala a solicitar estan ocupadas si si enviar excepcion
+
 
 
     miConexion3 = None
@@ -185,7 +187,39 @@ def CrearProgramacionCirugia(request):
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
-        comando = 'UPDATE cirugia_programacioncirugias SET "horaProgramacionFin" = ' + "'" + str(horaProgramacionFin) + "'," +   '"fechaRegistro" = ' + "'" + str(fechaRegistro) + "'," + '"estadoReg" = ' + "'" + str(estadoReg) + "'," + '"sedesClinica_id" = ' + "'" + str(sedesClnica_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(username-id) + "'," + '"fechaProgramacionFin" = ' + "'" + str(fechaProgramacionFin)  + "'," + '"fechaProgramacionInicia" = ' + "'" + str(fechaProgramacionInicia)  + "'," + '"horaProgramacionInicia" = ' + "'" + str(horaProgramacionInicia) + "', sala_id = '" + str(sala) + "'" + '"estadoProgramacion_id" = ' + "'" + str(estadoProgramacion) + "' WHERE prog.id = " + "'"  + str(programacionId) + "'"
+        horarioSala = []
+        comando0 = 'SELECT count(*) id FROM cirugia_programacioncirugias cir where sala_id =  ' + "'" + str(sala) + "'" + ' AND ' + "'" + str(fechaProgramacionInicia) + "'" + ' BETWEEN "fechaProgramacionInicia" AND "fechaProgramacionFin" AND ' + "'" + str(horaProgramacionInicia) + "'" + ' BETWEEN  "horaProgramacionInicia" and "horaProgramacionFin" '
+
+        print(comando0)
+        cur3.execute(comando0)
+
+        for id in cur3.fetchall():
+            horarioSala.append({'id': id})
+
+        print ("horarioSala = ", horarioSala[0]['id'])
+
+        horarioSala = str(horarioSala[0]['id'])
+
+
+
+        horarioSala = horarioSala.replace(")", ' ')
+        horarioSala = horarioSala.replace("(", ' ')
+        horarioSala = horarioSala.replace(",", ' ')
+
+
+
+        print ("horarioSala2 = ", horarioSala)
+
+
+        if (float(horarioSala) > 0):
+            print ("Entre muchos horarioss")
+
+            miConexion3.rollback()
+
+            return JsonResponse({'success': False, 'message': 'sala de Cirugia con horario ocupado!'})
+
+
+        comando = 'UPDATE cirugia_programacioncirugias SET "horaProgramacionFin" = ' + "'" + str(horaProgramacionFin) + "'," +   '"fechaRegistro" = ' + "'" + str(fechaRegistro) + "'," + '"estadoReg" = ' + "'" + str(estadoReg) + "'," + '"sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(username_id) + "'," + '"fechaProgramacionFin" = ' + "'" + str(fechaProgramacionFin)  + "'," + '"fechaProgramacionInicia" = ' + "'" + str(fechaProgramacionInicia)  + "'," + '"horaProgramacionInicia" = ' + "'" + str(horaProgramacionInicia) + "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadoProgramacion.id) + "' WHERE id = " + "'"  + str(programacionId) + "'"
 
         print(comando)
         cur3.execute(comando)
@@ -325,28 +359,28 @@ def Load_dataDisponibilidadSala(request, data):
 
     # print("data = ", request.GET('data'))
 
-    ingresosCirugia = []
+    disponibilidadCirugia = []
 
     miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
 
-    detalle = 'SELECT i.id id,i."tipoDoc_id" tipoDoc_id, u.documento documento,u.nombre paciente, i.consec consecutivo, u.genero, (now() - u."fechaNacio")/360 edad, u."fechaNacio" nacimiento, dep.nombre cama, u.telefono telefono, emp.nombre empresa FROM admisiones_ingresos i INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id =  i.documento_id) LEFT JOIN sitios_dependencias dep ON (dep.id = i."dependenciasActual_id") LEFT JOIN facturacion_empresas emp	 ON (emp.id = i.empresa_id ) where i."sedesClinica_id" = ' + "'" + str(sede) + "'" +' ORDER BY i."dependenciasActual_id"'
+    detalle = 'SELECT prog.id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,prog."horaProgramacionInicia", prog."horaProgramacionFin" , ' + "'" + str('OCUPADO') + "'" + ' estado FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'"
     print(detalle)
 
     curx.execute(detalle)
 
-    for  id,tipoDoc_id, documento,  paciente, consecutivo,  genero, edad, nacimiento,  cama,telefono, empresa  in curx.fetchall():
-        ingresosCirugia.append(
+    for  id,numero, nombre,  fechaProgramacionInicia, fechaProgramacionFin,  horaProgramacionInicia, horaProgramacionFin , estado  in curx.fetchall():
+        disponibilidadCirugia.append(
             {"model": "admisiones.ingresos", "pk": id, "fields":
-                {'id': id,  'tipoDoc_id': tipoDoc_id, 'documento': documento, 'paciente': paciente, 'consecutivo': consecutivo, 'genero': genero, 'edad': edad,
-                  'nacimiento': nacimiento, 'cama': cama, 'telefono': telefono, 'empresa': empresa        }})
+                {'id': id,  'numero': numero, 'nombre': nombre, 'fechaProgramacionInicia': fechaProgramacionInicia, 'fechaProgramacionFin': fechaProgramacionFin, 'horaProgramacionInicia': horaProgramacionInicia,
+                 'horaProgramacionFin': horaProgramacionFin,'estado':estado }})
 
     miConexionx.close()
-    print(ingresosCirugia)
+    print(disponibilidadCirugia)
 
-    serialized1 = json.dumps(ingresosCirugia, default=str)
+    serialized1 = json.dumps(disponibilidadCirugia, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
 
@@ -703,7 +737,7 @@ def CrearParticipantesCirugia(request):
     medico = request.POST["medico"]
     print ("medico =", medico)
 
-    username_id = request.POST["usernamePrarticipantesCirugia_id"]
+    username_id = request.POST["usernameParticipantesCirugia_id"]
     print("username_id =", username_id)
 
     tipoHonorarios = request.POST["tipoHonorarios"]
@@ -766,7 +800,7 @@ def BuscaProgramacionCirugia(request):
     cur3.execute(detalle)
 
     for id, tipoDoc_id, documento, consecutivo, paciente, estado_id, estadoProg, numero, sala, inicia, horaInicia, termina, horaTermina  in cur3.fetchall():
-        programacionCirugias.append(
+        programacionCirugia.append(
             {"model": "cirugia.programcioncirugias", "pk": id, "fields":
                 {'id': id, 'tipoDoc_id': tipoDoc_id, 'documento': documento, 'consecutivo': consecutivo,
                  'paciente': paciente, 'estado_id':estado_id, 'estadoProg': estadoProg, 'numero': numero, 'sala': sala,

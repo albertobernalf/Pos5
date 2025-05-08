@@ -732,3 +732,11 @@ BIBLIOGRAFIA:
   -- 3) pantalla para Aplicar medicamentos, pantalla devolucion de insumos y medicamentos a farmacia)
 
 
+-- En cirugia: cuando sale error de horario sala verificar :
+  -- colocar la fecha en los calkendarios
+ --  debe validar tosad las cirugias expto la corriente
+ -- No me gusta el color rojo del error
+  - no me gista que no cierra la ventana
+
+
+ 
