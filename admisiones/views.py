@@ -2052,6 +2052,78 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         # Fin combo finalidadCirugia
 
+
+	# Combo tiposHonorarios
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  tarifarios_tiposHonorarios  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        tiposHonorarios = []
+
+
+        for id, nombre in curt.fetchall():
+            tiposHonorarios.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("tiposHonorarios", tiposHonorarios)
+
+        context['TiposHonorarios'] = tiposHonorarios
+
+        # Fin combo tiposHonorarios
+
+	# Combo especialidadesMedicos
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  clinico_especialidadesmedicos  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        especialidadesMedicos = []
+
+
+        for id, nombre in curt.fetchall():
+            especialidadesMedicos.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("especialidadesMedicos", especialidadesMedicos)
+
+        context['EspecialidadesMedicos'] = especialidadesMedicos
+
+        # Fin combo tiposHonorarios
+
+        # Combo suministrosCirugia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  facturacion_suministros  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        suministrosCirugia = []
+
+        for id, nombre in curt.fetchall():
+            suministrosCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("suministrosCirugia", suministrosCirugia)
+
+        context['SuministrosCirugia'] = suministrosCirugia
+
+        # Fin combo tiposHonorarios
+
         return render(request, "cirugia/panelCirugiaF.html", context)
 
 

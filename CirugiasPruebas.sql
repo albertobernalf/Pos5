@@ -83,13 +83,15 @@ select * from tarifarios_tiposhonorarios;clinico_especialidades
 	select * from clinico_especialidades;
 
 SELECT * FROM cirugia_cirugias;
+select * from cirugia_finalidadcirugia;
+select * from clinico_examenes;
 
 
 select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id, exa.nombre, final.nombre
 FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final
 WHERE cirproc.cirugia_id = 1 and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id
 
-
+SELECT p.id id, p.nombre  nombre FROM  clinico_examenes  p ORDER BY nombre
 
 
 select * from cirugia_cirugiasparticipantes;
@@ -99,3 +101,14 @@ select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre, med.nombre, esp.
 WHERE cirpart.cirugia_id = 1 and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id
 
 comando = 'select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre, med.nombre, esp.nombre FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp WHERE cirpart.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id'
+
+SELECT * FROM cirugia_cirugiasprocedimientos;
+
+select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre 
+FROM cirugia_cirugiasprocedimientos cirproc
+INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id)
+LEFT JOIN	cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id)
+WHERE cirproc.cirugia_id = '10' 
+
+
+comando = 'select cirproc.id id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"

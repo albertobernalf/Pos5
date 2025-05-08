@@ -266,7 +266,7 @@ class Bodegas(models.Model):
 class Salas(models.Model):
     id = models.AutoField(primary_key=True)
     sedesClinica = models.ForeignKey('sitios.SedesClinica', blank=True,null= True, editable=True, on_delete=models.PROTECT)
-    ubicaciones = models.ForeignKey('sitios.Ubicaciones', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    #ubicaciones = models.ForeignKey('sitios.Ubicaciones', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     dependenciaTipo =  models.ForeignKey('sitios.DependenciasTipo', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     numero =  models.CharField(max_length=50, default="")
     nombre = models.CharField(max_length=50)

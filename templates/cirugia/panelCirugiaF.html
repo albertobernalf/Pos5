@@ -54,7 +54,26 @@ div.dataTables_filter input {
  padding: 1px;
   height: 1px;
     }
+#tablaIngresosCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
 
+#tablaProcedimientosCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+#tablaParticipantesCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
 
 table.dataTable tbody tr {
   min-height: 60px;
@@ -115,10 +134,6 @@ table.dataTable tbody tr {
             <!-- INICIO TABLE DE  EL DATATABLE  -->
 		<div class="container my-2">
 
-
-
-
-
              
 		<div align="right" height="15px" width="50px">
                <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarCirugia"  name="BtnAdicionarCirugia" value="Adicionar" onclick= "SolicitudCirugia()" >				    
@@ -133,7 +148,8 @@ table.dataTable tbody tr {
  						  <th>id</th>                             
 					     <th>Sel</th>                                               
 					     <th>Proced</th>                                               
-						 <th>Participa</th>                                               
+						 <th>Participa</th>  
+					 <th>Material</th>                                                 
 					<th>sede</th> 
 					<th>cirugia</th> 
 					<th>tipoDoc</th>  
@@ -508,14 +524,13 @@ table.dataTable tbody tr {
   			  <form id="postFormProcedimientosCirugia" name="postFormSolicitudCirugia">
 
                                 <input type="hidden" name="post_id" id="post_id">
-			     <input type="hidden" class="form-control" id="sedesClinica_id2" name="sedesClinica_id2"  readonly></input>
+			     <input type="hidden" class="form-control" id="sedesClinicaModalProcedimientos_id" name="sedesClinicaModalProcedimientos_id"  readonly></input>
 			Cirugia No : 
-			<input type="text"  id="cirugiaId3" name="cirugiaId3"  readonly></input>
-
+			<input type="text"  id="cirugiaIdModalProcedimientos" name="cirugiaIdModalProcedimientos"  readonly></input>
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
 
-			 <div class="col-4">
+			 <div class="col-2">
 
 			</div>
 
@@ -530,8 +545,8 @@ table.dataTable tbody tr {
                                         </div>
                          </div>
 			
-			<div class="col-4">
-                                        <label for="cups" class="col-sm-1 control-label">Finalidad:</label>
+			<div class="col-2">
+                                        <label for="finalidad" class="col-sm-1 control-label">Finalidad:</label>
                                         <div class="col-sm-8">
                                             <select class="select-css h-40 w-20" id="finalidad"  tabindex= "0"  name="finalidad"  required>
                                                 {% for finalidadCirugia in FinalidadCirugia %}
@@ -541,12 +556,12 @@ table.dataTable tbody tr {
                                         </div>
                          </div>
 
-			  <div class="col-4">
-			<input type="hidden" class="form-control" id="username4_id" name="username4_id"  ></input>
+			  <div class="col-2">
+			 <input type="hidden" class="form-control" id="usernameProcedimientosCirugia_id" name="usernameProcedimientosCirugia_id"  ></input>  
                          </div>
 
 
-			 <div class="col-4">
+			 <div class="col-2">
 				<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosCirugia" onclick="CrearProcedimientosCirugia()">Adicionar!</button> 
 			</div>
 		</div>
@@ -585,11 +600,11 @@ table.dataTable tbody tr {
                         </div> <!-- CIERRA BODY -->
 			<div class="modal-footer">
 	
-					  <span id="mensajesErrorModalProcedimientos" name="mensajesErrorModalProcedimientos" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					  <span id="mensajesErrorModalProcedimientosCirugia" name="mensajesErrorModalProcedimientosCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
 					
 					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
                                    
-                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosdonCirugia" onclick="CrearProcedimientosCirugia()">Grabar!</button> 
+                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosCirugia" onclick="CrearProcedimientosCirugia()">Grabar!</button> 
                                     </div>
 
 						
@@ -608,7 +623,7 @@ table.dataTable tbody tr {
                     <div class="modal-content">
                         <div class="modal-header">
                              <h4 class="modal-title" id="modelHeadingParticipantesCirugia"> </h4> 
-			<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia" onclick="CrearParticipantesCirugia()">Grabar!</button> 
+ 
                          <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
 			</div>
 		
@@ -620,11 +635,64 @@ table.dataTable tbody tr {
   			  <form id="postFormParticipantesCirugia" name="postFormParticipantesCirugia">
 
                                 <input type="hidden" name="post_id" id="post_id">
-			     <input type="hidden" class="form-control" id="sedesClinica_id4" name="sedesClinica_id4"  readonly></input>
-<input type="text"  id="cirugiaId4" name="cirugiaId4"  readonly></input>
+			     <input type="hidden" class="form-control" id="sedesClinicaModalParticipantes_id" name="sedesClinicaModalParticipantes_id"  readonly></input>
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalParticipantes" name="cirugiaIdModalParticipantes"  readonly></input>
 
 
                       <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+				  <div class="col-3">
+                                        <label for="medico" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+                                        <div class="col-sm-2">
+                                            <select class="select-css h-40 w-20" id="medico"  tabindex= "0"
+                                                    name="medico"
+                                                    required>
+                                                {% for especialidadesMedicos in EspecialidadesMedicos %}
+                                                <option value="{{especialidadesMedicos.id}}"> {{especialidadesMedicos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+
+			<div class="col-3">
+                                        <label for="finalidadParticipantesCirugia" class="col-sm-1 control-label">Finalidad:</label>
+                                        <div class="col-sm-2">
+                                            <select class="select-css h-40 w-20" id="finalidadParticipantesCirugia"  tabindex= "0"  name="finalidadParticipantesCirugia"  required>
+                                                {% for finalidadCirugia in FinalidadCirugia %}
+                                                <option value="{{finalidadCirugia.id}}"> {{finalidadCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+			<div class="col-3">
+                                        <label for="tipoHonorarios" class="col-sm-1 control-label">TipoHonorarios:</label>
+                                        <div class="col-sm-2">
+                                            <select class="select-css h-40 w-20" id="tipoHonorarios"  tabindex= "0"  name="tipoHonorarios"  required>
+                                                {% for tiposHonorarios in TiposHonorarios %}
+                                                <option value="{{tiposHonorarios.id}}"> {{tiposHonorarios.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+
+
+
+			  <div class="col-1">
+			 <input type="hidden" class="form-control" id="usernamePrarticipantesCirugia_id" name="usernamePrarticipantesCirugia_id"  ></input>
+                         </div>
+
+
+                                    </div>
+
+			 <div class="col-2">
+				<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia"  onclick="CrearParticipantesCirugia()">Adicionar!</button>
+			</div>
+
+
+
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
 		
 				<div class="col-12">
@@ -636,9 +704,11 @@ table.dataTable tbody tr {
                                             <tr>    
 						<bold>                
 					     <th>Sel</th>                                               
-					<th>cups</th>
-					<th>nombre</th>
-					<th>finalidad</th>  
+					<th>id</th>
+					<th>cirugia</th>
+					<th>Honorario</th>
+					<th>Medico</th>
+					<th>Especialidad</th>  
 			              
 					</bold>                                  
 
@@ -652,27 +722,14 @@ table.dataTable tbody tr {
 				 </div>
 
 			<!-- Fin Data table -->
-
-			  <div class="col-4">
-                                        <label for="medico" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="medico"  tabindex= "0"
-                                                    name="medico"
-                                                    required>
-                                                {% for especialidadesMedicos in EspecialidadesMedicos %}
-                                                <option value="{{especialidadesMedicos.id}}"> {{especialidadesMedicos.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+	
 
                             </form>
 
                         </div> <!-- CIERRA BODY -->
 			<div class="modal-footer">
 	
-					  <span id="mensajesErrorModalParticipantes" name="mensajesErrorModalParticipantes" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					  <span id="mensajesErrorModalParticipantesCirugia" name="mensajesErrorModalParticipantesCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
 					
 					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
                                    
@@ -687,11 +744,119 @@ table.dataTable tbody tr {
 
 	<!-- Modal Participantes Cirugia -->
 
+
+
+<!-- Modal Material Cirugia -->
+
+   <div class="modal fade" id="crearModelMaterialCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingMaterialCirugia"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormMaterialCirugia" name="postFormMaterialCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+		 <input type="hidden" class="form-control" id="sedesClinicaModalMaterial_id" name="sedesClinicaModalMaterial_id"  readonly></input>
+
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalMaterial" name="cirugiaIdModalMaterial"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+			 <div class="col-2">
+
+			</div>
+
+			  <div class="col-4">
+                                        <label for="suministro" class="col-sm-1 control-label">Suministro:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="suministro"  tabindex= "0"  name="suministro"  required>
+                                                {% for suministrosCirugia in SuministrosCirugia %}
+                                                <option value="{{suministrosCirugia.id}}"> {{suministrosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+			
+			  <div class="col-2">
+			 <input type="text" class="form-control" id="cantidad" name="cantidad"  ></input>  
+                         </div>
+
+
+			  <div class="col-2">
+			 <input type="hidden" class="form-control" id="usernameMaterialCirugia_id" name="usernameMaterialCirugia_id"  ></input>  
+                         </div>
+
+
+			 <div class="col-2">
+				<button type="button" class="btn btn-primary" id="saveBtnCrearMaterialCirugia" onclick="CrearMaterialCirugia()">Adicionar!</button> 
+			</div>
+		</div>
+			
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaMaterialCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th>                                             
+						<th>suministro_id</th>
+						<th>Suministro</th>
+						<th>tipo</th>  
+						<th>cantidad</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				
+
+			<!-- Fin Data table -->
+
+			
+                            
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalMaterialCirugia" name="mensajesErrorModalMaterialCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- Modal Material Cirugia -->
+
+
+
      <!-- FIN Espacio Modales  -->
 
-
-
-		
+	
 
 	</article>
 
@@ -798,7 +963,8 @@ table.dataTable tbody tr {
 				  <div class="col-12">
 					
                                     
-                                    <input type="text" class="form-control" id="sedesClinica_id" name="sedesClinica_id"  readonly></input>
+                                    <input type="hidden" class="form-control" id="sedesClinicaProgramacioncirugia_id" name="sedesClinicaProgramacioncirugia_id"  readonly></input>
+                                    <input type="text" class="form-control" id="programacionId" name="programacionId"  readonly></input>
                                 </div>
 
 			  <div class="col-12">
@@ -849,60 +1015,17 @@ table.dataTable tbody tr {
 					 <input type="text"  class="form-control form-control-sm" id="horaProgramacionFin" name="horaProgramacionFin" placeholder="hora Fin"  >
                                 </div>
 
-				<div class="col-12">
-                                    Ingreso:
-				<select class="select-css"  id="ingresosCirugia"  name="ingresosCirugia">
-                                                           {% for ingresosCirugia in IngresosCirugia %}
-                                                            <option value="{{ingresosCirugia.id}}">
-                                                                {{ingresosCirugia.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
-                                </div>
+
+				<!-- Aqui DATA TABLE PARA DISPONIBILIDAD DE SALA A CIRUGIA -->
+
+				<!-- Fin Data table -->
+			
 
 
-				<div class="col-12">
-                                    Cups1:
-				<select class="select-css"  id="cups1_id"  name="cups1_id">
-                                                           {% for examenes in Examenes %}
-                                                            <option value="{{examenes.id}}">
-                                                                {{examenes.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
-                                </div>
-
-
-				<div class="col-12">
-                                    Cups2:
-				<select class="select-css"  id="cups2_id"  name="cups2_id">
-                                                           {% for examenes in Examenes %}
-                                                            <option value="{{examenes.id}}">
-                                                                {{examenes.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
-                                </div>
-
-
-				<div class="col-12">
-                                    Cups3:
-				<select class="select-css"  id="cups3_id"  name="cups3_id">
-                                                           {% for examenes in Examenes %}
-                                                            <option value="{{examenes.id}}">
-                                                                {{examenes.nombre}}
-                                                            </option>
-                                                            {% endfor %}
-                                                          
-                                                        </select>
-                                </div>
 
 				<div class="col-12">
                                     Estado
-				<select class="select-css"  id="estadoProgramacion_id"  name="estadoProgramacion_id">
+				<select class="select-css"  id="estadoProgramacion"  name="estadoProgramacion">
                                                            {% for estadosProgramacion in EstadosProgramacion %}
                                                             <option value="{{estadosProgramacion.id}}">
                                                                 {{estadosProgramacion.nombre}}
@@ -913,7 +1036,7 @@ table.dataTable tbody tr {
                                 </div>
 				<div class="col-12">
 				
-					 <input type="hidden"  class="form-control form-control-sm" id="username2_id" name="username2_id" >
+					 <input type="hidden"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id" >
                                 </div>
 
 
