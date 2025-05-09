@@ -275,3 +275,7 @@ input[type="datetime-local"] {
     filter:invert(1);
   }
 }
+
+ <div class="icono-pequeno">
+      <i class="fas fa-user"></i>
+    </div>

@@ -66,6 +66,12 @@ div.dataTables_filter input {
  padding: 1px;
   height: 1px;
     }
+#tablaProcedimientosInformeCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 20px;
+ padding: 1px;
+  height: 1px;
+    }
 
 #tablaParticipantesCirugia {   
  font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
@@ -73,6 +79,29 @@ div.dataTables_filter input {
  padding: 1px;
   height: 1px;
     }
+#tablaParticipantesInformeCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+#tablaMaterialCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+#tablaMaterialInformeCirugia {   
+ font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
+ font-size: 50px;
+ padding: 1px;
+  height: 1px;
+    }
+
+
+
 
 table.dataTable tbody tr {
   min-height: 60px;
@@ -967,7 +996,7 @@ table.dataTable tbody tr {
 					                                             
 					     <th>Opcion</th>                                               
 					     <th>id</th>
-					     <th>numero</th>
+					     <th>sala</th>
 					     <th>nombre</th>
 					     <th>fec.inicia</th>
 					     <th>fec.Fin</th>
@@ -1058,7 +1087,7 @@ table.dataTable tbody tr {
 
 				<div class="col-12">
 				
-					 <input type="text"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id" >
+					 <input type="text"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id"  readonly>
                                 </div>
 
 
@@ -1071,6 +1100,7 @@ table.dataTable tbody tr {
 			<div class="modal-footer">
 
 					  <span id="mensajesErrorModalProgramacion" name="mensajesErrorModalProgramacion" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					<span id="mensajesExitoModalProgramacion" name="mensajesExitoModalProgramacion" style= "color:blue; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
 					
 					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
                                   	<button type="button" class="btn btn-primary" id="saveBtnCrearProgramacionCirugia" onclick="CrearProgramacionCirugia()">Grabar!</button> 
@@ -1084,11 +1114,114 @@ table.dataTable tbody tr {
 
      <!-- FIN Espacio Modales  -->
 
-		
    </article>
 
 
 <article id="InformeQx">
+
+		<div align="right" height="15px" width="50px">
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarParticipanteInformeCirugia"  name="BtnAdicionarParticipanteInformeCirugia" value="Adicionar Participantes" onclick= "AdicionarParticipanteInformeCirugia()" >				    
+		</div>
+
+	<div class="col-12">
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaParticipantesInformeCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Sel</th>                                               
+					<th>id</th>
+					<th>cirugia</th>
+					<th>Honorario</th>
+					<th>Medico</th>
+					<th>Especialidad</th>  
+					<th>Borrar</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				 </div>
+
+			<!-- Fin Data table -->
+
+		<div align="right" height="15px" width="50px">
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adicionar Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
+		</div>
+
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaProcedimientosInformeCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th>   
+						<th>CirugiaId</th>                                           
+						<th>cups</th>
+						<th>nombre</th>
+						<th>finalidad</th>  
+						<th>Borrar</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				
+
+			<!-- Fin Data table -->
+
+		<div align="right" height="15px" width="50px">
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarMaterialInformeCirugia"  name="BtnAdicionarMaterialInformeCirugia" value="Adicionar Material Qx" onclick= "AdicionarMaterialInformeCirugia()" >				    
+		</div>
+	<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaMaterialInformeCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th> 
+						<th>CirugiaId</th> 
+                                            
+						<th>suministro_id</th>
+						<th>Suministro</th>
+						<th>tipo</th>  
+						<th>cantidad</th>  
+						<th>Borrar</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				
+
+			<!-- Fin Data table -->
+		<div align="right" height="15px" width="50px">
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnDatosCirugia"  name="BtnDatosCirugia" value="Adicionar Qx" onclick= "ModaldatosCirugia()" >				    
+		</div>
+
+Ingreso a Quirtofano   		Inicio Anestesia  		Inicio Cirugia    	Fin Cirugia  		 	Fin Anestesia   		Salida Quirofano  
+Tiempo Qx Total  		Tiempo Anestesico Total  	Tiempo total en Sala    Ingreso a recuperacion   	Salida a recuperacion    	Tiempo total de recuperacion
    			
 </article>
 

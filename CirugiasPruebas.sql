@@ -151,7 +151,7 @@ select * from cirugia_programacioncirugias;
 
 detalle ='SELECT prog.id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,prog."horaProgramacionInicia", prog."horaProgramacionFin" FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'"
 
+comando = 'SELECT id FROM cirugia_programacioncirugias cir where sala_id =  ' + "'" + str(sala) + "'" + '' AND ' "'" + str(fechaPrgramacionInicia) + "'" + ' BETWEEN  "fechaProgramacionInicia" AND  "fechaProgramacionFin" AND ' + "'" + str(horaProgramacionInicia") + "'" + ' BETWEEN  "horaProgramacionInicia" and "horaProgramacionFin"'
 
-SELECT *
-FROM cirugia_programacioncirugias cir
-where sala_id = 1 AND    '2025-05-08' BETWEEN  "fechaProgramacionInicia" AND  "fechaProgramacionFin" AND '06:00' BETWEEN 
+SELECT count(*)d FROM cirugia_programacioncirugias cir where sala_id =  '1' AND '2025-05-08' BETWEEN "fechaProgramacionInicia" AND "fechaProgramacionFin" AND '07:05' 
+	BETWEEN  "horaProgramacionInicia" and "horaProgramacionFin" 

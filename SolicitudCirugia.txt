@@ -1,23 +1,45 @@
 Informe Quirurgico: (la descricionqx es parte)
 	tiene : personal que opero
 		cups operados
-		material qx y osteosisnte
+		material qx y osteosintesis
+
+-- Boton Ventana Modal:
+
 		pre-operatorio
-      		post-operatori
+      		post-operatorio
 		impresion dx
-		complicaiones cie
+		complicaciones cie
 		descricionqx
-		hallasgos clincios
+		hallazgos clincios
 		Forma realizaacion ??
 		tejidos enviados a patoloagia
 		tipo de fractura
 		uso de intensificador
 		
-		NOTA OPERATORIA
-		Analisis
-		Plan
+		NOTA OPERATORIA textArea
+		Analisis textArea
+		Plan  textArea
 
+-- Boton Modal Tiempos Qx o al final en (2) renglones
 
+ confirmar grupo qx (cirujano-anestesio, atydante etc) ???. NO ES OTRA COSA QUE LOS PARTICIPANTES FINALES
+OSEA NO HAY PROBLEMAP
+
+                      tiempos qx:
+			Ingreso pac a quirofano
+			ini anestesia
+			ini ciru
+			fin ciru
+			fin anes
+			salida quirofano
+			tiempo qx total
+			tiempo anestesico total
+			tiemp toal en sala
+			ingreso arecupera
+			salida recuperacion
+			timpo total recuperacion
+
+FIN INFORME QUIRURGICO
 
 Solicitud: Admision, Fecha solic, Serv, Cama, paciente, cc,
            nacio, edad, genero,empresa, tel

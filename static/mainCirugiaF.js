@@ -17,6 +17,9 @@ let dataTableDisponibilidadSalaInitialized = false;
 let dataTableProcedimientosCirugiaInitialized = false;
 let dataTableParticipantesCirugiaInitialized = false;
 let dataTableMaterialCirugiaInitialized = false;
+let dataTableMaterialInformeCirugiaInitialized = false;
+let dataTableProcedimientosInformeCirugiaInitialized = false;
+let dataTableParticipantesInformeCirugiaInitialized = false;
 
 
 $(document).ready(function() {
@@ -681,7 +684,7 @@ function arrancaCirugia(valorTabla,valorData)
 
 
 		{ data: "fields.id"},
-                { data: "fields.numero"},
+                { data: "fields.sala"},
                 { data: "fields.nombre"},
                 { data: "fields.fechaProgramacionInicia"},
                 { data: "fields.fechaProgramacionFin"},
@@ -761,6 +764,227 @@ function arrancaCirugia(valorTabla,valorData)
 
   }
 
+    if (valorTabla == 9)
+    {
+        let dataTableOptionsParticipantesInformeCirugia  ={
+	  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3] },
+	    { width: '10%', targets: [2,3] },
+		{  
+                    "targets": 6
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+           ajax: {
+                 url:"/load_dataTraerParticipantesInformeCirugia/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+	    btn = btn + " <input type='radio' name='miParticipanteInformeCirugia' class='miSolicitudInformeCirugia2 form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+
+                       return btn;
+                    },
+
+	},
+
+
+		{ data: "fields.id"},
+                { data: "fields.cirugiaId"},
+                { data: "fields.honNombre"},
+                { data: "fields.medicoNombre"},
+                { data: "fields.especialidadNombre"},
+	    {     "render": function ( data, type, row ) {
+                        var btn = '';
+			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+                       return btn;
+                    },
+            }
+                        ]
+            }
+
+		dataTable = $('#tablaParticipantesInformeCirugia').DataTable(dataTableOptionsParticipantesInformeCirugia);
+
+  }
+
+    if (valorTabla == 10)
+    {
+        let dataTableOptionsProcedimientosInformeCirugia  ={
+	  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3] },
+	    { width: '10%', targets: [2,3] },
+		{  
+                    "targets": 6
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+           ajax: {
+                 url:"/load_dataTraerProcedimientosInformeCirugia/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+	    btn = btn + " <input type='radio' name='miProcedimientoInformeCirugia' class='miSolicitudInformeCirugia2 form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+
+                       return btn;
+                    },
+
+	},
+		{ data: "fields.id"},              
+		{ data: "fields.cirugia_id"},  
+                { data: "fields.cups_id"},
+                { data: "fields.exaNombre"},
+                { data: "fields.finalNombre"},
+  {     "render": function ( data, type, row ) {
+                        var btn = '';
+			  btn = btn + " <button class='btn  deleteProcedimientosInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+                       return btn;
+                    },
+            }
+                        ]
+            }
+
+		dataTable = $('#tablaProcedimientosInformeCirugia').DataTable(dataTableOptionsProcedimientosInformeCirugia);
+
+  }
+
+
+
+    if (valorTabla == 11)
+    {
+        let dataTableOptionsMaterialInformeCirugia  ={
+	  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3] },
+	    { width: '10%', targets: [2,3] },
+		{  
+                    "targets": 7
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+           ajax: {
+                 url:"/load_dataMaterialInformeCirugia/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+	{
+	  "render": function ( data, type, row ) {
+                        var btn = '';
+
+	    btn = btn + " <input type='radio' name='miMaterialInformeCirugia' class='miMaterialInformeCirugia2 form-check-input ' data-pk='"  + row.pk + "'>" + "</input>";
+
+
+                       return btn;
+                    },
+
+	},
+		{ data: "fields.id"}, 
+		{ data: "fields.cirugia_id"},             
+                { data: "fields.suministro_id"},
+                { data: "fields.suministro"},
+                { data: "fields.tipoSuministro"},
+               { data: "fields.cantidad"},
+  	{     "render": function ( data, type, row ) {
+                        var btn = '';
+			  btn = btn + " <button class='btn deleteMaterialInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+                       return btn;
+                    },
+            }
+                        ]
+            }
+
+		dataTable = $('#tablaMaterialInformeCirugia').DataTable(dataTableOptionsMaterialInformeCirugia);
+
+  }
+
 
 
 }
@@ -793,6 +1017,15 @@ const initDataTableProgramacionCirugia = async () => {
 
         arrancaCirugia(3,data);
 	    dataTableSolicitudCirugiaInitialized = true;
+
+
+        arrancaCirugia(9,data);
+	dataTableProcedimientosInformeCirugiaInitialized= true;
+
+        arrancaCirugia(10,data);
+	dataTableParticipantesInformeCirugiaInitialized= true;
+        arrancaCirugia(11,data);
+	dataTableMaterialInformeCirugiaInitialized= true;
 
 }
 
@@ -846,27 +1079,33 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
                 success: function (info) {
             $('#postFormProgramacionCirugia').trigger("reset");
             $('#post_id').val('');
+
             $('#sala').val('');
-            $('#fechaProgramacionInicia').val(info.inicia);
-            $('#horaProgramacionInicia').val(info.horaInicia);
-            $('#fechaProgramacionInicia').val(info.termina);
-            $('#horaProgramacionFin').val(info.horaTermina);
-	    $('#estadoProgramacion').val(info.estado_id);
+
+	// alert("info = " + info[0].fields.horaInicia);
+		
+		$('#sala').val(info[0].fields.sala_id);
+
+          //  $('#fechaProgramacionInicia').val(info[0].fields.inicia);
+            $('#horaProgramacionInicia').val(info[0].fields.horaInicia);
+           // $('#fechaProgramacionTermina').val(info[0].fields.termina);
+            $('#horaProgramacionFin').val(info[0].fields.horaTermina);
+	    $('#estadoProgramacion').val(info[0].fields.estado_id);
 	   $('#programacionId').val(post_id);
+		 document.getElementById("fechaProgramacionInicia").value =info[0].fields.inicia;
+		 document.getElementById("fechaProgramacionFin").value =   info[0].fields.termina;
 
 
             $('#modelHeadingProgramacionCirugia').html("Creacion Programacion de Cirugia");
             $('#crearModelProgramacionCirugia').modal('show');      
 
-		var now = new Date();
+		//var now = new Date();
 
-		    var day = ("0" + now.getDate()).slice(-2);
-		    var month = ("0" + (now.getMonth() + 1)).slice(-2);
-		    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+		   // var day = ("0" + now.getDate()).slice(-2);
+		   // var month = ("0" + (now.getMonth() + 1)).slice(-2);
+		   // var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
 
-	 document.getElementById("fechaProgramacionInicia").value = today;
-	 document.getElementById("fechaProgramacionFin").value = today;
-
+	
 	username_id = document.getElementById("username_id").value   ;
 		alert("username_id = " + username_id );
 	
@@ -887,10 +1126,10 @@ var data =  {}   ;
 	    dataTableDisponibilidadSalaInitialized = true;
 
 
-
+		// document.getElementById("mensajesExitoModalProgramacion").innerHTML = 'Programacion actualizada Satisfactoriamente !';
 				                },
                  error: function (request, status, error) {
-			document.getElementById("mensajesErrorProgramacionCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
       
@@ -1024,7 +1263,217 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarMaterial', function()
   });
 
 
+$('#tablaSolicitudCirugia tbody').on('click', '.miSolicitudCirugia2', function() {
 
+		alert("Seleccion Cirugia2");
+
+	     var post_id = $(this).data('pk');
+
+
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = post_id;
+ 	    data = JSON.stringify(data);
+        arrancaCirugia(9,data);
+	dataTableProcedimientosInformeCirugiaInitialized= true;
+
+        arrancaCirugia(10,data);
+	dataTableParticipantesInformeCirugiaInitialized= true;
+        arrancaCirugia(11,data);
+	dataTableMaterialInformeCirugiaInitialized= true;
+
+	
+      
+  });
+
+$('#tablaProcedimientosInformeCirugia tbody').on('click', '.deleteProcedimientosInformeCirugia', function() {
+
+
+		var row = $(this).closest('tr'); // Encuentra la fila
+	     var post_id = $(this).data('pk');
+		var procedimientoId = post_id;
+	var table = $('#tablaProcedimientosInformeCirugia').DataTable();  // Inicializa el DataTable jquery//
+	
+ 	var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+       console.log("rowindex= " , rowindex);
+
+	    	 dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "la factura es =  = " , dato3.cirugiaId); 
+		cirugiaId = dato3.cirugiaId;
+
+		alert("Seleccion DELETE fila" + post_id);
+		alert("Cirugia : " + cirugiaId );
+
+            $.ajax({
+                
+	        url: "/borraProcedimientosInformeCirugia/",
+		data:{'cirugiaId':cirugiaId,'procedimientoId':procedimientoId},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = cirugiaId;
+ 	    data = JSON.stringify(data);
+
+        arrancaCirugia(10,data);
+	dataTableProcedimientosInformeCirugiaInitialized= true;
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+	
+      
+  });
+
+
+
+$('#tablaParticipantesInformeCirugia tbody').on('click', '.deleteParticipanteInformeCirugia', function() {
+
+
+
+	     var post_id = $(this).data('pk');
+		var participanteId = post_id;
+
+		var table = $('#tablaParticipantesInformeCirugia').DataTable();  // Inicializa el DataTable jquery//
+	
+		var row = $(this).closest('tr'); // Encuentra la fila
+	 	var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+	        console.log("rowindex= " , rowindex);
+	  	dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "la factura es =  = " , dato3.cirugiaId); 
+		cirugiaId = dato3.cirugiaId;
+
+		alert("Seleccion DELETE fila" + post_id);
+		alert("Cirugia : " + cirugiaId );
+
+
+	
+            $.ajax({
+                
+	        url: "/borraParticipanteInformeCirugia/",
+		data:{'participanteId': participanteId},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = cirugiaId;
+ 	    data = JSON.stringify(data);
+
+        arrancaCirugia(9,data);
+	dataTableParticipantesInformeCirugiaInitialized= true;
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+	
+      
+  });
+
+$('#tablaMaterialInformeCirugia tbody').on('click', '.deleteMaterialInformeCirugia', function() {
+
+
+	
+	     var post_id = $(this).data('pk');
+		var materialId = post_id;
+			alert("Seleccion DELETE fila" + post_id);
+	
+		var table = $('#tablaMaterialInformeCirugia').DataTable();  // Inicializa el DataTable jquery//
+		var row = $(this).closest('tr'); // Encuentra la fila
+	 	var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+	        console.log("rowindex= " , rowindex);
+	  	dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "la factura es =  = " , dato3.cirugia_id); 
+		cirugiaId = dato3.cirugia_id;
+
+		alert("Seleccion DELETE fila" + post_id);
+		alert("Cirugia : " + cirugiaId );
+
+
+
+
+            $.ajax({
+                
+	        url: "/borraMaterialInformeCirugia/",
+		data:{'materialId': materialId},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = cirugiaId;
+ 	    data = JSON.stringify(data);
+
+        arrancaCirugia(11,data);
+	dataTableMaterialesInformeCirugiaInitialized= true;
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+	
+      
+  });
 
 $('#tablaIngresosCirugia tbody').on('click', '.miSolicitudCirugia2', function() {
 
@@ -1134,11 +1583,13 @@ function CrearProgramacionCirugia()
 	     arrancaCirugia(1,data);
 	    dataTableSalasCirugiaInitialized = true;
 
- 		// $('#crearModelProgramacionCirugia').modal('hide');
-		 $("#mensajesErrorModalProgramacion").html(data2.message);
+ 		//$('#crearModelProgramacionCirugia').modal('hide');
+		 $("#mensajesExitoModalProgramacion").html(data2.message);
 
 	
 	  
+	     arrancaCirugia(7,data);
+	    dataTableDisponibilidadSalaInitialized = true;
 
 
 

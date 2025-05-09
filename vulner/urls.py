@@ -339,6 +339,13 @@ urlpatterns = [
     path('load_dataMaterialCirugia/<str:data>', viewsCirugia.Load_dataMaterialCirugia,  name='Load_dataMaterial_Cirugia'),
     path('load_dataDisponibilidadSala/<str:data>', viewsCirugia.Load_dataDisponibilidadSala,name='load_dataDisponibilidad_Sala'),
 
+    path('load_dataTraerProcedimientosInformeCirugia/<str:data>', viewsCirugia.Load_dataTraerProcedimientosInformeCirugia,name='Load_dataTraerProcedimientoInforme_Cirugia'),
+    path('load_dataTraerParticipantesInformeCirugia/<str:data>', viewsCirugia.Load_dataTraerParticipantesInformeCirugia,name='Load_dataTraerParticipantesInforme_Cirugia'),
+    path('load_dataMaterialInformeCirugia/<str:data>', viewsCirugia.Load_dataMaterialInformeCirugia, name='Load_dataMaterialInforme_Cirugia'),
+    path('borraParticipanteInformeCirugia/', viewsCirugia.BorraParticipanteInformeCirugia, name='BorraParticipanteInforme_Cirugia'),
+    path('borraProcedimientosInformeCirugia/', viewsCirugia.BorraProcedimientosInformeCirugia, name='BorraProcedimientosInforme_Cirugia'),
+    path('borraMaterialInformeCirugia/', viewsCirugia.BorraMaterialInformeCirugia,name='BorraMaterialInforme_Cirugia'),
+
     # Citas Medicas
 
     # Usuarios

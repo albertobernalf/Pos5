@@ -321,7 +321,7 @@ def Load_dataIngresosCirugia(request, data):
     curx = miConexionx.cursor()
 
 
-    detalle = 'SELECT i.id id,i."tipoDoc_id" tipoDoc_id, u.documento documento,u.nombre paciente, i.consec consecutivo, u.genero, (now() - u."fechaNacio")/360 edad, u."fechaNacio" nacimiento, dep.nombre cama, u.telefono telefono, emp.nombre empresa FROM admisiones_ingresos i INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id =  i.documento_id) LEFT JOIN sitios_dependencias dep ON (dep.id = i."dependenciasActual_id") LEFT JOIN facturacion_empresas emp	 ON (emp.id = i.empresa_id ) where i."sedesClinica_id" = ' + "'" + str(sede) + "'" +' ORDER BY i."dependenciasActual_id"'
+    detalle = 'SELECT i.id id,i."tipoDoc_id" tipoDoc_id, u.documento documento,u.nombre paciente, i.consec consecutivo, u.genero, (now() - u."fechaNacio")/360 edad, u."fechaNacio" nacimiento, dep.nombre cama, u.telefono telefono, emp.nombre empresa FROM admisiones_ingresos i INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id =  i.documento_id) LEFT JOIN sitios_dependencias dep ON (dep."sedesClinica_id" = i."sedesClinica_id" AND dep.id = i."dependenciasActual_id") LEFT JOIN facturacion_empresas emp	 ON (emp.id = i.empresa_id )  INNER JOIN sitios_serviciossedes servsed ON (servsed.id = dep."serviciosSedes_id") INNER JOIN clinico_servicios serv ON (sserv.id = servsed.servicios_id AND (serv.nombre = ' + "'" + str('HOSPITALIZACION') + "' OR serv.nombre = " + "'" + str('URGENCIAS') + "' OR serv.nombre = '" + str('AMBULATORIO') + "')" + ' where i."sedesClinica_id" = ' + "'" + str(sede) + "'" +' ORDER BY i."dependenciasActual_id"'
     print(detalle)
 
     curx.execute(detalle)
@@ -366,7 +366,7 @@ def Load_dataDisponibilidadSala(request, data):
     curx = miConexionx.cursor()
 
 
-    detalle = 'SELECT prog.id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,prog."horaProgramacionInicia", prog."horaProgramacionFin" , ' + "'" + str('OCUPADO') + "'" + ' estado FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'"
+    detalle = 'SELECT salas.id id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,prog."horaProgramacionInicia", prog."horaProgramacionFin" , ' + "'" + str('OCUPADO') + "'" + ' estado FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'"
     print(detalle)
 
     curx.execute(detalle)
@@ -589,8 +589,88 @@ def Load_dataTraerProcedimientosCirugia(request, data):
     return HttpResponse(serialized1, content_type='application/json')
 
 
+def Load_dataTraerProcedimientosInformeCirugia(request, data):
+    print("Entre Load_dataTraerProcedimientosInformeCirugia")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    cirugiaId = d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    procedimientosCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    comando = 'select cirproc.id id, cirproc.cirugia_id cirugia_id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, cirugia_id,  cups_id, exaNombre, finalNombre  in cur3.fetchall():
+        procedimientosCirugia.append(
+            {"model": "cirugia.procedimientos", "pk": id, "fields":
+                {'id': id, 'cirugia_id':cirugia_id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
+
+    miConexion3.close()
+    print(procedimientosCirugia)
+
+    serialized1 = json.dumps(procedimientosCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
 def Load_dataTraerParticipantesCirugia(request, data):
     print("Entre Load_dataTraerParticipantesCirugia")
+
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+
+    cirugiaId =  d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    participantesCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    comando = 'select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre honNombre, med.nombre medicoNombre, esp.nombre especialidadNombre FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp WHERE cirpart.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id'
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, cirugiaId, honNombre, medicoNombre, especialidadNombre  in cur3.fetchall():
+        participantesCirugia.append(
+            {"model": "cirugia.procedimientos", "pk": id, "fields":
+                {'id': id, 'cirugiaId': cirugiaId, 'honNombre': honNombre, 'medicoNombre': medicoNombre, 'especialidadNombre': especialidadNombre      }})
+
+    miConexion3.close()
+    print(participantesCirugia)
+
+    serialized1 = json.dumps(participantesCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+def Load_dataTraerParticipantesInformeCirugia(request, data):
+    print("Entre Load_dataTraerParticipantesInformeCirugia")
 
     d = json.loads(data)
 
@@ -661,6 +741,49 @@ def Load_dataMaterialCirugia(request, data):
         materialCirugia.append(
             {"model": "cirugia.cirugiasMaterialQx", "pk": id, "fields":
                 {'id': id,  'suministro_id': suministro_id, 'suministro': suministro, 'tipoSuministro': tipoSuministro ,'cantidad':cantidad     }})
+
+    miConexion3.close()
+    print(materialCirugia)
+
+    serialized1 = json.dumps(materialCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def Load_dataMaterialInformeCirugia(request, data):
+    print("Entre Load_dataMaterialInformeCirugia")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    cirugiaId = d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    materialCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+
+    comando = 'select cirmaterial.id id, cirmaterial.cirugia_id cirugia_id, cirmaterial.suministro_id suministro_id, suministros.nombre suministro , tipo.nombre tipoSuministro , cirmaterial.cantidad cantidad FROM cirugia_cirugiasMaterialQx cirmaterial INNER JOIN facturacion_suministros suministros ON ( suministros.id = cirmaterial.suministro_id) INNER JOIN facturacion_tipossuministro tipo ON (tipo.id = suministros."tipoSuministro_id") WHERE cirmaterial.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id,  cirugia_id, suministro_id, suministro , tipoSuministro, cantidad  in cur3.fetchall():
+        materialCirugia.append(
+            {"model": "cirugia.cirugiasMaterialQx", "pk": id, "fields":
+                {'id': id, 'cirugia_id':cirugia_id ,  'suministro_id': suministro_id, 'suministro': suministro, 'tipoSuministro': tipoSuministro ,'cantidad':cantidad     }})
 
     miConexion3.close()
     print(materialCirugia)
@@ -793,17 +916,17 @@ def BuscaProgramacionCirugia(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    detalle = 'SELECT prog.id id,  u."tipoDoc_id" tipoDoc_id , u.documento documento, i.consec consecutivo, u.nombre paciente,estprog.id estado_id, estprog.nombre estadoProg,sala.numero, sala.nombre sala, prog."fechaProgramacionInicia" inicia, prog."horaProgramacionInicia" horaInicia, prog."fechaProgramacionFin" termina, prog."horaProgramacionFin" horaTermina FROM cirugia_programacioncirugias prog INNER JOIN sitios_sedesclinica sed	on (sed.id = prog."sedesClinica_id") INNER JOIN admisiones_ingresos i ON (i."tipoDoc_id" =prog."tipoDoc_id" AND i.documento_id =  prog.documento_id AND i.consec= prog."consecAdmision" ) INNER JOIN usuarios_usuarios u ON (u.id = i.documento_id ) INNER JOIN cirugia_estadosprogramacion estprog ON (estprog.id = prog."estadoProgramacion_id" ) INNER JOIN sitios_salas sala ON (sala.id =prog.sala_id )  WHERE sed.id = ' + "'" + str(sede) + "' AND prog.id = " + "'" + str(programacionId) + "'"
+    detalle = 'SELECT prog.id id,  u."tipoDoc_id" tipoDoc_id , u.documento documento, i.consec consecutivo, u.nombre paciente,estprog.id estado_id, estprog.nombre estadoProg,sala.id sala_id, sala.nombre sala, prog."fechaProgramacionInicia" inicia, prog."horaProgramacionInicia" horaInicia, prog."fechaProgramacionFin" termina, prog."horaProgramacionFin" horaTermina FROM cirugia_programacioncirugias prog INNER JOIN sitios_sedesclinica sed	on (sed.id = prog."sedesClinica_id") INNER JOIN admisiones_ingresos i ON (i."tipoDoc_id" =prog."tipoDoc_id" AND i.documento_id =  prog.documento_id AND i.consec= prog."consecAdmision" ) INNER JOIN usuarios_usuarios u ON (u.id = i.documento_id ) INNER JOIN cirugia_estadosprogramacion estprog ON (estprog.id = prog."estadoProgramacion_id" ) INNER JOIN sitios_salas sala ON (sala.id =prog.sala_id )  WHERE sed.id = ' + "'" + str(sede) + "' AND prog.id = " + "'" + str(programacionId) + "'"
 
     print(detalle)
 
     cur3.execute(detalle)
 
-    for id, tipoDoc_id, documento, consecutivo, paciente, estado_id, estadoProg, numero, sala, inicia, horaInicia, termina, horaTermina  in cur3.fetchall():
+    for id, tipoDoc_id, documento, consecutivo, paciente, estado_id, estadoProg, sala_id, sala, inicia, horaInicia, termina, horaTermina  in cur3.fetchall():
         programacionCirugia.append(
             {"model": "cirugia.programcioncirugias", "pk": id, "fields":
                 {'id': id, 'tipoDoc_id': tipoDoc_id, 'documento': documento, 'consecutivo': consecutivo,
-                 'paciente': paciente, 'estado_id':estado_id, 'estadoProg': estadoProg, 'numero': numero, 'sala': sala,
+                 'paciente': paciente, 'estado_id':estado_id, 'estadoProg': estadoProg, 'sala_id': sala_id, 'sala': sala,
                  'inicia': inicia, 'horaInicia': horaInicia,
                  'termina': termina, 'horaTermina': horaTermina
                  }})
@@ -869,3 +992,124 @@ def CrearMaterialCirugia(request):
         if miConexion3:
             cur3.close()
             miConexion3.close()
+
+def BorraProcedimientosInformeCirugia(request):
+    print("Entre BorraProcedimientosInformeCirugia")
+
+
+    procedimientoId = request.POST.get('procedimientoId')
+    print("procedimientoId =", procedimientoId)
+
+
+    miConexion3 = None
+    try:
+
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cur3 = miConexion3.cursor()
+
+        detalle = 'DELETE FROM cirugia_cirugiasprocedimientos Where id = ' + "'" + str(procedimientoId) + "'"
+
+        print(detalle)
+        cur3.execute(detalle)
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Procedimiento cancelado!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
+def BorraParticipanteInformeCirugia(request):
+    print("Entre BorraParticipanteInformeCirugia")
+
+    cirugiaId = request.POST.get('cirugiaId')
+    print("cirugiaId =", cirugiaId)
+
+    participanteId = request.POST.get('participanteId')
+    print("participanteId =", participanteId)
+
+
+    miConexion3 = None
+    try:
+
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cur3 = miConexion3.cursor()
+
+        detalle = 'DELETE FROM cirugia_cirugiasparticipantes Where id = ' + "'" + str(participanteId) + "'"
+
+        print(detalle)
+        cur3.execute(detalle)
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Participante cancelado!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+def BorraMaterialInformeCirugia(request):
+    print("Entre BorraMaterialInformeCirugia")
+
+
+    materialId = request.POST.get('materialId')
+    print("materialId =", materialId)
+
+
+    miConexion3 = None
+    try:
+
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cur3 = miConexion3.cursor()
+
+        detalle = 'DELETE FROM cirugia_CirugiasMaterialQx Where id = ' + "'" + str(materialId) + "'"
+
+        print(detalle)
+        cur3.execute(detalle)
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Material cancelado!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
