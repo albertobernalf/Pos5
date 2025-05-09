@@ -739,4 +739,8 @@ BIBLIOGRAFIA:
   - no me gista que no cierra la ventana
 
 
- 
+-- Lunes 12/mayo
+	-- Em cirugia adicionar participantes
+	-- Em cirugia adicionar materiales
+	-- Em cirugia crear pantalla hoja de gasto
+        -- coloca bien los dacios en AdicionarQx y grabar la modal

@@ -346,6 +346,11 @@ urlpatterns = [
     path('borraProcedimientosInformeCirugia/', viewsCirugia.BorraProcedimientosInformeCirugia, name='BorraProcedimientosInforme_Cirugia'),
     path('borraMaterialInformeCirugia/', viewsCirugia.BorraMaterialInformeCirugia,name='BorraMaterialInforme_Cirugia'),
 
+    path('crearProcedimientosInformeCirugia/', viewsCirugia.CrearProcedimientosInformeCirugia, name='CrearProcedimientoInforme_Cirugia'),
+
+    path('load_dataTraerProcedimientosInformeXXCirugia/<str:data>', viewsCirugia.Load_dataTraerProcedimientosInformeXXCirugia, name='Load_dataTraerProcedimientoInformeXX_Cirugia'),
+
+
     # Citas Medicas
 
     # Usuarios

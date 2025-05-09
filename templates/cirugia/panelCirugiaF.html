@@ -1154,6 +1154,7 @@ table.dataTable tbody tr {
 
 		<div align="right" height="15px" width="50px">
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adicionar Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
+		   <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGenerarLiquidacionCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Generar Liquidacion" onclick= "GenerarLiquidacionCirugia()" >				    
 		</div>
 
 			<!-- Aqui Data Table  -->
@@ -1217,11 +1218,216 @@ table.dataTable tbody tr {
 
 			<!-- Fin Data table -->
 		<div align="right" height="15px" width="50px">
-	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnDatosCirugia"  name="BtnDatosCirugia" value="Adicionar Qx" onclick= "ModaldatosCirugia()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Adicionar Qx" onclick= "AdicionarQx()" >				    
 		</div>
 
-Ingreso a Quirtofano   		Inicio Anestesia  		Inicio Cirugia    	Fin Cirugia  		 	Fin Anestesia   		Salida Quirofano  
-Tiempo Qx Total  		Tiempo Anestesico Total  	Tiempo total en Sala    Ingreso a recuperacion   	Salida a recuperacion    	Tiempo total de recuperacion
+
+
+
+	<!-- Modal Procedimiento Informe Cirugia -->
+
+   <div class="modal fade" id="crearModelProcedimientosInformeCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingProcedimientosInformeCirugia"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormProcedimientosInformeCirugia" name="postFormSolicitudInformeCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+			     <input type="hidden" class="form-control" id="sedesClinicaModalInformeProcedimientos_id" name="sedesClinicaModalInformeProcedimientos_id"  readonly></input>
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalInformeProcedimientos" name="cirugiaIdModalInformeProcedimientos"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+			 <div class="col-2">
+
+			</div>
+
+			  <div class="col-4">
+                                        <label for="cupsInforme" class="col-sm-1 control-label">Cups:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="cupsInforme"  tabindex= "0"  name="cupsInforme"  required>
+                                                {% for cupsCirugia in CupsCirugia %}
+                                                <option value="{{cupsCirugia.id}}"> {{cupsCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+			
+			<div class="col-2">
+                                        <label for="finalidadInforme" class="col-sm-1 control-label">Finalidad:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="finalidadInforme"  tabindex= "0"  name="finalidadInforme"  required>
+                                                {% for finalidadCirugia in FinalidadCirugia %}
+                                                <option value="{{finalidadCirugia.id}}"> {{finalidadCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+			  <div class="col-2">
+			 <input type="hidden" class="form-control" id="usernameProcedimientosInformeCirugia_id" name="usernameProcedimientosInformeCirugia_id"  ></input>  
+                         </div>
+
+
+			 <div class="col-2">
+				<button type="button" class="btn btn-primary" id="saveBtnCrearProcedimientosInformeCirugia" onclick="CrearProcedimientosInformeCirugia()">Adicionar!</button> 
+			</div>
+		</div>
+			
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaProcedimientosInformeXXCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th>                                             
+						<th>cups</th>
+						<th>nombre</th>
+						<th>finalidad</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				
+
+			<!-- Fin Data table -->
+
+			
+                            
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalProcedimientosInformeCirugia" name="mensajesErrorModalProcedimientosInformeCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Procedimiento Informe Cirugia -->
+
+
+	<!-- Modal Adicionar Qx-->
+
+   <div class="modal fade" id="crearModelAdicionarQx" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingAdicionarQx"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormAdicionarQx" name="postFormAdicionarQx">
+
+                                <input type="hidden" name="post_id" id="post_id">
+			     <input type="hidden" class="form-control" id="sedesClinicaModalAdicionarQx_id" name="sedesClinicaModalAdicionarQx_id"  readonly></input>
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalAdicionarQx" name="cirugiaIdModalAdicionarQx"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+			 <div class="col-2">
+				Tiempos Qx:
+
+				</div>
+			<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
+		IngresoQuirofano  : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19" > 
+		InicioAnestesia     : <input type="text" name="fechaIniAnestesia" id="fechaIniAnestesia" size="19"> 
+ 		InicioCirugia       : <input type="text" name="fechaQxIni" id="fechaQxIni" size="19"> 
+		FinCirugia  	     : <input type="text" name="fechaQxFin" id="fechaQxFin" size="19"> 		 
+		FinAnestesia 	     : <input type="text" name="fechaFinAnestesia" id="fechaFinAnestesia" size="19"> 
+  		SalidaQuirofano     : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19"> 
+		TiempoQx Total      : <input type="text" name="tiempoTotal" id="tiempoTotal" size="3"> 
+		TiempoAnestesico Total : <input type="text" name="tiempoAnestesicoTotal" id="tiempoAnestesicoTotal" size="3"> 
+		Tiempototal en Sala   : <input type="text" name="tiempoTotalEnSala" id="tiempoTotalEnSala" size="3">  
+		IngresoRecuperacion  : <input type="text" name="ingresoRecuperacion" id="ingresoRecuperacion" size="19"> 
+		SalidaRecuperacion   : <input type="text" name="salidaRecuperacion" id="salidaRecuperacion" size="19"> 
+		Tiempo total de recuperacion:  <input type="text" name="tiempoTotalRecuperacion" id="tiempoTotalRecuperacion" size="3"> 
+			</div>
+
+			<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
+
+		dx pre-operatorio:  <select id="dxPreOperatorio"  tabindex= "0"  name="dxPreOperatorio"  required> <option>diagnostico_1</option> </select>
+      		dx post-operatorio:<select id="dxPostOperatorio"  tabindex= "0"  name="dxPostOperatorio"  required> <option>diagnostico_12</option> </select>
+		impresion dx:       <select id="impresionDx"  tabindex= "0"  name="impresionDx"  required> <option>diagnostico_13</option> </select>
+		Complicaciones cie: <select id="complicacionesDx"  tabindex= "0"  name="complicacionesDx"  required> <option>diagnostico_14</option> </select>
+		
+		Forma realizacion: <input type="text" name="formaRealizacion" id="formaRealizacion" size="3"> 
+		tejidos enviados a patologia: <input type="text" name="tejidoPatologia" id="tejidoPatologia" size="1"> 
+		tipo de fractura: <input type="text" name="tipoFractura" id="tipoFractura" size="3"> 
+		Uso de intensificador: <input type="text" name="intensificador" id="intensificador" size="1"> 
+		</div>
+
+		<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
+
+	
+		<textarea name="descripcionQx" rows="5" cols="110" placeHolder="Descripcion Qx"></textarea>
+
+
+		<textarea name="hallazgos" rows="4" cols="110" placeHolder="Hallazgos"></textarea>
+
+		<textarea name="analisis" rows="3" cols="110" placeHolder="NOTA OPERATORIA:Analisis"></textarea>
+
+		<textarea name="planx" rows="3" cols="110" placeHolder="NOTA OPERATORIA:Plan"></textarea>
+
+			</div>
+
+			</div>
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalAdicionarQx" name="mensajesErrorModalAdicionarQx" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                  <button type="button" class="btn btn-primary" id="saveBtnAdicionQx" onclick="CrearAdicionQx()">Grabar!</button> 
+
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Adicionar Qx-->
+
+
    			
 </article>
 

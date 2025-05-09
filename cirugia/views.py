@@ -631,6 +631,48 @@ def Load_dataTraerProcedimientosInformeCirugia(request, data):
 
     return HttpResponse(serialized1, content_type='application/json')
 
+def Load_dataTraerProcedimientosInformeXXCirugia(request, data):
+    print("Entre Load_dataTraerProcedimientosInformeXXCirugia")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    cirugiaId = d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    procedimientosCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    comando = 'select cirproc.id id, cirproc.cirugia_id cirugia_id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, cirugia_id,  cups_id, exaNombre, finalNombre  in cur3.fetchall():
+        procedimientosCirugia.append(
+            {"model": "cirugia.procedimientos", "pk": id, "fields":
+                {'id': id, 'cirugia_id':cirugia_id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
+
+    miConexion3.close()
+    print(procedimientosCirugia)
+
+    serialized1 = json.dumps(procedimientosCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
 
 def Load_dataTraerParticipantesCirugia(request, data):
     print("Entre Load_dataTraerParticipantesCirugia")
@@ -808,6 +850,59 @@ def CrearProcedimientosCirugia(request):
     print ("cups =", cups)
 
     username_id = request.POST['usernameProcedimientosCirugia_id']
+    print ("username_id =", username_id)
+
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuarioRegistro_id") VALUES (' + "'" + str(finalidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "')"
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Procedimiento Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
+def CrearProcedimientosInformeCirugia(request):
+
+    print ("Entre CrearProcedimientosInformeCirugia" )
+
+    cirugiaId = request.POST.get('cirugiaIdModalInformeProcedimientos')
+    print ("cirugiaId =", cirugiaId)
+
+    finalidad = request.POST.get('finalidadInforme')
+    print("finalidad =", finalidad)
+
+    cups = request.POST["cupsInforme"]
+    print ("cups =", cups)
+
+    username_id = request.POST['usernameProcedimientosInformeCirugia_id']
     print ("username_id =", username_id)
 
 

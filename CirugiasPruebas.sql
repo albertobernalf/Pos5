@@ -155,3 +155,17 @@ comando = 'SELECT id FROM cirugia_programacioncirugias cir where sala_id =  ' + 
 
 SELECT count(*)d FROM cirugia_programacioncirugias cir where sala_id =  '1' AND '2025-05-08' BETWEEN "fechaProgramacionInicia" AND "fechaProgramacionFin" AND '07:05' 
 	BETWEEN  "horaProgramacionInicia" and "horaProgramacionFin" 
+
+select * from sitios_dependencias;
+select * from sitios_sedesclinica;
+select * from sitios_serviciossedes;
+
+select * from clinico_servicios;
+select * from sitios_salas;
+
+select * from cirugia_cirugiamateriaesqx;
+
+SELECT count(*) id 
+FROM cirugia_programacioncirugias cir 
+	where sala_id =  '2' AND '2025-05-09' BETWEEN "fechaProgramacionInicia" AND "fechaProgramacionFin"
+	AND '07:10' BETWEEN  "horaProgramacionInicia" and "horaProgramacionFin" --  AND cir.id != '4'

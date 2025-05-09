@@ -10,13 +10,13 @@ Informe Quirurgico: (la descricionqx es parte)
 		impresion dx
 		complicaciones cie
 		descricionqx
-		hallazgos clincios
+		hallazgos clinicos
 		Forma realizaacion ??
 		tejidos enviados a patoloagia
 		tipo de fractura
 		uso de intensificador
 		
-		NOTA OPERATORIA textArea
+		NOTA OPERATORIA contiene:
 		Analisis textArea
 		Plan  textArea
 
