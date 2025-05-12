@@ -1117,6 +1117,7 @@ table.dataTable tbody tr {
 
 		<div align="right" height="15px" width="50px">
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarParticipanteInformeCirugia"  name="BtnAdicionarParticipanteInformeCirugia" value="Adicionar Participantes" onclick= "AdicionarParticipanteInformeCirugia()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Adicion Quirurgica" onclick= "AdicionarQx()" >				    
 		</div>
 
 	<div class="col-12">
@@ -1213,9 +1214,6 @@ table.dataTable tbody tr {
 				
 
 			<!-- Fin Data table -->
-		<div align="right" height="15px" width="50px">
-	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Adicionar Qx" onclick= "AdicionarQx()" >				    
-		</div>
 
 	<!-- Modal Procedimiento Informe Cirugia -->
 
@@ -1558,12 +1556,14 @@ table.dataTable tbody tr {
                                            <thead>
                                             <tr>    
 						<bold>                
-					    	<th>Sel</th>  
+					
 						<th>id</th>                                             
+						<th>CirugiaId</th>                                             
 						<th>suministro_id</th>
 						<th>Suministro</th>
 						<th>tipo</th>  
 						<th>cantidad</th>  
+						<th>Sel</th>  
 						<th>Sel</th>  
 			              
 					</bold>                                  
@@ -1642,12 +1642,16 @@ table.dataTable tbody tr {
                                            <thead>
                                             <tr>    
 						<bold>                
-					    	<th>Sel</th>  
-						<th>id</th>                                             
-						<th>suministro_id</th>
+					    	
+						<th>id</th>   
+						<th>cirugiaId</th>   
+                                               <th>suministro_id</th>
 						<th>Suministro</th>
 						<th>tipo</th>  
 						<th>cantidad</th>  
+						<th>Sel</th>  
+						<th>Sel</th>  	
+					
 			              
 					</bold>                                  
 

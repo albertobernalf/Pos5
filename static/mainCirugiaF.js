@@ -23,6 +23,7 @@ let dataTableParticipantesInformeCirugiaInitialized = false;
 let dataTableMaterialInformeXXCirugiaInitialized = false;
 
 let dataTableHojaDeGastoCirugiaInitialized = false;
+let dataTableHojaDeGastoXXCirugiaInitialized = false;
 
 
 $(document).ready(function() {
@@ -1118,7 +1119,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 6
+                    "targets": 7
                }
             ],
 	 pageLength: 3,
@@ -1164,6 +1165,69 @@ function arrancaCirugia(valorTabla,valorData)
             }
 
 		dataTable = $('#tablaHojaDeGastoCirugia').DataTable(dataTableOptionsHojaDeGastoCirugia);
+
+  }
+
+    if (valorTabla == 15)
+    {
+        let dataTableOptionsHojaDeGastoXXCirugia  ={
+	  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3] },
+	    { width: '10%', targets: [2,3] },
+		{  
+                    "targets": 7
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+           ajax: {
+                 url:"/load_dataHojaDeGastoXXCirugia/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+		{ data: "fields.id"}, 
+		{ data: "fields.cirugia_id"},             
+                { data: "fields.suministro_id"},
+                { data: "fields.suministro"},
+                { data: "fields.tipoSuministro"},
+               { data: "fields.cantidad"},
+  {     "render": function ( data, type, row ) {
+                        var btn = '';
+			  btn = btn + " <button class='btn  deleteHojaDeGastoCirugia2' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash"></i>' + "</button>";
+                       return btn;
+                    },
+            }
+
+                        ]
+            }
+
+		dataTable = $('#tablaHojaDeGastoXXCirugia').DataTable(dataTableOptionsHojaDeGastoXXCirugia);
 
   }
 
@@ -1668,6 +1732,69 @@ $('#tablaMaterialInformeCirugia tbody').on('click', '.deleteMaterialInformeCirug
 	
       
   });
+
+
+$('#tablaHojaDeGastoCirugia tbody').on('click', '.deleteHojaDeGastoCirugia', function() {
+
+
+		var row = $(this).closest('tr'); // Encuentra la fila
+	     var post_id = $(this).data('pk');
+		var hojaDeGastoId = post_id;
+
+	var table = $('#tablaHojaDeGastoCirugia').DataTable();  // Inicializa el DataTable jquery//
+	
+ 	var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+       console.log("rowindex= " , rowindex);
+
+	    	 dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "la factura es =  = " , dato3.cirugia_id); 
+		cirugiaId = dato3.cirugia_id;
+
+		alert("Seleccion DELETE fila" + post_id);
+		alert("Cirugia : " + cirugiaId );
+
+            $.ajax({
+                
+	        url: "/borraHojaDeGastoCirugia/",
+		data:{'cirugiaId':cirugiaId,'hojaDeGastoId':hojaDeGastoId},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+        var username = document.getElementById("username").value;
+        var nombreSede = document.getElementById("nombreSede").value;
+    	var sede = document.getElementById("sede").value;
+        var username_id = document.getElementById("username_id").value;
+         var data =  {}   ;
+        data['username'] = username;
+        data['sedeSeleccionada'] = sedeSeleccionada;
+        data['nombreSede'] = nombreSede;
+        data['sede'] = sede;
+        data['username_id'] = username_id;
+	data['cirugiaId'] = cirugiaId;
+ 	    data = JSON.stringify(data);
+
+        arrancaCirugia(14,data);
+	dataTableHojaDeGastoCirugiaInitialized= true;
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+	
+      
+  });
+
+
+
+
 
 $('#tablaIngresosCirugia tbody').on('click', '.miSolicitudCirugia2', function() {
 
@@ -2227,8 +2354,11 @@ function AdicionarHojaDeGastoCirugia() {
 
             $('#postFormHojaDeGastoCirugia').trigger("reset");
 	    document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value = document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value ;
-	    var user  = document.getElementById("usernameProcedimientosInformeCirugia_id").value ;
+	    var user  = document.getElementById("username_id").value ;
 	    document.getElementById("usernameHojaDeGastoCirugia_id").value = user; 
+
+	    document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value = document.getElementById("cirugiaIdModalProcedimientos").value ;
+
            $('#modelHeadingHojaDeGastoCirugia').html("Hoja De Gasto Cirugia");
             $('#crearModelHojaDeGastoCirugia').modal('show');		    	
 	
@@ -2254,16 +2384,17 @@ function AdicionarMaterialInformeCirugia() {
 
 
 
+
 function CrearHojaDeGastoCirugia()
 {
 
 	alert("CrearHojaDeGastoCirugia");
 
 	var sede = document.getElementById("sede").value;
-	document.getElementById("sedesClinicaModalHojaDeGAstoCirugia_id").value =  sede;
-	cirugiaIdModalHojaDeGastoCirugia  = document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value ;
-	var user  = document.getElementById("usernameHojaDeGastoCirugia_id").value ;
+	document.getElementById("sedesClinicaModalHojaDeGastoCirugia_id").value =  sede;
 
+	var user  = document.getElementById("usernameHojaDeGastoCirugia_id").value ;
+	var cirugiaIdModalHojaDeGastoCirugia  = document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value ;
 
             $.ajax({
                 data: $('#postFormHojaDeGastoCirugia').serialize(),
@@ -2273,6 +2404,7 @@ function CrearHojaDeGastoCirugia()
                 success: function (data2) {
 		  
                   $('#postFormHojaDeGastoCirugia').trigger("reset");
+
 	   document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value = cirugiaIdModalHojaDeGastoCirugia;
 	 document.getElementById("usernameHojaDeGastoCirugia_id").value =  user;
 
@@ -2283,12 +2415,15 @@ function CrearHojaDeGastoCirugia()
 	        data['sede'] = sede;
 	        data['username_id'] = username_id;
 			
-		data['cirugiaId'] =cirugiaIdModalHojaDeGaatoCirugia;
+		data['cirugiaId'] =cirugiaIdModalHojaDeGastoCirugia;
 	        data = JSON.stringify(data);
 	
 
 	     arrancaCirugia(14,data);
 	    dataTableHojaDeGastoCirugiaInitialized = true;
+	     arrancaCirugia(15,data);
+	    dataTableHojaDeGastoXXCirugiaInitialized = true;
+	  
 	  
 
  		// $('#crearModelHojaDeGastoCirugia').modal('hide');

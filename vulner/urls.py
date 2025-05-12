@@ -346,14 +346,16 @@ urlpatterns = [
     path('borraParticipanteInformeCirugia/', viewsCirugia.BorraParticipanteInformeCirugia, name='BorraParticipanteInforme_Cirugia'),
     path('borraProcedimientosInformeCirugia/', viewsCirugia.BorraProcedimientosInformeCirugia, name='BorraProcedimientosInforme_Cirugia'),
     path('borraMaterialInformeCirugia/', viewsCirugia.BorraMaterialInformeCirugia,name='BorraMaterialInforme_Cirugia'),
-
+    path('borraHojaDeGastoCirugia/', viewsCirugia.BorraHojaDeGastoCirugia,name='BorraHojaDeGasto_Cirugia'),
     path('crearProcedimientosInformeCirugia/', viewsCirugia.CrearProcedimientosInformeCirugia, name='CrearProcedimientoInforme_Cirugia'),
     path('crearMaterialInformeCirugia/', viewsCirugia.CrearMaterialInformeCirugia, name='CrearMaterialInforme_Cirugia'),
 
 
     path('load_dataTraerProcedimientosInformeXXCirugia/<str:data>', viewsCirugia.Load_dataTraerProcedimientosInformeXXCirugia, name='Load_dataTraerProcedimientoInformeXX_Cirugia'),
     path('crearAdicionQx/', viewsCirugia.CrearAdicionQx, name='crearAdicion_Qx'),
-
+    path('crearHojaDeGastoCirugia/', viewsCirugia.CrearHojaDeGastoCirugia, name='CrearHojaDeGasto_Cirugia'),
+    path('load_dataHojaDeGastoCirugia/<str:data>', viewsCirugia.Load_dataHojaDeGastoCirugia, name='load_dataHojaDeGasto_Cirugia'),
+    path('load_dataHojaDeGastoXXCirugia/<str:data>', viewsCirugia.Load_dataHojaDeGastoXXCirugia,name='load_dataHojaDeGastoXX_Cirugia'),
     # Citas Medicas
 
     # Usuarios
