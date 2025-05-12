@@ -131,7 +131,7 @@ update cirugia_cirugias set "estadoCirugia_id"=1;
 select "estadoProgramacion_id","estadoCirugia_id",* from cirugia_cirugias;
 select "estadoProgramacion_id",* from cirugia_programacioncirugias;
 
-
+select * from cirugia_cirugias;
 select * from sitios_salas;
 select * from sitios_serviciosAdministrativos;
 

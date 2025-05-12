@@ -342,14 +342,17 @@ urlpatterns = [
     path('load_dataTraerProcedimientosInformeCirugia/<str:data>', viewsCirugia.Load_dataTraerProcedimientosInformeCirugia,name='Load_dataTraerProcedimientoInforme_Cirugia'),
     path('load_dataTraerParticipantesInformeCirugia/<str:data>', viewsCirugia.Load_dataTraerParticipantesInformeCirugia,name='Load_dataTraerParticipantesInforme_Cirugia'),
     path('load_dataMaterialInformeCirugia/<str:data>', viewsCirugia.Load_dataMaterialInformeCirugia, name='Load_dataMaterialInforme_Cirugia'),
+    path('load_dataMaterialInformeXXCirugia/<str:data>', viewsCirugia.Load_dataMaterialInformeXXCirugia, name='Load_dataMaterialInformeXX_Cirugia'),
     path('borraParticipanteInformeCirugia/', viewsCirugia.BorraParticipanteInformeCirugia, name='BorraParticipanteInforme_Cirugia'),
     path('borraProcedimientosInformeCirugia/', viewsCirugia.BorraProcedimientosInformeCirugia, name='BorraProcedimientosInforme_Cirugia'),
     path('borraMaterialInformeCirugia/', viewsCirugia.BorraMaterialInformeCirugia,name='BorraMaterialInforme_Cirugia'),
 
     path('crearProcedimientosInformeCirugia/', viewsCirugia.CrearProcedimientosInformeCirugia, name='CrearProcedimientoInforme_Cirugia'),
+    path('crearMaterialInformeCirugia/', viewsCirugia.CrearMaterialInformeCirugia, name='CrearMaterialInforme_Cirugia'),
+
 
     path('load_dataTraerProcedimientosInformeXXCirugia/<str:data>', viewsCirugia.Load_dataTraerProcedimientosInformeXXCirugia, name='Load_dataTraerProcedimientoInformeXX_Cirugia'),
-
+    path('crearAdicionQx/', viewsCirugia.CrearAdicionQx, name='crearAdicion_Qx'),
 
     # Citas Medicas
 

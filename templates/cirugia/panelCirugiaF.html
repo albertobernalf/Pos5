@@ -719,12 +719,8 @@ table.dataTable tbody tr {
 				<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia"  onclick="CrearParticipantesCirugia()">Adicionar!</button>
 			</div>
 
-		
-
-
                                 </div> <!-- CIERRA ROW 8 COLUMNAS  -->
 
-		
 				<div class="col-12">
 			<!-- Aqui Data Table  -->
 				 <div class="row">
@@ -1221,9 +1217,6 @@ table.dataTable tbody tr {
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Adicionar Qx" onclick= "AdicionarQx()" >				    
 		</div>
 
-
-
-
 	<!-- Modal Procedimiento Informe Cirugia -->
 
    <div class="modal fade" id="crearModelProcedimientosInformeCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -1335,6 +1328,118 @@ table.dataTable tbody tr {
 	<!-- FIN Modal Procedimiento Informe Cirugia -->
 
 
+
+<!-- Modal Material Informe Cirugia -->
+
+   <div class="modal fade" id="crearModelMaterialInformeCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingMaterialInformeCirugia"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormMaterialInformeCirugia" name="postFormMaterialInformeCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+		 <input type="hidden" class="form-control" id="sedesClinicaModalMaterialInforme_id" name="sedesClinicaModalMaterialInforme_id"  readonly></input>
+
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalMaterialInforme" name="cirugiaIdModalMaterialInforme"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+			 <div class="col-2">
+
+			</div>
+
+			  <div class="col-4">
+                                        <label for="suministroInforme" class="col-sm-1 control-label">Suministro:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="suministroInforme"  tabindex= "0"  name="suministroInforme"  required>
+                                                {% for suministrosCirugia in SuministrosCirugia %}
+                                                <option value="{{suministrosCirugia.id}}"> {{suministrosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+			
+			  <div class="col-2">
+			 <input type="text" class="form-control" id="cantidadInforme" name="cantidadInforme"  ></input>  
+                         </div>
+
+
+			  <div class="col-2">
+			 <input type="text" class="form-control" id="usernameMaterialInformeCirugia_id" name="usernameMaterialInformeCirugia_id"></input>  
+                         </div>
+
+
+			 <div class="col-2">
+				<button type="button" class="btn btn-primary" id="saveBtnCrearMaterialInformeCirugia" onclick="CrearMaterialInformeCirugia()">Adicionar!</button> 
+			</div>
+		</div>
+			
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaMaterialInformeXXCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th> 
+						<th>CirugiaId</th> 
+                                            
+						<th>suministro_id</th>
+						<th>Suministro</th>
+						<th>tipo</th>  
+						<th>cantidad</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				
+
+			<!-- Fin Data table -->
+	
+                           
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalMaterialInformeCirugia" name="mensajesErrorModalMaterialInformeCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Material INFORME Cirugia -->
+
+
+
+
+
 	<!-- Modal Adicionar Qx-->
 
    <div class="modal fade" id="crearModelAdicionarQx" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -1365,18 +1470,18 @@ table.dataTable tbody tr {
 
 				</div>
 			<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
-		IngresoQuirofano  : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19" > 
-		InicioAnestesia     : <input type="text" name="fechaIniAnestesia" id="fechaIniAnestesia" size="19"> 
- 		InicioCirugia       : <input type="text" name="fechaQxIni" id="fechaQxIni" size="19"> 
-		FinCirugia  	     : <input type="text" name="fechaQxFin" id="fechaQxFin" size="19"> 		 
-		FinAnestesia 	     : <input type="text" name="fechaFinAnestesia" id="fechaFinAnestesia" size="19"> 
-  		SalidaQuirofano     : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19"> 
-		TiempoQx Total      : <input type="text" name="tiempoTotal" id="tiempoTotal" size="3"> 
+		IngresoQuirofano  : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19" maxlength="19" > 
+		InicioAnestesia     : <input type="text" name="fechaIniAnestesia" id="fechaIniAnestesia" size="19" maxlength="19"> 
+ 		InicioCirugia       : <input type="text" name="fechaQxIni" id="fechaQxIni" size="19" maxlength="19" > 
+		FinCirugia  	     : <input type="text" name="fechaQxFin" id="fechaQxFin" size="19" maxlength="19" > 		 
+		FinAnestesia 	     : <input type="text" name="fechaFinAnestesia" id="fechaFinAnestesia" size="19" maxlength="19" > 
+  		SalidaQuirofano     : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19" maxlength="19" > 
+		TiempoQx Total      : <input type="text" name="tiempoTotal" id="tiempoTotal" size="3" maxlength="3" > 
 		TiempoAnestesico Total : <input type="text" name="tiempoAnestesicoTotal" id="tiempoAnestesicoTotal" size="3"> 
 		Tiempototal en Sala   : <input type="text" name="tiempoTotalEnSala" id="tiempoTotalEnSala" size="3">  
-		IngresoRecuperacion  : <input type="text" name="ingresoRecuperacion" id="ingresoRecuperacion" size="19"> 
-		SalidaRecuperacion   : <input type="text" name="salidaRecuperacion" id="salidaRecuperacion" size="19"> 
-		Tiempo total de recuperacion:  <input type="text" name="tiempoTotalRecuperacion" id="tiempoTotalRecuperacion" size="3"> 
+		IngresoRecuperacion  : <input type="text" name="ingresoRecuperacion" id="ingresoRecuperacion" size="19" maxlength="19" > 
+		SalidaRecuperacion   : <input type="text" name="salidaRecuperacion" id="salidaRecuperacion" size="19" maxlength="19" > 
+		Tiempo total de recuperacion:  <input type="text" name="tiempoTotalRecuperacion" id="tiempoTotalRecuperacion" size="3" maxlength="3" > 
 			</div>
 
 			<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
@@ -1386,10 +1491,10 @@ table.dataTable tbody tr {
 		impresion dx:       <select id="impresionDx"  tabindex= "0"  name="impresionDx"  required> <option>diagnostico_13</option> </select>
 		Complicaciones cie: <select id="complicacionesDx"  tabindex= "0"  name="complicacionesDx"  required> <option>diagnostico_14</option> </select>
 		
-		Forma realizacion: <input type="text" name="formaRealizacion" id="formaRealizacion" size="3"> 
-		tejidos enviados a patologia: <input type="text" name="tejidoPatologia" id="tejidoPatologia" size="1"> 
-		tipo de fractura: <input type="text" name="tipoFractura" id="tipoFractura" size="3"> 
-		Uso de intensificador: <input type="text" name="intensificador" id="intensificador" size="1"> 
+		Forma realizacion: <input type="text" name="formaRealizacion" id="formaRealizacion" size="3" maxlength="3" > 
+		tejidos enviados a patologia: <input type="text" name="tejidoPatologia" id="tejidoPatologia" size="1" maxlength="1" > 
+		tipo de fractura: <input type="text" name="tipoFractura" id="tipoFractura" size="3" maxlength="3" > 
+		Uso de intensificador: <input type="text" name="intensificador" id="intensificador" size="1" maxlength="1" > 
 		</div>
 
 		<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
@@ -1437,11 +1542,152 @@ table.dataTable tbody tr {
 
 </article>
 
-<article id="Hoja de Gasto">
+<article id="HojaDeGasto">
+
+<div class="container my-2">
         	
+		<div align="right" height="15px" width="50px">
+               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarHojaDeGastoCirugia"  name="BtnAdicionarHojaDeGAstoCirugia" value="Adicionar" onclick= "AdicionarHojaDeGastoCirugia()" >				    
+		</div>
+
+
+		<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaHojaDeGastoCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th>                                             
+						<th>suministro_id</th>
+						<th>Suministro</th>
+						<th>tipo</th>  
+						<th>cantidad</th>  
+						<th>Sel</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+ </div>				
+			<!-- Fin Data table -->
+
+	
+<!-- Modal Hoja de Gasto Cirugia -->
+
+   <div class="modal fade" id="crearModelHojaDeGastoCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingHojaDeGastoCirugia"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormHojaDeGastoCirugia" name="postFormHojaDeGastoCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+		 <input type="hidden" class="form-control" id="sedesClinicaModalHojaDeGastoCirugia_id" name="sedesClinicaModalHojaDeGastoCirugia_id"  readonly></input>
+
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalHojaDeGastoCirugia" name="cirugiaIdModalHojaDeGastoCirugia"  readonly></input>
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+			 <div class="col-2">
+
+			</div>
+
+			  <div class="col-4">
+                                        <label for="suministroHojaDegasto" class="col-sm-1 control-label">Suministro:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="suministroHojaDeGasto"  tabindex= "0"  name="suministroHojaDeGasto"  required>
+                                                {% for suministrosCirugia in SuministrosCirugia %}
+                                                <option value="{{suministrosCirugia.id}}"> {{suministrosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+			
+			  <div class="col-2">
+			 <input type="text" class="form-control" id="cantidadHojaDeGasto" name="cantidadHojaDeGasto"  ></input>  
+                         </div>
+
+
+			  <div class="col-2">
+			 <input type="hidden" class="form-control" id="usernameHojaDeGastoCirugia_id" name="usernameHojaDeGastoCirugia_id"  ></input>  
+                         </div>
+
+
+			 <div class="col-2">
+				<button type="button" class="btn btn-primary" id="saveBtnHojaDeGastoCirugia" onclick="CrearHojaDeGastoCirugia()">Adicionar!</button> 
+			</div>
+		</div>
+			
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaHojaDeGastoXXCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					    	<th>Sel</th>  
+						<th>id</th>                                             
+						<th>suministro_id</th>
+						<th>Suministro</th>
+						<th>tipo</th>  
+						<th>cantidad</th>  
+			              
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				
+
+			<!-- Fin Data table -->
+
+                            
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalHojaDeGastoCirugia" name="mensajesErrorModalHojaDeGastoCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Hoja De Gasto Cirugia -->
 		
 
 </article>
+
+
 <article id="Facturacion">
         	
 		
@@ -1480,6 +1726,7 @@ table.dataTable tbody tr {
                                         </table>
                                     </div>
                                 </div>
+
 
 		
 

@@ -744,3 +744,4 @@ BIBLIOGRAFIA:
 	-- Em cirugia adicionar materiales
 	-- Em cirugia crear pantalla hoja de gasto
         -- coloca bien los dacios en AdicionarQx y grabar la modal
+ --- ojo propiedad maxlength="50" en input text

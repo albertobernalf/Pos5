@@ -20,8 +20,9 @@ let dataTableMaterialCirugiaInitialized = false;
 let dataTableMaterialInformeCirugiaInitialized = false;
 let dataTableProcedimientosInformeCirugiaInitialized = false;
 let dataTableParticipantesInformeCirugiaInitialized = false;
-
 let dataTableMaterialInformeXXCirugiaInitialized = false;
+
+let dataTableHojaDeGastoCirugiaInitialized = false;
 
 
 $(document).ready(function() {
@@ -1046,6 +1047,127 @@ function arrancaCirugia(valorTabla,valorData)
   }
 
 
+    if (valorTabla == 13)
+    {
+        let dataTableOptionsMaterialInformeXXCirugia  ={
+	  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3] },
+	    { width: '10%', targets: [2,3] },
+		{  
+                    "targets": 6
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+           ajax: {
+                 url:"/load_dataMaterialInformeXXCirugia/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+		{ data: "fields.id"}, 
+		{ data: "fields.cirugia_id"},             
+                { data: "fields.suministro_id"},
+                { data: "fields.suministro"},
+                { data: "fields.tipoSuministro"},
+               { data: "fields.cantidad"},
+                        ]
+            }
+
+		dataTable = $('#tablaMaterialInformeXXCirugia').DataTable(dataTableOptionsMaterialInformeXXCirugia);
+
+  }
+
+
+    if (valorTabla == 14)
+    {
+        let dataTableOptionsHojaDeGastoCirugia  ={
+	  lengthMenu: [2, 4, 15],
+           processing: true,
+            serverSide: false,
+            scrollY: '275px',
+	    scrollX: true,
+	    scrollCollapse: true,
+            paging:false,
+            columnDefs: [
+		{ className: 'centered', targets: [0, 1, 2, 3] },
+	    { width: '10%', targets: [2,3] },
+		{  
+                    "targets": 6
+               }
+            ],
+	 pageLength: 3,
+	  destroy: true,
+	  language: {
+		    processing: 'Procesando...',
+		    lengthMenu: 'Mostrar _MENU_ registros',
+		    zeroRecords: 'No se encontraron resultados',
+		    emptyTable: 'Ningún dato disponible en esta tabla',
+		    infoEmpty: 'Mostrando registros del 0 al 0 de un total de 0 registros',
+		    infoFiltered: '(filtrado de un total de _MAX_ registros)',
+		    search: 'Buscar:',
+		    infoThousands: ',',
+		    loadingRecords: 'Cargando...',
+		    paginate: {
+			      first: 'Primero',
+			      last: 'Último',
+			      next: 'Siguiente',
+			      previous: 'Anterior',
+		    }
+			},
+
+           ajax: {
+                 url:"/load_dataHojaDeGastoCirugia/" +  data,
+                 type: "POST",
+                 dataSrc: ""
+            },
+            columns: [
+		{ data: "fields.id"}, 
+		{ data: "fields.cirugia_id"},             
+                { data: "fields.suministro_id"},
+                { data: "fields.suministro"},
+                { data: "fields.tipoSuministro"},
+               { data: "fields.cantidad"},
+  {     "render": function ( data, type, row ) {
+                        var btn = '';
+			  btn = btn + " <button class='btn  deleteHojaDeGastoCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash"></i>' + "</button>";
+                       return btn;
+                    },
+            }
+
+                        ]
+            }
+
+		dataTable = $('#tablaHojaDeGastoCirugia').DataTable(dataTableOptionsHojaDeGastoCirugia);
+
+  }
+
+
 }
 
 const initDataTableProgramacionCirugia = async () => {
@@ -1078,13 +1200,13 @@ const initDataTableProgramacionCirugia = async () => {
 	    dataTableSolicitudCirugiaInitialized = true;
 
 
-        arrancaCirugia(9,data);
-	dataTableProcedimientosInformeCirugiaInitialized= true;
+      //  arrancaCirugia(9,data);
+      // dataTableProcedimientosInformeCirugiaInitialized= true;
 
-        arrancaCirugia(10,data);
-	dataTableParticipantesInformeCirugiaInitialized= true;
-        arrancaCirugia(11,data);
-	dataTableMaterialInformeCirugiaInitialized= true;
+      //  arrancaCirugia(10,data);
+      // dataTableParticipantesInformeCirugiaInitialized= true;
+      //  arrancaCirugia(11,data);
+      //  dataTableMaterialInformeCirugiaInitialized= true;
 
 }
 
@@ -1360,6 +1482,8 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miSolicitudCirugia2', function()
 	dataTableParticipantesInformeCirugiaInitialized= true;
         arrancaCirugia(11,data);
 	dataTableMaterialInformeCirugiaInitialized= true;
+        arrancaCirugia(14,data);
+	dataTableHojaDeGastoCirugiaInitialized= true;
 
 	
       
@@ -2039,10 +2163,90 @@ function CrearAdicionQx() {
 	   	    	}
             });
 
-
-
-
 	
+        };
+
+
+function CrearMaterialInformeCirugia()
+{
+
+	alert("CrearMaterialInformeCirugia");
+
+	var sede = document.getElementById("sede").value;
+	document.getElementById("sedesClinicaModalMaterialInforme_id").value =  sede;
+	var cirugiaIdModalMaterialInforme  = document.getElementById("cirugiaIdModalMaterialInforme").value ;
+	
+
+
+            $.ajax({
+                data: $('#postFormMaterialInformeCirugia').serialize(),
+	        url: "/crearMaterialInformeCirugia/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+                  $('#postFormMaterialInformeCirugia').trigger("reset");
+	   document.getElementById("cirugiaIdModalMaterialInforme").value = cirugiaIdModalMaterialInforme;
+		var user  = document.getElementById("username_id").value ;
+	
+
+	 document.getElementById("usernameMaterialInformeCirugia_id").value=user;
+
+		var data =  {}   ;
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		data['cirugiaId'] =cirugiaIdModalMaterialInforme;
+	        data = JSON.stringify(data);
+	
+
+	     arrancaCirugia(13,data);
+	    dataTableMaterialInformeXXCirugiaInitialized = true;
+	  
+	    arrancaCirugia(11,data);
+	    dataTableMaterialInformeCirugiaInitialized = true;
+	  
+ 		// $('#crearModelMaterialInformeCirugia').modal('hide');
+		 $("#mensajesModalMaterialInformeCirugia").html(data2.message);
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalMaterialCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}
+
+function AdicionarHojaDeGastoCirugia() {
+
+   	    alert("ENTRE AdicionarHojaDeGastoCirugia");
+
+            $('#postFormHojaDeGastoCirugia').trigger("reset");
+	    document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value = document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value ;
+	    var user  = document.getElementById("usernameProcedimientosInformeCirugia_id").value ;
+	    document.getElementById("usernameHojaDeGastoCirugia_id").value = user; 
+           $('#modelHeadingHojaDeGastoCirugia').html("Hoja De Gasto Cirugia");
+            $('#crearModelHojaDeGastoCirugia').modal('show');		    	
+	
+      
+  };
+
+function AdicionarMaterialInformeCirugia() {
+
+   	    alert("ENTRE AdicionarMaterialInformeCirugia");
+
+            $('#postFormMaterialInformeCirugia').trigger("reset");
+	    document.getElementById("cirugiaIdModalMaterialInforme").value = document.getElementById("cirugiaIdModalProcedimientos").value ;
+	    var user  = document.getElementById("username_id").value ;
+
+	    document.getElementById("usernameMaterialInformeCirugia_id").value = user;
+	
+            $('#modelHeadingMaterialInformeCirugia').html("Adicion de materiales a Cirugia");
+            $('#crearModelMaterialInformeCirugia').modal('show');		    	
       
   };
 
@@ -2050,3 +2254,51 @@ function CrearAdicionQx() {
 
 
 
+function CrearHojaDeGastoCirugia()
+{
+
+	alert("CrearHojaDeGastoCirugia");
+
+	var sede = document.getElementById("sede").value;
+	document.getElementById("sedesClinicaModalHojaDeGAstoCirugia_id").value =  sede;
+	cirugiaIdModalHojaDeGastoCirugia  = document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value ;
+	var user  = document.getElementById("usernameHojaDeGastoCirugia_id").value ;
+
+
+            $.ajax({
+                data: $('#postFormHojaDeGastoCirugia').serialize(),
+	        url: "/crearHojaDeGastoCirugia/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		  
+                  $('#postFormHojaDeGastoCirugia').trigger("reset");
+	   document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value = cirugiaIdModalHojaDeGastoCirugia;
+	 document.getElementById("usernameHojaDeGastoCirugia_id").value =  user;
+
+		var data =  {}   ;
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		data['cirugiaId'] =cirugiaIdModalHojaDeGaatoCirugia;
+	        data = JSON.stringify(data);
+	
+
+	     arrancaCirugia(14,data);
+	    dataTableHojaDeGastoCirugiaInitialized = true;
+	  
+
+ 		// $('#crearModelHojaDeGastoCirugia').modal('hide');
+		 $("#mensajesModalHojaDeGastoCirugia").html(data2.message);
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalHojaDeGastoCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}

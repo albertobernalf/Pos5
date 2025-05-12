@@ -835,6 +835,50 @@ def Load_dataMaterialInformeCirugia(request, data):
     return HttpResponse(serialized1, content_type='application/json')
 
 
+def Load_dataMaterialInformeXXCirugia(request, data):
+    print("Entre Load_dataMaterialInformeXXCirugia")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    cirugiaId = d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    materialCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+
+    comando = 'select cirmaterial.id id, cirmaterial.cirugia_id cirugia_id, cirmaterial.suministro_id suministro_id, suministros.nombre suministro , tipo.nombre tipoSuministro , cirmaterial.cantidad cantidad FROM cirugia_cirugiasMaterialQx cirmaterial INNER JOIN facturacion_suministros suministros ON ( suministros.id = cirmaterial.suministro_id) INNER JOIN facturacion_tipossuministro tipo ON (tipo.id = suministros."tipoSuministro_id") WHERE cirmaterial.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id,  cirugia_id, suministro_id, suministro , tipoSuministro, cantidad  in cur3.fetchall():
+        materialCirugia.append(
+            {"model": "cirugia.cirugiasMaterialQx", "pk": id, "fields":
+                {'id': id, 'cirugia_id':cirugia_id ,  'suministro_id': suministro_id, 'suministro': suministro, 'tipoSuministro': tipoSuministro ,'cantidad':cantidad     }})
+
+    miConexion3.close()
+    print(materialCirugia)
+
+    serialized1 = json.dumps(materialCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+
 
 def CrearProcedimientosCirugia(request):
 
@@ -1073,7 +1117,7 @@ def CrearMaterialCirugia(request):
         cur3.close()
         miConexion3.close()
 
-        return JsonResponse({'success': True, 'message': 'Procedimiento Actualizado satisfactoriamente!'})
+        return JsonResponse({'success': True, 'message': 'Material Actualizado satisfactoriamente!'})
 
 
     except psycopg2.DatabaseError as error:
@@ -1087,6 +1131,62 @@ def CrearMaterialCirugia(request):
         if miConexion3:
             cur3.close()
             miConexion3.close()
+
+
+def CrearMaterialInformeCirugia(request):
+
+    print ("Entre CrearMaterialInformeCirugia" )
+
+    cirugiaId = request.POST.get('cirugiaIdModalMaterialInforme')
+    print ("cirugiaId =", cirugiaId)
+
+    suministro = request.POST["suministroInforme"]
+    print ("suministro =", suministro)
+
+    username_id = request.POST["usernameMaterialInformeCirugia_id"]
+    print ("username_id =", username_id)
+
+    cantidad = request.POST["cantidadInforme"]
+    print ("cantidad =", cantidad)
+
+
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO cirugia_cirugiasmaterialQx (cantidad, "fechaRegistro", "estadoReg", cirugia_id, suministro_id, "usuarioRegistro_id") VALUES (' + "'" + str(cantidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(suministro) + "','" + str(username_id) + "')"
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Material Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
 
 def BorraProcedimientosInformeCirugia(request):
     print("Entre BorraProcedimientosInformeCirugia")
@@ -1208,3 +1308,193 @@ def BorraMaterialInformeCirugia(request):
             cur3.close()
             miConexion3.close()
 
+def CrearAdicionQx(request):
+    print("Entre CrearAdicionQx")
+
+    # current_date = dt.date.today()  Fecha Actual
+    #datetime.date(year, month, day)
+    #string[0:5]
+
+
+    cirugiaId = request.POST.get('cirugiaIdModalAdicionarQx')
+    ingresoQuirofano = request.POST.get('ingresoQuirofano')
+    ingresoQuirofano =  datetime.date(ingresoQuirofano[0:3], ingresoQuirofano[5:6], ingresoQuirofano[8:9])
+    horaIngresoQuirofano = datetime.date(ingresoQuirofano[11:12], ingresoQuirofano[14:15], ingresoQuirofano[17:18])
+
+    fechaIniAnestesia = request.POST.get('fechaIniAnestesia')
+    fechaIniAnestesia =  datetime.date(fechaIniAnestesia[0:3], fechaIniAnestesia[5:6], fechaIniAnestesia[8:9])
+    horaIniAnestesia = datetime.date(ingresoQuirofano[11:12], ingresoQuirofano[14:15], ingresoQuirofano[17:18])
+
+    fechaQxIni = request.POST.get('fechaQxIni')
+    fechaQxIni =  datetime.date(fechaQxIni[0:3], fechaQxIni[5:6], fechaQxIni[8:9])
+    horaQxIni = datetime.date(fechaQxIni[11:12], fechaQxIni[14:15], fechaQxIni[17:18])
+
+    fechaQxFin = request.POST.get('fechaQxFin')
+    fechaQxFin =  datetime.date(fechaQxFin[0:3], fechaQxFin[5:6], fechaQxFin[8:9])
+    horaQxFin = datetime.date(fechaQxFin[11:12], fechaQxFin[14:15], fechaQxFin[17:18])
+
+    fechaFinAnestesia = request.POST.get('fechaFinAnestesia')
+    fechaFinAnestesia = datetime.date(fechaFinAnestesia[0:3], fechaFinAnestesia[5:6], fechaFinAnestesia[8:9])
+    horaFinAnestesia = datetime.date(fechaFinAnestesia[11:12], fechaFinAnestesia[14:15], fechaFinAnestesia[17:18])
+
+    ingresoQuirofano = request.POST.get('ingresoQuirofano')
+    ingresoQuirofano = datetime.date(ingresoQuirofano[0:3], ingresoQuirofano[5:6], ingresoQuirofano[8:9])
+    horaIngresoQuirofano = datetime.date(ingresoQuirofano[11:12], ingresoQuirofano[14:15], ingresoQuirofano[17:18])
+
+    tiempoTotal = request.POST.get('tiempoTotal')
+    tiempoAnestesicoTotal = request.POST.get('tiempoAnestesicoTotal')
+    tiempoTotalEnSala = request.POST.get('tiempoTotalEnSala')
+    ingresoRecuperacion = request.POST.get('ingresoRecuperacion')
+    ingresoRecuperacion = datetime.date(ingresoRecuperacion[0:3], ingresoRecuperacion[5:6], ingresoRecuperacion[8:9])
+    horaIngresoRecuperacion = datetime.date(ingresoRecuperacion[11:12], ingresoRecuperacion[14:15], ingresoRecuperacion[17:18])
+
+    salidaRecuperacion = request.POST.get('salidaRecuperacion')
+    ingresoRecuperacion = datetime.date(salidaRecuperacion[0:3], salidaRecuperacion[5:6], salidaRecuperacion[8:9])
+    horaSalidaRecuperacion = datetime.date(salidaRecuperacion[11:12], salidaRecuperacion[14:15], salidaRecuperacion[17:18])
+
+    tiempoTotalRecuperacion = request.POST.get('tiempoTotalRecuperacion')
+
+    dxPreOperatorio = request.POST.get('dxPreOperatorio')
+    dxPostOperatorio = request.POST.get('dxPostOperatorio')
+    impresionDx = request.POST.get('impresionDx')
+    complicacionesDx = request.POST.get('complicacionesDx')
+    formaRealizacion = request.POST.get('formaRealizacion')
+    tejidoPatologia = request.POST.get('tejidoPatologia')
+    tipoFractura = request.POST.get('tipoFractura')
+    intensificador = request.POST.get('intensificador')
+
+    descripcionQx = request.POST.get('descripcionQx')
+    hallazgos = request.POST.get('hallazgos')
+    analisis = request.POST.get('analisis')
+    planx = request.POST.get('planx')
+
+    sede = request.POST.get('cirugiaIdModalAdicionarQx')
+    print("sede =", sede)
+
+    miConexion3 = None
+    try:
+
+            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                           password="123456")
+            cur3 = miConexion3.cursor()
+
+
+            detalle = 'UPDATE cirugia_Cirugias SET "ingresoQuirofano" =  ' + "'" + str(ingresoQuirofano) + "'," + '"fechaIniAnestesia" = ' + "'" + str(ingresoQuirofano) + "'," + '"fechaQxInicial" = ' + "'" + str(fechaQxIni) + "'," + '"fechaQxFinal" = ' + "'" + str(fechaQxFin) + "'," + '"fechaFinAnestesia" = ' + "'" + str(fechaFinAnestesia) + "'," + '"ingresoQuirofano" = ' + "'" + str(ingresoQuirofano) + "'," + '"tiempoTotal" = ' + "'" + str(tiempoTotal) + "'," + '"tiempoAnestesicoTotal" = ' + "'" + str(tiempoAnestesicoTotal) + "'," + '"tiempoTotalEnSala" = ' + "'" + str(tiempoTotalEnSala) + "'," + '"ingresoRecuperacion" = ' + "'" + str(ingresoRecuperacion) + "'," + '"salidaRecuperacion" = ' + "'" + str(salidaRecuperacion) + "'," + '"tiempoTotalRecuperacion" = ' + "'" + str(tiempoTotalRecuperacion) + "'," + '"dxPreOperatorio" = ' + "'" + str(dxPreOperatorio) + "'," + '"impresionDx" = ' + "'" + str(impresionDx) + "'," + '"complicacionesDx" = ' + "'" + str(complicacionesDx) + "'," + '"formaRealizacion" = ' + "'" + str(formaRealizacion) + "'," + '"tejidoPatologia" = ' + "'" + str(tejidoPatologia) + "'," + '"tipoFractura" = ' + "'" + str(tipoFractura) + "'," + '"intensificador" = ' + "'" + str(intensificador) + "'," + '"descripcionQx" = ' + "'" + str(descripcionQx) + "'," + '"hallazgos" = ' + "'" + str(hallazgos) + "'," + '"analisis" = ' + "'" + str(analisis) + "'," + '"planx" = ' + "'" + str(planx) + "'" + ' Where id = ' + "'" + str(cirugiaId) + "'"
+
+            print(detalle)
+            cur3.execute(detalle)
+
+            miConexion3.commit()
+            cur3.close()
+            miConexion3.close()
+
+            return JsonResponse({'success': True, 'message': 'Cirugia Actualizada!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
+def Load_dataHojaDeGastoCirugia(request, data):
+    print("Entre Load_dataHojaDeGastoCirugia")
+
+    context = {}
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+    nombreSede = d['nombreSede']
+    print("sede:", sede)
+    print("username:", username)
+    print("username_id:", username_id)
+
+    cirugiaId = d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    hojaDeGastoCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+
+    comando = 'select cirmaterial.id id, cirmaterial.cirugia_id cirugia_id, cirmaterial.suministro_id suministro_id, suministros.nombre suministro , tipo.nombre tipoSuministro , cirmaterial.cantidad cantidad FROM cirugia_cirugiashojasdegastos cirmaterial INNER JOIN facturacion_suministros suministros ON ( suministros.id = cirmaterial.suministro_id) INNER JOIN facturacion_tipossuministro tipo ON (tipo.id = suministros."tipoSuministro_id") WHERE cirmaterial.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id,  cirugia_id, suministro_id, suministro , tipoSuministro, cantidad  in cur3.fetchall():
+        hojaDeGastoCirugia.append(
+            {"model": "cirugia.cirugiasMaterialQx", "pk": id, "fields":
+                {'id': id, 'cirugia_id':cirugia_id ,  'suministro_id': suministro_id, 'suministro': suministro, 'tipoSuministro': tipoSuministro ,'cantidad':cantidad     }})
+
+    miConexion3.close()
+    print(hojaDeGastoCirugia)
+
+    serialized1 = json.dumps(hojaDeGastoCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+def CrearHojaDeGastoCirugia(request):
+
+    print ("Entre CrearHojaDeGastoCirugia" )
+
+    cirugiaId = request.POST.get('cirugiaIdModalHojaDeGastoCirugia')
+    print ("cirugiaId =", cirugiaId)
+
+    suministro = request.POST["suministroHojaDeGasto"]
+    print ("suministro =", suministro)
+
+    username_id = request.POST["usernameHojaDeGAstosCirugia_id"]
+    print ("username_id =", username_id)
+
+    cantidad = request.POST["cantidadHojaDeGasto"]
+    print ("cantidad =", cantidad)
+
+
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO cirugia_cirugiashojasdegastos (cantidad, "fechaRegistro", "estadoReg", cirugia_id, suministro_id, "usuarioRegistro_id") VALUES (' + "'" + str(cantidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(suministro) + "','" + str(username_id) + "')"
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Hoja De Gastos  Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
