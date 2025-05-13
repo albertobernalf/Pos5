@@ -199,7 +199,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 12
+                    "targets": 15
                }
             ],
 	 pageLength: 3,
@@ -254,18 +254,31 @@ function arrancaCirugia(valorTabla,valorData)
 
 
                 { data: "fields.id"},
-                { data: "fields.tipoDoc_id"},
-		   { data: "fields.tipoNota"}, 
+            //    { data: "fields.tipoDoc_id"},
+{
+			target: 1,
+			visible: false
+		},
+	{
+			target: 2,
+			visible: false
+		},
+
+		  // { data: "fields.tipoNota"}, 
+		   { data: "fields.abrev"}, 
                 { data: "fields.documento"},
                 { data: "fields.paciente"},
-                { data: "fields.estadoProg"},
+          
                 { data: "fields.numero"},
                 { data: "fields.sala"},
+                { data: "fields.cirugias"},
+
                 { data: "fields.inicia"},
 		{ data: "fields.horaInicia"},
                 { data: "fields.Termina"},
 		 { data: "fields.horaTermina"},
-		
+     		 { data: "fields.estadoProg"},
+     		 { data: "fields.estadoCirugia"},
                         ]
             }
 
@@ -396,21 +409,82 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.genero"},
                 { data: "fields.edad"},
                 { data: "fields.ingreso"},
-                { data: "fields.solicita"},
+                //{ data: "fields.solicita"},
+{
+			target: 10,
+			visible: false
+		},
                 { data: "fields.cama"},
                 { data: "fields.empresa"},
-                { data: "fields.telefono"},
-                { data: "fields.solicitaSangre"},
-                { data: "fields.describeSangre"},
-                { data: "fields.cantidadSangre"},
+                //{ data: "fields.telefono"},
+{
+			target: 13,
+			visible: false
+		},
+
+               // { data: "fields.solicitaSangre"},
+{
+			target: 14,
+			visible: false
+		},
+
+ //               { data: "fields.describeSangre"},
+{
+			target: 15,
+			visible: false
+		},
+
+               // { data: "fields.cantidadSangre"},
+{
+			target: 16,
+			visible: false
+		},
+
                 { data: "fields.solicitaCamaUci"},
-                { data: "fields.solicitaMicroscopio"},
-                { data: "fields.solicitaRx"},
-                { data: "fields.solicitaAutoSutura"},
-                { data: "fields.solicitaOsteosintesis"},
-                { data: "fields.solicitaBiopsia"},
-                { data: "fields.solicitaMalla"},
-                { data: "fields.solicitaOtros"},
+                // { data: "fields.solicitaMicroscopio"},
+{
+			target: 18,
+			visible: false
+		},
+
+                // { data: "fields.solicitaRx"},
+{
+			target: 19,
+			visible: false
+		},
+
+               // { data: "fields.solicitaAutoSutura"},
+{
+			target: 20,
+			visible: false
+		},
+
+                // { data: "fields.solicitaOsteosintesis"},
+{
+			target: 21,
+			visible: false
+		},
+
+                // { data: "fields.solicitaBiopsia"},
+{
+			target: 22,
+			visible: false
+		},
+
+               // { data: "fields.solicitaMalla"},
+{
+			target: 23,
+			visible: false
+		},
+
+               // { data: "fields.solicitaOtros"},
+{
+			target: 24,
+			visible: false
+		},
+
+		
+
                 { data: "fields.estadoProg"},
                 { data: "fields.anestesia"},
 
@@ -1325,9 +1399,8 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
             $('#postFormProgramacionCirugia').trigger("reset");
             $('#post_id').val('');
 
-            $('#sala').val('');
-
-	// alert("info = " + info[0].fields.horaInicia);
+          
+	 alert("info sala_id = " + info[0].fields.sala_id);
 		
 		$('#sala').val(info[0].fields.sala_id);
 
@@ -1510,13 +1583,26 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarMaterial', function()
   });
 
 
-$('#tablaSolicitudCirugia tbody').on('click', '.miSolicitudCirugia2', function() {
+$('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', function() {
 
 		
 
 	     var post_id = $(this).data('pk');
+		var programacionId= post_id;
+		alert("ProgramacionId = " + programacionId);
+	// Debo hacer un AJAX para traer la cirugia, le envio la programacion
 
-	alert("Seleccion Cirugia" + post_id);
+    $.ajax({
+                
+	        url: "/seleccionProgramacionCirugia/",
+		data:{'programacionId':programacionId},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+		alert("data2 = " + data2);
+		
+
+		var cirugiaId = data2;		
 
     	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
@@ -1524,10 +1610,10 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miSolicitudCirugia2', function()
     	var sede = document.getElementById("sede").value;
         var username_id = document.getElementById("username_id").value;
 
-	document.getElementById("cirugiaIdModalInformeProcedimientos").value = post_id;
-	document.getElementById("cirugiaIdModalProcedimientos").value = post_id;
+	document.getElementById("cirugiaIdModalInformeProcedimientos").value = cirugiaId;
+	document.getElementById("cirugiaIdModalProcedimientos").value = cirugiaId;
 
-	document.getElementById("cirugiaIdModalAdicionarQx").value = post_id;
+	document.getElementById("cirugiaIdModalAdicionarQx").value = cirugiaId;
 
 
 
@@ -1537,7 +1623,7 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miSolicitudCirugia2', function()
         data['nombreSede'] = nombreSede;
         data['sede'] = sede;
         data['username_id'] = username_id;
-	data['cirugiaId'] = post_id;
+	data['cirugiaId'] = cirugiaId;
  	    data = JSON.stringify(data);
         arrancaCirugia(9,data);
 	dataTableProcedimientosInformeCirugiaInitialized= true;
@@ -1548,6 +1634,20 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miSolicitudCirugia2', function()
 	dataTableMaterialInformeCirugiaInitialized= true;
         arrancaCirugia(14,data);
 	dataTableHojaDeGastoCirugiaInitialized= true;
+		  
+    	
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+
+
+
+
 
 	
       

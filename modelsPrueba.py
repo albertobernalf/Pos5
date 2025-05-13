@@ -745,3 +745,8 @@ BIBLIOGRAFIA:
 	-- Em cirugia crear pantalla hoja de gasto
         -- coloca bien los dacios en AdicionarQx y grabar la modal
  --- ojo propiedad maxlength="50" en input text
+
+-- OJO MAÑANA
+-- cuando se programa la cirugia queda PENDIENTE LA CIRUGIA OJO
+-- cuando muestra lños ingresos a poner cirugias hay que sacar los que ya estan agendados para CIRUGIA
+-- ojo los botones de cargue en INFORME QX de proced, particip, materiales no estan cargando los datatabble InformeXX

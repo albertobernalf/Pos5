@@ -935,15 +935,20 @@ table.dataTable tbody tr {
 					     <th>id</th>
 					     <th>tipoDoc_id</th>
 					     <th>tipoNota</th>
+					     <th>abrev</th>
 					     <th>documento</th>
 					     <th>paciente</th>
-					     <th>estadoProg</th>
-					     <th>numero</th>
 					     <th>sala</th>
+					    
+					     <th>nombreSala</th>
+					     <th>Procedimientos</th>
 					     <th>inicia</th>
-					     <th>horaInicia</th>
+					     <th>hora</th>
 					     <th>Termina</th>
-					     <th>horaTermina</th>
+					     <th>hora</th>
+  						<th>estadoProg</th>
+						<th>estadoCirugia</th>
+
 					  
 				              
 					</bold>                                  
@@ -1120,6 +1125,7 @@ table.dataTable tbody tr {
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adicionar Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Descripcion Quirurgica" onclick= "AdicionarQx()" >				    
 		       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarMaterialInformeCirugia"  name="BtnAdicionarMaterialInformeCirugia" value="Adicionar Material Qx" onclick= "AdicionarMaterialInformeCirugia()" >				    
+		   <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGenerarLiquidacionCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Generar Liquidacion" onclick= "GenerarLiquidacionCirugia()" >				    
 		</div>
 
 		<div class="container my-2">

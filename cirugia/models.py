@@ -35,6 +35,7 @@ class Cirugias(models.Model):
     solicitaMalla = models.CharField(max_length=1, blank=True, null=True, editable=True)
     solicitaOtros = models.CharField(max_length=1, blank=True, null=True, editable=True)
     describeOtros = models.CharField(max_length=2000, blank=True, null=True, editable=True)
+    sala = models.ForeignKey('sitios.Salas', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     fechaProg = models.DateField(default=date.today,  blank=True, null=True, editable=True)
     HoraProg = models.CharField(max_length=5, blank=True, null=True, editable=True)
     ingresoQuirofano = models.DateField(default=date.today,   blank=True, null=True, editable=True)
