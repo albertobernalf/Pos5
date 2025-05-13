@@ -831,7 +831,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.especialidadNombre"},
 	    {     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash"></i>' + "</button>";
+			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
                        return btn;
                     },
             }
@@ -903,7 +903,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.finalNombre"},
   {     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn  deleteProcedimientosInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash"></i>' + "</button>";
+			  btn = btn + " <button class='btn  deleteProcedimientosInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
                        return btn;
                     },
             }
@@ -978,7 +978,7 @@ function arrancaCirugia(valorTabla,valorData)
                { data: "fields.cantidad"},
   	{     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn deleteMaterialInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash"></i>' + "</button>";
+			  btn = btn + " <button class='btn deleteMaterialInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
                        return btn;
                     },
             }
@@ -2233,14 +2233,56 @@ function CrearProcedimientosInformeCirugia()
 
 function AdicionarQx() {
 
-		alert("ENTRE miAdicionarQx");
 
+	var cirugiaId = document.getElementById("cirugiaIdModalProcedimientos").value ;
+	var sede = document.getElementById("sede").value ;
+
+		alert("ENTRE miAdicionarQx Cirugia No" + cirugiaId);
+
+            $.ajax({
+                data: {'sede':sede, 'cirugiaId':cirugiaId},
+	        url: "/buscaAdicionarQx/",
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
 
             $('#postFormAdicionarQx').trigger("reset");
-		    document.getElementById("cirugiaIdModalAdicionarQx").value = document.getElementById("cirugiaIdModalProcedimientos").value ;
+
+	    document.getElementById("cirugiaIdModalAdicionarQx").value = document.getElementById("cirugiaIdModalProcedimientos").value ;
+		$('#ingresoQuirofano').val(info[0].fields.ingresoQuirofano);
+		alert("fechainiAnestesia = " + info[0].fields.fechaIniAnestesia);
+
+		$('#fechaIniAnestesia2').val(info[0].fields.fechaIniAnestesia);
+		$('#fechaQxIni').val(info[0].fields.fechaQxIni);
+		$('#fechaQxFin').val(info[0].fields.fechaQxFin);
+		$('#fechaFinAnestesia').val(info[0].fields.fechaFinAnestesia);
+		$('#salidaQuirofano').val(info[0].fields.salidaQuirofano);
+		$('#ingresoRecuperacion').val(info[0].fields.ingresoRecuperacion);
+		$('#salidaRecuperacion').val(info[0].fields.salidaRecuperacion);
+		$('#dxPreOperatorio').val(info[0].fields.dxPreOperatorio);
+		$('#dxPostOperatorio').val(info[0].fields.dxPostOperatorio);
+		$('#impresionDx').val(info[0].fields.impresionDx);
+		$('#complicacionesDx').val(info[0].fields.complicacionesDx);
+		$('#formaRealizacion').val(info[0].fields.formaRealizacion);
+		$('#tejidoPatologia').val(info[0].fields.tejidoPatologia);
+		$('#tipoFractura').val(info[0].fields.tipoFractura);
+		$('#intensificador').val(info[0].fields.intensificador);
+		$('#descripcionQx').val(info[0].fields.descripcionQx);
+		$('#hallazgos').val(info[0].fields.hallazgos);
+		$('#analisis').val(info[0].fields.analisis);
+		$('#planx').val(info[0].fields.planx);
+		$('#fechaIniAnestesia2').val(info[0].fields.fechaIniAnestesia);
+
             $('#modelHeadingAdicionarQx').html("Adicion Qx");
             $('#crearModelAdicionarQx').modal('show');
-		    	
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalAdicionarQx").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+   	
 	
       
   };

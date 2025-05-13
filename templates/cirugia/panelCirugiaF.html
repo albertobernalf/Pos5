@@ -81,7 +81,7 @@ div.dataTables_filter input {
     }
 #tablaParticipantesInformeCirugia {   
  font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
- font-size: 50px;
+ font-size: 20px;
  padding: 1px;
   height: 1px;
     }
@@ -95,7 +95,7 @@ div.dataTables_filter input {
 
 #tablaMaterialInformeCirugia {   
  font-family: 'Times', 'Times New Roman',Verdana,  sans-serif;
- font-size: 50px;
+ font-size: 20px;
  padding: 1px;
   height: 1px;
     }
@@ -1117,10 +1117,13 @@ table.dataTable tbody tr {
 
 		<div align="right" height="15px" width="50px">
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarParticipanteInformeCirugia"  name="BtnAdicionarParticipanteInformeCirugia" value="Adicionar Participantes" onclick= "AdicionarParticipanteInformeCirugia()" >				    
-	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Adicion Quirurgica" onclick= "AdicionarQx()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adicionar Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Descripcion Quirurgica" onclick= "AdicionarQx()" >				    
+		       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarMaterialInformeCirugia"  name="BtnAdicionarMaterialInformeCirugia" value="Adicionar Material Qx" onclick= "AdicionarMaterialInformeCirugia()" >				    
 		</div>
 
-	<div class="col-12">
+		<div class="container my-2">
+
 			<!-- Aqui Data Table  -->
 				 <div class="row">
 				
@@ -1148,12 +1151,13 @@ table.dataTable tbody tr {
 				 </div>
 
 			<!-- Fin Data table -->
-
+		<!-- 
 		<div align="right" height="15px" width="50px">
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adicionar Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
 		   <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGenerarLiquidacionCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Generar Liquidacion" onclick= "GenerarLiquidacionCirugia()" >				    
 		</div>
-
+		-->
+		<div class="container my-2">
 			<!-- Aqui Data Table  -->
 				 <div class="row">
 				
@@ -1178,14 +1182,17 @@ table.dataTable tbody tr {
                                      
                                         </table>
                                     </div>
+                                    </div>
 				
 
 			<!-- Fin Data table -->
-
+		<!-- 
 		<div align="right" height="15px" width="50px">
 	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarMaterialInformeCirugia"  name="BtnAdicionarMaterialInformeCirugia" value="Adicionar Material Qx" onclick= "AdicionarMaterialInformeCirugia()" >				    
 		</div>
+		-->
 	<!-- Aqui Data Table  -->
+		<div class="container my-2">
 				 <div class="row">
 				
                                         <table  id= "tablaMaterialInformeCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
@@ -1211,8 +1218,8 @@ table.dataTable tbody tr {
                                      
                                         </table>
                                     </div>
+                                    </div>
 				
-
 			<!-- Fin Data table -->
 
 	<!-- Modal Procedimiento Informe Cirugia -->
@@ -1435,9 +1442,6 @@ table.dataTable tbody tr {
 	<!-- FIN Modal Material INFORME Cirugia -->
 
 
-
-
-
 	<!-- Modal Adicionar Qx-->
 
    <div class="modal fade" id="crearModelAdicionarQx" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -1469,43 +1473,69 @@ table.dataTable tbody tr {
 				</div>
 			<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
 		IngresoQuirofano  : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19" maxlength="19" > 
-		InicioAnestesia     : <input type="text" name="fechaIniAnestesia" id="fechaIniAnestesia" size="19" maxlength="19"> 
+		InicioAnestesia     : <input type="text" name="fechaIniAnestesia2" id="fechaIniAnestesia2" size="19" maxlength="19"> 
  		InicioCirugia       : <input type="text" name="fechaQxIni" id="fechaQxIni" size="19" maxlength="19" > 
 		FinCirugia  	     : <input type="text" name="fechaQxFin" id="fechaQxFin" size="19" maxlength="19" > 		 
 		FinAnestesia 	     : <input type="text" name="fechaFinAnestesia" id="fechaFinAnestesia" size="19" maxlength="19" > 
-  		SalidaQuirofano     : <input type="text" name="ingresoQuirofano" id="ingresoQuirofano" size="19" maxlength="19" > 
+  		SalidaQuirofano     : <input type="text" name="salidaQuirofano" id="salidaQuirofano" size="19" maxlength="19" > 
+		<!-- 
 		TiempoQx Total      : <input type="text" name="tiempoTotal" id="tiempoTotal" size="3" maxlength="3" > 
 		TiempoAnestesico Total : <input type="text" name="tiempoAnestesicoTotal" id="tiempoAnestesicoTotal" size="3"> 
 		Tiempototal en Sala   : <input type="text" name="tiempoTotalEnSala" id="tiempoTotalEnSala" size="3">  
+     		-->
 		IngresoRecuperacion  : <input type="text" name="ingresoRecuperacion" id="ingresoRecuperacion" size="19" maxlength="19" > 
 		SalidaRecuperacion   : <input type="text" name="salidaRecuperacion" id="salidaRecuperacion" size="19" maxlength="19" > 
+		<!--
 		Tiempo total de recuperacion:  <input type="text" name="tiempoTotalRecuperacion" id="tiempoTotalRecuperacion" size="3" maxlength="3" > 
+     		-->
 			</div>
 
 			<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
 
-		dx pre-operatorio:  <select id="dxPreOperatorio"  tabindex= "0"  name="dxPreOperatorio"  required> <option>diagnostico_1</option> </select>
-      		dx post-operatorio:<select id="dxPostOperatorio"  tabindex= "0"  name="dxPostOperatorio"  required> <option>diagnostico_12</option> </select>
-		impresion dx:       <select id="impresionDx"  tabindex= "0"  name="impresionDx"  required> <option>diagnostico_13</option> </select>
-		Complicaciones cie: <select id="complicacionesDx"  tabindex= "0"  name="complicacionesDx"  required> <option>diagnostico_14</option> </select>
-		
-		Forma realizacion: <input type="text" name="formaRealizacion" id="formaRealizacion" size="3" maxlength="3" > 
+		dx pre-operatorio:  	 <select class="select-css h-40 w-20" id="dxPreOperatorio"  tabindex= "0"  name="dxPreOperatorio"  required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+					
+
+      		dx post-operatorio: <select class="select-css h-40 w-20" id="dxPostOperatorio"  tabindex= "0"  name="dxPostOperatorio"  required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+
+
+
+		impresion dx:   <select class="select-css h-40 w-20" id="impresionDx"  tabindex= "0"  name="impresionDx"  required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+
+		Complicaciones cie: <select class="select-css h-40 w-20" id="complicacionesDx"  tabindex= "0"  name="complicacionesDx"  required>
+                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
+                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+
+		Forma realizacion: <input type="text" name="formaRealizacion" id="formaRealizacion" size="15" maxlength="15" > 
 		tejidos enviados a patologia: <input type="text" name="tejidoPatologia" id="tejidoPatologia" size="1" maxlength="1" > 
-		tipo de fractura: <input type="text" name="tipoFractura" id="tipoFractura" size="3" maxlength="3" > 
+		tipo de fractura: <input type="text" name="tipoFractura" id="tipoFractura" size="40" maxlength="40" > 
 		Uso de intensificador: <input type="text" name="intensificador" id="intensificador" size="1" maxlength="1" > 
 		</div>
 
 		<div class="col2" style="border-width:2px;border-style:solid;border-color:black;">
 
 	
-		<textarea name="descripcionQx" rows="5" cols="110" placeHolder="Descripcion Qx"></textarea>
+		<textarea id="descripcionQx" name="descripcionQx" rows="5" cols="110" placeHolder="Descripcion Qx"></textarea>
 
 
-		<textarea name="hallazgos" rows="4" cols="110" placeHolder="Hallazgos"></textarea>
+		<textarea id="hallazgos"  name="hallazgos" rows="4" cols="110" placeHolder="Hallazgos"></textarea>
 
-		<textarea name="analisis" rows="3" cols="110" placeHolder="NOTA OPERATORIA:Analisis"></textarea>
+		<textarea id="analisis" name="analisis" rows="3" cols="110" placeHolder="NOTA OPERATORIA:Analisis"></textarea>
 
-		<textarea name="planx" rows="3" cols="110" placeHolder="NOTA OPERATORIA:Plan"></textarea>
+		<textarea id="planx" name="planx" rows="3" cols="110" placeHolder="NOTA OPERATORIA:Plan"></textarea>
 
 			</div>
 

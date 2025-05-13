@@ -356,6 +356,8 @@ urlpatterns = [
     path('crearHojaDeGastoCirugia/', viewsCirugia.CrearHojaDeGastoCirugia, name='CrearHojaDeGasto_Cirugia'),
     path('load_dataHojaDeGastoCirugia/<str:data>', viewsCirugia.Load_dataHojaDeGastoCirugia, name='load_dataHojaDeGasto_Cirugia'),
     path('load_dataHojaDeGastoXXCirugia/<str:data>', viewsCirugia.Load_dataHojaDeGastoXXCirugia,name='load_dataHojaDeGastoXX_Cirugia'),
+    path('buscaAdicionarQx/', viewsCirugia.BuscaAdicionarQx, name='BuscaAdicionar_Qx'),
+
     # Citas Medicas
 
     # Usuarios

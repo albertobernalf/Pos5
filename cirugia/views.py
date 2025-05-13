@@ -1312,60 +1312,58 @@ def BorraMaterialInformeCirugia(request):
 def CrearAdicionQx(request):
     print("Entre CrearAdicionQx")
 
-    # current_date = dt.date.today()  Fecha Actual
-    #datetime.date(year, month, day)
-    #string[0:5]
-
-
     cirugiaId = request.POST.get('cirugiaIdModalAdicionarQx')
     ingresoQuirofano = request.POST.get('ingresoQuirofano')
     print("ingresoQuirofano", ingresoQuirofano)
-    print("ingresoQuirofano  AÑO", int(ingresoQuirofano[0:4]))
-    print("ingresoQuirofano  MES", int(ingresoQuirofano[5:7]))
-    print("ingresoQuirofano  DIA", int(ingresoQuirofano[8:11]))
-    print("ingresoQuirofano  Hora", int(ingresoQuirofano[11:13]))
-    print("ingresoQuirofano  Min", int(ingresoQuirofano[14:16]))
-    print("ingresoQuirofano  seg", int(ingresoQuirofano[17:20]))
+    horaIngresoQuirofano =  ingresoQuirofano[11:19]
+    print("horaIngresoQuirofano", horaIngresoQuirofano)
 
-    ingresoQuirofano1 = ingresoQuirofano
     ingresoQuirofano =  datetime.date(int(ingresoQuirofano[0:4]), int(ingresoQuirofano[5:7]), int(ingresoQuirofano[8:11]))
     print("ingresoQuirofano Formulado", ingresoQuirofano)
 
-    horaIngresoQuirofano =  time(ingresoQuirofano1)
-    print("horaIngresoQuirofano", horaIngresoQuirofano)
 
-    fechaIniAnestesia = request.POST.get('fechaIniAnestesia')
-    fechaIniAnestesia =  datetime.date(fechaIniAnestesia[0:3], fechaIniAnestesia[5:6], fechaIniAnestesia[8:9])
-    horaIniAnestesia = datetime.date(ingresoQuirofano[11:12], ingresoQuirofano[14:15], ingresoQuirofano[17:18])
+    fechaIniAnestesia = request.POST.get('fechaIniAnestesia2')
+    horaIniAnestesia = fechaIniAnestesia[11:19]
+    fechaIniAnestesia =  datetime.date(int(fechaIniAnestesia[0:4]), int(fechaIniAnestesia[5:7]), int(fechaIniAnestesia[8:11]))
+
 
     fechaQxIni = request.POST.get('fechaQxIni')
-    fechaQxIni =  datetime.date(fechaQxIni[0:3], fechaQxIni[5:6], fechaQxIni[8:9])
-    horaQxIni = datetime.date(fechaQxIni[11:12], fechaQxIni[14:15], fechaQxIni[17:18])
+    horaQxIni = fechaQxIni[11:19]
+    fechaQxIni =  datetime.date(int(fechaQxIni[0:4]), int(fechaQxIni[5:7]), int(fechaQxIni[8:11]))
+
 
     fechaQxFin = request.POST.get('fechaQxFin')
-    fechaQxFin =  datetime.date(fechaQxFin[0:3], fechaQxFin[5:6], fechaQxFin[8:9])
-    horaQxFin = datetime.date(fechaQxFin[11:12], fechaQxFin[14:15], fechaQxFin[17:18])
+    horaQxFin = fechaQxFin[11:19]
+    fechaQxFin =  datetime.date(int(fechaQxFin[0:4]), int(fechaQxFin[5:7]), int(fechaQxFin[8:11]))
+
 
     fechaFinAnestesia = request.POST.get('fechaFinAnestesia')
-    fechaFinAnestesia = datetime.date(fechaFinAnestesia[0:3], fechaFinAnestesia[5:6], fechaFinAnestesia[8:9])
-    horaFinAnestesia = datetime.date(fechaFinAnestesia[11:12], fechaFinAnestesia[14:15], fechaFinAnestesia[17:18])
+    horaFinAnestesia = fechaFinAnestesia[11:19]
+    fechaFinAnestesia = datetime.date(int(fechaFinAnestesia[0:4]), int(fechaFinAnestesia[5:7]), int(fechaFinAnestesia[8:11]))
+
 
     ingresoQuirofano = request.POST.get('ingresoQuirofano')
-    ingresoQuirofano = datetime.date(ingresoQuirofano[0:3], ingresoQuirofano[5:6], ingresoQuirofano[8:9])
-    horaIngresoQuirofano = datetime.date(ingresoQuirofano[11:12], ingresoQuirofano[14:15], ingresoQuirofano[17:18])
+    horaIngresoQuirofano = ingresoQuirofano[11:19]
+    ingresoQuirofano = datetime.date(int(ingresoQuirofano[0:4]), int(ingresoQuirofano[5:7]), int(ingresoQuirofano[8:11]))
 
-    tiempoTotal = request.POST.get('tiempoTotal')
-    tiempoAnestesicoTotal = request.POST.get('tiempoAnestesicoTotal')
-    tiempoTotalEnSala = request.POST.get('tiempoTotalEnSala')
+
+    #tiempoTotal = request.POST.get('tiempoTotal')
+    #tiempoAnestesicoTotal = request.POST.get('tiempoAnestesicoTotal')
+    #tiempoTotalEnSala = request.POST.get('tiempoTotalEnSala')
     ingresoRecuperacion = request.POST.get('ingresoRecuperacion')
-    ingresoRecuperacion = datetime.date(ingresoRecuperacion[0:3], ingresoRecuperacion[5:6], ingresoRecuperacion[8:9])
-    horaIngresoRecuperacion = datetime.date(ingresoRecuperacion[11:12], ingresoRecuperacion[14:15], ingresoRecuperacion[17:18])
+    horaIngresoRecuperacion = ingresoRecuperacion[11:19]
+    ingresoRecuperacion = datetime.date(int(ingresoRecuperacion[0:4]), int(ingresoRecuperacion[5:7]), int(ingresoRecuperacion[8:11]))
+
 
     salidaRecuperacion = request.POST.get('salidaRecuperacion')
-    ingresoRecuperacion = datetime.date(salidaRecuperacion[0:3], salidaRecuperacion[5:6], salidaRecuperacion[8:9])
-    horaSalidaRecuperacion = datetime.date(salidaRecuperacion[11:12], salidaRecuperacion[14:15], salidaRecuperacion[17:18])
+    horaSalidaRecuperacion = salidaRecuperacion[11:19]
+    salidaRecuperacion = datetime.date(int(salidaRecuperacion[0:4]), int(salidaRecuperacion[5:7]), int(salidaRecuperacion[8:11]))
 
-    tiempoTotalRecuperacion = request.POST.get('tiempoTotalRecuperacion')
+    salidaQuirofano = request.POST.get('salidaQuirofano')
+    horaSalidaQuirofano = salidaQuirofano[11:19]
+    salidaQuirofano = datetime.date(int(salidaQuirofano[0:4]), int(salidaQuirofano[5:7]), int(salidaQuirofano[8:11]))
+
+    #tiempoTotalRecuperacion = request.POST.get('tiempoTotalRecuperacion')
 
     dxPreOperatorio = request.POST.get('dxPreOperatorio')
     dxPostOperatorio = request.POST.get('dxPostOperatorio')
@@ -1373,7 +1371,7 @@ def CrearAdicionQx(request):
     complicacionesDx = request.POST.get('complicacionesDx')
     formaRealizacion = request.POST.get('formaRealizacion')
     tejidoPatologia = request.POST.get('tejidoPatologia')
-    tipoFactura = request.POST.get('tipoFactura')
+    tipoFractura = request.POST.get('tipoFractura')
     intensificador = request.POST.get('intensificador')
 
     descripcionQx = request.POST.get('descripcionQx')
@@ -1384,6 +1382,9 @@ def CrearAdicionQx(request):
     sede = request.POST.get('cirugiaIdModalAdicionarQx')
     print("sede =", sede)
 
+    estadoCirugiaId = EstadosCirugias.objects.get(nombre="REALIZADA")
+
+
     miConexion3 = None
     try:
 
@@ -1392,8 +1393,7 @@ def CrearAdicionQx(request):
             cur3 = miConexion3.cursor()
 
 
-            #detalle = 'UPDATE cirugia_Cirugias SET "ingresoQuirofano" =  ' + "'" + str(ingresoQuirofano) + "'," + '"fechaIniAnestesia" = ' + "'" + str(fechaIniAnestesia) + "'," + '"fechaQxInicial" = ' + "'" + str(fechaQxIni) + "'," + '"fechaQxFinal" = ' + "'" + str(fechaQxFin) + "'," + '"fechaFinAnestesia" = ' + "'" + str(fechaFinAnestesia) + "'," + '"ingresoQuirofano" = ' + "'" + str(ingresoQuirofano) + "'," + '"tiempoTotal" = ' + "'" + str(tiempoTotal) + "'," + '"tiempoAnestesicoTotal" = ' + "'" + str(tiempoAnestesicoTotal) + "'," + '"tiempoTotalEnSala" = ' + "'" + str(tiempoTotalEnSala) + "'," + '"ingresoRecuperacion" = ' + "'" + str(ingresoRecuperacion) + "'," + '"salidaRecuperacion" = ' + "'" + str(salidaRecuperacion) + "'," + '"tiempoTotalRecuperacion" = ' + "'" + str(tiempoTotalRecuperacion) + "'," + '"dxPreOperatorio" = ' + "'" + str(dxPreOperatorio) + "'," + '"impresionDx" = ' + "'" + str(impresionDx) + "'," + '"complicacionesDx" = ' + "'" + str(complicacionesDx) + "'," + '"formaRealizacion" = ' + "'" + str(formaRealizacion) + "'," + '"tejidoPatologia" = ' + "'" + str(tejidoPatologia) + "'," + '"tipoFractura" = ' + "'" + str(tipoFractura) + "'," + '"intensificador" = ' + "'" + str(intensificador) + "'," + '"descripcionQx" = ' + "'" + str(descripcionQx) + "'," + '"hallazgos" = ' + "'" + str(hallazgos) + "'," + '"analisis" = ' + "'" + str(analisis) + "'," + '"planx" = ' + "'" + str(planx) + "'" + ' Where id = ' + "'" + str(cirugiaId) + "'"
-            detalle = 'UPDATE cirugia_Cirugias SET "ingresoQuirofano" =  ' + "'" + str(ingresoQuirofano) + "'," + '"horaIngresoQuirofano" = ' + "'" + str(horaIngresoQuirofano) + "'," + '"fechaIniAnestesia" = ' + "'" + str(fechaqIniAnestesia) + "'," + '"fechaQxInicial" = ' + "'" + str(fechaQxIni) + + "'," + '"horaQxInicial" = ' + "'" + str(horaQxIni) + "'," + '"fechaQxFinal" = ' + "'" + str(fechaQxFin) + "'," + '"horaQxFinal" = ' + "'" + str(horaQxFin) + "'," + '"fechaFinAnestesia" = ' + "'" + str(fechaFinAnestesia) + "'," + '"horaFinAnestesia" = ' + "'" + str(horaFinAnestesia) + "'," + '"ingresoQuirofano" = ' + "'" + str(ingresoQuirofano) + "'," + '"horaIngresoQuirofano" = ' + "'" + str(horaIngresoQuirofano) + "'," + '"tiempoTotal" = ' + "'" + str(tiempoTotal) + "'," + '"tiempoAnestesicoTotal" = ' + "'" + str(tiempoAnestesicoTotal) + "'," + '"tiempoTotalEnSala" = ' + "'" + str(tiempoTotalEnSala) + "'," + '"ingresoRecuperacion" = ' + "'" + str(ingresoRecuperacion) + "'," + '"horaIngresoRecuperacion" = ' + "'" + str(horaIngresoRecuperacion) + "'," + '"salidaRecuperacion" = ' + "'" + str(salidaRecuperacion) + "'," + '"horaSalidaRecuperacion" = ' + "'" + str(horaSalidaRecuperacion) + "'," + '"tiempoTotalRecuperacion" = ' + "'" + str(tiempoTotalRecuperacion) + "'," + '"dxPreOperatorio" = ' + "'" + str(dxPreOperatorio) + "'," + '"impresionDx" = ' + "'" + str(impresionDx) + "'," + '"complicacionesDx" = ' + "'" + str(complicacionesDx) + "'," + '"formaRealizacion" = ' + "'" + str(formaRealizacion) + "'," + '"tejidoPatologia" = ' + "'" + str(tejidoPatologia) + "'," + '"tipoFactura" = ' + "'" + str(tipoFactura) + "'," + '"intensificador" = ' + "'" + str(intensificador) + "'," + '"descripcionQx" = ' + "'" + str(descripcionQx) + "'," + '"hallazgos" = ' + "'" + str(hallazgos) + "'," + '"analisis" = ' + "'" + str(analisis) + "'," + '"planx" = ' + "'" + str(planx) + "'" + ' Where id = ' + "'" + str(cirugiaId) + "'"
+            detalle = 'UPDATE cirugia_Cirugias SET "ingresoQuirofano" =  ' + "'" + str(ingresoQuirofano) + "'," + '"horaIngresoQuirofano" = ' + "'" + str(horaIngresoQuirofano) + "'," + '  "salidaQuirofano" =  ' + "'" + str(salidaQuirofano) + "'," + '"horaSalidaQuirofano" = ' + "'" + str(horaSalidaQuirofano)  + "'," + '"fechaIniAnestesia" = ' + "'" + str(fechaIniAnestesia) + "'," + '"HoraIniAnestesia" = ' + "'" + str(horaIniAnestesia) + "',"  + '"fechaQxInicial" = ' + "'" + str(fechaQxIni) + "'," + '"horaQxInicial" = ' + "'" + str(horaQxIni) + "'," + '"fechaQxFinal" = ' + "'" + str(fechaQxFin) + "'," + '"horaQxFinal" = ' + "'" + str(horaQxFin) + "'," + '"fechaFinAnestesia" = ' + "'" + str(fechaFinAnestesia) + "'," + '"horaFinAnestesia" = ' + "'" + str(horaFinAnestesia) + "'," + '"ingresoRecuperacion" = ' + "'" + str(ingresoRecuperacion) + "'," + '"horaIngresoRecuperacion" = ' + "'" + str(horaIngresoRecuperacion) + "'," + '"salidaRecuperacion" = ' + "'" + str(salidaRecuperacion) + "'," + '"horaSalidaRecuperacion" = ' + "'" + str(horaSalidaRecuperacion) + "'," + '"dxPreQx_id" = ' + "'" + str(dxPreOperatorio) + "',"   + '"dxPostQx_id" = ' + "'" + str(dxPostOperatorio) + "',"  + '"impresionDx_id" = ' + "'" + str(impresionDx) + "'," + '"dxComplicacion_id" = ' + "'" + str(complicacionesDx) + "'," + '"formaRealiza" = ' + "'" + str(formaRealizacion) + "'," + '"patologia" = ' + "'" + str(tejidoPatologia) + "'," + '"tipofractura" = ' + "'" + str(tipoFractura) + "'," + '"intensificador" = ' + "'" + str(intensificador) + "'," + '"descripcionQx" = ' + "'" + str(descripcionQx) + "'," + '"hallazgos" = ' + "'" + str(hallazgos) + "'," + '"analisis" = ' + "'" + str(analisis) + "'," + '"planx" = ' + "'" + str(planx) + "'," + '"estadoCirugia_id" = ' + "'" + str(estadoCirugiaId.id) + "'" + ' Where id = ' + "'" + str(cirugiaId) + "'"
 
             print(detalle)
             cur3.execute(detalle)
@@ -1595,3 +1595,42 @@ def BorraHojaDeGastoCirugia(request):
         if miConexion3:
             cur3.close()
             miConexion3.close()
+
+
+def BuscaAdicionarQx(request):
+    print("Entre BuscaAdicionarQx")
+
+    cirugiaId = request.POST.get('cirugiaId')
+    print("cirugiaId =", cirugiaId)
+    sede = request.POST.get('sede')
+    print("sede =", sede)
+
+
+    adicionarQx = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    detalle = 'SELECT cir.id, cir."ingresoQuirofano"||' + "'" +  str(' ' ) + "'" +   '||cir."horaIngresoQuirofano" ingresoQuirofano,cir."fechaIniAnestesia"||' + "'" +  str(' ' ) + "'" +  '||cir."HoraIniAnestesia" fechaIniAnestesia,cir."fechaQxInicial"||' + "'" +  str(' ' ) + "'" +  '||cir."horaQxInicial" fechaQxIni,cir."fechaQxFinal"||' + "'" +  str(' ' ) + "'" +  '||cir."horaQxFinal" fechaQxFin, cir."fechaFinAnestesia"||' + "'" +  str(' ' ) + "'" +  '||cir."horaFinAnestesia" fechaFinAnestesia, cir."salidaQuirofano"||' + "'" +  str(' ' ) + "'" +   '||cir."horaSalidaQuirofano" salidaQuirofano , cir."ingresoRecuperacion"||' + "'" +  str(' ' ) + "'" +   '||cir."horaIngresoRecuperacion" ingresoRecuperacion, cir."salidaRecuperacion"||' + "'" +  str(' ' ) + "'" +   '||cir."horaSalidaRecuperacion" salidaRecuperacion ,"dxPreQx_id" dxPreOperatorio, "dxPostQx_id" dxPostOperatorio, "impresionDx_id" impresionDx, "dxComplicacion_id" complicacionesDx,"formaRealiza" formaRealizacion,patologia tejidoPatologia, "tipofractura" tipoFractura, intensificador intensificador,"descripcionQx" descripcionQx, hallazgos hallazgos, analisis analisis, planx planx FROM cirugia_cirugias cir WHERE id = ' + "'" + str(cirugiaId) + "'"
+
+    print(detalle)
+
+    cur3.execute(detalle)
+
+    for id, ingresoQuirofano,fechaIniAnestesia,fechaQxIni,fechaQxFin,fechaFinAnestesia,salidaQuirofano,ingresoRecuperacion,salidaRecuperacion,	dxPreOperatorio,dxPostOperatorio,impresionDx,complicacionesDx,formaRealizacion,tejidoPatologia,tipoFractura,intensificador,	descripcionQx,	hallazgos,analisis,planx  in cur3.fetchall():
+        adicionarQx.append(
+            {"model": "cirugia.programcioncirugias", "pk": id, "fields":
+                {'id': id, 'ingresoQuirofano': ingresoQuirofano, 'fechaIniAnestesia': fechaIniAnestesia, 'fechaQxIni': fechaQxIni,
+                 'fechaQxFin': fechaQxFin, 'fechaFinAnestesia':fechaFinAnestesia, 'salidaQuirofano': salidaQuirofano, 'ingresoRecuperacion': ingresoRecuperacion, 'salidaRecuperacion': salidaRecuperacion,
+                 'dxPreOperatorio': dxPreOperatorio, 'dxPostOperatorio': dxPostOperatorio,
+                 'impresionDx': impresionDx, 'complicacionesDx': complicacionesDx,'formaRealizacion':formaRealizacion, 'tejidoPatologia':tejidoPatologia, 'tipoFractura':tipoFractura,'intensificador':intensificador, 'descripcionQx':descripcionQx, 'hallazgos':hallazgos, 'analisis':analisis, 'planx':planx
+                 }})
+
+
+    miConexion3.close()
+    print(adicionarQx)
+
+    serialized1 = json.dumps(adicionarQx, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
