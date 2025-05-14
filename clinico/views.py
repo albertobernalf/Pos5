@@ -21,10 +21,12 @@ from usuarios.models import Usuarios, TiposDocumento
 from cartera.models  import Pagos
 from autorizaciones.models import Autorizaciones,AutorizacionesDetalle, EstadosAutorizacion
 from contratacion.models import Convenios
+from cirugia.models import EstadosCirugias, EstadosProgramacion
 from tarifarios.models import TarifariosDescripcion, TarifariosProcedimientos, TarifariosSuministros
 from clinico.forms import  IncapacidadesForm, HistorialDiagnosticosCabezoteForm, HistoriaSignosVitalesForm
 from django.db.models import Avg, Max, Min , Sum
 from usuarios.models import Usuarios, TiposDocumento
+from admisiones.models import Ingresos
 
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect, HttpResponse, HttpResponseRedirect
@@ -1821,10 +1823,10 @@ def crearHistoriaClinica(request):
                 print("cBoxCirugia =", cBoxCirugia)
 
                 print("cBoxCirugia =", cBoxCirugia)
-                print("solicitaSangre =", solicitaSangre)
 
 
-                if cBoxCirugia == 'on':
+
+                if cBoxCirugia == 'true':
 
                         serviciosAdministrativos = request.POST.get("serviciosAdministrativos")
                         print("serviciosAdministrativos =", serviciosAdministrativos)
@@ -1864,10 +1866,10 @@ def crearHistoriaClinica(request):
 
                         anestesia = request.POST["anestesia"]
                         print("anestesia =", anestesia)
-                        sedesClinica_id = request.POST["sedesClinica_id"]
+                        sedesClinica_id = request.POST["sede"]
                         print("sedesClinica_id =", sedesClinica_id)
 
-                        username = request.POST["username3_id"]
+                        username = request.POST["usuarioRegistro"]
                         print("username =", username)
 
                         solicitaHospitalizacion = request.POST["solicitaHospitalizacion"]
@@ -1877,7 +1879,7 @@ def crearHistoriaClinica(request):
                         solicitaTiempoQx = request.POST["solicitaTiempoQx"]
                         print("solicitaTiempoQx =", solicitaTiempoQx)
 
-                        solicitaTipoQx = request.POST["solicitatipoQx"]
+                        solicitaTipoQx = request.POST["solicitaTipoQx"]
                         print("solicitatipoQx =", solicitaTipoQx)
                         solicitaAnestesia = request.POST["solicitaAnestesia"]
                         print("solicitaAnestesia =", solicitaAnestesia)
@@ -1894,8 +1896,8 @@ def crearHistoriaClinica(request):
                         describeOtros = request.POST["describeOtros"]
                         print("describeOtros =", describeOtros)
 
-                        especialidadX = request.POST["especialidadX"]
-                        print("especialidadX =", especialidadX)
+                        #especialidadX = request.POST["especialidadX"]
+                        #print("especialidadX =", especialidadX)
 
                         tiposCirugia = request.POST["tiposCirugia"]
                         print("tiposCirugia =", tiposCirugia)
@@ -1922,8 +1924,8 @@ def crearHistoriaClinica(request):
                             dxPrinc = "null"
                         if dxRel1 == '':
                             dxRel1 = "null"
-                        if dxRel2 == '':
-                            dxRel2 = "null"
+
+
 
                         # especialidadId = EspecialidadesMedicos.objects.get(planta_id=username)
 
@@ -1942,7 +1944,7 @@ def crearHistoriaClinica(request):
                         print("consecutivoIngresoCirugia =", consecutivoIngresoCirugia)
 
                         # Aqui buscar el ingreso del paciente
-                        documento_id = usuarios.objects.get(tipoDoc_id=tipoDocCirugia, documento=documentoCirugia)
+                        documento_id = Usuarios.objects.get(tipoDoc_id=tipoDocCirugia, documento=documentoCirugia)
                         registroIngreso = Ingresos.objects.get(tipoDoc_id=tipoDocCirugia, documento_id=documento_id.id,
                                                                consec=consecutivoIngresoCirugia)
 
@@ -1963,7 +1965,7 @@ def crearHistoriaClinica(request):
                                 solicitaMalla) + "','" + str(solicitaOtros) + "','" + str(describeOtros) + "','" + str(
                                 tiempoMaxQx) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(
                                 anestesia) + "','" + str(registroIngreso.documento_id) + "','" + str(dxPreQx) + "','" + str(
-                                dxPrinc) + "','" + str(dxRel1) + "','" + str(especialidadX) + "','" + str(
+                                dxPrinc) + "','" + str(dxRel1) + "','" + str(espMedico) + "','" + str(
                                 sedesClinica_id) + "','" + str(registroIngreso.tipoDoc_id) + "','" + str(
                                 username) + "','" + str(username) + "','" + str(serviciosAdministrativos) + "','" + str(
                                 estadoProgramacion.id) + "','" + str(tiposCirugia) + "','" + str(estadoCirugia.id) + "')"
@@ -1983,7 +1985,6 @@ def crearHistoriaClinica(request):
                             cur3.close()
                             miConexion3.close()
 
-                            return JsonResponse({'success': True, 'message': 'Solicitud Actualizada satisfactoriamente!'})
 
 
                         except psycopg2.DatabaseError as error:
@@ -1999,11 +2000,6 @@ def crearHistoriaClinica(request):
                                 miConexion3.close()
 
                 # FIN RUTINA CREA Solicitud - Programacion de Cirugia
-
-
-
-
-
 
                 print("Ya grabe el cabezote")
 

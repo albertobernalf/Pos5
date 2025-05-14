@@ -1434,7 +1434,41 @@ formHistoriaClinica.addEventListener('submit', e=>{
 	var ordenMedicaMed =  document.getElementById("id_ordenMedicaMed").value;
 	var ordenMedicaOxi =  document.getElementById("id_ordenMedicaOxi").value;
 	var ordenMedicaInt =  document.getElementById("id_ordenMedicaInt").value;
+    // DESDE AQUI LOS DATOS DE CIRUGIA
 
+
+     var cBoxCirugia = document.getElementById("cBoxCirugia").checked;
+     alert("cboxcirugia = " + cBoxCirugia);
+     var solicitaSangre =  document.getElementById("solicitaSangre").value;
+          alert("solicitaSangre = " + solicitaSangre);
+     var describeSangre =  document.getElementById("describeSangre").value;
+     var cantidadSangre =  document.getElementById("cantidadSangre").value;
+     var solicitaCamaUci =  document.getElementById("solicitaCamaUci").value;
+     var solicitaRx =  document.getElementById("solicitaRx").value;
+     var solicitaMicroscopio =  document.getElementById("solicitaMicroscopio").value;
+     var solicitaOsteosintesis =  document.getElementById("solicitaOsteosintesis").value;
+     var solicitaBiopsia =  document.getElementById("solicitaBiopsia").value;
+     var solicitaMalla =  document.getElementById("solicitaMalla").value;
+     var solicitaOtros =  document.getElementById("solicitaOtros").value;
+     var solicitaHospitalizacion =  document.getElementById("solicitaHospitalizacion").value;
+     var solicitaAyudante =  document.getElementById("solicitaAyudante").value;
+     var solicitaTiempoQx =  document.getElementById("solicitaTiempoQx").value;
+     var solicitaTipoQx =  document.getElementById("solicitaTipoQx").value;
+     var solicitaAnestesia =  document.getElementById("solicitaAnestesia").value;
+     var tiempoMaxQx =  document.getElementById("tiempoMaxQx").value;
+     var solicitaAutoSutura =  document.getElementById("solicitaAutoSutura").value;
+     var solicitaSoporte =  document.getElementById("solicitaSoporte").value;
+     var describeOtros =  document.getElementById("describeOtros").value;
+     var tiposCirugia =  document.getElementById("tiposCirugia").value;
+     var dxPreQx =  document.getElementById("dxPreQx").value;
+     var dxPrinc =  document.getElementById("dxPrinc").value;
+     var dxRel1 =  document.getElementById("dxRel1").value;
+     var anestesia =  document.getElementById("anestesia").value;
+     var tipoDocCirugia =  document.getElementById("tipoDocCirugia").value;
+     var documentoCirugia =  document.getElementById("documentoCirugia").value;
+     var consecutivoIngresoCirugia =  document.getElementById("consecutivoIngresoCirugia").value;
+
+    // HASTA AQUIP DATOS DE CIRUGIA
 
             var form_valido;
 
@@ -1504,9 +1538,9 @@ formHistoriaClinica.addEventListener('submit', e=>{
                         'manejoQx':manejoQx,
         			'formulacion':formulacion,
                                 'salidaClinica':salidaClinica, 
-				'tiposSalidas':tiposSalidas,
-				'dxComplicacion':dxComplicacion,
-				'mipres':mipres	,
+    				'tiposSalidas':tiposSalidas,
+	    			'dxComplicacion':dxComplicacion,
+		    		'mipres':mipres	,
                                 'sede':sede,
                                 'ordenMedicaLab':ordenMedicaLab,
                                 'ordenMedicaRad':ordenMedicaRad,
@@ -1514,8 +1548,37 @@ formHistoriaClinica.addEventListener('submit', e=>{
                                 'ordenMedicaMed':ordenMedicaMed,
                                 'ordenMedicaOxi':ordenMedicaOxi,
                                 'ordenMedicaInt':ordenMedicaInt,
-				'serviciosAdministrativos':serviciosAdministrativos,
-				'postFormCirugiaClinica': $('#postFormCirugiaClinica').serialize(),
+				                'serviciosAdministrativos':serviciosAdministrativos,
+				                'cBoxCirugia':cBoxCirugia,
+                                'solicitaSangre':solicitaSangre,
+	                            'describeSangre':describeSangre,
+            	                'cantidadSangre':cantidadSangre,
+	                            'solicitaCamaUci':solicitaCamaUci,
+                                'solicitaMicroscopio':solicitaMicroscopio,
+                                'solicitaRx':solicitaRx,
+                                'solicitaOsteosintesis':solicitaOsteosintesis,
+	                        'solicitaBiopsia':solicitaBiopsia,
+	                        'solicitaMalla':solicitaMalla,
+	                        'solicitaOtros':solicitaOtros,
+	                        'solicitaHospitalizacion':solicitaHospitalizacion,
+	                        'solicitaAyudante':solicitaAyudante,
+	                        'solicitaTiempoQx':solicitaTiempoQx,
+	                        'solicitaTipoQx':solicitaTipoQx,
+	                        'solicitaAnestesia':solicitaAnestesia,
+	                        'solicitaOtros':solicitaOtros,
+                            'tiempoMaxQx':tiempoMaxQx,
+	                        'solicitaAutoSutura':solicitaAutoSutura,
+	                        'solicitaSoporte':solicitaSoporte,
+	                        'describeOtros':describeOtros,
+	                        'tiposCirugia':tiposCirugia,
+	                        'dxPreQx':dxPreQx,
+	                        'dxPrinc':dxPrinc,
+	                        'dxRel1':dxRel1,
+	                        'anestesia':anestesia,
+	                       'tipoDocCirugia':tipoDocCirugia,
+	                        'documentoCirugia':documentoCirugia,
+	                        'consecutivoIngresoCirugia':consecutivoIngresoCirugia,
+
 				   },
  	      		success: function (respuesta2) {
  	      		        var data = JSON.parse(respuesta2);
