@@ -736,17 +736,10 @@ BIBLIOGRAFIA:
   -- colocar la fecha en los calkendarios
  --  debe validar tosad las cirugias expto la corriente
  -- No me gusta el color rojo del error
-  - no me gista que no cierra la ventana
+  - no me gusta que no cierra la ventana
 
-
--- Lunes 12/mayo
-	-- Em cirugia adicionar participantes
-	-- Em cirugia adicionar materiales
-	-- Em cirugia crear pantalla hoja de gasto
-        -- coloca bien los dacios en AdicionarQx y grabar la modal
- --- ojo propiedad maxlength="50" en input text
 
 -- OJO MAÑANA
 -- cuando se programa la cirugia queda PENDIENTE LA CIRUGIA OJO
--- cuando muestra lños ingresos a poner cirugias hay que sacar los que ya estan agendados para CIRUGIA
+-- cuando muestra los ingresos a poner cirugias hay que sacar los que ya estan agendados para CIRUGIA
 -- ojo los botones de cargue en INFORME QX de proced, particip, materiales no estan cargando los datatabble InformeXX

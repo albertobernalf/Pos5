@@ -1515,7 +1515,7 @@ formHistoriaClinica.addEventListener('submit', e=>{
                                 'ordenMedicaOxi':ordenMedicaOxi,
                                 'ordenMedicaInt':ordenMedicaInt,
 				'serviciosAdministrativos':serviciosAdministrativos,
-				'postFormCirugiaClinica': $('#postFormCirugiaClinica').serialize(),
+
 				   },
  	      		success: function (respuesta2) {
  	      		        var data = JSON.parse(respuesta2);

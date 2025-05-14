@@ -226,7 +226,7 @@ def CrearProgramacionCirugia(request):
         print(comando)
         cur3.execute(comando)
 
-        comando1 = 'UPDATE cirugia_cirugias SET "fechaProg" = ' + "'" + str(fechaProgramacionInicia)   + "'," + '"HoraProg" = ' + "'" + str(horaProgramacionInicia)  +  "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadoProgramacion.id) + "' WHERE id = " + "'"  + str(registroCirugia.id) + "'"
+        comando1 = 'UPDATE cirugia_cirugias SET "fechaProg" = ' + "'" + str(fechaProgramacionInicia)   + "'," + '"HoraProg" = ' + "'" + str(horaProgramacionInicia)  +  "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadoProgramacion.id) + "'," + '"estadoCirugia_id" = ' + "'" + str(estadoCirugia.id) + "'" + ' WHERE id = ' + "'"  + str(registroCirugia.id) + "'"
 
         print(comando1)
         cur3.execute(comando1)
@@ -329,7 +329,7 @@ def Load_dataIngresosCirugia(request, data):
     curx = miConexionx.cursor()
 
 
-    detalle = 'SELECT i.id id,i."tipoDoc_id" tipoDoc_id, u.documento documento,u.nombre paciente, i.consec consecutivo, u.genero, (now() - u."fechaNacio")/360 edad, u."fechaNacio" nacimiento, dep.nombre cama, u.telefono telefono, emp.nombre empresa FROM admisiones_ingresos i INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id =  i.documento_id) LEFT JOIN sitios_dependencias dep ON (dep."sedesClinica_id" = i."sedesClinica_id" AND dep.id = i."dependenciasActual_id") LEFT JOIN facturacion_empresas emp	 ON (emp.id = i.empresa_id )  INNER JOIN sitios_serviciossedes servsed ON (servsed.id = dep."serviciosSedes_id") INNER JOIN clinico_servicios serv ON (serv.id = servsed.servicios_id AND (serv.nombre = ' + "'" + str('HOSPITALIZACION') + "' OR serv.nombre = " + "'" + str('URGENCIAS') + "' OR serv.nombre = '" + str('AMBULATORIO') + "'))" + ' where i."sedesClinica_id" = ' + "'" + str(sede) + "'" +' ORDER BY i."dependenciasActual_id"'
+    detalle = 'SELECT i.id id,i."tipoDoc_id" tipoDoc_id, u.documento documento,u.nombre paciente, i.consec consecutivo, u.genero, (now() - u."fechaNacio")/360 edad, u."fechaNacio" nacimiento, dep.nombre cama, u.telefono telefono, emp.nombre empresa FROM admisiones_ingresos i INNER JOIN usuarios_usuarios u ON (u."tipoDoc_id" =  i."tipoDoc_id" AND u.id =  i.documento_id) LEFT JOIN sitios_dependencias dep ON (dep."sedesClinica_id" = i."sedesClinica_id" AND dep.id = i."dependenciasActual_id") LEFT JOIN facturacion_empresas emp	 ON (emp.id = i.empresa_id )  INNER JOIN sitios_serviciossedes servsed ON (servsed.id = dep."serviciosSedes_id") INNER JOIN clinico_servicios serv ON (serv.id = servsed.servicios_id AND (serv.nombre = ' + "'" + str('HOSPITALIZACION') + "' OR serv.nombre = " + "'" + str('URGENCIAS') + "' OR serv.nombre = '" + str('AMBULATORIO') + "'))" + ' where i."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' AND (i."tipoDoc_id", i.documento_id, i.consec) not in (select cirx."tipoDoc_id", cirx.documento_id, cirx."consecAdmision" FROM cirugia_cirugias cirx WHERE cirx."tipoDoc_id" = i."tipoDoc_id" AND cirx.documento_id = i.documento_id AND cirx."consecAdmision" = i.consec AND cirx."estadoProgramacion_id" !=4) ORDER BY i."dependenciasActual_id"'
     print(detalle)
 
     curx.execute(detalle)
@@ -757,6 +757,44 @@ def Load_dataTraerParticipantesInformeCirugia(request, data):
     return HttpResponse(serialized1, content_type='application/json')
 
 
+def Load_dataTraerParticipantesInformeXXCirugia(request, data):
+    print("Entre Load_dataTraerParticipantesXXInformeCirugia")
+
+    d = json.loads(data)
+
+    username = d['username']
+    sede = d['sede']
+    username_id = d['username_id']
+
+
+    cirugiaId =  d['cirugiaId']
+    print("cirugiaId =", cirugiaId)
+
+    participantesCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
+    comando = 'select cirpart.id id, cirpart.cirugia_id cirugiaId, hon.nombre honNombre, med.nombre medicoNombre, esp.nombre especialidadNombre FROM cirugia_cirugiasparticipantes cirpart, tarifarios_tiposhonorarios hon, clinico_especialidadesmedicos med, clinico_especialidades esp WHERE cirpart.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirpart."tipoHonorarios_id" = hon.id  and cirpart.medico_id = med.id and med.especialidades_id = esp.id'
+
+    print(comando)
+    cur3.execute(comando)
+
+    for id, cirugiaId, honNombre, medicoNombre, especialidadNombre  in cur3.fetchall():
+        participantesCirugia.append(
+            {"model": "cirugia.procedimientos", "pk": id, "fields":
+                {'id': id, 'cirugiaId': cirugiaId, 'honNombre': honNombre, 'medicoNombre': medicoNombre, 'especialidadNombre': especialidadNombre      }})
+
+    miConexion3.close()
+    print(participantesCirugia)
+
+    serialized1 = json.dumps(participantesCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
 def Load_dataMaterialCirugia(request, data):
     print("Entre Load_dataMaterialCirugia")
 
@@ -994,6 +1032,61 @@ def CrearProcedimientosInformeCirugia(request):
             miConexion3.close()
 
 
+def CrearParticipantesInformeCirugia(request):
+
+    print ("Entre CrearParticipantesInformeCirugia" )
+
+    cirugiaId = request.POST.get('cirugiaIdModalParticipantesInforme')
+    print ("cirugiaId =", cirugiaId)
+
+    finalidadId = request.POST.get('finalidadParticipantesInformeCirugia')
+    print("finalidadId =", finalidadId)
+
+    medico = request.POST["medicoInforme"]
+    print ("medico =", medico)
+
+    username_id = request.POST["usernameParticipantesInformeCirugia_id"]
+    print("username_id =", username_id)
+
+    tipoHonorarios = request.POST["tipoHonorariosInforme"]
+    print("tipoHonorarios =", tipoHonorarios)
+
+    estadoReg = 'A'
+    fechaRegistro = datetime.datetime.now()
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        cur3 = miConexion3.cursor()
+
+        comando = 'INSERT INTO cirugia_cirugiasparticipantes (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, "tipoHonorarios_id", "usuarioRegistro_id", medico_id) VALUES (' + "'" + str(finalidadId) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(tipoHonorarios) + "','" + str(username_id) + "','" + str(medico) +  "')"
+
+        print(comando)
+        cur3.execute(comando)
+
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Participante Actualizado satisfactoriamente!'})
+
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
 def CrearParticipantesCirugia(request):
 
     print ("Entre CrearParticipantesCirugia" )
@@ -1033,7 +1126,7 @@ def CrearParticipantesCirugia(request):
         cur3.close()
         miConexion3.close()
 
-        return JsonResponse({'success': True, 'message': 'Procedikmiento Actualizado satisfactoriamente!'})
+        return JsonResponse({'success': True, 'message': 'Participante Actualizado satisfactoriamente!'})
 
 
     except psycopg2.DatabaseError as error:
@@ -1047,6 +1140,7 @@ def CrearParticipantesCirugia(request):
         if miConexion3:
             cur3.close()
             miConexion3.close()
+
 
 def BuscaProgramacionCirugia(request):
     print("Entre BuscaProgramacionCirugia")

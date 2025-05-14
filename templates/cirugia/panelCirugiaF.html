@@ -1340,6 +1340,138 @@ table.dataTable tbody tr {
 
 
 
+
+
+	<!-- Modal Participantes Informe Cirugia -->
+
+   <div class="modal fade" id="crearModelParticipantesInformeCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingParticipantesInformeCirugia"> </h4> 
+ 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+                            <div class="alert alert-danger error-msg" style="display:none">
+                                <ul class="mb-0"></ul>
+                            </div>
+			
+  			  <form id="postFormParticipantesInformeCirugia" name="postFormParticipantesInformeCirugia">
+
+                                <input type="hidden" name="post_id" id="post_id">
+			     <input type="hidden" class="form-control" id="sedesClinicaModalParticipantesInforme_id" name="sedesClinicaModalParticipantesInforme_id"  readonly></input>
+			Cirugia No : 
+			<input type="text"  id="cirugiaIdModalParticipantesInforme" name="cirugiaIdModalParticipantesInforme"  readonly></input>
+
+
+                      <div class="row row-cols-lg-auto g-3 align-items-center mb-3">
+
+				  <div class="col-3">
+                                        <label for="medicoInforme" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Medico:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20"  id="medicoInforme"  tabindex= "0"  name="medicoInforme" required>
+                                                {% for especialidadesMedicos in EspecialidadesMedicos %}
+                                                <option value="{{especialidadesMedicos.id}}"> {{especialidadesMedicos.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+					  </div>
+                                        </div>
+
+
+			<div class="col-3">
+                                        <label for="finalidadParticipantesInformeCirugia" class="col-sm-1 control-label">Finalidad:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20"  id="finalidadParticipantesInformeCirugia"  tabindex= "0"  name="finalidadParticipantesInformeCirugia"  required>
+                                                {% for finalidadCirugia in FinalidadCirugia %}
+                                                <option value="{{finalidadCirugia.id}}"> {{finalidadCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+			<div class="col-3">
+                                        <label for="tipoHonorariosInforme" class="col-sm-1 control-label">TipoHonorarios:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="tipoHonorariosInforme"  tabindex= "0"  name="tipoHonorariosInforme"  required>
+                                                {% for tiposHonorarios in TiposHonorarios %}
+                                                <option value="{{tiposHonorarios.id}}"> {{tiposHonorarios.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+
+
+
+			  <div class="col-1">
+			 <input type="hidden" class="form-control" id="usernameParticipantesInformeCirugia_id" name="usernameParticipantesInformeCirugia_id"  ></input>
+                         </div>
+
+
+                                    
+			 <div class="col-2">
+				<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesCirugia"  onclick="CrearParticipantesInformeCirugia()">Adicionar!</button>
+			</div>
+
+                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
+
+				<div class="col-12">
+			<!-- Aqui Data Table  -->
+				 <div class="row">
+				
+                                        <table  id= "tablaParticipantesInformeXXCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
+                                           <thead>
+                                            <tr>    
+						<bold>                
+					     <th>Sel</th>                                               
+					<th>id</th>
+					<th>cirugia</th>
+					<th>Honorario</th>
+					<th>Medico</th>
+					<th>Especialidad</th>  
+			                 <th>Sel</th>         
+					</bold>                                  
+
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                     
+                                        </table>
+                                    </div>
+				 </div>
+
+			<!-- Fin Data table -->
+	
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+					  <span id="mensajesErrorModalParticipantesInformeCirugia" name="mensajesErrorModalParticipantesInformeCirugia" style= "color:red; font-size:15px; line-height:35px; font-family: Times Neww Roman;" > </span>
+					
+					  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>
+                                   
+                                       	<button type="button" class="btn btn-primary" id="saveBtnCrearParticipantesInformeCirugia" onclick="CrearParticipantesInformeCirugia()">Grabar!</button> 
+                                    </div>
+
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Participantes Informe Cirugia -->
+
+
+
+
+
+
+
 <!-- Modal Material Informe Cirugia -->
 
    <div class="modal fade" id="crearModelMaterialInformeCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -1446,6 +1578,8 @@ table.dataTable tbody tr {
 
 
 	<!-- FIN Modal Material INFORME Cirugia -->
+
+
 
 
 	<!-- Modal Adicionar Qx-->

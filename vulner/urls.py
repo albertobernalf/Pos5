@@ -334,6 +334,7 @@ urlpatterns = [
     path('load_dataTraerParticipantesCirugia/<str:data>', viewsCirugia.Load_dataTraerParticipantesCirugia, name='Load_dataTraerParticipantes_Cirugia'),
     path('crearProcedimientosCirugia/', viewsCirugia.CrearProcedimientosCirugia, name='CrearProcedimiento_Cirugia'),
     path('crearParticipantesCirugia/', viewsCirugia.CrearParticipantesCirugia, name='CrearParticipantes_Cirugia'),
+    path('crearParticipantesInformeCirugia/', viewsCirugia.CrearParticipantesInformeCirugia, name='CrearParticipantesInforme_Cirugia'),
     path('buscaProgramacionCirugia/', viewsCirugia.BuscaProgramacionCirugia, name='buscaProgramacion_Cirugia'),
     path('crearMaterialCirugia/', viewsCirugia.CrearMaterialCirugia, name='CrearMaterial_Cirugia'),
     path('load_dataMaterialCirugia/<str:data>', viewsCirugia.Load_dataMaterialCirugia,  name='Load_dataMaterial_Cirugia'),
@@ -341,6 +342,7 @@ urlpatterns = [
 
     path('load_dataTraerProcedimientosInformeCirugia/<str:data>', viewsCirugia.Load_dataTraerProcedimientosInformeCirugia,name='Load_dataTraerProcedimientoInforme_Cirugia'),
     path('load_dataTraerParticipantesInformeCirugia/<str:data>', viewsCirugia.Load_dataTraerParticipantesInformeCirugia,name='Load_dataTraerParticipantesInforme_Cirugia'),
+    path('load_dataTraerParticipantesInformeXXCirugia/<str:data>', viewsCirugia.Load_dataTraerParticipantesInformeXXCirugia,name='Load_dataTraerParticipantesInformeXX_Cirugia'),
     path('load_dataMaterialInformeCirugia/<str:data>', viewsCirugia.Load_dataMaterialInformeCirugia, name='Load_dataMaterialInforme_Cirugia'),
     path('load_dataMaterialInformeXXCirugia/<str:data>', viewsCirugia.Load_dataMaterialInformeXXCirugia, name='Load_dataMaterialInformeXX_Cirugia'),
     path('borraParticipanteInformeCirugia/', viewsCirugia.BorraParticipanteInformeCirugia, name='BorraParticipanteInforme_Cirugia'),

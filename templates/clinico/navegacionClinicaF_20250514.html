@@ -84,14 +84,6 @@
 	<input type="hidden" id="permisosDetalle" name="permisosDetalle" value = "{{PermisosDetalle}}">
 	<input type="hidden" id="escogeModulo" name="escogeModulo" value = "{{EscogeModulo}}">
 
- <!--  Estos para Cirugia -->
-
-	<input type="hidden" id="tipoDocCirugia" name="tipoDocCirugia" value = "{{ datosPaciente.tipoDoc_id}}">
-	<input type="hidden" id="documentoCirugia" name="documentoCirugia" value = "{{ datosPaciente.documentoPaciente}}">
-	<input type="hidden" id="consecutivoIngresoCirugia" name="consecutivoIngresoCirugia" value = "{{ IngresoPaciente}}">
-
-
-
     <div class="form-row">
          <div class="form-group col-md-1">
          </div>
@@ -126,6 +118,7 @@
   Usuario:
             {{Profesional}}
 
+
                                         <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
                                         <div class="col-sm-8">
                                             <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
@@ -135,7 +128,11 @@
                                                 <option value="{{serviciosAdministrativos.id}}"> {{serviciosAdministrativos.nombre}}</option>
                                                 {% endfor %}
                                             </select>
-				        </div>        
+					        </div>
+
+
+
+          
         </div>
     </div>
 <!-- </div> -->
@@ -1161,181 +1158,9 @@ Ambulatorios: <img class="manImg" src={% static 'img/iloveimg-converted/poste-in
 
 
     <article id="Cirugias">
-        			
-                      <div class="container my-2">
-				  <form class="form-inline" id="postFormCirugiaClinica" name="postFormCirugiaClinica">
-					<div class="row" style="height:25px">
-
-				
-		
-		                           </div>
-					Solicita:
-				<div class="row" style="height:25px">
-
-					<input type="checkbox" id="cBoxCirugia" name="cBoxCirugia"   value="solicita Cirugia" />
-		
-		                           </div>
-					<div class="row">
-
-	                               	<div class="col-1">
-					 <input type="text"  class="form-control mr-sm-2" id="solicitaHospitalizacion" name="solicitaHospitalizacion" size="1" maxlength="1" placeholder="Hosp"  >
-					</div>
-					<div class="col-1">
-					  <input type="text" class="form-control mr-sm-2"  id="solicitaAyudante" name="solicitaAyudante" size="1" maxlength="15" placeholder="Ayudante"  >
-					</div>					
-					<div class="col-1">
-					 <input type="text"  class="form-control mr-sm-2"  id="solicitaTiempoQx" name="solicitaTiempoQx" size="1" maxlength="15" placeholder="TiempoQx"  >
-					</div>
-					<div class="col-1">
-					 <input type="text" class="form-control mr-sm-2"   id="solicitatipoQx" name="solicitatipoQx" size="1" maxlength="15"  placeholder="tipoQx"  >
-					</div>
-					<div class="col-1">
-					 <input type="text" class="form-control mr-sm-2"  id="solicitaAnestesia" name="solicitaAnestesia" size="1" maxlength="15" placeholder="Anestesia"  >
-					</div>
-					<div class="col-1">
-					 <input type="text"  class="form-control mr-sm-2" id="solicitaOtros" name="solicitaOtros" size="1" maxlength="1" maxlength="15" placeholder="Otros"  >
-					</div>
-
-					<div class="col-1">
-					 <input type="text"  class="form-control mr-sm-2" id="tiempoMaxQx" name="tiempoMaxQx" size="10" maxlength="20" placeholder="tiempoMaxQx"  >
-					</div>
-
-					<div class="col-1">
-					 <input type="text"  class="form-control mr-sm-2" id="solicitaAutoSutura" name="solicitaAutoSutura" size="1" maxlength="20" placeholder="AutoSutura"  >
-					</div>
-					<div class="col-1">
-					 <input type="text"  class="form-control mr-sm-2"  id="solicitaSoporte" name="solicitaSoporte" size="1" maxlength="15"  placeholder="Soporte"  >
-					</div>
-					<div class="col-1">	
-					 <input type="text"  class="form-control mr-sm-2" id="describeOtros" name="describeOtros"  size="1" maxlength="1" placeholder="describeOtros"  >
-                                </div>
-
-				</div>
-
-				<div class="row">
-	
-
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaSangre" name="solicitaSangre" size="1" maxlength="1" placeholder="Sangre"  >
-                                </div>			
-
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="describeSangre" name="describeSangre" size="1" maxlength="1" placeholder="describeSangre"  >
-
-                                </div>
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="cantidadSangre" name="cantidadSangre" size="1" maxlength="1" placeholder="cantidadSangre"  >
-                                </div>
-
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaCamaUci" name="solicitaCamaUci" size="1" maxlength="1" placeholder="CamaUci"  >
-                                </div>
-
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaMicroscopio" name="solicitaMicroscopio" size="1" maxlength="1" placeholder="Microscopio"  >
-
-                                </div>
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaRx" name="solicitaRx" size="1" maxlength="1" placeholder="Rx"  >
-                                </div>
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaOsteosintesis" name="solicitaOsteosintesis" size="1" maxlength="1" placeholder="Osteosintesis"  >
-                                </div>
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaBiopsia" name="solicitaBiopsia" size="1" maxlength="1" placeholder="Biopsia"  >
-	                         </div>
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaMalla" name="solicitaMalla" size="1" maxlength="1" placeholder="Malla"  >
-                                </div>
-				<div class="col-1">
-					 <input type="text"  class="form-control form-control-sm" id="solicitaOtros" name="solicitaOtros" size="1" maxlength="1" placeholder="Otros"  >
-                                </div>						
-
-				<div class="col-12">
-					 <input type="hidden"  class="form-control form-control-sm" id="username3_id" name="username3_id" >
-                                </div>
-			
-				</div>
-				<div class="row" style="height:25px">
-
-				
-		
-	                           </div>
-
-				<div class="row">
-				  <div class="col-2">
-                                        <label for="anestesia" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Anestesia:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="anestesia"  tabindex= "0"
-                                                    name="anestesia"
-                                                    required>
-                                                {% for tiposAnestesia in TiposAnestesia %}
-                                                <option value="{{tiposAnestesia.id}}"> {{tiposAnestesia.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-
-				  <div class="col-2">
-                                        <label for="tiposCirugia" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TipoCirugia:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="tiposCirugia"  tabindex= "0"
-                                                    name="tiposCirugia"
-                                                    required>
-                                                {% for tiposCirugia in TiposCirugia %}
-                                                <option value="{{tiposCirugia.id}}"> {{tiposCirugia.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-
-  				<div class="col-2">
-                                        <label for="dxPreQx" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dxPreQx:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="dxPreQx"  tabindex= "0"
-                                                    name="dxPreQx"
-                                                    required>
-                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
-                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-
-				<div class="col-2">
-                                        <label for="dxPrinc" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dxPrinc:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="dxPrinc"  tabindex= "0"
-                                                    name="dxPrinc"
-                                                    required>
-                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
-                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-
-				<div class="col-2">
-                                        <label for="dxRel1" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dxRel1:</label>
-                                        <div class="col-sm-8">
-                                            <select class="select-css h-40 w-20" id="dxRel1"  tabindex= "0"
-                                                    name="dxRel1"
-                                                    required>
-                                                {% for diagnosticosCirugia in DiagnosticosCirugia %}
-                                                <option value="{{diagnosticosCirugia.id}}"> {{diagnosticosCirugia.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>                                             
-                                    </div>                                             
-
-
-
-				
-                            </form>
-                                </div> <!-- CIERRA ROW 8 COLUMNAS  -->
-
-
+        <br>
+        <center>
+            <h3>Cirugias</h3></center>
     </article>
 
 
