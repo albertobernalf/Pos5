@@ -951,7 +951,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 6
+                    "targets": 10
                }
             ],
 	 pageLength: 3,
@@ -996,6 +996,12 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.cups_id"},
                 { data: "fields.exaNombre"},
                 { data: "fields.finalNombre"},
+                { data: "fields.cruento"},
+                { data: "fields.incruento"},
+                { data: "fields.regionOperatoria"},
+                { data: "fields.viasDeAcceso"},
+
+
   {     "render": function ( data, type, row ) {
                         var btn = '';
 			  btn = btn + " <button class='btn  deleteProcedimientosInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
@@ -1100,7 +1106,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 4
+                    "targets": 8
                }
             ],
 	 pageLength: 3,
@@ -1135,6 +1141,10 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.cups_id"},
                 { data: "fields.exaNombre"},
                 { data: "fields.finalNombre"},
+                { data: "fields.cruento"},
+                { data: "fields.incruento"},
+                { data: "fields.regionOperatoria"},
+                { data: "fields.viasDeAcceso"},
                         ]
             }
 
@@ -2559,7 +2569,7 @@ function AdicionarProcedimientosInformeCirugia() {
 	data['cirugiaId'] = document.getElementById("cirugiaIdModalInformeProcedimientos").value;
  	    data = JSON.stringify(data);
 
-		     arrancaCirugia(11,data);
+		     arrancaCirugia(12,data);
 		     	dataTableProcedimientosInformeXXCirugiaInitialized = true;
 	
       

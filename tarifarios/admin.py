@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from tarifarios.models import TiposHonorarios, TiposTarifaProducto,TiposTarifa,TarifariosDescripcion,TarifariosProcedimientos,TarifariosSuministros, TarifariosProcedimientosHonorarios, TablaSalasDeCirugia,TablaMaterialSuturaCuracion,TablaHonorariosSoat,TablaHonorariosIss ,MinimosLegales, GruposQx
+from tarifarios.models import TiposHonorarios, TiposTarifaProducto,TiposTarifa,TarifariosDescripcion,TarifariosProcedimientos,TarifariosSuministros, TarifariosProcedimientosHonorarios, TablaSalasDeCirugia,TablaMaterialSuturaCuracion,TablaHonorariosSoat,TablaHonorariosIss ,MinimosLegales, GruposQx, TarifariosDescripcionHonorarios ,TablaSalasDeCirugiaIss , TablaMaterialSuturaCuracionIss
 
 
 @admin.register(TiposTarifa)
@@ -37,6 +37,13 @@ class TarifariosDescripcionAdmin(admin.ModelAdmin):
    # Filtrar
    list_filter = ("id","tiposTarifa", "columna",  "descripcion","fechaRegistro")
 
+@admin.register(TarifariosDescripcionHonorarios)
+class TarifariosDescripcionHonorariosAdmin(admin.ModelAdmin):
+
+   list_display = ("id","nombre")
+   search_fields = ("id","nombre")
+   # Filtrar
+   list_filter = ("id","nombre")
 
 @admin.register(TarifariosProcedimientos)
 class tarifariosProcedimientosAdmin(admin.ModelAdmin):
@@ -111,3 +118,17 @@ class tablaHonorariosIssAdmin(admin.ModelAdmin):
     search_fields =  ("id","tiposTarifaProducto","tiposHonorarios","homologado","valorUvr", "fechaRegistro")
     # Filtrar
     list_filter = ("id", "tiposTarifaProducto","tiposHonorarios","homologado","valorUvr", "fechaRegistro")
+
+@admin.register(TablaSalasDeCirugiaIss)
+class tablaSalasDeCirugiaIss(admin.ModelAdmin):
+    list_display = ("id", "tiposSala", "homologado","desdeUvr","hastaUvr", "valor", "fechaRegistro")
+    search_fields =  ("id","tiposSala","homologado","desdeUvr","hastaUvr", "valor", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "tiposSala","homologado","desdeUvr","hastaUvr", "valor", "fechaRegistro")
+
+@admin.register(TablaMaterialSuturaCuracionIss)
+class tablaMaterialSuturaCuracionIss(admin.ModelAdmin):
+    list_display = ("id", "tiposSala", "homologado","desdeUvr","hastaUvr", "valor", "fechaRegistro")
+    search_fields =  ("id","tiposSala","homologado","desdeUvr","hastaUvr", "valor", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "tiposSala","homologado","desdeUvr","hastaUvr", "valor", "fechaRegistro")

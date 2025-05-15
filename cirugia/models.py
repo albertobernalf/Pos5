@@ -113,7 +113,8 @@ class CirugiasProcedimientos(models.Model):
     finalidad = models.ForeignKey('cirugia.FinalidadCirugia', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Final004')
     cruento = models.CharField(max_length=1,blank=True, null=True ,editable=False)
     incruento = models.CharField(max_length=1,blank=True, null=True, editable=False)
-    regionOperatoria = models.CharField(max_length=20 , blank=True, null=True, editable=False)
+    viasDeAcceso = models.ForeignKey('cirugia.ViasDeAcceso', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Cups104')
+    regionOperatoria = models.ForeignKey('cirugia.RegionesOperatorias', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Cups104')
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='planta67')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
@@ -129,7 +130,7 @@ class CirugiasParticipantes(models.Model):
     medico = models.ForeignKey('clinico.EspecialidadesMedicos', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='TipoHonorario12')
     #especialidad = models.ForeignKey('clinico.EspecialidadesMedicos', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='TipoHonorario12')
     finalidad =  models.ForeignKey('cirugia.FinalidadCirugia', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='Final005')
-    viaAcceso = models.CharField(max_length=20,blank=True, null=True,  editable=False)
+    viasDeAcceso = models.ForeignKey('cirugia.ViasDeAcceso', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='acceso104')
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT,    related_name='planta68')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
@@ -303,6 +304,25 @@ class GravedadCirugia(models.Model):
 class TiposCirugia(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=30, blank=True, null=True, editable=True)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return str(self.nombre)
+
+class RegionesOperatorias(models.Model):
+    id = models.AutoField(primary_key=True)
+    region = models.CharField(max_length=50, blank=True, null=True, editable=True)
+    organos  = models.CharField(max_length=250, blank=True, null=True, editable=True)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return str(self.region)
+
+class ViasDeAcceso(models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=50, blank=True, null=True, editable=True)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 

@@ -621,16 +621,16 @@ def Load_dataTraerProcedimientosInformeCirugia(request, data):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
-    comando = 'select cirproc.id id, cirproc.cirugia_id cirugia_id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+    comando = 'select cirproc.id id, cirproc.cirugia_id cirugia_id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre, cirproc.cruento, cirproc.incruento, reg.region  regionOperatoria, vias.nombre viasDeAcceso FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_regionesoperatorias reg ON (reg.id = cirproc."regionOperatoria_id") LEFT JOIN cirugia_viasdeacceso vias ON (vias.id = cirproc."viasDeAcceso_id") LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
 
     print(comando)
     cur3.execute(comando)
 
-    for id, cirugia_id,  cups_id, exaNombre, finalNombre  in cur3.fetchall():
+    for id, cirugia_id,  cups_id, exaNombre, finalNombre , cruento, incruento, regionOperatoria, viasDeAcceso  in cur3.fetchall():
         procedimientosCirugia.append(
             {"model": "cirugia.procedimientos", "pk": id, "fields":
-                {'id': id, 'cirugia_id':cirugia_id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
+                {'id': id, 'cirugia_id':cirugia_id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre ,'cruento':cruento, 'incruento':incruento,
+                 'regionOperatoria':regionOperatoria,'viasDeAcceso':viasDeAcceso }})
 
     miConexion3.close()
     print(procedimientosCirugia)
@@ -663,16 +663,17 @@ def Load_dataTraerProcedimientosInformeXXCirugia(request, data):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    #comando = 'select cirproc.id id, cirproc.cirugia_id cirugiaId, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc, clinico_examenes exa, cirugia_finalidadcirugia final WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'" + ' and cirproc.cups_id = exa.id and final.id = cirproc.finalidad_id'
-    comando = 'select cirproc.id id, cirproc.cirugia_id cirugia_id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id) LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
+
+    comando = 'select cirproc.id id, cirproc.cirugia_id cirugia_id, cirproc.cups_id cups_id, exa.nombre exaNombre, final.nombre finalNombre , cirproc.cruento, cirproc.incruento, reg.region  regionOperatoria, vias.nombre viasDeAcceso  FROM cirugia_cirugiasprocedimientos cirproc INNER JOIN clinico_examenes exa ON ( exa.id = cirproc.cups_id)  LEFT JOIN cirugia_regionesoperatorias reg ON (reg.id = cirproc."regionOperatoria_id") LEFT JOIN cirugia_viasdeacceso vias ON (vias.id = cirproc."viasDeAcceso_id")  LEFT JOIN cirugia_finalidadcirugia final ON (final.id = cirproc.finalidad_id) WHERE cirproc.cirugia_id = ' + "'" + str(cirugiaId) + "'"
 
     print(comando)
     cur3.execute(comando)
 
-    for id, cirugia_id,  cups_id, exaNombre, finalNombre  in cur3.fetchall():
+    for id, cirugia_id,  cups_id, exaNombre, finalNombre, cruento, incruento , regionOperatoria, viasDeAcceso in cur3.fetchall():
         procedimientosCirugia.append(
             {"model": "cirugia.procedimientos", "pk": id, "fields":
-                {'id': id, 'cirugia_id':cirugia_id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre      }})
+                {'id': id, 'cirugia_id':cirugia_id,  'cups_id': cups_id, 'exaNombre': exaNombre, 'finalNombre': finalNombre  ,'cruento':cruento, 'incruento':incruento,
+                 'regionOperatoria':regionOperatoria,'viasDeAcceso':viasDeAcceso    }})
 
     miConexion3.close()
     print(procedimientosCirugia)
@@ -995,6 +996,18 @@ def CrearProcedimientosInformeCirugia(request):
     username_id = request.POST['usernameProcedimientosInformeCirugia_id']
     print ("username_id =", username_id)
 
+    cruento = request.POST['cruento']
+    print ("cruento =", cruento)
+
+    incruento = request.POST['incruento']
+    print ("incruento =", incruento)
+
+    regionesOperatorias = request.POST['regionesOperatorias']
+    print ("regionesOperatorias =", regionesOperatorias)
+
+    viasDeAcceso = request.POST['viasDeAcceso']
+    print ("viasDeAcceso =", viasDeAcceso)
+
 
     estadoReg = 'A'
     fechaRegistro = datetime.datetime.now()
@@ -1006,7 +1019,7 @@ def CrearProcedimientosInformeCirugia(request):
         miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
-        comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuarioRegistro_id") VALUES (' + "'" + str(finalidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "')"
+        comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuarioRegistro_id", cruento, incruento , "regionOperatoria_id", "viasDeAcceso_id") VALUES (' + "'" + str(finalidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "','" + str(cruento) + "','" + str(incruento) + "','" + str(regionesOperatorias)   + "','"  + str(viasDeAcceso) + "')"
 
         print(comando)
         cur3.execute(comando)

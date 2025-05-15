@@ -43,6 +43,15 @@ class TarifariosDescripcion (models.Model):
     def __str__(self):
         return str(str(self.tiposTarifa) + ' '  + str(self.descripcion))
 
+class TarifariosDescripcionHonorarios (models.Model):
+    id = models.AutoField(primary_key=True)
+    nombre = models.CharField(max_length=100, blank=True, null=True, editable=True)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False )
+
+    def __str__(self):
+         return str(self.nombre)
+
 
 class TarifariosProcedimientos (models.Model):
     id = models.AutoField(primary_key=True)
@@ -211,6 +220,22 @@ class TablaMaterialSuturaCuracion(models.Model):
     def __str__(self):
         return str(self.id)
 
+class TablaMaterialSuturaCuracionIss(models.Model):
+    id = models.AutoField(primary_key=True)
+    tiposTarifaProducto = models.ForeignKey('tarifarios.TiposTarifaProducto', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    tiposSala = models.ForeignKey('sitios.TiposSalas', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    homologado = models.CharField(max_length=8,  blank=True, null=True, editable=True)
+    desdeUvr =  models.CharField(max_length=3,  blank=True, null=True, editable=True)
+    hastaUvr = models.CharField(max_length=3,  blank=True, null=True, editable=True)
+    valor = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, editable=True)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class TablaSalasDeCirugia(models.Model):
     id = models.AutoField(primary_key=True)
     tiposTarifaProducto = models.ForeignKey('tarifarios.TiposTarifaProducto', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
@@ -218,6 +243,21 @@ class TablaSalasDeCirugia(models.Model):
     grupoQx =  models.ForeignKey('tarifarios.GruposQx', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     smldv = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, editable=True)
     cruento = models.CharField(max_length=1, blank=True, null=True ,editable=False)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
+    def __str__(self):
+        return str(self.id)
+
+class TablaSalasDeCirugiaIss(models.Model):
+    id = models.AutoField(primary_key=True)
+    tiposTarifaProducto = models.ForeignKey('tarifarios.TiposTarifaProducto', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    tiposSala = models.ForeignKey('sitios.TiposSalas', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    homologado = models.CharField(max_length=8,  blank=True, null=True, editable=True)
+    desdeUvr =  models.CharField(max_length=3,  blank=True, null=True, editable=True)
+    hastaUvr = models.CharField(max_length=3,  blank=True, null=True, editable=True)
+    valor = models.DecimalField(max_digits=15, decimal_places=2, blank=True, null=True, editable=True)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
     usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
     estadoReg = models.CharField(max_length=1, default='A', editable=False)

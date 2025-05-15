@@ -2202,7 +2202,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         context['EspecialidadesMedicos'] = especialidadesMedicos
 
-        # Fin combo tiposHonorarios
+        # Fin combo especialidades Medicos
 
         # Combo suministrosCirugia
 
@@ -2226,6 +2226,104 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         context['SuministrosCirugia'] = suministrosCirugia
 
         # Fin combo tiposHonorarios
+
+        # Combo estadosCirugia
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  cirugia_estadoscirugias  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        estadosCirugia = []
+
+        for id, nombre in curt.fetchall():
+            estadosCirugia.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("estadosCirugia", estadosCirugia)
+
+        context['EstadosCirugia'] = estadosCirugia
+
+        # Fin combo estadosCirugia
+
+
+        # Combo estadosProgramacion
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  cirugia_estadosprogramacion p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        estadosProgramacion = []
+
+        for id, nombre in curt.fetchall():
+            estadosProgramacion.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("estadosProgramacion", estadosProgramacion)
+
+        context['EstadosProgramacion'] = estadosProgramacion
+
+        # Fin combo estadosProgramacion
+
+
+        # Combo regionesOperatorias
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.region nombre FROM  cirugia_regionesOperatorias  p ORDER BY p.region"
+
+        curt.execute(comando)
+        print(comando)
+
+        regionesOperatorias = []
+
+
+        for id, nombre in curt.fetchall():
+            regionesOperatorias.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("regionesOperatorias", regionesOperatorias)
+
+        context['RegionesOperatorias'] = regionesOperatorias
+
+        # Fin combo regionesOperatorias
+
+	# Combo viasDeAcceso
+
+        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT p.id id, p.nombre nombre FROM  cirugia_viasDeAcceso  p ORDER BY nombre"
+
+        curt.execute(comando)
+        print(comando)
+
+        viasDeAcceso = []
+
+
+        for id, nombre in curt.fetchall():
+            viasDeAcceso.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print("viasDeAcceso", viasDeAcceso)
+
+        context['ViasDeAcceso'] = viasDeAcceso
+
+        # Fin combo regionesOperatorias
+
+
 
         return render(request, "cirugia/panelCirugiaF.html", context)
 
@@ -2306,29 +2404,29 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         # Fin combo tarifariosDescripcionSum
 
 
- 	# Combo tarifariosDescripcionHono
+ 	# Combo tarifariosDescripcionHonorarios
 
         miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
-        comando = 'SELECT des.id id, des.descripcion  nombre FROM  tarifarios_tarifariosDescripcion  des , tarifarios_tipostarifa tiptar, tarifarios_tipostarifaproducto tipprod WHERE des."tiposTarifa_id" = tiptar.id AND tiptar."tiposTarifaProducto_id" = tipprod.id AND tipprod.nombre like (' + "'%" + str('HONORARIO') +"%')"
+        comando = 'SELECT des.id id, des.nombre  nombre FROM  tarifarios_tarifariosDescripcionHonorarios  des ORDER By des.nombre'
 
         curt.execute(comando)
         print(comando)
 
-        tarifariosDescripcionHono = []
-        tarifariosDescripcionHono.append({'id': '', 'nombre': ''})
+        tarifariosDescripcionHonorarios = []
+        tarifariosDescripcionHonorarios.append({'id': '', 'nombre': ''})
 
         for id, nombre in curt.fetchall():
-            tarifariosDescripcionHono.append({'id': id, 'nombre': nombre})
+            tarifariosDescripcionHonorarios.append({'id': id, 'nombre': nombre})
 
         miConexiont.close()
-        print("tarifariosDescripcionHono", tarifariosDescripcionHono)
+        print("tarifariosDescripcionHonorarios", tarifariosDescripcionHonorarios)
 
-        context['TarifariosDescripcionHono'] = tarifariosDescripcionHono
+        context['TarifariosDescripcionHonorarios'] = tarifariosDescripcionHonorarios
 
-        # Fin combo tarifariosDescripcionHono
+        # Fin combo tarifariosDescripcionHonoracion
 
         ## FIN CONTEXTO
 

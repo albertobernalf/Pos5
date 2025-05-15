@@ -13,10 +13,10 @@ from tarifas.models import Tarifas
 
 class Convenios (models.Model):
     id = models.AutoField(primary_key=True)
-    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm15')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='seradm315')
     tarifariosDescripcionProc = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion0121')
     tarifariosDescripcionSum = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion0123')
-    tarifariosDescripcionHono = models.ForeignKey('tarifarios.TarifariosDescripcion', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcion0124')
+    tarifariosDescripcionHono = models.ForeignKey('tarifarios.TarifariosDescripcionHonorarios', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='TarifariosDescripcionHonor0124')
     nombre = models.CharField(max_length=80, blank=True,null= True, editable=True)
     descripcion = models.CharField(max_length=80, blank=True,null= True, editable=True)
     empresa =  models.ForeignKey('facturacion.Empresas', blank=True,null= True, editable=True, on_delete=models.PROTECT)

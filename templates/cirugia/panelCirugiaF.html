@@ -979,8 +979,13 @@ table.dataTable tbody tr {
 			</div>
 		
                         <div class="modal-body">
+		                       
+  			  <form id="postFormEstadoProgramacionCirugia" name="postFormEstadoProgramacionCirugia">
 
-					<div class="col-2">
+			Programacion No : 
+			<input type="text"  id="programacionIdParaEstado" name="programacionIdParaEstado"  readonly></input>
+
+				<div class="col-2">
                                         <label for="estadosProgramacionCirugia" class="col-sm-1 control-label">Estados Programacion Cirugia:</label>
                                         <div class="col-sm-8">
                                             <select class="select-css h-40 w-20" id="estadosProgramacionCirugia"  tabindex= "0"  name="estadosProgramacionCirugia"  required>
@@ -988,24 +993,19 @@ table.dataTable tbody tr {
                                                 <option value="{{estadosProgramacion.id}}"> {{estadosProgramacion.nombre}}</option>
                                                 {% endfor %}
                                             </select>
-                                        </div>
-                         </div>
+                                        </div>                              
+				 </div>
 
-                            </div>
-			
-  			  <form id="postFormEstadoProgramacionCirugia" name="postFormEstadoProgramacionCirugia">
-
-			Programacion No : 
-			<input type="text"  id="programacionIdParaEstado" name="programacionIdParaEstado"  readonly></input>
 
                             </form>
 
                         </div> <!-- CIERRA BODY -->
 			<div class="modal-footer">
 	
-				  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>                                  
+				  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>    
 
-                                    </div>
+
+                         </div>
 						
                         </div> <!-- CIERRA MODAL CONTENTE -->
                     </div> <!-- CIERRA MODAL DIALOG -->
@@ -1028,6 +1028,13 @@ table.dataTable tbody tr {
 		
                         <div class="modal-body">
 
+                        
+			
+  			  <form id="postFormEstadoCirugia" name="postFormEstadoCirugia">
+
+			Programacion No : 
+			<input type="text"  id="programacionIdParaEstado2" name="programacionIdParaEstado2"  readonly></input>
+
 					<div class="col-2">
                                         <label for="estadosCirugia" class="col-sm-1 control-label">Estados Cirugia:</label>
                                         <div class="col-sm-8">
@@ -1038,13 +1045,6 @@ table.dataTable tbody tr {
                                             </select>
                                         </div>
                          </div>
-
-                            </div>
-			
-  			  <form id="postFormEstadoCirugia" name="postFormEstadoCirugia">
-
-			Programacion No : 
-			<input type="text"  id="programacionIdParaEstado2" name="programacionIdParaEstado2"  readonly></input>
 
                             </form>
 
@@ -1278,6 +1278,10 @@ table.dataTable tbody tr {
 						<th>cups</th>
 						<th>nombre</th>
 						<th>finalidad</th>  
+						<th>Cruento</th> 
+						<th>Incruento</th> 
+						<th>Region</th> 
+						<th>Acceso</th> 
 						<th>Borrar</th>  
 			              
 					</bold>                                  
@@ -1381,6 +1385,39 @@ table.dataTable tbody tr {
                          </div>
 
 			  <div class="col-2">
+			 Cruento: <input type="text" class="form-control" id="cruento" name="cruento"  ></input>  
+                         </div>
+			  <div class="col-2">
+			 Incruento: <input type="text" class="form-control" id="incruento" name="incruento"  ></input>  
+                         </div>
+
+
+			<div class="col-2">
+                                        <label for="regionesOperatorias" class="col-sm-1 control-label">Region Operatoria:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="regionesOperatorias"  tabindex= "0"  name="regionesOperatorias"  required>
+                                                {% for regionesOperatorias in RegionesOperatorias %}
+                                                <option value="{{regionesOperatorias.id}}"> {{regionesOperatorias.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+
+			<div class="col-2">
+                                        <label for="viasDeAcceso" class="col-sm-1 control-label">Via de Acceso:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="viasDeAcceso"  tabindex= "0"  name="viasDeAcceso"  required>
+                                                {% for viasDeAcceso in ViasDeAcceso %}
+                                                <option value="{{viasDeAcceso.id}}"> {{viasDeAcceso.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+
+
+			  <div class="col-2">
 			 <input type="hidden" class="form-control" id="usernameProcedimientosInformeCirugia_id" name="usernameProcedimientosInformeCirugia_id"  ></input>  
                          </div>
 
@@ -1402,6 +1439,10 @@ table.dataTable tbody tr {
 						<th>cups</th>
 						<th>nombre</th>
 						<th>finalidad</th>  
+						<th>Cruento</th> 
+						<th>Incruento</th> 
+						<th>Region</th> 
+						<th>Acceso</th> 
 			              
 					</bold>                                  
 

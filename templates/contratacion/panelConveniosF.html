@@ -213,9 +213,9 @@ table.dataTable tbody tr {
 					    Tarifario Honorarios:
                 	           	<select class="select-css"  id="tarifariosDescripcionHono_id"
                                                                 name="tarifariosDescripcionHono_id">
-                                                            {% for tarifariosDescripcionHono in TarifariosDescripcionHono %}
-                                                            <option value="{{tarifariosDescripcionHono.id}}">
-                                                                {{tarifariosDescripcionHono.nombre}}
+                                                            {% for tarifariosDescripcionHonorarios in TarifariosDescripcionHonorarios %}
+                                                            <option value="{{tarifariosDescripcionHonorarios.id}}">
+                                                                {{tarifariosDescripcionHonorarios.nombre}}
                                                             </option>
                                                             {% endfor %}
                                                         </select>
