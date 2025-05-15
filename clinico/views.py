@@ -1955,7 +1955,7 @@ def crearHistoriaClinica(request):
                                                            user="postgres", password="123456")
                             cur3 = miConexion3.cursor()
 
-                            comando = 'INSERT INTO cirugia_cirugias ("consecAdmision", "fechaSolicita", "solicitaHospitalizacion", "solicitaAyudante", "solicitaTiempoQx",  "solicitaAnestesia", "solicitaSangre", "describeSangre", "cantidadSangre", "solicitaCamaUci", "solicitaMicroscopio", "solicitaRx", "solicitaAutoSutura", "solicitaOsteosintesis",  "solicitaBiopsia", "solicitaMalla", "solicitaOtros", "describeOtros", "tiempoMaxQx", "fechaRegistro", "estadoReg", anestesia_id, documento_id,  "dxPreQx_id", "dxPrinc_id", "dxRel1_id", especialidad_id, "sedesClinica_id", "tipoDoc_id", "usuarioRegistro_id", "usuarioSolicita_id", "serviciosAdministrativos_id", "estadoProgramacion_id", "tiposCirugia_id","estadoCirugia_id") VALUES (' + "'" + str(
+                            comando = 'INSERT INTO cirugia_cirugias ("consecAdmision", "fechaSolicita", "solicitaHospitalizacion", "solicitaAyudante", "solicitaTiempoQx",  "solicitaAnestesia", "solicitaSangre", "describeSangre", "cantidadSangre", "solicitaCamaUci", "solicitaMicroscopio", "solicitaRx", "solicitaAutoSutura", "solicitaOsteosintesis",  "solicitaBiopsia", "solicitaMalla", "solicitaOtros", "describeOtros", "tiempoMaxQx", "fechaRegistro", "estadoReg", anestesia_id, documento_id,  "dxPreQx_id", "dxPrinc_id", "dxRel1_id", especialidad_id, "sedesClinica_id", "tipoDoc_id", "usuarioRegistro_id", "usuarioSolicita_id", "serviciosAdministrativos_id", "estadoProgramacion_id", "tiposCirugia_id","estadoCirugia_id", historia_id) VALUES (' + "'" + str(
                                 registroIngreso.consec) + "','" + str(fechaSolicita) + "','" + str(
                                 solicitaHospitalizacion) + "','" + str(solicitaAyudante) + "','" + str(
                                 solicitaTiempoQx) + "','" + str(solicitaAnestesia) + "','" + str(solicitaSangre) + "','" + str(
@@ -1968,7 +1968,7 @@ def crearHistoriaClinica(request):
                                 dxPrinc) + "','" + str(dxRel1) + "','" + str(espMedico) + "','" + str(
                                 sedesClinica_id) + "','" + str(registroIngreso.tipoDoc_id) + "','" + str(
                                 username) + "','" + str(username) + "','" + str(serviciosAdministrativos) + "','" + str(
-                                estadoProgramacion.id) + "','" + str(tiposCirugia) + "','" + str(estadoCirugia.id) + "')"
+                                estadoProgramacion.id) + "','" + str(tiposCirugia) + "','" + str(estadoCirugia.id) + "','" + str(historiaId) + "')"
 
                             print(comando)
                             cur3.execute(comando)

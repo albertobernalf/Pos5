@@ -2,7 +2,7 @@ from django.contrib import admin
 
 # Register your models here.
 
-from tarifarios.models import TiposHonorarios, TiposTarifaProducto,TiposTarifa,TarifariosDescripcion,TarifariosProcedimientos,TarifariosSuministros, TarifariosProcedimientosHonorarios
+from tarifarios.models import TiposHonorarios, TiposTarifaProducto,TiposTarifa,TarifariosDescripcion,TarifariosProcedimientos,TarifariosSuministros, TarifariosProcedimientosHonorarios, TablaSalasDeCirugia,TablaMaterialSuturaCuracion,TablaHonorariosSoat,TablaHonorariosIss ,MinimosLegales, GruposQx
 
 
 @admin.register(TiposTarifa)
@@ -66,3 +66,48 @@ class tarifariosProcedimientosHonorariosAdmin(admin.ModelAdmin):
    search_fields = ("id","tiposTarifa", "codigoCups",  "codigoHomologado", "valorHonorarioCirujano", "valorHonorarioAnestesiologo", "valorHonorarioAyudante", "valorHonorarioPerfucionista","valorHonorarioViaAcceso", "fechaRegistro")
    # Filtrar
    list_filter = ("id","tiposTarifa", "codigoCups",  "codigoHomologado", "valorHonorarioCirujano", "valorHonorarioAnestesiologo", "valorHonorarioAyudante", "valorHonorarioPerfucionista","valorHonorarioViaAcceso", "fechaRegistro")
+
+@admin.register(GruposQx)
+class gruposQxAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre","fechaRegistro")
+    search_fields =  ("id", "nombre","fechaRegistro")
+    # Filtrar
+    list_filter =  ("id", "nombre","fechaRegistro")
+
+@admin.register(MinimosLegales)
+class minimosLegalesAdmin(admin.ModelAdmin):
+    list_display = ("id", "nombre","año","valor","fechaRegistro")
+    search_fields =  ("id", "nombre","año","valor","fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "nombre","año","valor","fechaRegistro")
+
+
+@admin.register(TablaHonorariosSoat)
+class tablaHonorariosSoatAdmin(admin.ModelAdmin):
+    list_display = ("id","tiposTarifaProducto","tiposHonorarios","homologado","grupoQx","smldv", "fechaRegistro")
+    search_fields =  ("id","tiposTarifaProducto","tiposHonorarios","homologado","grupoQx","smldv", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "tiposTarifaProducto","tiposHonorarios","homologado","grupoQx","smldv", "fechaRegistro")
+
+
+@admin.register(TablaMaterialSuturaCuracion)
+class tablaMaterialSuturaCuracionAdmin(admin.ModelAdmin):
+    list_display = ("id", "tiposTarifaProducto","homologado","grupoQx","smldv","cruento", "fechaRegistro")
+    search_fields =  ("id","tiposTarifaProducto","homologado","grupoQx","smldv", "cruento","fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "tiposTarifaProducto","homologado","grupoQx","smldv", "cruento","fechaRegistro")
+
+
+@admin.register(TablaSalasDeCirugia)
+class tablaSalasDeCirugia(admin.ModelAdmin):
+    list_display = ("id", "tiposTarifaProducto","homologado","grupoQx","smldv", "cruento", "fechaRegistro")
+    search_fields =  ("id","tiposTarifaProducto","homologado","grupoQx","smldv","cruento", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "tiposTarifaProducto","homologado","grupoQx","smldv", "cruento","fechaRegistro")
+
+@admin.register(TablaHonorariosIss)
+class tablaHonorariosIssAdmin(admin.ModelAdmin):
+    list_display = ("id","tiposTarifaProducto","tiposHonorarios","homologado","valorUvr" ,"fechaRegistro")
+    search_fields =  ("id","tiposTarifaProducto","tiposHonorarios","homologado","valorUvr", "fechaRegistro")
+    # Filtrar
+    list_filter = ("id", "tiposTarifaProducto","tiposHonorarios","homologado","valorUvr", "fechaRegistro")

@@ -130,3 +130,4 @@ class tiposCirugiaAdmin(admin.ModelAdmin):
     search_fields = ("id", "nombre")
     # Filtrar
     list_filter = ('nombre',)
+

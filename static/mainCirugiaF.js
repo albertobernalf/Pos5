@@ -200,7 +200,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 15
+                    "targets": 17
                }
             ],
 	 pageLength: 3,
@@ -278,7 +278,27 @@ function arrancaCirugia(valorTabla,valorData)
 		{ data: "fields.horaInicia"},
                 { data: "fields.Termina"},
 		 { data: "fields.horaTermina"},
+		{
+		  "render": function ( data, type, row ) {
+                	        var btn = '';
+
+		     btn = btn + " <button class='miEditaEstadoProgramacionCirugia btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+                    },
+		},
+
      		 { data: "fields.estadoProg"},
+		{
+		  "render": function ( data, type, row ) {
+                	        var btn = '';
+
+		     btn = btn + " <button class='miEditaEstadoCirugia btn-primary ' data-pk='" + row.pk + "'>" + '<i class="fa-duotone fa-regular fa-thumbs-up"></i>' + "</button>";
+
+                       return btn;
+                    },
+		},
+
      		 { data: "fields.estadoCirugia"},
                         ]
             }
@@ -1530,6 +1550,122 @@ var data =  {}   ;
   });
 
 
+$('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoProgramacionCirugia', function() {
+
+		alert("A modal EstadoProgramacionCirugia");
+
+	     var post_id = $(this).data('pk');
+	   	document.getElementById("programacionIdParaEstado").value = post_id;
+
+            $('#postFormEstadoProgramacionCirugia').trigger("reset");
+            $('#modelHeadingEstadoProgramacionCirugia').html("Actualizar estado programacion Cirugia");
+            $('#crearModelEstadoProgramacionCirugia').modal('show');      
+      
+  });
+
+function GuardarEstadoProgramacionCirugia()
+{
+		alert("ENTRE Editar Guardar Estado Programacion Cirugia");
+	  var programacionId = document.getElementById("programacionIdParaEstado").value;
+	  var estadoId = document.getElementById("estadosProgramacionCirugia").value;
+
+	alert("programacion : " + programacionId );
+     
+	$.ajax({
+
+	        url: "/GuardarEstadoProgramacionCirugia/",
+                data: {'programacionId':post_id,'estadoId':estadoId},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+		var data =  {}   ;
+	 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	 	var sede = document.getElementById("sede").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+
+
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		
+	        data = JSON.stringify(data);
+	       arrancaCirugia(2,data);
+		    dataTableProgramacionCirugiaInitialized = true;
+				                },
+                 error: function (request, status, error) {
+			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}
+
+
+$('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoCirugia', function() {
+		alert("A modal EstadoCirugia");
+
+	     var post_id = $(this).data('pk');
+	   	document.getElementById("programacionIdParaEstado2").value = post_id;
+
+            $('#postFormEstadoCirugia').trigger("reset");
+            $('#modelHeadingEstadoCirugia').html("Actualizar estado programacion Cirugia");
+            $('#crearModelEstadoCirugia').modal('show');      
+
+      
+  });
+
+
+function GuardarEstadoProgramacionCirugia()
+{
+		alert("ENTRE Guardar Estado Cirugia");
+
+	  var programacionId = document.getElementById("programacionIdParaEstado2").value;
+	  var estadoId = document.getElementById("estadosCirugia").value;
+
+  	     alert("programacion : " + post_id);		
+    
+	$.ajax({
+
+	        url: "/guardarEstadoCirugia/",
+                data: {'programacionId':post_id,'estadoId':estadoId},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+		var data =  {}   ;
+	 	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	 	var sede = document.getElementById("sede").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+
+
+	        data['username'] = username;
+  	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+			
+		
+	        data = JSON.stringify(data);
+	       arrancaCirugia(2,data);
+		    dataTableProgramacionCirugiaInitialized = true;
+				                },
+                 error: function (request, status, error) {
+			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}
 // FIN DE LO NUEVO
 
 // Solicitud Procedimientos

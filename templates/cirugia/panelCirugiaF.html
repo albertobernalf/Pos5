@@ -946,7 +946,9 @@ table.dataTable tbody tr {
 					     <th>hora</th>
 					     <th>Termina</th>
 					     <th>hora</th>
+  						<th>SelProg</th>
   						<th>estadoProg</th>
+  						<th>SelCiru</th>
 						<th>estadoCirugia</th>
 
 					  
@@ -964,6 +966,105 @@ table.dataTable tbody tr {
 
     <!-- Modales Cirugia -->
 
+
+<!-- Modal Estado Programacion Cirugia -->
+
+   <div class="modal fade" id="crearModelEstadoProgramacionCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingEstadoProgramacionCirugia"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+
+					<div class="col-2">
+                                        <label for="estadosProgramacionCirugia" class="col-sm-1 control-label">Estados Programacion Cirugia:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="estadosProgramacionCirugia"  tabindex= "0"  name="estadosProgramacionCirugia"  required>
+                                                {% for estadosProgramacion in EstadosProgramacion %}
+                                                <option value="{{estadosProgramacion.id}}"> {{estadosProgramacion.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+                            </div>
+			
+  			  <form id="postFormEstadoProgramacionCirugia" name="postFormEstadoProgramacionCirugia">
+
+			Programacion No : 
+			<input type="text"  id="programacionIdParaEstado" name="programacionIdParaEstado"  readonly></input>
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+				  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>                                  
+
+                                    </div>
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Estado Programacion Cirugia -->
+
+
+<!-- Modal Estado Cirugia -->
+
+   <div class="modal fade" id="crearModelEstadoCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                <div class="modal-dialog modal-dialog-scrollable  modal-dialog-center" role="document" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                             <h4 class="modal-title" id="modelHeadingEstadoCirugia"> </h4> 
+			 
+                         <button type="button" class="close" data-bs-dismiss="modal"  aria-label="Close"> <span aria-hidden="true">&times;</span>  </button>
+			</div>
+		
+                        <div class="modal-body">
+
+					<div class="col-2">
+                                        <label for="estadosCirugia" class="col-sm-1 control-label">Estados Cirugia:</label>
+                                        <div class="col-sm-8">
+                                            <select class="select-css h-40 w-20" id="estadosCirugia"  tabindex= "0"  name="estadosCirugia"  required>
+                                                {% for estadosCirugia in EstadosCirugia %}
+                                                <option value="{{estadosCirugia.id}}"> {{estadosCirugia.nombre}}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                         </div>
+
+                            </div>
+			
+  			  <form id="postFormEstadoCirugia" name="postFormEstadoCirugia">
+
+			Programacion No : 
+			<input type="text"  id="programacionIdParaEstado2" name="programacionIdParaEstado2"  readonly></input>
+
+                            </form>
+
+                        </div> <!-- CIERRA BODY -->
+			<div class="modal-footer">
+	
+				  <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancelar   </button>                                  
+
+                                    </div>
+						
+                        </div> <!-- CIERRA MODAL CONTENTE -->
+                    </div> <!-- CIERRA MODAL DIALOG -->
+                </div>  <!-- CIERRA MODAL FADE -->
+
+
+	<!-- FIN Modal Estado  Cirugia -->
+
+
+
+	<!-- Modal para Procedimientos Cirugia -->
 
             <div class="modal fade" id="crearModelProgramacionCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
@@ -1337,8 +1438,6 @@ table.dataTable tbody tr {
 
 
 	<!-- FIN Modal Procedimiento Informe Cirugia -->
-
-
 
 
 

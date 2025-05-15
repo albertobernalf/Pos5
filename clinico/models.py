@@ -197,7 +197,7 @@ class Examenes(models.Model):
     citaControl = models.CharField(max_length=1, blank=True, null=True, editable=True)
     concepto = models.ForeignKey('facturacion.Conceptos', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     codigoRips = models.CharField(max_length=6,  blank=True, null=True, editable=True)
-    grupoQx =  models.ForeignKey('tarifas.GruposQx',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
+    grupoQx =  models.ForeignKey('tarifarios.GruposQx',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
     cantidadUvr =  models.CharField(max_length=10,blank=True, null=True, editable=True)
     uvrAño = models.ForeignKey('tarifas.Uvr', blank=True,null= True, editable=True, on_delete=models.PROTECT , related_name='Uvr105')
     honorarios = models.CharField(max_length=1, blank=True, null=True, editable=True)

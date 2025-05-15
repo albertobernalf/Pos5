@@ -360,6 +360,8 @@ urlpatterns = [
     path('load_dataHojaDeGastoXXCirugia/<str:data>', viewsCirugia.Load_dataHojaDeGastoXXCirugia,name='load_dataHojaDeGastoXX_Cirugia'),
     path('buscaAdicionarQx/', viewsCirugia.BuscaAdicionarQx, name='BuscaAdicionar_Qx'),
     path('seleccionProgramacionCirugia/', viewsCirugia.SeleccionProgramacionCirugia, name='seleccionProgramacion_Cirugia'),
+    path('guardarEstadoProgramacionCirugia/', viewsCirugia.GuardarEstadoProgramacionCirugia, name='GuardarEstadoProgramacion_Cirugia'),
+    path('guardarEstadoCirugia/', viewsCirugia.GuardarEstadoCirugia, name='GuardarEstado_Cirugia'),
 
     # Citas Medicas
 

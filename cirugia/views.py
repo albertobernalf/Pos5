@@ -1750,3 +1750,91 @@ def SeleccionProgramacionCirugia(request):
 
     return HttpResponse(serialized1, content_type='application/json')
 
+
+
+
+def GuardarEstadoProgramacionCirugia(request):
+    print("Entre GuardarEstadoProgramacionCirugia")
+
+    programacionId = request.POST.get('programacionId')
+    print("programacionId =", programacionId)
+
+    estadoId = request.POST.get('estadoId')
+    print("estadoId =", estadoId)
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cur3 = miConexion3.cursor()
+
+        detalle = 'UPDATE cirugia_programacioncirugias set  "estadoProgramacionId" = ' + "'" + str(estadoId) + "'" + ' WHERE id = ' + "'" + str(programacionId) + "'"
+
+        print(detalle)
+
+        cur3.execute(detalle)
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Estado Programacion Actualizado!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()
+
+
+def GuardarEstadoCirugia(request):
+    print("Entre GuardarEstadonCirugia")
+
+    programacionId = request.POST.get('programacionId')
+    print("programacionId =", programacionId)
+
+    estadoId = request.POST.get('estadoId')
+    print("estadoId =", estadoId)
+
+    # Busco la cirugia relacionado, esperando que no hayan ms de una cirugia. OPS
+    registroProgramacion = ProgramacionCirugias.objects.get(id=programacionId)
+    registroCirugia = Cirugias.objects.get(tipoDoc_id=registroProgramacion.tipoDoc_id, documento_id=registroProgramacion.documento_id, consecAdmision=registroProgramacion.consecAdmision)
+
+
+    miConexion3 = None
+    try:
+
+        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        cur3 = miConexion3.cursor()
+
+        detalle = 'UPDATE cirugia_programacioncirugias set  "estadoProgramacionId" = ' + "'" + str(estadoId) + "'" + ' WHERE id = ' + "'" + str(registroCirugia.id) + "'"
+
+        print(detalle)
+
+        cur3.execute(detalle)
+
+        miConexion3.commit()
+        cur3.close()
+        miConexion3.close()
+
+        return JsonResponse({'success': True, 'message': 'Estado Cirugia Actualizado!'})
+
+    except psycopg2.DatabaseError as error:
+        print ("Entre por rollback" , error)
+        if miConexion3:
+            print("Entro ha hacer el Rollback")
+            miConexion3.rollback()
+        raise error
+
+    finally:
+        if miConexion3:
+            cur3.close()
+            miConexion3.close()

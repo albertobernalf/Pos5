@@ -739,11 +739,6 @@ BIBLIOGRAFIA:
   - no me gusta que no cierra la ventana
 
 
--- OJO MAÑANA
--- cuando se programa la cirugia queda PENDIENTE LA CIRUGIA OJO
--- ojo los botones de cargue en INFORME QX de proced, particip, materiales no estan cargando los datatabble InformeXX
-
--- Ojo no debe dejar crear mas de una programacion de cirugia para el mismo ingreso. CONTROLAR
--- el query de programacion esta repitiendo de acuerdo al estado de la cirugia o estado de la programacion VERIFICAR
+-- Ojo no debe dejar crear mas de una programacion de cirugia para el mismo ingreso. CONTROLAR ???? COMO HACER ESTE PUNTO
 -- OJO colocar mañana los iconos de cambiar estados : programacion y cirugia, hacer modales y funciones que graben 
 -- agregar campo folio en cirugia_cirugias donde quede el folio cuando es creada desde folio del paciente
