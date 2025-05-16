@@ -2321,7 +2321,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
 
         context['ViasDeAcceso'] = viasDeAcceso
 
-        # Fin combo regionesOperatorias
+        # Fin combo vias de acceso
 
 
 

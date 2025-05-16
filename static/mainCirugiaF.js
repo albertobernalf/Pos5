@@ -672,7 +672,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 5
+                    "targets": 6
                }
             ],
 	 pageLength: 3,
@@ -719,6 +719,8 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.honNombre"},
                 { data: "fields.medicoNombre"},
                 { data: "fields.especialidadNombre"},
+                { data: "fields.cupsNombre"},
+
                         ]
             }
 
@@ -811,7 +813,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 5
+                    "targets": 6
                }
             ],
 	 pageLength: 3,
@@ -856,6 +858,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.suministro"},
                 { data: "fields.tipoSuministro"},
                 { data: "fields.cantidad"},
+                { data: "fields.valorLiquidacion"},
                         ]
             }
 
@@ -877,7 +880,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 6
+                    "targets": 7
                }
             ],
 	 pageLength: 3,
@@ -924,6 +927,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.honNombre"},
                 { data: "fields.medicoNombre"},
                 { data: "fields.especialidadNombre"},
+                { data: "fields.cupsNombre"},
 	    {     "render": function ( data, type, row ) {
                         var btn = '';
 			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
@@ -1031,7 +1035,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 7
+                    "targets": 8
                }
             ],
 	 pageLength: 3,
@@ -1077,6 +1081,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.suministro"},
                 { data: "fields.tipoSuministro"},
                { data: "fields.cantidad"},
+               { data: "fields.valorLiquidacion"},
   	{     "render": function ( data, type, row ) {
                         var btn = '';
 			  btn = btn + " <button class='btn deleteMaterialInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
@@ -1167,7 +1172,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 6
+                    "targets": 7
                }
             ],
 	 pageLength: 3,
@@ -1202,6 +1207,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.suministro"},
                 { data: "fields.tipoSuministro"},
                { data: "fields.cantidad"},
+               { data: "fields.valorLiquidacion"},
                         ]
             }
 
@@ -1350,7 +1356,7 @@ function arrancaCirugia(valorTabla,valorData)
 		{ className: 'centered', targets: [0, 1, 2, 3] },
 	    { width: '10%', targets: [2,3] },
 		{  
-                    "targets": 6
+                    "targets": 7
                }
             ],
 	 pageLength: 3,
@@ -1397,6 +1403,7 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.honNombre"},
                 { data: "fields.medicoNombre"},
                 { data: "fields.especialidadNombre"},
+                { data: "fields.cupsNombre"},
 	    {     "render": function ( data, type, row ) {
                         var btn = '';
 			  btn = btn + " <button class='btn  deleteParticipanteInformeXXCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
@@ -1565,9 +1572,10 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoProgramacionCiru
 		alert("A modal EstadoProgramacionCirugia");
 
 	     var post_id = $(this).data('pk');
-	   	document.getElementById("programacionIdParaEstado").value = post_id;
+
 
             $('#postFormEstadoProgramacionCirugia').trigger("reset");
+	   	document.getElementById("programacionIdParaEstado").value = post_id;
             $('#modelHeadingEstadoProgramacionCirugia').html("Actualizar estado programacion Cirugia");
             $('#crearModelEstadoProgramacionCirugia').modal('show');      
       
@@ -1622,9 +1630,10 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoCirugia', functi
 		alert("A modal EstadoCirugia");
 
 	     var post_id = $(this).data('pk');
-	   	document.getElementById("programacionIdParaEstado2").value = post_id;
+
 
             $('#postFormEstadoCirugia').trigger("reset");
+	   	document.getElementById("programacionIdParaEstado2").value = post_id;
             $('#modelHeadingEstadoCirugia').html("Actualizar estado programacion Cirugia");
             $('#crearModelEstadoCirugia').modal('show');      
 
@@ -1632,7 +1641,7 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoCirugia', functi
   });
 
 
-function GuardarEstadoProgramacionCirugia()
+function GuardarEstadoCirugia()
 {
 		alert("ENTRE Guardar Estado Cirugia");
 
@@ -2426,13 +2435,16 @@ function CrearParticipantesInformeCirugia()
   	        data['sedeSeleccionada'] = sedeSeleccionada;
 	        data['nombreSede'] = nombreSede;
 	        data['sede'] = sede;
-	        data['username_id'] = username_id;
+	        data['username_id'] = user;
 			
 		data['cirugiaId'] =cirugiaId;
 	        data = JSON.stringify(data);
 	 	
 
 	     arrancaCirugia(16,data);
+	    dataTableParticipantesInformeXXCirugiaInitialized = true;
+
+	     arrancaCirugia(9,data);
 	    dataTableParticipantesInformeXXCirugiaInitialized = true;
   
 
@@ -2459,24 +2471,62 @@ function AdicionarParticipanteInformeCirugia()
 
                   $('#postFormParticipantesInformeCirugia').trigger("reset");
 document.getElementById("cirugiaIdModalParticipantesInforme").value =	document.getElementById("cirugiaIdModalProcedimientos").value ;
+                 var cirugiaId = document.getElementById("cirugiaIdModalParticipantesInforme").value;
 
    $('#modelHeadingParticipantesInformeCirugia').html("Adicion participante de Cirugia");
 
 
+          $.ajax({
+                data: {'cirugiaId':cirugiaId},
+	        url: "/buscarProcedimientosDeCirugia/",
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+	
+
+	    // $('#cupsParticipantesInforme').val(data2);
+
+
+	  	    var options = '<option value="=================="></option>';
+
+	            const $id2 = document.querySelector("#cupsParticipantesInforme");
+
+ 	      	$("#cupsParticipantesInforme").empty();
+
+	                 $.each(data2, function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id2.appendChild(option);
+ 	      		      });
+
+		  
 	var data =  {}   ;
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;
 	        data['nombreSede'] = nombreSede;
 	        data['sede'] = sede;
-	        data['username_id'] = username_id;
+	        data['username_id'] = user;
 			
 		data['cirugiaId'] =cirugiaId;
 	        data = JSON.stringify(data);
 
 	     arrancaCirugia(9,data);
 	    dataTableParticipantesInformeCirugiaInitialized = true;
+
+
+	     arrancaCirugia(16,data);
+	    dataTableParticipantesInformeXXCirugiaInitialized = true;
+
   
  		 $('#crearModelParticipantesInformeCirugia').modal('show');
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalParticipantesInformeCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
 
 
 }
@@ -2851,9 +2901,8 @@ function CrearHojaDeGastoCirugia()
 	alert("CrearHojaDeGastoCirugia");
 
 	var sede = document.getElementById("sede").value;
-	document.getElementById("sedesClinicaModalHojaDeGastoCirugia_id").value =  sede;
 
-	var user  = document.getElementById("usernameHojaDeGastoCirugia_id").value ;
+	var user  = document.getElementById("username_id").value ;
 	var cirugiaIdModalHojaDeGastoCirugia  = document.getElementById("cirugiaIdModalHojaDeGastoCirugia").value ;
 
             $.ajax({
@@ -2892,6 +2941,34 @@ function CrearHojaDeGastoCirugia()
                 },
             error: function (request, status, error) {
 		document.getElementById("mensajesErrorModalHojaDeGastoCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
+
+}
+
+function GenerarLiquidacionCirugia()
+{
+
+	alert("GenerarLiquidacionCirugia");
+	var username_id  = document.getElementById("username_id").value ;
+	var sede  = document.getElementById("sede").value ;
+
+	var cirugiaId  = document.getElementById("cirugiaIdModalInformeProcedimientos").value ;
+
+            $.ajax({
+
+	        url: "/generarLiquidacionCirugia/",
+                data: {'cirugiaId':cirugiaId,'sede':sede, 'username_id':username_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+	
+		 $("#mensajes").html(data2.message);
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
 	   	    	}
             });
 

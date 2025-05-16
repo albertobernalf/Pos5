@@ -732,6 +732,20 @@ BIBLIOGRAFIA:
   -- 3) pantalla para Aplicar medicamentos, pantalla devolucion de insumos y medicamentos a farmacia)
 
 
+ -- CONSULTA EXTERNA : Modulos: Citas medicas (Agendas Medicas, consultorios, Programacion de citas)
+                       TABLAS: agendasMedicas(Para asignar medicos a consultorios por dias, medico,especialidad,dia,hora,duracion_cita), Consultorios ( para crear dispoibilidad por dias en consul), citasMedicas (cabezote citas medicas,
+			Fecha-Hora de reserva, Fecha-Hora solicitada, fecha-hora-atencion-fecha hora cancelada,  agendamedica_id, estadoCita
+, citasMedicasDetalle (citamedica_id, codigoCups_id), EstadosCitasMedicas (Reservada,Confirmada,Atendida,Facturada,Cancelada)
+				EstadosConsultorios (Por Asignar, Asignado, Mantenimiento)
+				Utilizar medicosEspecialidad, creo se llama , relaciona con planta_id , especialidad_id
+			       programacionCitasMedicas (dia,nes.año,consultorio,agenda_id), historicoCitasMedicas(tipodoc,documento_id,consecAdmision, citamedica, factura, agenda_id,estado)
+				TrasladosCitasMedicas()
+				admisiones.ingresos se realiza el ingreso comenzando citaNo 1000000
+				Por el modulo de Historia Clinica se evoluciones paciente
+				Cuando se atinede cae a la facturacion el cups de la cita medica) o al medio dia en la noche se cancela la cita medica.
+				El medico de consulta externa permisoa Historia Clinicas y Consulta Externa(aparecena las citas medicas del dia asignadas para el medico)
+
+
 -- En cirugia: cuando sale error de horario sala verificar :
   -- colocar la fecha en los calkendarios
  --  debe validar tosad las cirugias expto la corriente
@@ -742,3 +756,8 @@ BIBLIOGRAFIA:
 -- Ojo no debe dejar crear mas de una programacion de cirugia para el mismo ingreso. CONTROLAR ???? COMO HACER ESTE PUNTO
 -- OJO colocar mañana los iconos de cambiar estados : programacion y cirugia, hacer modales y funciones que graben 
 -- agregar campo folio en cirugia_cirugias donde quede el folio cuando es creada desde folio del paciente
+
+-- OJO revizar toda la traza clinica de medico-especialidad, debe haber errores- combos etc.
+
+-- Para generar estanciass automaticas el dia de ingreso cuenta pero el de salida no cuenta, por lo tanto se crea un dia de estancia
+   -- o por wwue ingreso o un dia anterior asumisndo que el dia de hoy o actual va a salir de la clincia o egreso clinico

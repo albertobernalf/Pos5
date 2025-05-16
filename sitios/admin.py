@@ -159,10 +159,10 @@ class bodegasAdmin(admin.ModelAdmin):
 class salasAdmin(admin.ModelAdmin):
 
 
-    list_display = ("id","sedesClinica", "dependenciaTipo", "numero", "nombre","serviciosAdministrativos")
-    search_fields = ("id","sedesClinica", "dependenciaTipo", "numero", "nombre", "serviciosAdministrativos")
+    list_display = ("id","sedesClinica", "tipoSala", "dependenciaTipo", "numero", "nombre","serviciosAdministrativos")
+    search_fields = ("id","sedesClinica","tipoSala", "dependenciaTipo", "numero", "nombre", "serviciosAdministrativos")
     # Filtrar
-    list_filter = ("id","sedesClinica", "dependenciaTipo",  "numero","nombre", "serviciosAdministrativos")
+    list_filter = ("id","sedesClinica", "tipoSala", "dependenciaTipo",  "numero","nombre", "serviciosAdministrativos")
 
 
 @admin.register(TiposSalas)

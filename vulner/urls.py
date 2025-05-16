@@ -362,6 +362,8 @@ urlpatterns = [
     path('seleccionProgramacionCirugia/', viewsCirugia.SeleccionProgramacionCirugia, name='seleccionProgramacion_Cirugia'),
     path('guardarEstadoProgramacionCirugia/', viewsCirugia.GuardarEstadoProgramacionCirugia, name='GuardarEstadoProgramacion_Cirugia'),
     path('guardarEstadoCirugia/', viewsCirugia.GuardarEstadoCirugia, name='GuardarEstado_Cirugia'),
+    path('generarLiquidacionCirugia/', viewsCirugia.GenerarLiquidacionCirugia, name='generarLiquidacion_Cirugia'),
+    path('buscarProcedimientosDeCirugia/', viewsCirugia.BuscarProcedimientosDeCirugia, name='buscarProcedimientosDe_Cirugia'),
 
     # Citas Medicas
 

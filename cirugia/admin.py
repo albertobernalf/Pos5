@@ -104,10 +104,10 @@ class cirugiasProcedimientosAdmin(admin.ModelAdmin):
 
 @admin.register(CirugiasParticipantes)
 class cirugiasParticipantesAdmin(admin.ModelAdmin):
-    list_display = ("id", "cirugia","tipoHonorarios", "finalidad", "fechaRegistro")
-    search_fields = ("id", "cirugia","tipoHonorarios", "finalidad", "fechaRegistro")
+    list_display = ("id", "cirugia","cups", "tipoHonorarios", "finalidad", "fechaRegistro")
+    search_fields = ("id", "cirugia","cups","tipoHonorarios", "finalidad", "fechaRegistro")
     # Filtrar
-    list_filter = ("id", "cirugia","tipoHonorarios", "finalidad", "fechaRegistro")
+    list_filter = ("id", "cirugia","cups","tipoHonorarios", "finalidad", "fechaRegistro")
 
 @admin.register(EstadosProgramacion)
 class estadosProgramacionAdmin(admin.ModelAdmin):

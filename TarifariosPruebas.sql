@@ -34,6 +34,7 @@ select * from cirugia_viasdeacceso;
 select * from cirugia_regionesoperatorias;
 select * from cirugia_cirugiasmaterialqx;
 select * from cirugia_cirugiasparticipantes;
+SELECT p.id id, p.nombre nombre FROM  cirugia_estadoscirugias  p
 
 
 UPDATE contratacion_Convenios 
