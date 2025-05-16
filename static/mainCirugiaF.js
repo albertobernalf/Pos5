@@ -2418,6 +2418,28 @@ function CrearParticipantesInformeCirugia()
 	var user  = document.getElementById("username_id").value ;
 	 document.getElementById("usernameParticipantesInformeCirugia_id").value  = user;
 
+  // OJO AQUI FILTRAR PARA QUE SOLO SE SELCCIONE CIRUJANO HONORARIO MEDICO LOS DEMAS HONORARIO SE DEJA CUPS_ID = NULO
+
+
+	var tipoHonorarioSeleccionado = document.getElementById("tipoHonorariosInforme").value ;
+	var cupsSeleccionado = document.getElementById("cupsParticipantesInforme").value ;
+
+	/* Para obtener el valor */
+	var tipoHonorarioSeleccionado = document.getElementById("tipoHonorariosInforme").value;
+	alert(tipoHonorarioSeleccionado);
+ 
+	/* Para obtener el texto */
+	var combo = document.getElementById("tipoHonorariosInforme");
+	var nombreHonorario = combo.options[combo.selectedIndex].text;
+	alert(nombreHonorario);
+
+	  if ( nombreHonorario != 'CIRUJANO')
+		{
+
+		alert("Entre a blanquear = "  );
+		 combo.selectedIndex = 0;
+		}
+
             $.ajax({
                 data: $('#postFormParticipantesInformeCirugia').serialize(),
 	        url: "/crearParticipantesInformeCirugia/",

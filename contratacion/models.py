@@ -45,7 +45,7 @@ class Convenios (models.Model):
     estadoReg = models.CharField(max_length=1, default='A', editable=False )
 
     def __str__(self):
-        return str(str(self.empresa) + str(' ') + str(self.tarifariosDescripcion) + str(' ') +  str(self.nombre)  )
+        return str(str(self.empresa) + str(' ') + str(self.tarifariosDescripcionProc) + str(' ') +  str(self.nombre)  )
 
 
 class ConveniosTarifasHonorarios (models.Model):
