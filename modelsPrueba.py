@@ -762,7 +762,7 @@ BIBLIOGRAFIA:
 -- Para generar estanciass automaticas el dia de ingreso cuenta pero el de salida no cuenta, por lo tanto se crea un dia de estancia
    -- o por wwue ingreso o un dia anterior asumisndo que el dia de hoy o actual va a salir de la clincia o egreso clinico
 
--- Hay un error en participanmtesInforme, porque no selecIndex=0 funciona, para que no asocia con otro que no sea cirujano y guarde en blanco el honorario
--- ops eumelia documento_id = 16, esta con salida clinica y fecha de salida y no sale en ADMISIOENS pero si me dejo CREARLE UNA CIRUGIA QUE PASO ALLI´???
+-- Hay un error en participanmtesInforme, porque no selecIndex=0 NOP funciona, para que no asocia con otro que no sea cirujano y guarde en blanco el honorario
+-- ops eumelia documento_id = 16, esta con salida clinica y fecha de salida y no sale en ADMISIOENS pero si me dejo CREARLE UNA CIRUGIA QUE PASO ALLI´??? el query de INGRESOS EN CLINICA DESDE CIRUGIA ÁRA VER CANDIDATOS A CREARSOLICITUDES DE CIRUGIA
   -- TENGO LIO ALLI VERIFICAR EL LUNES 19/mayo ,, OPS AHORA ME SALNE DOBLE VALIDAR
 -- OJO EL LUNES 19, TRABAJAR DES LIQUIDACION SALAS DE CIRUGIA/MATERIALES ISS Y LUEGO SI SEGUIR CON SOAT, acercamientos

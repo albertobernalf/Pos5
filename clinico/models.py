@@ -60,10 +60,18 @@ class EspecialidadesMedicos(models.Model):
 class Especialidades(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=30 , null = False)
+    examen = models.ForeignKey('clinico.Examenes',  blank=True, null=True, editable=True, on_delete=models.PROTECT)
+    examenCita = models.ForeignKey('clinico.Examenes',  blank=True, null=True, editable=True, on_delete=models.PROTECT ,related_name ='cuposCita')
     interconsulta = models.CharField(max_length=1,  blank=True,null= True, editable=True,)
     cExterna    = models.CharField(max_length=1,  blank=True,null= True, editable=True,)
     quirurgica =  models.CharField(max_length=1,  blank=True,null= True, editable=True,)
-    codigoCups = models.CharField(max_length=1,  blank=True,null= True, editable=True,)
+    valoracionInicial =  models.CharField(max_length=1,  blank=True,null= True, editable=True,)
+    #codigoCups = models.CharField(max_length=1,  blank=True,null= True, editable=True,)
+    agenda = models.CharField(max_length=1,  blank=True, null=True, editable=True,)
+    quirurgica = models.CharField(max_length=1,  blank=True, null=True, editable=True,)
+    citaDeControl = models.CharField(max_length=1,  blank=True, null=True, editable=True,)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+
 
     def __str__(self):
         return self.nombre
