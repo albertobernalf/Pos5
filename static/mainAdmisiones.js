@@ -1776,7 +1776,9 @@ $('#tablaDatos tbody').on('click', '.miEditaAdmision', function() {
     			    $('#tiposCotizanteP').val(Usuarios.cotizante);
     			    $('#remitidoP').val(Usuarios.remitido);
     			    $('#numManillaP').val(Usuarios.numManilla);
+
     			    $('#medicoIngresoP').val(Usuarios.medicoIngreso); 	
+
     			    $('#responsablesP').val(Usuarios.responsable); 	
     			    $('#acompanantesP').val(Usuarios.acompanante); 	
 
@@ -1910,10 +1912,10 @@ $(document).on('change', '#busEspecialidad', function(event) {
 	  		  var dato = JSON.parse(respuesta);
 
 
-                     const $id2 = document.querySelector("#medicoIngresoP");
+                     const $id2 = document.querySelector("#medicoIngresoPP");
 
 
- 	      		     $("#medicoIngresoP").empty();
+ 	      		     $("#medicoIngresoPP").empty();
 
 
 	                 $.each(dato, function(key,value) {
@@ -1933,6 +1935,64 @@ $(document).on('change', '#busEspecialidad', function(event) {
 
 	     });
 });
+
+
+
+$(document).on('change', '#busEspecialidadP', function(event) {
+
+        alert("Entre cambio busEspecialidadP");
+
+
+       var Esp =   $(this).val()
+
+	alert("especialidad Nro = " + Esp);
+
+
+        var Sede =  document.getElementById("Sede").value;
+       // var Sede1 = document.getElementById("FormBuscar").elements["Sede"];
+	alert("Sede = " + Sede);
+
+
+
+        $.ajax({
+	           url: '/buscarEspecialidadesMedicos',
+	            data : {Esp:Esp, Sede:Sede},
+	           type: 'GET',
+	           dataType : 'json',
+
+	  		success: function (respuesta) {
+
+	  		   var options = '<option value="=================="></option>';
+
+	  		  var dato = JSON.parse(respuesta);
+
+
+                     const $id2 = document.querySelector("#medicoIngresoP");
+
+
+ 	      		     $("#medicoIngresoP").empty();
+
+
+	                 $.each(dato, function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id2.appendChild(option);
+ 	      		      });
+
+
+                    },
+	   		    error: function (request, status, error) {
+
+	   			 	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
+	   	    	}
+
+	     });
+});
+
+
 
 
 

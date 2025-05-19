@@ -1409,8 +1409,8 @@ formHistoriaClinica.addEventListener('submit', e=>{
          var usuarioRegistro = document.getElementById("usuarioRegistro").value;
          var ingresoPaciente=document.getElementById("ingresoPaciente1").value;
 
-         var tiposfolioEscogido  =  document.getElementById("tiposFolioEscogido").value;
-         alert("tiposfolioEscogido =" + tiposfolioEscogido);
+         var tiposFolioEscogido  =  document.getElementById("tiposFolioEscogido").value;
+         alert("tiposFolioEscogido =" + tiposFolioEscogido);
          var profesional = document.getElementById("profesional").value;
          alert("Profesional = ", profesional);
 
@@ -1503,7 +1503,7 @@ formHistoriaClinica.addEventListener('submit', e=>{
 				           'diagnosticos':diagnosticos,
 				           'interconsultas':interconsultas,
 				           'incapacidades':inca,
-				           'tiposFolioEscogido':"1",
+				           'tiposFolioEscogido':tiposFolioEscogido,
 				           'signos':signos ,
 				           'tratamiento':tratamiento,
 					      'revisionSistemas':revisionSistemas,

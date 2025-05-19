@@ -99,7 +99,7 @@ class Medicos(models.Model):
             unique_together = (('planta'),)
 
         def __str__(self):
-            return self.nombre
+            return self.registroMedico
 
 
 

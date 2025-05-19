@@ -251,6 +251,7 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     print ("Entre Escoge Acceso")
 
     username = Username
+    username = username.strip()
     sede = Sede
     profesional = Profesional
     documento = Documento
@@ -470,6 +471,8 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
     context['EspecialidadesMedicos'] = especialidadesMedicos
 
     # Fin combo EspecialidadesMedicos
+
+
 
     # Combo Medicos
 
@@ -4322,7 +4325,6 @@ def buscarEspecialidadesMedicos(request):
     curt = miConexiont.cursor()
 
 
-    #comando = 'SELECT m.id id, m.nombre nombre from clinico_medicos m, clinico_Especialidadesmedicos medesp,clinico_especialidades esp,sitios_sedesclinica sed,  planta_planta pla where esp.id = ' + "'" + str(Esp) + "'" + ' and esp.id=medesp.especialidades_id and pla."sedesClinica_id" = sed.id and pla.id = medesp.planta_id and pla."sedesClinica_id"=' + "'" + str(Sede) + "'" + ' order by m.nombre'
     comando = 'SELECT m.id id, pla.nombre nombre from clinico_medicos m, clinico_Especialidadesmedicos medesp,clinico_especialidades esp,sitios_sedesclinica sed,  planta_planta pla where  pla.id=medesp.planta_id and  medesp.especialidades_id = esp.id and m.planta_id = pla.id and  esp.id = ' + "'" + str(
         Esp) + "'" + ' and esp.id=medesp.especialidades_id and pla."sedesClinica_id" = sed.id and pla.id = medesp.planta_id and pla."sedesClinica_id"=' + "'" + str(
         Sede) + "'" + ' order by pla.nombre'
@@ -4486,7 +4488,7 @@ def crearAdmisionDef(request):
         dxSalida = ""
         estadoSalida = "1"
 
-        medicoIngreso = request.POST['medicoIngresoP']
+        medicoIngreso = request.POST['medicoIngresoPP']
         print("medicoIngreso =", medicoIngreso)
         medicoActual = medicoIngreso
         medicoSalida = ""
