@@ -366,6 +366,7 @@ urlpatterns = [
     path('buscarProcedimientosDeCirugia/', viewsCirugia.BuscarProcedimientosDeCirugia, name='buscarProcedimientosDe_Cirugia'),
     path('traerInformacionDeCirugia/', viewsCirugia.TraerInformacionDeCirugia, name='traerInformacionDe_Cirugia'),
     path('traerEstadoCirugia/', viewsCirugia.TraerEstadoCirugia, name='TraerEstado_Cirugia'),
+    path('traerEstadoProgramacionCirugia/', viewsCirugia.TraerEstadoProgramacionCirugia, name='TraerEstadoProgramacion_Cirugia'),
 
 
 

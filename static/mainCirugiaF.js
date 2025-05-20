@@ -1574,12 +1574,33 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoProgramacionCiru
 	     var post_id = $(this).data('pk');
 
 
+
+	$.ajax({
+
+	        url: "/traerEstadoProgramacionCirugia/",
+                data: {'programacionId':post_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+
             $('#postFormEstadoProgramacionCirugia').trigger("reset");
+
+	   $('#estadosProgramacionCirugia').val(info[0].estadoProgramacionCirugia_id);
+
 	   	document.getElementById("programacionIdParaEstado").value = post_id;
             $('#modelHeadingEstadoProgramacionCirugia').html("Actualizar estado programacion Cirugia");
             $('#crearModelEstadoProgramacionCirugia').modal('show');      
+
+			                },
+                 error: function (request, status, error) {
+			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
       
   });
+
 
 function GuardarEstadoProgramacionCirugia()
 {
@@ -1591,8 +1612,8 @@ function GuardarEstadoProgramacionCirugia()
      
 	$.ajax({
 
-	        url: "/GuardarEstadoProgramacionCirugia/",
-                data: {'programacionId':post_id,'estadoId':estadoId},
+	        url: "/guardarEstadoProgramacionCirugia/",
+                data: {'programacionId':programacionId,'estadoId':estadoId},
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
@@ -1605,17 +1626,17 @@ function GuardarEstadoProgramacionCirugia()
 	    	var sede = document.getElementById("sede").value;
 	        var username_id = document.getElementById("username_id").value;
 
-
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;
 	        data['nombreSede'] = nombreSede;
 	        data['sede'] = sede;
 	        data['username_id'] = username_id;
-			
+            $('#crearModelEstadoProgramacionCirugia').modal('hide');      	
 		
 	        data = JSON.stringify(data);
 	       arrancaCirugia(2,data);
 		    dataTableProgramacionCirugiaInitialized = true;
+
 				                },
                  error: function (request, status, error) {
 			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
@@ -1640,6 +1661,8 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoCirugia', functi
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
+
+	
 
 
             $('#postFormEstadoCirugia').trigger("reset");
@@ -2527,6 +2550,24 @@ document.getElementById("cirugiaIdModalParticipantesInforme").value =	document.g
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
+		
+		alert("llegue con estop = " + data2);
+
+		alert(" estado nombre cirugia3 = " + data2[0].EstadoNombreCirugia);
+
+		if (data2[0].EstadoNombreCirugia == 'REALIZADA')
+				{
+				document.getElementById("mensajesError").innerHTML = 'No se pueden agregar mas participantes a Cirugia Realizada !'
+				return;
+				}
+
+			if (data2[0].EstadoNombreCirugia == 'FACTURADA')
+				{
+				document.getElementById("mensajesError").innerHTML = 'No se pueden agregar mas participantes a Cirugia Facturada !'
+				return;
+				}
+
+
 	
 
 	    // $('#cupsParticipantesInforme').val(data2);
@@ -2645,14 +2686,15 @@ function AdicionarProcedimientosInformeCirugia() {
 	            $('#postFormProcedimientosInformeCirugia').trigger("reset");
 
 
+			// alert(" data2.estadoCirugia = "+ data2[0]['estadoCirugia']);
 
-			if (data2.estadoCirugia == 'REALIZADA')
+			if (data2[0]['estadoCirugia'] == 'REALIZADA')
 				{
 				document.getElementById("mensajesError").innerHTML = 'No se pueden agregar mas procedimientos a Cirugia Realizada !'
 				return;
 				}
 
-			if (data2.estadoCirugia == 'FACTURADA')
+			if (data2[0]['estadoCirugia'] == 'FACTURADA')
 				{
 				document.getElementById("mensajesError").innerHTML = 'No se pueden agregar mas procedimientos a Cirugia Facturada !'
 				return;

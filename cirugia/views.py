@@ -1785,7 +1785,7 @@ def GuardarEstadoProgramacionCirugia(request):
                                        password="123456")
         cur3 = miConexion3.cursor()
 
-        detalle = 'UPDATE cirugia_programacioncirugias set  "estadoProgramacionId" = ' + "'" + str(estadoId) + "'" + ' WHERE id = ' + "'" + str(programacionId) + "'"
+        detalle = 'UPDATE cirugia_programacioncirugias set  "estadoProgramacion_id" = ' + "'" + str(estadoId) + "'" + ' WHERE id = ' + "'" + str(programacionId) + "'"
 
         print(detalle)
 
@@ -1939,15 +1939,14 @@ def GenerarLiquidacionCirugia(request):
 
             print(detalle)
 
-            cupsLiquidacion = []
+            cupsLiquidacion = {}
 
             cur3.execute(detalle)
 
             for cups in cur3.fetchall():
-                cupsLiquidacion.append(
-                    {'cups': cups })
+                cupsLiquidacion  = {'cups':cups}
 
-            print("cups =" , cupsLiquidacion[0])
+            print("cups =" , cupsLiquidacion)
 
             # Validacion si existe o No existe CABEZOTE
 
@@ -1988,10 +1987,10 @@ def GenerarLiquidacionCirugia(request):
             # Rutiva busca en convenio el valor de la tarifa CUPS
             print("liquidacionId = ", liquidacionId)
 
-            for procedimiento in cupsLiquidacion[0]['cups']:
+            for procedimiento in cupsLiquidacion:
                 print("procedimiento = " ,procedimiento)
 
-                # consigue La cantidad de uvr del procedimeinto
+                # consigue La cantidad de uvr del procedimiento
 
                 detalle = 'SELECT "cantidadUvr" cantidadUvr FROM clinico_examenes WHERE id = ' + "'" + str(procedimiento) + "'"
 
@@ -2121,28 +2120,29 @@ def GenerarLiquidacionCirugia(request):
 
                 # Fin RUTINA busca consecutivo de liquidacion
                 # Cirujano
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id ) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaCirujano) + "','" + str(liquidaCirujano) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioCirujano.id)  + "'," +  "'" + str(cirugiaId) + "')"
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal","estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id ) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaCirujano) + "','" + str(liquidaCirujano) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioCirujano.id)  + "'," +  "'" + str(cirugiaId) + "')"
                 cur3.execute(comando)
                 # Anestesiologo
-                consecLiquidacion= consecLiquidacion + 1
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAnestesiologo) + "','" + str(liquidaAnestesiologo) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAnestesiologo.id) + "'," +  "'" + str(cirugiaId) + "')"
+                consecLiquidacion= int(consecLiquidacion) + 1
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro","fechaCrea", "fechaRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAnestesiologo) + "','" + str(liquidaAnestesiologo) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAnestesiologo.id) + "'," +  "'" + str(cirugiaId) + "')"
                 cur3.execute(comando)
 
                 # Ayudante
-                consecLiquidacion= consecLiquidacion + 1
+                consecLiquidacion= int(consecLiquidacion) + 1
 
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id) + "'," +  "'" + str(cirugiaId) + "')"
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",  "estadoRegistro", "fechaCrea", "fechaRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) +  "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id) + "'," +  "'" + str(cirugiaId) + "')"
                 cur3.execute(comando)
 
                 # Salas
-                consecLiquidacion= consecLiquidacion + 1
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id)+ "'," +  "'" + str(cirugiaId) + "')"
+                consecLiquidacion= int(consecLiquidacion) + 1
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro)  + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id)+ "'," +  "'" + str(cirugiaId) + "')"
                 cur3.execute(comando)
 
 
                 # Materialde sutura y conexion
-                consecLiquidacion= consecLiquidacion + 1
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id) + "'," +  "'" + str(cirugiaId) + "')"
+                consecLiquidacion= int(consecLiquidacion) + 1
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro)  + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id) + "'," +  "'" + str(cirugiaId) + "')"
+                print ("comando ", comando)
                 cur3.execute(comando)
 
                 # Fin INSERT liquidaciones
@@ -2256,6 +2256,13 @@ def BuscarProcedimientosDeCirugia(request):
     miConexion3.close()
     print(cupsParticipantesInforme)
 
+    estadoCirugia = Cirugias.objects.get(id=cirugiaId)
+    estadoNombreCirugia = EstadosCirugias.objects.get(id=estadoCirugia.estadoCirugia_id)
+
+    print ("estadoNombreCirugia = " , estadoNombreCirugia.nombre )
+
+    cupsParticipantesInforme[0]['EstadoNombreCirugia'] = estadoNombreCirugia.nombre
+
     serialized1 = json.dumps(cupsParticipantesInforme, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
@@ -2324,5 +2331,36 @@ def TraerEstadoCirugia(request):
     #registroCirugia = Cirugias.objects.get(tipoDoc_id=registroProgramacion.tipoDoc_id, documento_id=registroProgramacion.documento_id, consecAdmision = registroProgramacion.consecAdmision)
 
     serialized1 = json.dumps(registroCirugia, default=str)
+
+    return HttpResponse(serialized1, content_type='application/json')
+
+
+def TraerEstadoProgramacionCirugia(request):
+    print("Entre TraerEstadoProgramacionCirugia")
+
+    programacionId = request.POST.get('programacionId')
+    print("programacionId =", programacionId)
+
+    registroProgramacionCirugia = []
+
+    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    cur3 = miConexion3.cursor()
+
+    detalle = 'select prog.id id, est.id  estadoProgramacionCirugia_id ,est.nombre estadoProgramacionCirugia, sala.nombre sala FROM cirugia_programacioncirugias prog INNER JOIN cirugia_estadosprogramacion est ON (est.id = prog."estadoProgramacion_id")  LEFT JOIN sitios_salas sala ON (sala.id = prog.sala_id)' + ' WHERE prog.id = ' + "'" + str(programacionId) + "'"
+    print(detalle)
+
+    cur3.execute(detalle)
+
+    for id, estadoProgramacionCirugia_id, estadoProgramacionCirugia , sala in cur3.fetchall():
+        registroProgramacionCirugia.append(
+            {'id': id, 'estadoProgramacionCirugia_id':estadoProgramacionCirugia_id, 'estadoProgramacionCirugia': estadoProgramacionCirugia, 'sala': sala})
+
+    miConexion3.close()
+    print(registroProgramacionCirugia)
+
+    #registroCirugia = Cirugias.objects.get(tipoDoc_id=registroProgramacion.tipoDoc_id, documento_id=registroProgramacion.documento_id, consecAdmision = registroProgramacion.consecAdmision)
+
+    serialized1 = json.dumps(registroProgramacionCirugia, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
