@@ -183,7 +183,7 @@ urlpatterns = [
     path('admisionTriageModal/', viewsTriage.admisionTriageModal),
     path('guardarAdmisionTriage/', viewsTriage.guardarAdmisionTriage),
     path('load_dataTriage/<str:data>', viewsTriage.Load_dataTriage, name='loaddata_Triage'),
-
+    path('buscarEspecialidadesMedicos/', viewsTriage.buscarEspecialidadesMedicos),
 
 
     # Apoyo Terapeutico
@@ -364,6 +364,10 @@ urlpatterns = [
     path('guardarEstadoCirugia/', viewsCirugia.GuardarEstadoCirugia, name='GuardarEstado_Cirugia'),
     path('generarLiquidacionCirugia/', viewsCirugia.GenerarLiquidacionCirugia, name='generarLiquidacion_Cirugia'),
     path('buscarProcedimientosDeCirugia/', viewsCirugia.BuscarProcedimientosDeCirugia, name='buscarProcedimientosDe_Cirugia'),
+    path('traerInformacionDeCirugia/', viewsCirugia.TraerInformacionDeCirugia, name='traerInformacionDe_Cirugia'),
+    path('traerEstadoCirugia/', viewsCirugia.TraerEstadoCirugia, name='TraerEstado_Cirugia'),
+
+
 
     # Citas Medicas
 

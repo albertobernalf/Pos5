@@ -1632,10 +1632,32 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaEstadoCirugia', functi
 	     var post_id = $(this).data('pk');
 
 
+
+	$.ajax({
+
+	        url: "/traerEstadoCirugia/",
+                data: {'programacionId':post_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (info) {
+
+
             $('#postFormEstadoCirugia').trigger("reset");
-	   	document.getElementById("programacionIdParaEstado2").value = post_id;
+
+	   $('#estadosCirugia').val(info[0].estadoCirugia_id);
+	   $('#cirugiaIdParaEstado2').val(info[0].id);
+
+     	    document.getElementById("programacionIdParaEstado2").value = post_id;
             $('#modelHeadingEstadoCirugia').html("Actualizar estado programacion Cirugia");
             $('#crearModelEstadoCirugia').modal('show');      
+
+	
+				                },
+                 error: function (request, status, error) {
+			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+
 
       
   });
@@ -1645,15 +1667,15 @@ function GuardarEstadoCirugia()
 {
 		alert("ENTRE Guardar Estado Cirugia");
 
-	  var programacionId = document.getElementById("programacionIdParaEstado2").value;
-	  var estadoId = document.getElementById("estadosCirugia").value;
+	  	var cirugiaId = document.getElementById("cirugiaIdParaEstado2").value;
+		var estadoId = document.getElementById("estadosCirugia").value;
 
   	     alert("programacion : " + post_id);		
     
 	$.ajax({
 
 	        url: "/guardarEstadoCirugia/",
-                data: {'programacionId':post_id,'estadoId':estadoId},
+                data: {'cirugiaId':cirugiaId,'estadoId':estadoId},
                 type: "POST",
                 dataType: 'json',
                 success: function (info) {
@@ -1673,6 +1695,7 @@ function GuardarEstadoCirugia()
 	        data['sede'] = sede;
 	        data['username_id'] = username_id;
 			
+            $('#crearModelEstadoCirugia').modal('hide');      
 		
 	        data = JSON.stringify(data);
 	       arrancaCirugia(2,data);
@@ -1831,7 +1854,7 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', func
                 dataType: 'json',
                 success: function (data2) {
 		alert("data2 = " + data2);
-		
+
 
 		var cirugiaId = data2;		
 
@@ -2608,43 +2631,77 @@ function CrearMaterialCirugia()
 
 function AdicionarProcedimientosInformeCirugia() {
 
+
+		var post_id = document.getElementById("cirugiaIdModalInformeProcedimientos").value ;
+
+	 
+    $.ajax({
+
+	        url: "/traerInformacionDeCirugia/",
+                data: {'cirugiaId':post_id},
+                type: "POST",
+                dataType: 'json',
+                success: function (data2) {
+	            $('#postFormProcedimientosInformeCirugia').trigger("reset");
+
+
+
+			if (data2.estadoCirugia == 'REALIZADA')
+				{
+				document.getElementById("mensajesError").innerHTML = 'No se pueden agregar mas procedimientos a Cirugia Realizada !'
+				return;
+				}
+
+			if (data2.estadoCirugia == 'FACTURADA')
+				{
+				document.getElementById("mensajesError").innerHTML = 'No se pueden agregar mas procedimientos a Cirugia Facturada !'
+				return;
+				}
+
+
+	            $('#modelHeadingProcedimientosInformeCirugia').html("Detalle Procedimientos Cirugia");
+			username_id = document.getElementById("username_id").value   ;
+
+
+			// document.getElementById("username4_id").value = username_id ;
+			document.getElementById("usernameProcedimientosInformeCirugia_id").value = username_id;
+			document.getElementById("tipoDocZ").innerHTML = data2[0].tipoDoc;
+			document.getElementById("documentoZ").innerHTML = data2[0].documento;
+			document.getElementById("pacienteZ").innerHTML = data2[0].paciente;
+			document.getElementById("salaZ").innerHTML = data2[0].sala;
+			document.getElementById("estadoCirugiaZ").innerHTML = data2[0].estadoCirugia;
+
 	
-
-	     var post_id = $(this).data('pk');
-
-	    alert("ENTRE miAdicionarInformeProcedimientos" + post_id);
+	            $('#crearModelProcedimientosInformeCirugia').modal('show');
+			document.getElementById("cirugiaIdModalInformeProcedimientos").value = document.getElementById("cirugiaIdModalProcedimientos").value;
 
 
-            $('#postFormProcedimientosInformeCirugia').trigger("reset");
-
-            $('#modelHeadingProcedimientosInformeCirugia').html("Detalle Procedimientos Cirugia");
-            $('#crearModelProcedimientosInformeCirugia').modal('show');
-		document.getElementById("cirugiaIdModalInformeProcedimientos").value = document.getElementById("cirugiaIdModalProcedimientos").value;
-
-		username_id = document.getElementById("username_id").value   ;
-		alert("username_id = " + username_id );
-		// document.getElementById("username4_id").value = username_id ;
-	document.getElementById("usernameProcedimientosInformeCirugia_id").value = username_id;
 
 
-    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
-        var username = document.getElementById("username").value;
-        var nombreSede = document.getElementById("nombreSede").value;
-    	var sede = document.getElementById("sede").value;
-        var username_id = document.getElementById("username_id").value;
-         var data =  {}   ;
-        data['username'] = username;
-        data['sedeSeleccionada'] = sedeSeleccionada;
-        data['nombreSede'] = nombreSede;
-        data['sede'] = sede;
-        data['username_id'] = username_id;
-	data['cirugiaId'] = document.getElementById("cirugiaIdModalInformeProcedimientos").value;
- 	    data = JSON.stringify(data);
+	    	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
+	        var username = document.getElementById("username").value;
+	        var nombreSede = document.getElementById("nombreSede").value;
+	    	var sede = document.getElementById("sede").value;
+	        var username_id = document.getElementById("username_id").value;
+	         var data =  {}   ;
+	        data['username'] = username;
+	        data['sedeSeleccionada'] = sedeSeleccionada;
+	        data['nombreSede'] = nombreSede;
+	        data['sede'] = sede;
+	        data['username_id'] = username_id;
+		data['cirugiaId'] = document.getElementById("cirugiaIdModalInformeProcedimientos").value;
+	 	    data = JSON.stringify(data);
 
 		     arrancaCirugia(12,data);
-		     	dataTableProcedimientosInformeXXCirugiaInitialized = true;
-	
-      
+		     	dataTableProcedimientosInformeXXCirugiaInitialized = true; 
+          
+
+                },
+            error: function (request, status, error) {
+		document.getElementById("mensajesErrorModalProcedimientosInformeCirugia").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+	   	    	}
+            });
+    
   };
 
 

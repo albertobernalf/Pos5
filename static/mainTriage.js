@@ -1250,3 +1250,56 @@ function guardarAdmisionTriage()
 };
 
 
+$(document).on('change', '#busEspecialidad', function(event) {
+
+        alert("Entre cambio busEspecialidad");
+
+
+       var Esp =   $(this).val()
+
+	alert("especialidad Nro = " + Esp);
+
+
+        var Sede =  document.getElementById("Sede").value;
+       // var Sede1 = document.getElementById("FormBuscar").elements["Sede"];
+	alert("Sede = " + Sede);
+
+
+
+        $.ajax({
+	           url: '/buscarEspecialidadesMedicos',
+	            data : {Esp:Esp, Sede:Sede},
+	           type: 'GET',
+	           dataType : 'json',
+
+	  		success: function (respuesta) {
+
+	  		   var options = '<option value="=================="></option>';
+
+	  		  var dato = JSON.parse(respuesta);
+
+
+                     const $id2 = document.querySelector("#medicoIngreso");
+
+
+ 	      		     $("#medicoIngreso").empty();
+
+
+	                 $.each(dato, function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id2.appendChild(option);
+ 	      		      });
+
+
+                    },
+	   		    error: function (request, status, error) {
+
+	   			 	document.getElementById("mensajesError").innerHTML =  'Error' + ': ' + request.responseText;
+
+	   	    	}
+
+	     });
+});

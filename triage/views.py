@@ -3677,3 +3677,42 @@ def Load_dataTriage(request, data):
     serialized1 = json.dumps(triage2, default=str)
 
     return HttpResponse(serialized1, content_type='application/json')
+
+
+def buscarEspecialidadesMedicos(request):
+    context = {}
+    Esp = request.GET["Esp"]
+    Sede = request.GET["Sede"]
+    print ("Entre buscar  Especialidad =",Esp)
+    print ("Sede = ", Sede)
+
+    # Combo de Medicos Especialidades
+
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    curt = miConexiont.cursor()
+
+
+    comando = 'SELECT m.id id, pla.nombre nombre from clinico_medicos m, clinico_Especialidadesmedicos medesp,clinico_especialidades esp,sitios_sedesclinica sed,  planta_planta pla where  pla.id=medesp.planta_id and  medesp.especialidades_id = esp.id and m.planta_id = pla.id and  esp.id = ' + "'" + str(
+        Esp) + "'" + ' and esp.id=medesp.especialidades_id and pla."sedesClinica_id" = sed.id and pla.id = medesp.planta_id and pla."sedesClinica_id"=' + "'" + str(
+        Sede) + "'" + ' order by pla.nombre'
+
+    curt.execute(comando)
+    print(comando)
+
+    medicosEspecialidades = []
+
+
+    for id, nombre in curt.fetchall():
+        medicosEspecialidades.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print(medicosEspecialidades)
+
+    context['MedicosEspecialidades'] = medicosEspecialidades
+
+    context['Sede'] = Sede
+
+    return JsonResponse(json.dumps(medicosEspecialidades), safe=False)
+
+
