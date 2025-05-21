@@ -766,3 +766,8 @@ BIBLIOGRAFIA:
 -- ops eumelia documento_id = 16, esta con salida clinica y fecha de salida y no sale en ADMISIOENS pero si me dejo CREARLE UNA CIRUGIA QUE PASO ALLI´??? el query de INGRESOS EN CLINICA DESDE CIRUGIA ÁRA VER CANDIDATOS A CREARSOLICITUDES DE CIRUGIA
   -- TENGO LIO ALLI VERIFICAR EL LUNES 19/mayo ,, OPS AHORA ME SALNE DOBLE VALIDAR
 -- OJO EL LUNES 19, TRABAJAR DES LIQUIDACION SALAS DE CIRUGIA/MATERIALES ISS Y LUEGO SI SEGUIR CON SOAT, acercamientos
+
+-- OJO para facturar se barre tabla facturacion_conceptos
+-- se liquidan los materialesqx + sutur ay se sube unoa a uno liquidaiondetalle
+-- solo un valor total de derechos de sala por la cirugia
+-- ojo que pasa con el numero de la factuyra ejemplo FACTURA DE VENTA: TOB15851. Simplemente le agrego dos campos : prefijo y FacturaNo para la DIAN, eso es todo en la tabla facturacion_liquidacion

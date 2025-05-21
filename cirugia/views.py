@@ -1874,6 +1874,8 @@ def GenerarLiquidacionCirugia(request):
     registroHonorarioAnestesiologo = TiposHonorarios.objects.get(nombre='ANESTESIOLOGO')
     registroHonorarioAyudante = TiposHonorarios.objects.get(nombre='AYUDANTE')
     registroHonorarioPerfisionista = TiposHonorarios.objects.get(nombre='PERFUSIONISTA')
+    registroDerechosSala = TiposHonorarios.objects.get(nombre='DERECHOS DE SALA')
+    registroMateriales = TiposHonorarios.objects.get(nombre='MATERIALES DE SUTURA Y CURACIO')
 
     # Busco datos de la cirugia relacionado,
     registroCirugia = Cirugias.objects.get(id=cirugiaId)
@@ -1893,20 +1895,23 @@ def GenerarLiquidacionCirugia(request):
     cur3.execute(detalle)
 
     for convenioId in cur3.fetchall():
-        registroConvenio.append(
-            {'convenioId': convenioId})
+        registroConvenio.append({'convenioId': convenioId})
 
 
     print("registroConvenio =" , registroConvenio[0])
+    print("registroConvenio =" , registroConvenio[0]['convenioId'])
+
+
     cur3.close()
+
+    registroConvenio = str(registroConvenio[0]['convenioId'])
+    registroConvenio = registroConvenio.replace("(", ' ')
+    registroConvenio = registroConvenio.replace(")", ' ')
+    registroConvenio = registroConvenio.replace(",", ' ')
 
     #registroConvenio = ConveniosPacienteIngresos.objects.annotate(convenioMinimo=Min('convenio_id')).filter(tipoDoc_id=registroCirugia.tipoDoc_id, documento_id=registroCirugia.documento_id,consecAdmision=registroCirugia.consecAdmision,convenio_id=F('convenioMinimo'))
     #registroConvenio = ConveniosPacienteIngresos.objects.filter(tipoDoc_id=registroCirugia.tipoDoc_id, documento_id=registroCirugia.documento_id,consecAdmision=registroCirugia.consecAdmision).annotate(convenioMinimo=Min('convenio_id')).filter(convenio_id=F('convenioMinimo'))
     print("registroConvenio =" , registroConvenio)
-
-    for dato in registroConvenio[0]['convenioId']:
-        print("registroConvenio = ", dato)
-        registroConvenio = dato
 
 
     # Busco cual es Liquiacion de Honorarios de paciente
@@ -1939,12 +1944,13 @@ def GenerarLiquidacionCirugia(request):
 
             print(detalle)
 
-            cupsLiquidacion = {}
+            cupsLiquidacion = []
 
             cur3.execute(detalle)
 
             for cups in cur3.fetchall():
-                cupsLiquidacion  = {'cups':cups}
+                cupsLiquidacion.append({'cups':cups})
+
 
             print("cups =" , cupsLiquidacion)
 
@@ -1987,8 +1993,19 @@ def GenerarLiquidacionCirugia(request):
             # Rutiva busca en convenio el valor de la tarifa CUPS
             print("liquidacionId = ", liquidacionId)
 
-            for procedimiento in cupsLiquidacion:
-                print("procedimiento = " ,procedimiento)
+            # Primero que todo borrar lo ya liquidado , para volver a hacer una nueva liquidacion
+
+            comando = 'DELETE FROM facturacion_liquidaciondetalle p WHERE liquidacion_id = ' + "'" + str(liquidacionId) + "' AND cirugia_id = " + "'" + str(cirugiaId) + "'"
+
+            cur3.execute(comando)
+
+            for procedimiento1 in cupsLiquidacion:
+
+                procedimiento = str(procedimiento1['cups'])
+                procedimiento = procedimiento.replace("(", ' ')
+                procedimiento = procedimiento.replace(")", ' ')
+                procedimiento = procedimiento.replace(",", ' ')
+                print("procedimiento por el FORSEGUNDO = " ,procedimiento)
 
                 # consigue La cantidad de uvr del procedimiento
 
@@ -2074,19 +2091,60 @@ def GenerarLiquidacionCirugia(request):
 
                 # Aqui liquidacion de Salas de CIRUGIA
 
+                ## Luego ir a tabla tarifarios_tablaSalasdecirugiaiss para sacar el valor
 
+                detalle = 'SELECT tarifa.valor valor FROM cirugia_cirugias cir, sitios_tipossalas tipsal, tarifarios_tablaSalasdecirugiaiss tarifa, sitios_salas sala WHERE cir.id = ' + "'" + str(cirugiaId) + "'" + ' AND cir.sala_id = sala.id and sala."tipoSala_id" = tipsal.id and tarifa."tiposSala_id" = tipsal.id and ' + "'" + str(cantidadUvrProced) + "'" + ' between tarifa."desdeUvr" AND tarifa."hastaUvr"'
+
+                valorSala = []
+
+                print(detalle)
+                cur3.execute(detalle)
+
+                for valor in cur3.fetchall():
+                    valorSala.append({'valor': valor})
+
+                print("valor sala = " , valorSala)
+
+                valorSala = str(valorSala)
+                valorSala = valorSala.replace("(", ' ')
+                valorSala = valorSala.replace(")", ' ')
+                valorSala = valorSala.replace(",", ' ')
+
+                print("valor sala = ", valorSala)
+
+                liquidaValorSala = valorSala
 
                 # En teoria hasta aqui Salas de CIRUGIA  ISS de acuerdo al procedimiento
 
                 # Aqui liquidacion de Materiales de sutura
 
+                detalle = 'SELECT tarifa.valor valor FROM cirugia_cirugias cir, sitios_tipossalas tipsal, tarifarios_tablaSalasdecirugiaiss tarifa, sitios_salas sala WHERE cir.id = ' + "'" + str(cirugiaId) + "'" + ' AND cir.sala_id = sala.id and sala."tipoSala_id" = tipsal.id and tarifa."tiposSala_id" = tipsal.id and ' + "'" + str(cantidadUvrProced) + "'" + ' between tarifa."desdeUvr" AND tarifa."hastaUvr"'
+
+                valorMateriales = []
+
+                print(detalle)
+                cur3.execute(detalle)
+
+                for valor in cur3.fetchall():
+                    valorMateriales.append({'valor': valor})
+
+                print("valorMateriales = " , valorMateriales)
+
+                valorMateriales = str(valorMateriales)
+                valorMateriales = valorMateriales.replace("(", ' ')
+                valorMateriales = valorMateriales.replace(")", ' ')
+                valorMateriales = valorMateriales.replace(",", ' ')
+
+                print("valorMateriales = ", valorMateriales)
+
+                liquidaValorMateriales = valorMateriales
+
+
+
+
+
                 # En teoria hasta aqui Materiales de sutura  ISS de acuerdo al procedimiento
 
-                # Primero que todo borrar lo ya liquidado , para volver a hacer una nueva liquidacion
-
-                comando = 'DELETE FROM facturacion_liquidaciondetalle p WHERE liquidacion_id = ' + "'" +  str(liquidacionId) + "' AND cirugia_id = " + "'" + str(cirugiaId) + "'"
-
-                cur3.execute(comando)
 
                 # Aqui INSERT a la tabla lioquidaciones de los valores liquidados para un procedimiento
 
@@ -2135,24 +2193,24 @@ def GenerarLiquidacionCirugia(request):
 
                 # Salas
                 consecLiquidacion= int(consecLiquidacion) + 1
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro)  + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id)+ "'," +  "'" + str(cirugiaId) + "')"
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaValorSala) + "','" + str(liquidaValorSala) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro)  + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroDerechosSala.id)+ "'," +  "'" + str(cirugiaId) + "')"
                 cur3.execute(comando)
 
 
                 # Materialde sutura y conexion
                 consecLiquidacion= int(consecLiquidacion) + 1
-                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaAyudante) + "','" + str(liquidaAyudante) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro)  + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroHonorarioAyudante.id) + "'," +  "'" + str(cirugiaId) + "')"
+                comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal", "estadoRegistro", "fechaCrea", "fechaRegistro",  "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "tipoHonorario_id", cirugia_id) VALUES (' + "'" + str(consecLiquidacion) + "','" + str(fechaRegistro) + "','" + str('1') + "','" + str(liquidaValorMateriales) + "','" + str(liquidaMateriales) + "','" + str('N') + "','" + str(fechaRegistro) + "','" + str(fechaRegistro)  + "','" + str(procedimiento) + "','" + str(username_id) + "'," + liquidacionId + ",'SISTEMA'," + "'" + str(registroMateriales.id) + "'," +  "'" + str(cirugiaId) + "')"
                 print ("comando ", comando)
                 cur3.execute(comando)
 
                 # Fin INSERT liquidaciones
 
 
-                miConexion3.commit()
-                cur3.close()
-                miConexion3.close()
+            miConexion3.commit()
+            cur3.close()
+            miConexion3.close()
 
-                return JsonResponse({'success': True, 'message': 'Liquidacion Honorarios Iss cargada a cuenta Paciente Verificar valores !'})
+            return JsonResponse({'success': True, 'message': 'Liquidacion Honorarios Iss cargada a cuenta Paciente Verificar valores !'})
 
         except psycopg2.DatabaseError as error:
             print("Entre por rollback", error)
