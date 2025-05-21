@@ -771,3 +771,19 @@ BIBLIOGRAFIA:
 -- se liquidan los materialesqx + sutur ay se sube unoa a uno liquidaiondetalle
 -- solo un valor total de derechos de sala por la cirugia
 -- ojo que pasa con el numero de la factuyra ejemplo FACTURA DE VENTA: TOB15851. Simplemente le agrego dos campos : prefijo y FacturaNo para la DIAN, eso es todo en la tabla facturacion_liquidacion
+-- Ops pero entonces en cirugiasmatertialesqx estan ambsos curacion-suturas y qx , por que como por un lado se suman y ppor el otro se detallan , como hacer estop ?
+--  Colocar el tipo de honorario en la consulta facturacion_liquidaciondetalle --> de la 175
+-- OPs no sale el total a pagar ni valor liquiacoio que pasa ?????? yo creo ques desde la cirugia es mejor actualizar totales que le parece sera posible ??
+
+
+
+21/05/2025 19/08/2025
+CLINICA MEDICAL S.A.S.
+N.I.T. 830507718-8
+19/05/2025 Calle 36 Sur No. 77 - 33 Tel.: 744 2565
+5,00
+Favor NO efectuar retención de Industria y Comercio e IVA - Somos agentes retenedores de IVA
+Gran Contribuyente Res. 0012220 de 26-12-2022 - Actividad económica 8610
+AUTORETENEDOR EN RENTA RESOLUCION 151 DEL 14-01-2016
+Cufe: daeeb9343955c6037479b2e1b7bb485526f7524e5b085b4a5eb6e64298b22873bd6ef35b929221
+
