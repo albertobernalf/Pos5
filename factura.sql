@@ -12,7 +12,9 @@ select * from cirugia_cirugiasmaterialqx;
 
 SELECT * FROM tarifarios_tablaSalasdecirugiaiss;
 
-select * from tarifas_tiposhonorarios;
+select * from tarifarios_tiposhonorarios;
+
+UPDATE tarifas_tiposhonorarios SET nombre='DERECHOSDESALA' where id=6
 
 SELECT * from cirugia_cirugias where id=18;
 select * from sitios_tipossalas;
@@ -24,7 +26,7 @@ WHERE cir.id = 18 AND cir.sala_id = sala.id and sala."tipoSala_id" = tipsal.id a
 
 SELECT tarifa.valor FROM cirugia_cirugias cir, sitios_tipossalas tipsal, tarifarios_tablaSalasdecirugiaiss tarifa, sitios_salas sala WHERE cir.id = 18 AND cir.sala_id = sala.id and sala."tipoSala_id" = tipsal.id and tarifa."tiposSala_id" = tipsal.id and '52' between tarifa."desdeUvr" AND tarifa."hastaUvr"
 
-
+"DERECHOS DE SALA"
 detalle = 'SELECT cirmat."valorLiquidacion" FROM cirugia_cirugiasmaterialqx cirmat LEFT JOIN facturacion_suministros sum ON ( sum.id=cirmat.suministro_id ) WHERE cirmat.id = 18 
 
 select * from tarifarios_tablamaterialsuturacuracioniss;
@@ -55,6 +57,13 @@ select matqx.suministro_id, sum.nombre, tipos.nombre,matqx."valorLiquidacion"
 from cirugia_cirugiasmaterialqx matqx, facturacion_suministros sum, facturacion_tipossuministro tipos 
 where matqx.cirugia_id=18 and matqx.suministro_id = sum.id and sum."tipoSuministro_id" = tipos.id and tipos.nombre = 'MATERIAL QX'
 
-	
-	
-select * from facturacion_tipossuministro;
+select "tipoSuministro_id",* from facturacion_SUMINISTROS order by "tipoSuministro_id" desc;
+
+select * from cirugia_cirugiasprocedimientos where cirugia_id=18;
+
+select * from clinico_examenes where id=3173
+
+select * from facturacion_liquidaciondetalle where cirugia_id=18 order by id
+select * from facturacion_liquidaciondetalle where liquidacion_id=175
+
+select * from tarifarios_tiposhonorarios;

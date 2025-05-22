@@ -217,7 +217,7 @@ function arrancaLiquidacion(valorTabla,valorData)
                          btn = btn + " <button   class='btn btn-primary borrarLiquidacionDetalle' data-pk='" + row.pk + "'>" + "</button>";
                        return btn;
                     },
-                    "targets": 9
+                    "targets": 10
                }
             ],
 	 pageLength: 3,
@@ -251,6 +251,7 @@ function arrancaLiquidacion(valorTabla,valorData)
                 { data: "fields.cantidad"},
                 { data: "fields.valorUnitario"},
                 { data: "fields.valorTotal"},
+                { data: "fields.tipoHonorario"},
                 { data: "fields.observaciones"},
                 { data: "fields.tipoRegistro"},
 		{ data: "fields.estadoReg"},

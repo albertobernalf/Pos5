@@ -774,7 +774,7 @@ BIBLIOGRAFIA:
 -- Ops pero entonces en cirugiasmatertialesqx estan ambsos curacion-suturas y qx , por que como por un lado se suman y ppor el otro se detallan , como hacer estop ?
 --  Colocar el tipo de honorario en la consulta facturacion_liquidaciondetalle --> de la 175
 -- OPs no sale el total a pagar ni valor liquiacoio que pasa ?????? yo creo ques desde la cirugia es mejor actualizar totales que le parece sera posible ??
-
+- No cuadran sumatorias suministyros mas sumatorias procedimeintdo vakires a liquidar y a pagar
 
 
 21/05/2025 19/08/2025
