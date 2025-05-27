@@ -22,8 +22,7 @@
         <li><a href="#InformeQx"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Informe Quirurgico </a></li>
         <li><a href="#RecordAnestesico"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Record Anestesico </a></li>
 	<li><a href="#HojaDeGasto"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Hoja De Gasto </a></li>
-	<li><a href="#Facturacion"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Facturacion </a></li>
-
+        <li><a href="#OcupacionSalas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Ocupacion salas </a></li>
     </ul>
 </div>
 
@@ -100,6 +99,22 @@ div.dataTables_filter input {
   height: 1px;
     }
 
+.dataTables_wrapper {
+  font-family: Arial, sans-serif;
+  font-size: 10px;
+}
+
+.dataTables_length,
+.dataTables_filter,
+.dataTables_info,
+.dataTables_paginate {
+  padding: 10px;
+  border-radius: 4px;
+  background-color: #f5f5f5;
+ 
+}
+
+/* Estilos adicionales para botones, etc. */
 
 
 
@@ -2093,14 +2108,6 @@ table.dataTable tbody tr {
 
 
 {% block footer %}
-
-<div class="marco">
-    <ul class="tabs">
-
-        <li><a href="#OcupacionSalas"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Ocupacion salas </a></li>
-
-    </ul>
-</div>
 
 {% endblock %}
 

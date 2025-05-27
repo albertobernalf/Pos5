@@ -26,9 +26,6 @@ WHERE cir.id = 18 AND cir.sala_id = sala.id and sala."tipoSala_id" = tipsal.id a
 
 SELECT tarifa.valor FROM cirugia_cirugias cir, sitios_tipossalas tipsal, tarifarios_tablaSalasdecirugiaiss tarifa, sitios_salas sala WHERE cir.id = 18 AND cir.sala_id = sala.id and sala."tipoSala_id" = tipsal.id and tarifa."tiposSala_id" = tipsal.id and '52' between tarifa."desdeUvr" AND tarifa."hastaUvr"
 
-"DERECHOS DE SALA"
-detalle = 'SELECT cirmat."valorLiquidacion" FROM cirugia_cirugiasmaterialqx cirmat LEFT JOIN facturacion_suministros sum ON ( sum.id=cirmat.suministro_id ) WHERE cirmat.id = 18 
-
 select * from tarifarios_tablamaterialsuturacuracioniss;
 select * from cirugia_cirugiasmaterialqx where cirugia_id=18;
 
@@ -67,3 +64,66 @@ select * from facturacion_liquidaciondetalle where cirugia_id=18 order by id
 select * from facturacion_liquidaciondetalle where liquidacion_id=175
 
 select * from tarifarios_tiposhonorarios;
+
+	select * from cirugia_cirugiasmaterialqx;
+
+	select "tipoSuministro_id",* from facturacion_suministros where id in (17622,17621,17620,17620,17628,17629,17630)
+
+select * from cirugia_cirugiasprocedimientos where cirugia_id = 14;	
+
+select * from tarifarios_tablamaterialsuturacuracion;
+	
+select * from cirugia_cirugiasmaterialqx where cirugia_id = 14;	
+
+select "grupoQx_id",* from clinico_examenes where id=2365;	
+
+select * from tarifarios_gruposqx;
+
+SELECT cups_id cups, cruento, incruento , exa."grupoQx_id" grupoQx
+FROM cirugia_cirugiasprocedimientos  cirproc
+		INNER JOIN clinico_examenes exa ON (exa.id=cirproc.cups_id) 
+WHERE cirugia_id = 14 
+
+SELECT cups_id cups, cruento, incruento , max(exa."grupoQx_id") grupoQx
+FROM cirugia_cirugiasprocedimientos  cirproc
+		INNER JOIN clinico_examenes exa ON (exa.id=cirproc.cups_id) 
+WHERE cirugia_id = 14 
+group by  cups_id , cruento, incruento , exa."grupoQx_id"
+	having exa."grupoQx_id" =(select  max(exa1."grupoQx_id")
+							FROM cirugia_cirugiasprocedimientos  cirproc1
+							INNER JOIN clinico_examenes exa1 ON (exa1.id=cirproc1.cups_id) 
+							WHERE cirproc1.cirugia_id = cirproc.cirugia_id)
+	
+select "grupoQx_id",* from clinico_examenes;	
+SELECT cups_id cups, cruento, incruento ,
+	(
+		select  max(exa1."grupoQx_id")
+		FROM cirugia_cirugiasprocedimientos  cirproc1
+		INNER JOIN clinico_examenes exa1 ON (exa1.id=cirproc1.cups_id and exa1.id=exa.id) 
+		WHERE cirproc1.cirugia_id = cirproc.cirugia_id
+	) grupoQx		
+FROM cirugia_cirugiasprocedimientos  cirproc
+		INNER JOIN clinico_examenes exa ON (exa.id=cirproc.cups_id) 
+WHERE cirugia_id = 14 limit 1
+
+select * from cirugia_cirugiasmaterialqx;
+select * from tarifarios_tablahonorariossoat;
+
+select * from tarifarios_tiposhonorarios;
+select * from tarifarios_minimoslegales;
+select * from tarifarios_tablasalasdecirugia;
+select * from cirugia_programacioncirugias;
+
+select empresa_id,* from admisiones_ingresos where "sedesClinica_id" = 1;
+
+select empresa_id,* from contratacion_convenios where empresa_id in (5,1,3,4)
+
+select * from tarifarios_tarifariosdescripcion;
+
+select * from contratacion_convenios;
+select * from facturacion_conveniospacienteingresos;
+
+select adm.empresa_id , adm."tipoDoc_id", adm.documento_id, adm.consec, conv.id,conv.nombre, conv."tarifariosDescripcionProc_id"
+from admisiones_ingresos adm, contratacion_convenios conv, facturacion_conveniospacienteingresos fac
+where adm."sedesClinica_id" = 1 AND adm."tipoDoc_id" = fac."tipoDoc_id" AND adm.documento_id = fac.documento_id AND adm.consec= fac."consecAdmision" and
+	fac.convenio_id = conv.id;
