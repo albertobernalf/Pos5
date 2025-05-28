@@ -29,6 +29,11 @@ let dataTableHojaDeGastoXXCirugiaInitialized = false;
 
 $(document).ready(function() {
 
+	 var $searchInput = $('#ParticipantesInformeCirugia_filter input'); // Reemplaza 'dataTable_filter' con el ID del contenedor de búsqueda
+
+    // Modificar el atributo placeholder
+    $searchInput.attr('placeholder', 'Buscar...');
+
 
 
     var table = $('#tablaProgramacionCirugia').DataTable();
@@ -875,12 +880,12 @@ function arrancaCirugia(valorTabla,valorData)
 	  lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '110px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
             columnDefs: [
-		{ className: 'centered', targets: [0, 1, 2, 3] },
+		{ className: 'centered', targets: [0, 1, 2, 3, 4, 5] },
 	    { width: '10%', targets: [2,3] },
 		{  
                     "targets": 7
@@ -933,7 +938,9 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.cupsNombre"},
    {     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash fa-xs" style="font-size: 4px;"></i>' + "</button>";
+
+		  btn = btn + " <button class='btn-primary  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 6px;"></i>' + "</button>";
+	     
                        return btn;
                     },
             }
@@ -951,7 +958,7 @@ function arrancaCirugia(valorTabla,valorData)
 	  lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '110px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -1012,7 +1019,7 @@ function arrancaCirugia(valorTabla,valorData)
 
   {     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn  deleteProcedimientosInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
+			  btn = btn + " <button class='btn-primary  deleteProcedimientosInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 6px;"></i>' + "</button>";
                        return btn;
                     },
             }
@@ -1031,7 +1038,7 @@ function arrancaCirugia(valorTabla,valorData)
 	  lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '110px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -1088,7 +1095,7 @@ function arrancaCirugia(valorTabla,valorData)
                { data: "fields.valorLiquidacion"},
   	{     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn deleteMaterialInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
+			  btn = btn + " <button class='btn-primary deleteMaterialInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 6px;"></i>' + "</button>";
                        return btn;
                     },
             }
