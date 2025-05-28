@@ -28,6 +28,9 @@ let dataTableHojaDeGastoXXCirugiaInitialized = false;
 
 
 $(document).ready(function() {
+
+
+
     var table = $('#tablaProgramacionCirugia').DataTable();
     
        $('#search').on('keyup', function() {
@@ -928,12 +931,13 @@ function arrancaCirugia(valorTabla,valorData)
                 { data: "fields.medicoNombre"},
                 { data: "fields.especialidadNombre"},
                 { data: "fields.cupsNombre"},
-	    {     "render": function ( data, type, row ) {
+   {     "render": function ( data, type, row ) {
                         var btn = '';
-			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash" style="font-size: 12px;"></i>' + "</button>";
+			  btn = btn + " <button class='btn  deleteParticipanteInformeCirugia' data-action='post/" + row.pk + "/delete' data-pk='" + row.pk + "'>" + '<i class="fa-solid fa-trash fa-xs" style="font-size: 4px;"></i>' + "</button>";
                        return btn;
                     },
             }
+ 
                         ]
             }
 
@@ -1897,8 +1901,6 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', func
 
 	document.getElementById("cirugiaIdModalAdicionarQx").value = cirugiaId;
 
-
-
          var data =  {}   ;
         data['username'] = username;
         data['sedeSeleccionada'] = sedeSeleccionada;
@@ -1906,19 +1908,20 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', func
         data['sede'] = sede;
         data['username_id'] = username_id;
 	data['cirugiaId'] = cirugiaId;
- 	    data = JSON.stringify(data);
+ 	data = JSON.stringify(data);
+
         arrancaCirugia(9,data);
 	dataTableProcedimientosInformeCirugiaInitialized= true;
 
         arrancaCirugia(10,data);
+
 	dataTableParticipantesInformeCirugiaInitialized= true;
+
         arrancaCirugia(11,data);
 	dataTableMaterialInformeCirugiaInitialized= true;
         arrancaCirugia(14,data);
 	dataTableHojaDeGastoCirugiaInitialized= true;
-		  
-    	
-
+		  	
                 },
             error: function (request, status, error) {
 		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
