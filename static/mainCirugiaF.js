@@ -96,7 +96,7 @@ function arrancaCirugia(valorTabla,valorData)
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '475px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -200,7 +200,7 @@ function arrancaCirugia(valorTabla,valorData)
   lengthMenu: [2, 4, 15],
            processing: true,
             serverSide: false,
-            scrollY: '275px',
+            scrollY: '475px',
 	    scrollX: true,
 	    scrollCollapse: true,
             paging:false,
@@ -1525,6 +1525,7 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
 
           
 	 alert("info sala_id = " + info[0].fields.sala_id);
+	 alert("info fields  = " + info[0].fields);
 		
 		$('#sala').val(info[0].fields.sala_id);
 
@@ -1552,6 +1553,25 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
 		alert("username_id = " + username_id );
 	
 	document.getElementById("usernameProgramacionCirugia_id").value = username_id;
+
+
+	  	    var options = '<option value="=================="></option>';
+
+	            const $id2 = document.querySelector("#estadosProgramacionY");
+
+ 	      	$("#estadosProgramacionY").empty();
+
+	                 $.each(info[0].fields['estadoProgramacion'], function(key,value) {
+                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
+                                    option = document.createElement("option");
+                                    option.value = value.id;
+                                    option.text = value.nombre;
+                                    $id2.appendChild(option);
+ 	      		      });
+
+
+
+
 
 var data =  {}   ;
 	        data['username'] = username;
@@ -1873,9 +1893,9 @@ $('#tablaSolicitudCirugia tbody').on('click', '.miAdicionarMaterial', function()
 
 $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', function() {
 
-		
 
 	     var post_id = $(this).data('pk');
+	var row = $(this).closest('tr'); // Encuentra la fila
 		var programacionId= post_id;
 		alert("ProgramacionId = " + programacionId);
 	// Debo hacer un AJAX para traer la cirugia, le envio la programacion
@@ -1888,10 +1908,7 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', func
                 dataType: 'json',
                 success: function (data2) {
 		alert("data2 = " + data2);
-
-
 		var cirugiaId = data2;		
-
     	var sedeSeleccionada = document.getElementById("sedeSeleccionada").value;
         var username = document.getElementById("username").value;
         var nombreSede = document.getElementById("nombreSede").value;
@@ -1907,6 +1924,33 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miProgramacionCirugia2', func
 	document.getElementById("cirugiaIdModalParticipantesInforme").value = cirugiaId;
 
 	document.getElementById("cirugiaIdModalAdicionarQx").value = cirugiaId;
+
+	// Aqui llenar la info basica de la programacion Cirugia en la hoja de Informe qx
+
+	var table = $('#tablaProgramacionCirugia').DataTable();  // Inicializa el DataTable jquery 	      
+	var rowindex = table.row(row).data(); // Obtiene los datos de la fila
+        console.log(" fila selecciona de vuelta AQUI PUEDE ESTAR EL PROBLEMA = " ,  table.row(row).data());
+	        dato1 = Object.values(rowindex);
+		console.log(" fila seleccionad d evuelta dato1 = ",  dato1);
+	        dato3 = dato1[2];
+		console.log(" fila selecciona de vuelta dato3 = ",  dato3);
+	        console.log ( "dato3 documento = " , dato3.documento); 
+	        console.log ( "dato3 paciente = " , dato3.paciente); 
+	 document.getElementById("tipoDocPaciente").innerHTML = dato3.abrev;
+	document.getElementById("docPaciente").innerHTML = dato3.documento;
+	document.getElementById("nombrePaciente").innerHTML = dato3.paciente;
+	document.getElementById("salaCirugia").innerHTML = dato3.sala;
+	document.getElementById("programacionDesdeCirugia").innerHTML = dato3.inicia;
+	document.getElementById("programacionDesdeHoraCirugia").innerHTML = dato3.horaInicia;
+	document.getElementById("programacionHastaCirugia").innerHTML = dato3.horaInicia;
+	document.getElementById("programacionHastaHoraCirugia").innerHTML = dato3.horaTermina;
+
+
+
+
+
+
+	// Fin llenado
 
          var data =  {}   ;
         data['username'] = username;
@@ -3094,12 +3138,24 @@ function GenerarLiquidacionCirugia()
                 type: "POST",
                 dataType: 'json',
                 success: function (data2) {
-	
+
+		if (data2.sucess == 'False')
+		{
+		 $("#mensajesError").html(data2.message);
+		}
+		else
+		{
 		 $("#mensajes").html(data2.message);
+
+		}
+
+	
+
+
 
                 },
             error: function (request, status, error) {
-		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+		document.getElementById("mensajesError").innerHTML = 'Error Contacte a su Administrador' + ': ' + error + ' ' + data2.message
 	   	    	}
             });
 

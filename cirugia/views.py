@@ -1166,6 +1166,29 @@ def BuscaProgramacionCirugia(request):
     sede = request.POST.get('sede')
     print("sede =", sede)
 
+    # Combo estadosProgramacion
+
+    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                                   password="123456")
+    curt = miConexiont.cursor()
+
+    comando = "SELECT p.id id, p.nombre nombre FROM  cirugia_estadosprogramacion p where nombre in ( " + "'" + str('Programada') + "','" + str('Cancelada')  + "')" + ' ORDER BY nombre'
+
+    curt.execute(comando)
+    print(comando)
+
+    estadosProgramacion = []
+
+    for id, nombre in curt.fetchall():
+        estadosProgramacion.append({'id': id, 'nombre': nombre})
+
+    miConexiont.close()
+    print("estadosProgramacion", estadosProgramacion)
+
+
+    # Fin combo estadosProgramacion
+
+
     programacionCirugia = []
 
     miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
@@ -1190,6 +1213,9 @@ def BuscaProgramacionCirugia(request):
 
     miConexion3.close()
     print(programacionCirugia)
+
+    programacionCirugia[0]['estadosProgramacion'] = estadosProgramacion
+
 
     serialized1 = json.dumps(programacionCirugia, default=str)
 
@@ -2260,6 +2286,11 @@ def GenerarLiquidacionCirugia(request):
 
             return JsonResponse({'success': True, 'message': 'Liquidacion Honorarios Iss cargada a cuenta Paciente Verificar valores !'})
 
+        except NotFoundError:
+            # Code to handle the FileNotFoundError
+            print("Registro No encontrado")
+
+
         except psycopg2.DatabaseError as error:
             print("Entre por rollback", error)
             if miConexion3:
@@ -2469,10 +2500,18 @@ def GenerarLiquidacionCirugia(request):
 
                 cur3.execute(detalle)
 
+
                 for valorCirujano in cur3.fetchall():
                     valorCirujanoProced.append({'valorCirujano': valorCirujano })
+                print("valorCirujanoProced =" , valorCirujanoProced)
 
-                print("valorCirujanoProced =" , valorCirujanoProced[0]['valorCirujano'])
+                if valorCirujanoProced == []:
+                    print("No se encontraron resultados para HONORARIOS SOAT Cirugano Procedimeinto : ", procedimiento)
+                    #raise  TypeError( "No se encontraron resultados para HONORARIOS SOAT Cirugano Procedimeinto : ")
+                    return JsonResponse({'success': False,'message': 'Favor registrar en convenio paciente honorarios SOAT Cirugano grupoQx ! '  +  str(grupoQx)        })
+
+                else:
+                    print("valorCirujanoProced =" , valorCirujanoProced[0]['valorCirujano'])
 
                 for valorCirujanoProced in valorCirujanoProced[0]['valorCirujano']:
                     print("valorCirujanoProced1" , valorCirujanoProced)
@@ -2496,7 +2535,13 @@ def GenerarLiquidacionCirugia(request):
                 for valorAnestesiologo in cur3.fetchall():
                     valorAnestesiologoProced.append({'valorAnestesiologo': valorAnestesiologo })
 
-                print("valorAnestesiologoProced =" , valorAnestesiologoProced[0]['valorAnestesiologo'])
+                if valorAnestesiologoProced == []:
+                    print("No se encontraron resultados para HONORARIOS SOAT valorAnestesiologoProced Procedimeinto : ", procedimiento)
+                    #raise  TypeError( "No se encontraron resultados para HONORARIOS SOAT Cirugano Procedimeinto : ")
+                    return JsonResponse({'success': False,'message': 'Favor registrar en convenio paciente honorarios SOAT Anestesiologo grupoQx ! '  +  str(grupoQx)        })
+
+                else:
+                    print("valorAnestesiologoProced =" , valorAnestesiologoProced[0]['valorAnestesiologo'])
 
                 for valorAnestesiologoProced in valorAnestesiologoProced[0]['valorAnestesiologo']:
                     print("valorAnestesiologoProced = " ,valorAnestesiologoProced)
@@ -2518,7 +2563,13 @@ def GenerarLiquidacionCirugia(request):
                     valorAyudanteProced.append(
                         {'valorAyudante': valorAyudante })
 
-                print("valorAyudanteProced =" , valorAyudanteProced[0]['valorAyudante'])
+                if valorAyudanteProced == []:
+                    print("No se encontraron resultados para HONORARIOS SOAT valorAyudanteProced Procedimeinto : ", procedimiento)
+                    #raise  TypeError( "No se encontraron resultados para HONORARIOS SOAT Cirugano Procedimeinto : ")
+                    return JsonResponse({'success': False,'message': 'Favor registrar en convenio paciente honorarios SOAT Ayudante grupoQx ! '   +  str(grupoQx)         })
+
+                else:
+                    print("valorAyudanteProced =" , valorAyudanteProced[0]['valorAyudante'])
 
                 for valorAyudanteProced in valorAyudanteProced[0]['valorAyudante']:
                     print(valorAyudanteProced)
@@ -2596,7 +2647,14 @@ def GenerarLiquidacionCirugia(request):
                     for valor in cur3.fetchall():
                         valorSala.append({'valor': valor})
 
-                    print("valor sala = " , valorSala[0])
+                    if valorSala == []:
+                        print("No se encontraron resultados para HONORARIOS SOAT valorSala Procedimeinto : ",
+                              procedimiento)
+                        # raise  TypeError( "No se encontraron resultados para HONORARIOS SOAT Cirugano Procedimeinto : ")
+                        return JsonResponse({'success': False,  'message': 'Favor registrar en convenio paciente SALA Procedimeinto ! ' + procedimiento})
+
+                    else:
+                        print("valor sala = ", valorSala[0])
 
                     for valorSala in valorSala[0]['valor']:
 
@@ -2627,6 +2685,11 @@ def GenerarLiquidacionCirugia(request):
             miConexion3.close()
 
             return JsonResponse({'success': True, 'message': 'Liquidacion Honorarios Soat cargada a cuenta Paciente Verificar valores !'})
+
+        except psycopg2.Error as e:
+
+            print(f"Database error: {e}")
+
 
         except psycopg2.DatabaseError as error:
             print("Entre por rollback", error)

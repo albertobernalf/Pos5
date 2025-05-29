@@ -986,7 +986,7 @@
 
 
 
-	<!-- Modal para Procedimientos Cirugia -->
+	<!-- Modal para Programacion de  Cirugia -->
 
             <div class="modal fade" id="crearModelProgramacionCirugia" tabindex="-1" role="dialog"  style="overflow-y:scroll;" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
                 <div class="modal-dialog  modal-lg modal-dialog-scrollable  modal-dialog-center" role="document" >
@@ -1053,11 +1053,11 @@
 					
                                     
                                     <input type="hidden" class="form-control" id="sedesClinicaProgramacionCirugia_id" name="sedesClinicaProgramacionCirugia_id"  readonly></input>
-                                    <input type="text" class="form-control" id="programacionId" name="programacionId"  readonly></input>
+                                    <input type="hidden" class="form-control" id="programacionId" name="programacionId"  readonly></input>
                                 </div>
 
-			  <div class="col-12">
-                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SeviciosAdmon:</label>
+			  <div class="col-4">
+                                        <label for="serviciosAdministrativos" class="col-sm-1 control-label">SeviciosAdmon:</label>
                                         <div class="col-sm-8">
                                             <select class="select-css h-40 w-20" id="serviciosAdministrativos"  tabindex= "0"
                                                     name="serviciosAdministrativos"
@@ -1069,7 +1069,7 @@
                                         </div>
                                     </div>
 
-				<div class="col-12">
+				<div class="col-4">
                                     Sala:
 				<select class="select-css"  id="sala" name="sala">
                                                             {% for salasCirugia in SalasCirugia %}
@@ -1081,37 +1081,50 @@
                                 </div>
 
                           
-				<div class="col-12">
+				<div class="col-4">
 				<label  for="fechaProgramacionInicia">Fecha Inicio:</label>                               	                               
 					 <input type="date"  class="form-control form-control-sm" id="fechaProgramacionInicia" name="fechaProgramacionInicia" placeholder="fecha Inicia"  >
                                 </div>
 
 
-				<div class="col-12">
+				<div class="col-4">
 				<label  for="horaProgramacionInicia">Hora Inicio:</label>                               	                               
 					 <input type="text"  class="form-control form-control-sm" id="horaProgramacionInicia" name="horaProgramacionInicia" placeholder="hora Inicia"  >
                                 </div>
 
 
-				<div class="col-12">
+				<div class="col-4">
 				<label  for="fechaProgramacionFin">Fecha Fin:</label>                               	                               
 					 <input type="date"  class="form-control form-control-sm" id="fechaProgramacionFin" name="fechaProgramacionFin" placeholder="fecha Fin"  >
                                 </div>
 
 
-				<div class="col-12">
+				<div class="col-4">
 				<label  for="horaProgramacionFin">Hora Fin:</label>                               	                               
 					 <input type="text"  class="form-control form-control-sm" id="horaProgramacionFin" name="horaProgramacionFin" placeholder="hora Fin"  >
                                 </div>
 
-			
+
+				<div class="col-4">
+                                    Estado Programacion:
+				<select class="select-css"  id="estadosProgramacion" name="estadosProgramacion">
+                                                            {% for estadosProgramacion in EstadosProgramacion %}
+                                                            <option value="{{estadosProgramacion.id}}">
+                                                                {{estadosProgramacion.nombre}}
+                                                            </option>
+                                                            {% endfor %}
+                                                        </select>
+                                </div>
 
 
-				
 
+
+
+
+	
 				<div class="col-12">
 				
-					 <input type="text"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id"  readonly>
+					 <input type="hidden"  class="form-control form-control-sm" id="usernameProgramacionCirugia_id" name="usernameProgramacionCirugia_id"  readonly>
                                 </div>
 
 
@@ -1144,17 +1157,20 @@
 <article id="InformeQx">
 
 		<div align="right" height="15px" width="50px">
-			<span id="tipoDocPaciente">Identificacion: CC</span>
-			<span id="docPaciente">51872242</span>
-			<span id="nombrePaciente">Eumelia Camacho</span>
-			<span id="salaCirugia">Sala de Cirugia: Cir01</span>
-			<span id="programacionCirugia">Desde:   Hasta</span>
+			Tipo: <span id="tipoDocPaciente"></span>
+			Doc: <span id="docPaciente"></span>
+			Paciente: <span id="nombrePaciente"></span>
+			Sala: <span id="salaCirugia"></span>
+			Dede: <span id="programacionDesdeCirugia"></span>
+			Hora: <span id="programacionDesdeHoraCirugia"></span>
+			Hasta: <span id="programacionHastaCirugia"></span>
+			Hora: <span id="programacionHastaHoraCirugia"></span>
 
-	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarParticipanteInformeCirugia"  name="BtnAdicionarParticipanteInformeCirugia" value="Adicionar Participantes" onclick= "AdicionarParticipanteInformeCirugia()" >				    
-	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adicionar Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
-	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Descripcion Quirurgica" onclick= "AdicionarQx()" >				    
-		       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarMaterialInformeCirugia"  name="BtnAdicionarMaterialInformeCirugia" value="Adicionar Material Qx" onclick= "AdicionarMaterialInformeCirugia()" >				    
-		   <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnGenerarLiquidacionCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Generar Liquidacion" onclick= "GenerarLiquidacionCirugia()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="5px" id="BtnAdicionarParticipanteInformeCirugia"  name="BtnAdicionarParticipanteInformeCirugia" value="Adic.Participantes" onclick= "AdicionarParticipanteInformeCirugia()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="5px" id="BtnAdicionarProcedimientosInformeCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Adic.Procedimientos" onclick= "AdicionarProcedimientosInformeCirugia()" >				    
+	               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="5px" id="BtnAdicionarQx"  name="BtnAdicionarQx" value="Descripcion Quirurgica" onclick= "AdicionarQx()" >				    
+		       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="5px" id="BtnAdicionarMaterialInformeCirugia"  name="BtnAdicionarMaterialInformeCirugia" value="Adic.Material Qx" onclick= "AdicionarMaterialInformeCirugia()" >				    
+		       <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="5px" id="BtnGenerarLiquidacionCirugia"  name="BtnAdicionarProcedimientosInformeCirugia" value="Genera Liquidacion" onclick= "GenerarLiquidacionCirugia()" >				    
 		</div>
 
 		<div class="container my-2">
