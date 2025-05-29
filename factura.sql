@@ -127,3 +127,23 @@ select adm.empresa_id , adm."tipoDoc_id", adm.documento_id, adm.consec, conv.id,
 from admisiones_ingresos adm, contratacion_convenios conv, facturacion_conveniospacienteingresos fac
 where adm."sedesClinica_id" = 1 AND adm."tipoDoc_id" = fac."tipoDoc_id" AND adm.documento_id = fac.documento_id AND adm.consec= fac."consecAdmision" and
 	fac.convenio_id = conv.id;
+
+
+select * from cirugia_programacioncirugias;
+select * from cirugia_programacioncirugias;
+
+
+SELECT "smldv" * 1423500/30 valorCirujano
+	FROM tarifarios_tablahonorariossoat 
+	WHERE "grupoQx_id" = '5' AND  "tiposHonorarios_id" = '1'
+
+
+select * from usuarios_usuarios where documento = '51872242';
+
+select * from facturacion_liquidacion where documento_id = 16;
+select * from facturacion_liquidaciondetalle where liquidacion_id= 138
+
+select * from facturacion_conveniospacienteingresos;
+select * from contratacion_convenios order by id;
+select * from cirugia_estadosprogramacion where nombre in ('Programada','Cancelada')
+

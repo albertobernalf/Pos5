@@ -1554,26 +1554,11 @@ $('#tablaProgramacionCirugia tbody').on('click', '.miEditaProgramacionCirugia', 
 	
 	document.getElementById("usernameProgramacionCirugia_id").value = username_id;
 
-
-	  	    var options = '<option value="=================="></option>';
-
-	            const $id2 = document.querySelector("#estadosProgramacionY");
-
- 	      	$("#estadosProgramacionY").empty();
-
-	                 $.each(info[0].fields['estadoProgramacion'], function(key,value) {
-                                    options +='<option value="' + value.id + '">' + value.nombre + '</option>';
-                                    option = document.createElement("option");
-                                    option.value = value.id;
-                                    option.text = value.nombre;
-                                    $id2.appendChild(option);
- 	      		      });
+            $('#estadosProgramacionY').val(info[0].fields.estado_id);
+            $('#serviciosAdministrativos').val(info[0].fields.serviciosAdministrativos_id);
 
 
-
-
-
-var data =  {}   ;
+		var data =  {}   ;
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;
 	        data['nombreSede'] = nombreSede;
@@ -1668,9 +1653,28 @@ function GuardarEstadoProgramacionCirugia()
 	       arrancaCirugia(2,data);
 		    dataTableProgramacionCirugiaInitialized = true;
 
+	       arrancaCirugia(3,data);
+		    dataTableSolicitudCirugiaInitialized = true;
+
+
+
+
+
+		alert("info = " + info);
+
+
+			if (info.success == 'False')
+			{
+			document.getElementById("mensajesError").innerHTML = info.message;
+			}
+			else
+			{
+			document.getElementById("mensajes").innerHTML = info.message;
+			}
+
 				                },
                  error: function (request, status, error) {
-			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador' + ': ' + error
+			document.getElementById("mensajesErrorProgramacion").innerHTML = 'Error Contacte a su Administrador : '  + error
 	   	    	}
             });
 
@@ -2318,7 +2322,7 @@ function CrearProgramacionCirugia()
                 dataType: 'json',
                 success: function (data2) {
 		  
-                  $('#postFormProgramacionCirugia').trigger("reset");
+              //    $('#postFormProgramacionCirugia').trigger("reset");
 		var data =  {}   ;
 	        data['username'] = username;
   	        data['sedeSeleccionada'] = sedeSeleccionada;

@@ -175,6 +175,8 @@ def CrearProgramacionCirugia(request):
     username_id = request.POST["usernameProgramacionCirugia_id"]
     print("username_id =", username_id)
 
+    estadosProgramacionY = request.POST["estadosProgramacionY"]
+    print("estadosProgramacionY =", estadosProgramacionY)
 
 
     estadoProgramacion = EstadosProgramacion.objects.get(nombre='Programada')
@@ -220,12 +222,12 @@ def CrearProgramacionCirugia(request):
             return JsonResponse({'success': False, 'message': 'sala de Cirugia con horario ocupado!'})
 
 
-        comando = 'UPDATE cirugia_programacioncirugias SET "horaProgramacionFin" = ' + "'" + str(horaProgramacionFin) + "'," +   '"fechaRegistro" = ' + "'" + str(fechaRegistro) + "'," + '"estadoReg" = ' + "'" + str(estadoReg) + "'," + '"sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(username_id) + "'," + '"fechaProgramacionFin" = ' + "'" + str(fechaProgramacionFin)  + "'," + '"fechaProgramacionInicia" = ' + "'" + str(fechaProgramacionInicia)  + "'," + '"horaProgramacionInicia" = ' + "'" + str(horaProgramacionInicia) + "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadoProgramacion.id) + "' WHERE id = " + "'"  + str(programacionId) + "'"
+        comando = 'UPDATE cirugia_programacioncirugias SET "horaProgramacionFin" = ' + "'" + str(horaProgramacionFin) + "'," +   '"fechaRegistro" = ' + "'" + str(fechaRegistro) + "'," + '"estadoReg" = ' + "'" + str(estadoReg) + "'," + '"sedesClinica_id" = ' + "'" + str(sedesClinica_id) + "'," + '"usuarioRegistro_id" = ' + "'" + str(username_id) + "'," + '"fechaProgramacionFin" = ' + "'" + str(fechaProgramacionFin)  + "'," + '"fechaProgramacionInicia" = ' + "'" + str(fechaProgramacionInicia)  + "'," + '"horaProgramacionInicia" = ' + "'" + str(horaProgramacionInicia) + "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadosProgramacionY) + "'," + '"serviciosAdministrativos_id" = ' + "'" + str(serviciosAdministrativos) + "'" + ' WHERE id = '  + "'"  + str(programacionId) + "'"
 
         print(comando)
         cur3.execute(comando)
 
-        comando1 = 'UPDATE cirugia_cirugias SET "fechaProg" = ' + "'" + str(fechaProgramacionInicia)   + "'," + '"HoraProg" = ' + "'" + str(horaProgramacionInicia)  +  "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadoProgramacion.id) + "'," + '"estadoCirugia_id" = ' + "'" + str(estadoCirugia.id) + "'" + ' WHERE id = ' + "'"  + str(registroCirugia.id) + "'"
+        comando1 = 'UPDATE cirugia_cirugias SET "fechaProg" = ' + "'" + str(fechaProgramacionInicia)   + "'," + '"HoraProg" = ' + "'" + str(horaProgramacionInicia)  +  "', sala_id = '" + str(sala) + "'," + '"estadoProgramacion_id" = ' + "'" + str(estadosProgramacionY) + "'," + '"estadoCirugia_id" = ' + "'" + str(estadoCirugia.id) + "'" + ' WHERE id = ' + "'"  + str(registroCirugia.id) + "'"
 
         print(comando1)
         cur3.execute(comando1)
@@ -1195,19 +1197,19 @@ def BuscaProgramacionCirugia(request):
                                    password="123456")
     cur3 = miConexion3.cursor()
 
-    detalle = 'SELECT prog.id id,  u."tipoDoc_id" tipoDoc_id , u.documento documento, i.consec consecutivo, u.nombre paciente,estprog.id estado_id, estprog.nombre estadoProg,sala.id sala_id, sala.nombre sala, prog."fechaProgramacionInicia" inicia, prog."horaProgramacionInicia" horaInicia, prog."fechaProgramacionFin" termina, prog."horaProgramacionFin" horaTermina FROM cirugia_programacioncirugias prog INNER JOIN sitios_sedesclinica sed	on (sed.id = prog."sedesClinica_id") INNER JOIN admisiones_ingresos i ON (i."tipoDoc_id" =prog."tipoDoc_id" AND i.documento_id =  prog.documento_id AND i.consec= prog."consecAdmision" ) INNER JOIN usuarios_usuarios u ON (u.id = i.documento_id ) INNER JOIN cirugia_estadosprogramacion estprog ON (estprog.id = prog."estadoProgramacion_id" ) LEFT JOIN sitios_salas sala ON (sala.id =prog.sala_id )  WHERE sed.id = ' + "'" + str(sede) + "' AND prog.id = " + "'" + str(programacionId) + "'"
+    detalle = 'SELECT prog.id id,  u."tipoDoc_id" tipoDoc_id , u.documento documento, i.consec consecutivo, u.nombre paciente,estprog.id estado_id, estprog.nombre estadoProg,sala.id sala_id, sala.nombre sala, prog."fechaProgramacionInicia" inicia, prog."horaProgramacionInicia" horaInicia, prog."fechaProgramacionFin" termina, prog."horaProgramacionFin" horaTermina , prog."serviciosAdministrativos_id" serviciosAdministrativos_id FROM cirugia_programacioncirugias prog INNER JOIN sitios_sedesclinica sed	on (sed.id = prog."sedesClinica_id") INNER JOIN admisiones_ingresos i ON (i."tipoDoc_id" =prog."tipoDoc_id" AND i.documento_id =  prog.documento_id AND i.consec= prog."consecAdmision" ) INNER JOIN usuarios_usuarios u ON (u.id = i.documento_id ) INNER JOIN cirugia_estadosprogramacion estprog ON (estprog.id = prog."estadoProgramacion_id" ) LEFT JOIN sitios_salas sala ON (sala.id =prog.sala_id )  WHERE sed.id = ' + "'" + str(sede) + "' AND prog.id = " + "'" + str(programacionId) + "'"
 
     print(detalle)
 
     cur3.execute(detalle)
 
-    for id, tipoDoc_id, documento, consecutivo, paciente, estado_id, estadoProg, sala_id, sala, inicia, horaInicia, termina, horaTermina  in cur3.fetchall():
+    for id, tipoDoc_id, documento, consecutivo, paciente, estado_id, estadoProg, sala_id, sala, inicia, horaInicia, termina, horaTermina , serviciosAdministrativos_id in cur3.fetchall():
         programacionCirugia.append(
             {"model": "cirugia.programcioncirugias", "pk": id, "fields":
                 {'id': id, 'tipoDoc_id': tipoDoc_id, 'documento': documento, 'consecutivo': consecutivo,
                  'paciente': paciente, 'estado_id':estado_id, 'estadoProg': estadoProg, 'sala_id': sala_id, 'sala': sala,
                  'inicia': inicia, 'horaInicia': horaInicia,
-                 'termina': termina, 'horaTermina': horaTermina
+                 'termina': termina, 'horaTermina': horaTermina,'serviciosAdministrativos_id':serviciosAdministrativos_id
                  }})
 
 
@@ -1804,6 +1806,20 @@ def GuardarEstadoProgramacionCirugia(request):
     estadoId = request.POST.get('estadoId')
     print("estadoId =", estadoId)
 
+    estadoCancelado = EstadosProgramacion.objects.get(nombre='Cancelada')
+    print("estadoCancelado = " , estadoCancelado.id )
+
+    programacionEstadoAnterior = ProgramacionCirugias.objects.get(id=programacionId)
+
+    cirugiaId = Cirugias.objects.get(tipoDoc_id =programacionEstadoAnterior.tipoDoc_id, documento_id=programacionEstadoAnterior.documento_id , consecAdmision = programacionEstadoAnterior.consecAdmision)
+
+    print ("programacionEstadoAnterior = " , programacionEstadoAnterior.estadoProgramacion_id)
+
+    if (programacionEstadoAnterior.estadoProgramacion_id == estadoCancelado.id):
+        print ("Entre a NO PERMITIR GUARDAR=")
+        return JsonResponse({'success': False, 'message': 'Estado Programacion Cancelado no se puede Actualizar!'})
+
+
     miConexion3 = None
     try:
 
@@ -1816,6 +1832,14 @@ def GuardarEstadoProgramacionCirugia(request):
         print(detalle)
 
         cur3.execute(detalle)
+
+        detalle1 = 'UPDATE cirugia_cirugias set  "estadoProgramacion_id" = ' + "'" + str(estadoId) + "'" + ' WHERE id = ' + "'" + str(cirugiaId.id) + "'"
+
+        print(detalle1)
+
+        cur3.execute(detalle1)
+
+
 
         miConexion3.commit()
         cur3.close()
