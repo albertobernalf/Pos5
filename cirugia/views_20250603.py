@@ -19,8 +19,7 @@ from django.http import JsonResponse
 import pyodbc
 import psycopg2
 import json
-#import datetime
-from datetime import date, timedelta
+import datetime
 import time
 from decimal import Decimal
 from admisiones.models import Ingresos
@@ -337,7 +336,6 @@ def Load_dataIngresosCirugia(request, data):
     curx.execute(detalle)
 
     for  id,tipoDoc_id, documento,  paciente, consecutivo,  genero, edad, nacimiento,  cama,telefono, empresa  in curx.fetchall():
-
         ingresosCirugia.append(
             {"model": "admisiones.ingresos", "pk": id, "fields":
                 {'id': id,  'tipoDoc_id': tipoDoc_id, 'documento': documento, 'paciente': paciente, 'consecutivo': consecutivo, 'genero': genero, 'edad': edad,
@@ -376,77 +374,17 @@ def Load_dataDisponibilidadSala(request, data):
                                    password="123456")
     curx = miConexionx.cursor()
 
-    detalle = 'SELECT salas.id id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,cast(prog."horaProgramacionInicia" as time), cast(prog."horaProgramacionFin" as time) , ' + "'" + str('OCUPADO') + "'" + ' estado FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'" + ' ORDER BY salas.numero,prog."fechaProgramacionInicia",cast(prog."horaProgramacionInicia" as time)'
+
+    detalle = 'SELECT salas.id id,salas.numero numero , salas.nombre nombre,prog."fechaProgramacionInicia", prog."fechaProgramacionFin" ,prog."horaProgramacionInicia", prog."horaProgramacionFin" , ' + "'" + str('OCUPADO') + "'" + ' estado FROM cirugia_programacioncirugias prog LEFT JOIN sitios_salas salas ON (salas.id = prog.sala_id ) WHERE salas."sedesClinica_id" = ' + "'" + str(sede) + "'"
     print(detalle)
 
     curx.execute(detalle)
 
-    contador = 0
-
     for  id,numero, nombre,  fechaProgramacionInicia, fechaProgramacionFin,  horaProgramacionInicia, horaProgramacionFin , estado  in curx.fetchall():
-
-        contador=contador+1
-
-        if (contador == 1 ):
-            numeroAnt=numero
-            fechaProgramacionFinAnt =fechaProgramacionFin
-            horaProgramacionFinAnt=horaProgramacionFin
-            fechaProgramacionIniciaAnt =fechaProgramacionInicia
-            horaProgramacionIniciaAnt=horaProgramacionInicia
-
-            disponibilidadCirugia.append(
-        	    {"model": "admisiones.ingresos", "pk": id, "fields":
-                	{'id': id,  'numero': numero, 'nombre': nombre, 'fechaProgramacionInicia': fechaProgramacionInicia, 'fechaProgramacionFin': fechaProgramacionFin, 'horaProgramacionInicia': horaProgramacionInicia,
-	                 'horaProgramacionFin': horaProgramacionFin,'estado':estado }})
-
-
-        else:
-
-            if (numero != numeroAnt):
-                print("habitacion = ")
-
-
-            else:
-                if (numero == numeroAnt and fechaProgramacionInicia !=  fechaProgramacionIniciaAnt):
-
-                    # Number of days to add
-                    days_to_add = 1
-                    # Create a timedelta object
-                    delta = timedelta(days=days_to_add)
-                    #horas_to_add = 1
-                    #time_obj = datetime.time(horaProgramacionFin)
-                    #delta1 = timedelta(hours=horas_to_add)
-
-                    fechaProgramacionIniciaInvisible = fechaProgramacionIniciaAnt + delta
-                    horaProgramacionIniciaInvisible = horaProgramacionFin
-                    horaProgramacionFinalInvisible  = horaProgramacionInicia
-                    fechaProgramacionFinInvisible   = fechaProgramacionInicia
-
-                    id1= 9999+contador
-
-                    disponibilidadCirugia.append(
-        	        	    {"model": "admisiones.ingresos", "pk": id, "fields":
-        		                {'id': id1,  'numero': numeroAnt, 'nombre': nombre, 'fechaProgramacionInicia': fechaProgramacionIniciaInvisible, 'fechaProgramacionFin': fechaProgramacionFinInvisible, 'horaProgramacionInicia': horaProgramacionIniciaInvisible,
-        		                 'horaProgramacionFin': horaProgramacionFinalInvisible,'estado':'LIBRE' }})
-
-                else:
-                    if (numero == numeroAnt and fechaProgramacionInicia ==  fechaProgramacionIniciaAnt and  horaProgramacionFinAnt != horaProgramacionInicia):
-
-                        horaProgramacionIniciaInvisible = horaProgramacionFin
-                        horaProgramacionFinalInvisible  = horaProgramacionInicia
-                        fechaProgramacionFinInvisible   = fechaProgramacionInicia
-
-                        id1= 9999+contador
-
-                        disponibilidadCirugia.append(
-        	        	    {"model": "admisiones.ingresos", "pk": id, "fields":
-		                        {'id': id1,  'numero': numeroAnt, 'nombre': nombre, 'fechaProgramacionInicia': fechaProgramacionIniciaAnt, 'fechaProgramacionFin': fechaProgramacionFinInvisible, 'horaProgramacionInicia': horaProgramacionIniciaInvisible,
-		                         'horaProgramacionFin': horaProgramacionFinalInvisible,'estado':'LIBRE' }})
-
-            disponibilidadCirugia.append({"model": "admisiones.ingresos", "pk": id, "fields":
-				{'id': id,  'numero': numero, 'nombre': nombre, 'fechaProgramacionInicia': fechaProgramacionInicia, 'fechaProgramacionFin': fechaProgramacionFin, 'horaProgramacionInicia': horaProgramacionInicia,
-		        	       'horaProgramacionFin': horaProgramacionFin,'estado':estado }})
-
+        disponibilidadCirugia.append(
+            {"model": "admisiones.ingresos", "pk": id, "fields":
+                {'id': id,  'numero': numero, 'nombre': nombre, 'fechaProgramacionInicia': fechaProgramacionInicia, 'fechaProgramacionFin': fechaProgramacionFin, 'horaProgramacionInicia': horaProgramacionInicia,
+                 'horaProgramacionFin': horaProgramacionFin,'estado':estado }})
 
     miConexionx.close()
     print(disponibilidadCirugia)
