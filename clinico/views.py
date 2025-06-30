@@ -463,7 +463,7 @@ def crearHistoriaClinica(request):
                 miConexiont = None
                 try:
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
                             curt = miConexiont.cursor()
 
                             comando = 'INSERT INTO clinico_Historia ("sedesClinica_id", "tipoDoc_id" , documento_id , "consecAdmision", folio ,fecha , "tiposFolio_id" ,"causasExterna_id" , "serviciosAdministrativos_id" , especialidades_id ,planta_id, motivo , subjetivo,objetivo, analisis ,plann, tratamiento ,                apache2, antibioticos, monitoreo, "movilidadLimitada", nauseas, "llenadoCapilar", neurologia, irritacion, pulsos, "retiroPuntos",             inmovilizacion, "notaAclaratoria", "fecNotaAclaratoria", "examenFisico", "noQx", observaciones, "riesgoHemodinamico", riesgos, trombocitopenia, hipotension, "indiceMortalidad", "ingestaAlcohol", "inmovilizacionObservaciones", justificacion, leucopenia, "manejoQx", "fechaRegistro", "usuarioRegistro_id", "estadoReg" , mipres,"ordenMedicaLab","ordenMedicaRad","ordenMedicaTer","ordenMedicaMed","ordenMedicaOxi","ordenMedicaInt", "especialidadesMedicos_id")  VALUES(' + "'" + str(sede) + "',"  + "'" +  str(tipoDocId.id) + "','" + str(documentoId.id) + "','" + str(ingresoPaciente) + "','" + str(ultimofolio2) + "','" + str(fechaRegistro) + "','"  +  str(tiposFolio) + "','" + str(causasExterna) + "'," + str(serviciosAdministrativos) + ",'" + str(especialidadId.especialidades_id) + "','" + str(plantaId.id) + "','" + str(motivo) + "','" + str(subjetivo) + "','" + str(objetivo) + "','" + str(analisis) + "','" + str(plan) + "','" + str(tratamiento)  + "','" + str(apache2) + "','" + str(antibioticos) + "','" + str(monitoreo) + "','"  + str(movilidadLimitada) + "','" + str(nauseas) + "','"  + str(llenadoCapilar) + "','" + str(neurologia) + "','"  + str(irritacion) + "','"  + str(pulsos) + "','" + str(retiroPuntos) + "','" + str(inmovilizacion) + "','" + str(notaAclaratoria) + "','"  + str(fecNotaAclaratoria) + "','" + str(examenFisico) +  "','" + str(noQx1) + "','" + str(observaciones) + "','" + str(riesgoHemodinamico) + "','" + str(riesgos) + "','" + str(trombocitopenia) + "','" + str(hipotension) + "','"  + str(indiceMortalidad) + "','" + str(ingestaAlcohol) + "','" + str(inmovilizacionObservaciones) + "','" + str(justificacion) + "','" + str(leucopenia) + "','" + str(manejoQx) + "','"  + str(fechaRegistro) + "','" + str(usuarioRegistro) + "','" + str(estadoReg) + "','" + str(mipres) + "'" +  ",'" + str(ordenMedicaLab) + "'" +  ",'" + str(ordenMedicaRad) + "'" +  ",'" + str(ordenMedicaTer) + "'"  +  ",'" + str(ordenMedicaMed) + "'"   +  ",'" + str(ordenMedicaOxi) + "'" +  ",'" + str(ordenMedicaInt) + "'," + "'" + str(espMedico) + "'"  +  ") RETURNING id ;"
@@ -516,7 +516,7 @@ def crearHistoriaClinica(request):
 		
 		# Aqui rutina busca Convenio del Paciente
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",        password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",        password="123456")
                 curt = miConexiont.cursor()
 
                 comando = 'SELECT min(p.convenio_id) id FROM facturacion_conveniospacienteingresos p WHERE "tipoDoc_id" = ' + "'" + str(tipoDocId.id) + "'" + ' AND documento_id = ' + "'" + str(documentoId.id) + "'" + ' AND "consecAdmision" = ' + "'" + str(ingresoPaciente) + "'"
@@ -557,7 +557,7 @@ def crearHistoriaClinica(request):
 
                 # Validacion si existe o No existe CABEZOTE
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",   password="123456")
 
                 curt = miConexiont.cursor()
                 comando = 'SELECT id FROM facturacion_liquidacion WHERE "tipoDoc_id" = ' + "'" + str(
@@ -575,7 +575,7 @@ def crearHistoriaClinica(request):
                 miConexiont.close()
                 if (cabezoteLiquidacion == []):
                     # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
-                    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                    user="postgres", password="123456")
                     curt = miConexiont.cursor()
                     comando = 'INSERT INTO facturacion_liquidacion ("sedesClinica_id", "tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(sede) + "'," +  "'" + str(
@@ -608,7 +608,7 @@ def crearHistoriaClinica(request):
 
                 # Aqui RUTINA busca consecutivo de liquidacion
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",        password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",        password="123456")
                 curt = miConexiont.cursor()
 
                 comando = 'SELECT (max(p.consecutivo) + 1) cons FROM facturacion_liquidaciondetalle p WHERE liquidacion_id = ' + liquidacionId
@@ -682,7 +682,7 @@ def crearHistoriaClinica(request):
                         codigoCupsId = Examenes.objects.filter(codigoCups=cups)
                         print ("codigoCupsId", codigoCupsId[0].id)
                      
-                        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                        user="postgres", password="123456")
 
                         curt = miConexiont.cursor()
@@ -744,7 +744,7 @@ def crearHistoriaClinica(request):
 
                         if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -765,7 +765,7 @@ def crearHistoriaClinica(request):
                             if hayAut != '':
 
 
-                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
@@ -788,7 +788,7 @@ def crearHistoriaClinica(request):
 
                             print ("Autorizacion Final = ", autorizacionId)
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",   user="postgres", password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",   user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
                             comando = 'INSERT INTO autorizaciones_autorizacionesdetalle ("estadoAutorizacion_id", "cantidadSolicitada", "cantidadAutorizada", "fechaRegistro", "estadoReg", autorizaciones_id, "usuarioRegistro_id", "examenes_id", cums_id, "tiposExamen_id", "valorSolicitado", "valorAutorizado")  VALUES (' + "'" + str(estadoAutorizacionId.id) + "'," + "'" + str(cantidad) + "'" + ' ,0, now(),' + "'" + str('A') + "','"  + str(autorizacionId) + "','" + str(usuarioRegistro)  + "'," +  "'"  + str(codigoCupsId[0].id) + "',null, " + "'" + str(tiposExamen_Id) + "'," + "'" + str(TotalTarifa)  + "'" +  ',null)'
@@ -811,7 +811,7 @@ def crearHistoriaClinica(request):
 
                         if (codigoCupsId[0].requiereAutorizacion == 'N'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                             curt = miConexiont.cursor()
                             comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro") VALUES (' + "'" +  str(consecLiquidacion)  + "','" + str(fechaRegistro) + "','" + str(cantidad) + "','"  + str(tarifaValor) + "','" + str(TotalTarifa)  + "','" + str('N') + "','" +  str(fechaRegistro) + "','" +  str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(codigoCupsId[0].id) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA')"
                             curt.execute(comando)
@@ -868,7 +868,7 @@ def crearHistoriaClinica(request):
 
 
 
-                        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                        user="postgres", password="123456")
 
                         curt = miConexiont.cursor()
@@ -919,7 +919,7 @@ def crearHistoriaClinica(request):
 
                         if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -940,7 +940,7 @@ def crearHistoriaClinica(request):
 
                             if hayAut != '':
 
-                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
@@ -961,7 +961,7 @@ def crearHistoriaClinica(request):
 
                             print("Autorizacion Final = ", autorizacionId)
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -977,7 +977,7 @@ def crearHistoriaClinica(request):
                     
                         if (codigoCupsId[0].requiereAutorizacion == 'N'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                             curt = miConexiont.cursor()
                             comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro") VALUES (' + "'" +  str(consecLiquidacion)  + "','" + str(fechaRegistro) + "','" + str(cantidad) + "','"  + str(tarifaValor) + "','" + str(TotalTarifa)  + "','" + str('N') + "','" +  str(fechaRegistro) + "','" +  str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(codigoCupsId[0].id) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA')"
                             curt.execute(comando)
@@ -1036,7 +1036,7 @@ def crearHistoriaClinica(request):
 
                         print ("cups no id = ",cups)
 
-                        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                        user="postgres", password="123456")
 
                         curt = miConexiont.cursor()
@@ -1089,7 +1089,7 @@ def crearHistoriaClinica(request):
 
                         if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -1110,7 +1110,7 @@ def crearHistoriaClinica(request):
 
                             if hayAut != '':
 
-                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
@@ -1130,7 +1130,7 @@ def crearHistoriaClinica(request):
 
                             print("Autorizacion Final = ", autorizacionId)
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -1149,7 +1149,7 @@ def crearHistoriaClinica(request):
 
                         if (codigoCupsId[0].requiereAutorizacion == 'N'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                             curt = miConexiont.cursor()
                             comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro") VALUES (' + "'" +  str(consecLiquidacion)  + "','" + str(fechaRegistro) + "','" + str(cantidad) + "','"  + str(tarifaValor) + "','" + str(TotalTarifa)  + "','" + str('N') + "','" +  str(fechaRegistro) + "','" +  str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(codigoCupsId[0].id) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA')"
                             curt.execute(comando)
@@ -1206,7 +1206,7 @@ def crearHistoriaClinica(request):
 
                         
 
-                          miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                          miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                          user="postgres", password="123456")
 
                           curt = miConexiont.cursor()
@@ -1249,7 +1249,7 @@ def crearHistoriaClinica(request):
 
                           if (codigoCupsId[0].requiereAutorizacion == 'S'):
 
-                              miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                              miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                              user="postgres", password="123456")
 
                               curt = miConexiont.cursor()
@@ -1269,7 +1269,7 @@ def crearHistoriaClinica(request):
 
                               if hayAut != '':
 
-                                  miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                  miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                                  user="postgres", password="123456")
 
                                   curt = miConexiont.cursor()
@@ -1289,7 +1289,7 @@ def crearHistoriaClinica(request):
 
                               print("Autorizacion Final = ", autorizacionId)
 
-                              miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                              miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                              user="postgres", password="123456")
 
                               curt = miConexiont.cursor()
@@ -1308,7 +1308,7 @@ def crearHistoriaClinica(request):
                       #
                           if (codigoCupsId[0].requiereAutorizacion == 'N'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                             curt = miConexiont.cursor()
                             comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro") VALUES (' + "'" +  str(consecLiquidacion)  + "','" + str(fechaRegistro) + "','" + str(cantidad) + "','"  + str(tarifaValor) + "','" + str(TotalTarifa)  + "','" + str('N') + "','" +  str(fechaRegistro) + "','" +  str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(codigoCupsId[0].id) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA')"
                             curt.execute(comando)
@@ -1636,7 +1636,7 @@ def crearHistoriaClinica(request):
                         ## Desde Aqui rutina de Facturacion
                         #
                      
-                        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                        user="postgres", password="123456")
 
                         curt = miConexiont.cursor()
@@ -1667,7 +1667,7 @@ def crearHistoriaClinica(request):
 
                         if (medicamentosId.requiereAutorizacion == 'S'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -1688,7 +1688,7 @@ def crearHistoriaClinica(request):
 
                             if hayAut != '':
 
-                                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                                user="postgres", password="123456")
 
                                 curt = miConexiont.cursor()
@@ -1709,7 +1709,7 @@ def crearHistoriaClinica(request):
 
                             print("Autorizacion Final = ", autorizacionId)
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
 
                             curt = miConexiont.cursor()
@@ -1750,7 +1750,7 @@ def crearHistoriaClinica(request):
 
                         if (medicamentosId.requiereAutorizacion == 'N'):
 
-                            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+                            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                             curt = miConexiont.cursor()
                             comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "cums_id",  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", "historiaMedicamento_id") VALUES (' + "'" +  str(consecLiquidacion)  + "','" + str(fechaRegistro) + "','" + str(cantidadMedicamento) + "','"  + str(tarifaValor) + "','" + str(TotalTarifa)  + "','" + str('N') + "','" +  str(fechaRegistro) + "','" +  str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(medicamentos) + "','" + str(usuarioRegistro) + "'," + liquidacionId + ",'SISTEMA',"  + "'" + str(i.id) + "'" + ')'
                             print("comando " , comando)
@@ -1801,7 +1801,7 @@ def crearHistoriaClinica(request):
 
                 print ("Voy a grabar el cabezote")
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",                                       password="123456")
                 curt = miConexiont.cursor()
                 comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(totalSuministros) + ',"totalProcedimientos" = ' + str(totalProcedimientos) + ', "totalCopagos" = ' + str(totalCopagos) + ' , "totalCuotaModeradora" = ' + str(totalCuotaModeradora) + ', anticipos = ' +  str(totalAnticipos) + ' ,"totalAbonos" = ' + str(totalAbonos) + ', "totalLiquidacion" = ' + str(totalLiquidacion) + ', "valorApagar" = ' + str(totalApagar)  + ', "totalRecibido" = ' + str(totalRecibido) + ' WHERE id =' + str(liquidacionId)
                 curt.execute(comando)
@@ -1813,7 +1813,7 @@ def crearHistoriaClinica(request):
                 #
                 if (salidaClinica=='S'):
 
-                    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",    password="123456")
+                    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",    password="123456")
                     cur3 = miConexion3.cursor()
                     comando = 'UPDATE admisiones_ingresos SET "salidaClinica" = ' + "'" + str(salidaClinica) + "'" + ', "dxSalida_id" = ' + "'" + str(diagnosticoIdSalida) + "'" + ', "medicoSalida_id" = ' + "'" + str(plantaId.id) + "'" + ', "especialidadesMedicosSalida_id" = ' + "'" + str(espMedico) + "'" +  ',"serviciosSalida_id" = "serviciosActual_id"  ' + ', "salidaMotivo_id" = ' + "'" + str(tiposSalidas) + "'," + ' "dxComplicacion_id" = ' + "'" + str(dxComplicacion) + "'" +  ' WHERE "tipoDoc_id" =  ' + "'" + str(tipoDocId.id) + "' and documento_id = " + "'" + str(documentoId.id) + "' AND consec = " + "'" + str(ingresoPaciente) + "'"
                     print(comando)
@@ -1958,7 +1958,7 @@ def crearHistoriaClinica(request):
                         miConexion3 = None
                         try:
 
-                            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",
+                            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",
                                                            user="postgres", password="123456")
                             cur3 = miConexion3.cursor()
 
@@ -2079,7 +2079,7 @@ def crearHistoriaClinica(request):
 
         # Combo Tipos Diagnostico
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2103,7 +2103,7 @@ def crearHistoriaClinica(request):
 
         # Combo Diagnostico
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2127,7 +2127,7 @@ def crearHistoriaClinica(request):
 
         # Combo Especialidades
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2151,7 +2151,7 @@ def crearHistoriaClinica(request):
 
         # Combo TiposFolio
 
-        #miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        #miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
         #                               password="123456")
         #curt = miConexiont.cursor()
 
@@ -2175,7 +2175,7 @@ def crearHistoriaClinica(request):
 
         # Combo Laboratorios
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2200,7 +2200,7 @@ def crearHistoriaClinica(request):
 
         # Combo Radiologia
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2244,7 +2244,7 @@ def crearHistoriaClinica(request):
 
         print(fila.documento)
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",   password="123456")
         curt = miConexiont.cursor()
         if (TipoIng == 'INGRESO'):
             comando = 'select  u."tipoDoc_id" , tip.nombre tipnombre, documento documentoPaciente, u.nombre nombre, case when genero = ' + "'" + str('M') + "'" + ' then ' + "'" + str("Masculino") + "'" + ' when genero= ' + "'" + str('F') + "'" + ' then ' + "'" + str('Femenino') + "'" + ' end as genero, cen.nombre as centro, tu.nombre as tipoUsuario,"fechaNacio", u.direccion direccion, u.telefono telefono from usuarios_usuarios u, usuarios_tiposUsuario tu, sitios_centros cen, usuarios_tiposDocumento tip where tip.id = u."tipoDoc_id"  AND u."tipoDoc_id" = ' +"'" + str(filaTipoDoc.id) + "'" + ' and u.documento = ' + "'" + str(fila.documento) + "'" + ' and u."tiposUsuario_id" = tu.id and u."centrosC_id" = cen.id'
@@ -2274,7 +2274,7 @@ def crearHistoriaClinica(request):
 
         # Combo DependenciasRealizado
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         # 3 = Consultorios Verificar
@@ -2299,7 +2299,7 @@ def crearHistoriaClinica(request):
 
         # Combo causasExterna
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2322,7 +2322,7 @@ def crearHistoriaClinica(request):
 
         # Combo Tiposantecedentes
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2347,7 +2347,7 @@ def crearHistoriaClinica(request):
 
         # Combo Terapias
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2374,7 +2374,7 @@ def crearHistoriaClinica(request):
 
         # Combo No Qx
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2400,7 +2400,7 @@ def crearHistoriaClinica(request):
 
         # Combo Antecedentes
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2424,7 +2424,7 @@ def crearHistoriaClinica(request):
 
         # Combo TipoInterconsulta
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2448,7 +2448,7 @@ def crearHistoriaClinica(request):
 
         # Combo Medicos
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2474,7 +2474,7 @@ def crearHistoriaClinica(request):
 
         # Combo RevisionSistemas
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2499,7 +2499,7 @@ def crearHistoriaClinica(request):
 
         # Combo Medicamentos
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2524,7 +2524,7 @@ def crearHistoriaClinica(request):
 
        # Combo UMedidaDosis
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2549,7 +2549,7 @@ def crearHistoriaClinica(request):
 
        # Combo formaFarma
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2574,7 +2574,7 @@ def crearHistoriaClinica(request):
 
        # Combo forfrecuencias Farmaceuticas
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2599,7 +2599,7 @@ def crearHistoriaClinica(request):
         # Combo Vias Administracion
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2623,7 +2623,7 @@ def crearHistoriaClinica(request):
         # Combo TiposSalidas
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",   password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT e.id ,e.nombre FROM clinico_TiposSalidas e'
         curt.execute(comando)
@@ -2650,7 +2650,7 @@ def crearHistoriaClinica(request):
         # Combo Dx Complicacion
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",   password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT e.id ,e.nombre FROM clinico_Diagnosticos e'
         curt.execute(comando)
@@ -2678,7 +2678,7 @@ def crearHistoriaClinica(request):
 
    	# Combo tiposAnestesia
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2703,7 +2703,7 @@ def crearHistoriaClinica(request):
 
    	# Combo tiposCirugia
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2727,7 +2727,7 @@ def crearHistoriaClinica(request):
 
 	# Combo diagnosticos
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2751,7 +2751,7 @@ def crearHistoriaClinica(request):
 
         # Combo ServiciosAdministrativos
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2804,7 +2804,7 @@ def load_dataClinico(request, data):
     # Combo Indicadores
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
     curt = miConexiont.cursor()
 
@@ -2830,7 +2830,7 @@ def load_dataClinico(request, data):
     ingresos = []
 
     # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",     password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",     password="123456")
     curx = miConexionx.cursor()
    
 
@@ -2878,7 +2878,7 @@ def PostConsultaHcli(request):
 
         # Abro Conexion
 
-        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",password="123456")
+        miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",password="123456")
         cur = miConexionx.cursor()
 
         if (llave[1].strip() == 'INGRESO'):

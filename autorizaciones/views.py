@@ -65,7 +65,7 @@ def load_dataAutorizaciones(request, data):
 
     # Combo Indicadores
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -93,7 +93,7 @@ def load_dataAutorizaciones(request, data):
 
     autorizaciones = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -147,7 +147,7 @@ def load_dataAutorizacionesDetalle(request, data):
 
     # Combo Indicadores
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -175,7 +175,7 @@ def load_dataAutorizacionesDetalle(request, data):
 
     autorizacionesDetalle = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -238,7 +238,7 @@ def ActualizarAutorizacionDetalle(request):
     print ("usuarioRegistro_id", usuarioRegistro_id)
     # ACTUALIZA DETALLE AUTORIZACION
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -274,7 +274,7 @@ def ActualizarAutorizacionDetalle(request):
 	# CREA CABEZOTE
 
         # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",                               user="postgres", password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",                               user="postgres", password="123456")
         curt = miConexiont.cursor()
         comando = 'INSERT INTO facturacion_liquidacion ("sedesClinica_id", "tipoDoc_id", documento_id, "consecAdmision", fecha, "totalCopagos", "totalCuotaModeradora", "totalProcedimientos" , "totalSuministros" , "totalLiquidacion", "valorApagar", anticipos, "fechaRegistro", "estadoRegistro", convenio_id,  "usuarioRegistro_id", "totalAbonos") VALUES (' + "'" + str(sede) + "'," +  "'" + str(datosHc.tipoDoc_id) + "','" + str(datosHc.documento_id) + "','" + str(datosHc.consecAdmision) + "','" + str(fechaRegistro) + "'," + '0,0,0,0,0,0,0,' + "'" + str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(null) + ',' + "'" + str(usuarioRegistro) + "',0) RETURNING id"
         curt.execute(comando)
@@ -287,7 +287,7 @@ def ActualizarAutorizacionDetalle(request):
     consecLiquidacion = (consecLiquidacionU['maximo']) + 1
 
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                   password="123456")
     curt = miConexiont.cursor()
 
@@ -337,7 +337,7 @@ def LeerDetalleAutorizacion(request):
 
     autorizacionDetalle = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 

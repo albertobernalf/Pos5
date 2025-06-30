@@ -57,7 +57,7 @@ def Load_dataProgramacionCirugia(request, data):
 
     programacionCirugias = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -110,7 +110,7 @@ def Load_dataSalasCirugia(request, data):
 
     salasCirugia = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -193,7 +193,7 @@ def CrearProgramacionCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         horarioSala = []
@@ -275,7 +275,7 @@ def Load_dataSolicitudCirugia(request, data):
 
     solicitudCirugias = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -326,7 +326,7 @@ def Load_dataIngresosCirugia(request, data):
 
     ingresosCirugia = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -372,7 +372,7 @@ def Load_dataDisponibilidadSala(request, data):
 
     disponibilidadCirugia = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -583,7 +583,7 @@ def CrearSolicitudCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
 
@@ -637,7 +637,7 @@ def Load_dataTraerProcedimientosCirugia(request, data):
 
     procedimientosCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -680,7 +680,7 @@ def Load_dataTraerProcedimientosInformeCirugia(request, data):
 
     procedimientosCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -722,7 +722,7 @@ def Load_dataTraerProcedimientosInformeXXCirugia(request, data):
 
     procedimientosCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -761,7 +761,7 @@ def Load_dataTraerParticipantesCirugia(request, data):
 
     participantesCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -797,7 +797,7 @@ def Load_dataTraerParticipantesInformeCirugia(request, data):
 
     participantesCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -834,7 +834,7 @@ def Load_dataTraerParticipantesInformeXXCirugia(request, data):
 
     participantesCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -876,7 +876,7 @@ def Load_dataMaterialCirugia(request, data):
 
     materialCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -919,7 +919,7 @@ def Load_dataMaterialInformeCirugia(request, data):
 
     materialCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -962,7 +962,7 @@ def Load_dataMaterialInformeXXCirugia(request, data):
 
     materialCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -1011,7 +1011,7 @@ def CrearProcedimientosCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuarioRegistro_id") VALUES (' + "'" + str(finalidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "')"
@@ -1076,7 +1076,7 @@ def CrearProcedimientosInformeCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_cirugiasprocedimientos (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, cups_id, "usuarioRegistro_id", cruento, incruento , "regionOperatoria_id", "viasDeAcceso_id") VALUES (' + "'" + str(finalidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(cups) + "','" + str(username_id) + "','" + str(cruento) + "','" + str(incruento) + "','" + str(regionesOperatorias)   + "','"  + str(viasDeAcceso) + "')"
@@ -1137,7 +1137,7 @@ def CrearParticipantesInformeCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_cirugiasparticipantes (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, "tipoHonorarios_id", "usuarioRegistro_id", medico_id,cups_id) VALUES (' + "'" + str(finalidadId) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(tipoHonorarios) + "','" + str(username_id) + "','" + str(medico) +  "'," + str(cupsParticipantesInforme) + ")"
@@ -1192,7 +1192,7 @@ def CrearParticipantesCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_cirugiasparticipantes (finalidad_id, "fechaRegistro", "estadoReg", cirugia_id, "tipoHonorarios_id", "usuarioRegistro_id", medico_id) VALUES (' + "'" + str(finalidadId) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(tipoHonorarios) + "','" + str(username_id) + "','" + str(medico) +  "')"
@@ -1232,7 +1232,7 @@ def BuscaProgramacionCirugia(request):
 
     # Combo estadosProgramacion
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1255,7 +1255,7 @@ def BuscaProgramacionCirugia(request):
 
     programacionCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -1311,7 +1311,7 @@ def CrearMaterialCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_cirugiasmaterialQx (cantidad, "fechaRegistro", "estadoReg", cirugia_id, suministro_id, "usuarioRegistro_id") VALUES (' + "'" + str(cantidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(suministro) + "','" + str(username_id) + "')"
@@ -1367,7 +1367,7 @@ def CrearMaterialInformeCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_cirugiasmaterialQx (cantidad, "fechaRegistro", "estadoReg", cirugia_id, suministro_id, "usuarioRegistro_id", "valorLiquidacion") VALUES (' + "'" + str(cantidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(suministro) + "','" + str(username_id) + "','" +  str(valorLiquidacion) + "')"
@@ -1409,7 +1409,7 @@ def BorraProcedimientosInformeCirugia(request):
     try:
 
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cur3 = miConexion3.cursor()
 
@@ -1451,7 +1451,7 @@ def BorraParticipanteInformeCirugia(request):
     try:
 
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cur3 = miConexion3.cursor()
 
@@ -1490,7 +1490,7 @@ def BorraMaterialInformeCirugia(request):
     try:
 
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cur3 = miConexion3.cursor()
 
@@ -1596,7 +1596,7 @@ def CrearAdicionQx(request):
     miConexion3 = None
     try:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
 
@@ -1646,7 +1646,7 @@ def Load_dataHojaDeGastoCirugia(request, data):
 
     hojaDeGastoCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -1689,7 +1689,7 @@ def Load_dataHojaDeGastoXXCirugia(request, data):
 
     hojaDeGastoCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -1737,7 +1737,7 @@ def CrearHojaDeGastoCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO cirugia_hojasdegastos (cantidad, "fechaRegistro", "estadoReg", cirugia_id, suministro_id, "usuarioRegistro_id") VALUES (' + "'" + str(cantidad) + "','" + str(fechaRegistro) + "','" + str(estadoReg) + "','" + str(cirugiaId) + "','"  + str(suministro) + "','" + str(username_id) + "')"
@@ -1777,7 +1777,7 @@ def BorraHojaDeGastoCirugia(request):
     try:
 
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cur3 = miConexion3.cursor()
 
@@ -1816,7 +1816,7 @@ def BuscaAdicionarQx(request):
 
     adicionarQx = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -1885,7 +1885,7 @@ def GuardarEstadoProgramacionCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cur3 = miConexion3.cursor()
 
@@ -1939,7 +1939,7 @@ def GuardarEstadoCirugia(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         cur3 = miConexion3.cursor()
 
@@ -1994,7 +1994,7 @@ def GenerarLiquidacionCirugia(request):
 
     # Busco convenio del paciente
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -2047,7 +2047,7 @@ def GenerarLiquidacionCirugia(request):
         miConexion3 = None
         try:
             print("Entre por liquiacion ISS")
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
 
@@ -2398,7 +2398,7 @@ def GenerarLiquidacionCirugia(request):
         miConexion3 = None
         try:
             print("Entre por liquiacion SOAT")
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
 
@@ -2796,7 +2796,7 @@ def GenerarLiquidacionCirugia(request):
         miConexion3 = None
         try:
             print("Entre por liquiacion PARTICULAR")
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
 
@@ -2853,7 +2853,7 @@ def BuscarProcedimientosDeCirugia(request):
     cupsParticipantesInforme = []
     cupsParticipantesInforme.append({'id': '', 'nombre': ''})
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -2891,7 +2891,7 @@ def TraerInformacionDeCirugia(request):
     informacionDeCirugia = []
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -2925,7 +2925,7 @@ def TraerEstadoCirugia(request):
 
     registroCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -2958,7 +2958,7 @@ def TraerEstadoProgramacionCirugia(request):
 
     registroProgramacionCirugia = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 

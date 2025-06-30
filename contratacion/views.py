@@ -59,7 +59,7 @@ def load_dataConvenios(request, data):
     convenios = []
 
    
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     #detalle = 'select conv.id id, emp.nombre empresa, emp.id empresa_id,  conv.nombre nombreConvenio, conv.descripcion,  conv."vigenciaDesde" vigenciaDesde, conv."vigenciaHasta" vigenciaHasta, conv."tarifariosDescripcionProc_id" tarifariosDescripcionProc_id, des1.descripcion tarifariosDescripcionProc,  conv."tarifariosDescripcionSum_id" tarifariosDescripcionSum_id, des2.descripcion tarifariosDescripcionSum ,  conv."tarifariosDescripcionHono_id" tarifariosDescripcionHono_id, des3.descripcion tarifariosDescripcionHono  from contratacion_convenios conv, facturacion_empresas emp , tarifarios_TarifariosDescripcion des1 , tarifarios_TarifariosDescripcion des2, tarifarios_TarifariosDescripcion des3 WHERE emp.id = conv.empresa_id AND conv."tarifariosDescripcionProc_id" = des1.id AND conv."tarifariosDescripcionSum_id" = des2.id AND conv."tarifariosDescripcionHono_id" = des3.id ORDER BY conv.nombre'
@@ -104,7 +104,7 @@ def TraerConvenio(request):
 
     convenio = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -255,7 +255,7 @@ def EditarGuardarConvenios(request):
     miConexiont = None
     try:
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
         curt = miConexiont.cursor()
 
@@ -406,7 +406,7 @@ def CrearGuardarConvenios(request):
     try:
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
         curt = miConexiont.cursor()
 
@@ -473,7 +473,7 @@ def PostConsultaConvenios(request):
     # Combo sEmpresas
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     comando = "SELECT c.id id,c.nombre nombre FROM facturacion_empresas c"
@@ -498,7 +498,7 @@ def PostConsultaConvenios(request):
     # Combo Tipos Tarifa
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     comando = "SELECT c.id id,c.nombre nombre FROM tarifas_TiposTarifa c"
@@ -521,7 +521,7 @@ def PostConsultaConvenios(request):
     # Combo Tipos Honorarios
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     comando = "SELECT c.id id,c.nombre nombre FROM tarifas_TiposHonorarios c"
@@ -545,7 +545,7 @@ def PostConsultaConvenios(request):
     # Combo Cups
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     comando = 'SELECT c.id id,c.nombre ||' + "'" + str(' ') + "'" +  '||c."codigoCups" nombre FROM clinico_examenes c order by c.nombre'
@@ -571,7 +571,7 @@ def PostConsultaConvenios(request):
     # Combo Suministras
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     #comando = 'SELECT c.id id, c.nombre||' + "' '" +  '||c.cums nombre FROM facturacion_suministros c order by c.nombre'
@@ -598,7 +598,7 @@ def PostConsultaConvenios(request):
     # Combo Conceptos
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     comando = 'SELECT c.id id, c.nombre nombre FROM facturacion_conceptos c order by c.nombre'
@@ -623,7 +623,7 @@ def PostConsultaConvenios(request):
     # Combo Conceptosa
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     comando = 'SELECT c.id id, c.nombre nombre FROM facturacion_conceptos c order by c.nombre'
@@ -653,7 +653,7 @@ def PostConsultaConvenios(request):
         conveniosD = []
 
     
-        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
         curx = miConexionx.cursor()
    
         detalle = 'select conv.id id,conv.nombre nombre, conv."vigenciaDesde" vigenciaDesde, conv."vigenciaHasta" vigenciaHasta, conv.empresa_id  empresa,   "porcTarifario",  "porcSuministros",  "valorOxigeno" ,  "porcEsterilizacion",  "porcMaterial" ,  hospitalario ,  urgencias ,  ambulatorio ,  "consultaExterna" ,  copago ,  moderadora ,   tipofactura ,  agrupada ,  "facturacionSuministros" ,  "facturacionCups" ,  "cuentaContable" ,  requisitos  from contratacion_convenios conv, facturacion_empresas emp WHERE emp.id = conv.empresa_id and  conv.id = ' + "'" + str(Post_id) + "'"
@@ -739,7 +739,7 @@ def load_dataConveniosProcedimientos(request, data):
 
     convenios = []
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     detalle = 'select convProc.id procId, conv.id id, convProc."codigoHomologado" codigoHomologado, convProc.valor valor,  convProc.cups_id cupsId ,exa.nombre cupsNombre, tipostar.nombre tarifa FROM contratacion_convenios conv , contratacion_conveniosprocedimientos convProc, tarifas_tipostarifa tipostar, clinico_examenes exa WHERE conv.id = convProc.convenio_id and convProc."tipoTarifa_id" = tipostar.id and convProc.cups_id = exa.id and conv.id = ' + "'" + str(convenioId) + "'"
@@ -799,7 +799,7 @@ def GuardarConveniosProcedimientos( request):
 
      
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
         curt = miConexiont.cursor()
         comando = 'INSERT INTO contratacion_conveniosprocedimientos ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, cups_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) values (' + "'" + str(codigoHomologado) + "'," + "'" + str(valor) + "'," + "'" + str(fechaRegistro) +"'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + "'" + str(cups) + "'," + "'" + str(tiposTarifa) + "'," + "'" + str(username_id) + "',"  + str(conceptos) + ")"
 
@@ -882,7 +882,7 @@ def GuardarConvenio( request):
         miConexiont = None
         try:
 
-            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
             curt = miConexiont.cursor()
             comando = 'INSERT INTO contratacion_convenios (nombre,empresa_id,"vigenciaDesde","vigenciaHasta","porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias,"consultaExterna",copago, moderadora, "tipofactura",agrupada,"facturacionSuministros","facturacionCups", "cuentaContable", requisitos,"fechaRegistro","estadoReg","usuarioRegistro_id") VALUES (' + "'" + str(nombre) + "'," + "'" + str(empresa) + "'," + "'" + str(vigenciaDesde) + "'," + "'" + str(vigenciaHasta) + "',"  +  str(porcTarifario) + "," + str(porcSuministros) + "," + str(valorOxigeno) + "," + str(porcEsterilizacion) + ","  + str(porcMaterial) + "," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipoFactura) + "'," + "'" + str(agrupada) + "'," + "'" + str(facturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "'," + "'" + str(requisitos) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(username_id) + "')"
             print(comando)
@@ -976,7 +976,7 @@ def GuardarConvenio1( request):
         miConexiont = None
         try:
 
-            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
             curt = miConexiont.cursor()
 
             #comando = 'UPDATE contratacion_convenios (nombre,empresa_id,"vigenciaDesde","vigenciaHasta",tarifa, "porcTarifario", "porcSuministros", "valorOxigeno", "porcEsterilizacion", "porcMaterial",hospitalario, urgencias,"consultaExterna",copago, moderadora, "tipoFactura",agrupada,"facturacionSuministros","facturacionCups", "cuentaContable", requisitos,"fechaRegistro",estadoReg,"usuarioRegistro_id") VALUES (' + "'" + str(nombre) + "'," + "'" + str(empresa) + "'," + "'" + str(vigenciaDesde) + "'," + "'" + str(vigenciaHasta) + "'," + "'" + str(tarifa) + "'," + "'" + str(porcTarifario) + "'," + "'" + str(porcSuministros) + "'," + "'" + str(valorOxigeno) + "'," + "'" + str(porcEsterilizacion) + "'," + "'" + str(porcMaterial) + "'," + "'" + str(hospitalario) + "'," + "'" + str(urgencias) + "'," + "'" + str(consultaExterna) + "'," + "'" + str(copago) + "'," + "'" + str(moderadora) + "'," + "'" + str(tipoFactura) + "'," + "'" + str(agrupada) + "'," + "'" + str(acturacionSuministros) + "'," + "'" + str(facturacionCups) + "'," + "'" + str(cuentaContable) + "'," + "'" + str(requisitos) + "'," + "'" + str(fechaRegistro) + "'," + "'" + str(estadoReg) + "'," + "'" + str(username_id) + "'"
@@ -1031,7 +1031,7 @@ def GrabarTarifa( request):
         try:
 
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
                 if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' ):
@@ -1147,7 +1147,7 @@ def load_dataConveniosSuministros(request, data):
     conveniosS = []
 
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     detalle = 'select convSum.id sumId, conv.id id, convSum."codigoHomologado" codigoHomologado, convSum.valor valor,  convSum.suministro_id suministroId ,exa.nombre suministroNombre, tipostar.nombre tarifa FROM contratacion_convenios conv , contratacion_conveniossuministros convSum, tarifas_tipostarifa tipostar, facturacion_suministros exa WHERE conv.id = convSum.convenio_id and convSum."tipoTarifa_id" = tipostar.id and convSum.suministro_id = exa.id and conv.id = ' + "'" + str(convenioId) + "'"
@@ -1204,7 +1204,7 @@ def GuardarConveniosSuministros( request):
         miConexion3 = None
         try:
 
-            miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+            miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
             curt = miConexiont.cursor()
             comando = 'INSERT INTO contratacion_conveniossuministros ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id) values (' + "'" + str(codigoHomologado) + "'," + "'" + str(valor) + "'," + "'" + str(fechaRegistro) +"'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + "'" + str(suministro) + "'," + "'" + str(tiposTarifa) + "'," + "'" + str(username_id) + "',"  + str(conceptos) + ")"
             print(comando)
@@ -1257,7 +1257,7 @@ def GrabarSuministro( request):
         miConexion3 = None
         try:
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
                 if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' ):
@@ -1390,7 +1390,7 @@ def GrabarHonorarios( request):
         accion = request.POST["accion"]
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
         curt = miConexiont.cursor()
 
         if (accion == 'Crear' and porcentage != 0 and conceptos == '' and valorVariacion == '0' and honorarios == '' and cups == ''):
@@ -1502,7 +1502,7 @@ def load_dataConveniosHonorarios(request, data):
     conveniosS = []
 
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     detalle = 'select convHon.id sumId, conv.id id, convHon."codigoHomologado" codigoHomologado, convHon.valor valor,  convHon.suministro_id suministroId ,exa.nombre suministroNombre, tipostar.nombre tarifa FROM contratacion_convenios conv , contratacion_ConveniosLiquidacionTarifasHonorarios convHon, tarifas_tipostarifa tipostar, facturacion_suministros exa WHERE conv.id = convHon.convenio_id and convHon."tipoTarifa_id" = tipostar.id and convHon.suministro_id = exa.id and conv.id = ' + "'" + str(convenioId) + "'"
@@ -1564,7 +1564,7 @@ def GuardarConveniosHonorarios( request):
 
      
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
         curt = miConexiont.cursor()
         comando = 'INSERT INTO contratacion_ConveniosLiquidacionTarifasHonorarios ("codigoHomologado", valor, "fechaRegistro", "estadoReg", convenio_id, suministro_id, "tipoTarifa_id", "usuarioRegistro_id", concepto_id, "tipoHonorario_id", cups_id) values (' + "'" + str(codigoHomologado) + "'," + "'" + str(valor) + "'," + "'" + str(fechaRegistro) +"'," + "'" + str(estadoReg) + "'," + "'" + str(convenioId) + "'," + "'" + str(suministro) + "'," + "'" + str(tiposTarifa) + "'," + "'" + str(username_id) + "',"  + str(conceptos) + "," + honorarios + "," + cups + ")"
 
@@ -1611,7 +1611,7 @@ def Load_dataTarifariosProcedimientos1(request, data):
 
 
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
 
 
@@ -1665,7 +1665,7 @@ def Load_datatarifariosDescripcionProcedimientos1(request, data):
 
 
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     detalle = 'select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like ('  + "'%PROCE%')" + '  order by tarprod.nombre '
@@ -1717,7 +1717,7 @@ def Load_dataTarifariosSuministros1(request, data):
 
     tarifariosSuministros = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -1768,7 +1768,7 @@ def Load_datatarifariosDescripcionSuministros1(request, data):
 
     tarifariosDescripcionSuministros = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 

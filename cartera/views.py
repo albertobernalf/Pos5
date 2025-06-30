@@ -65,7 +65,7 @@ def load_dataGlosas(request, data):
 
     # Combo Indicadores
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -93,7 +93,7 @@ def load_dataGlosas(request, data):
 
     glosas = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -168,7 +168,7 @@ def GuardaGlosas(request):
 
 
     miConexion3 = None
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
     try:
@@ -210,7 +210,7 @@ def Load_tablaGlosasProcedimientos(request, data):
 
     procedimientosRips = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -263,7 +263,7 @@ def Load_tablaGlosasTransaccion(request, data):
 
     transaccionRips = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -304,7 +304,7 @@ def Load_tablaGlosasUsuarios(request, data):
 
     usuariosRips = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -349,7 +349,7 @@ def Load_tablaGlosasMedicamentos(request, data):
 
     medicamentosRips = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -393,7 +393,7 @@ def Load_tablaGlosasDetalle(request, data):
 
     glosasDetalle = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -433,7 +433,7 @@ def ConsultaGlosasDetalle(request):
 
     medicamentosRipsUnRegistro = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -592,7 +592,7 @@ def GuardarGlosasDetalle(request):
     miConexion3 = None
     try:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
 
             if tipoGloDet == 'MEDICAMENTOS' :
@@ -962,7 +962,7 @@ def GuardarGlosasDetalle(request):
 
     glosa = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -1021,7 +1021,7 @@ def GuardaGlosasEstados(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'UPDATE cartera_glosas SET "tipoGlosa_id"= ' +"'" + str(tipoGlosa) + "'," + ' "estadoRadicacion_id" = ' + "'" +str(estadoRadicacion) + "'," + '"estadoRecepcion_id" = ' + "'" + str(estadoRecepcion) + "'" + '   WHERE id = ' + str(glosaId)
@@ -1062,7 +1062,7 @@ def Load_tablaGlosasHospitalizacion(request, data):
 
     hospitalizacionGlosas = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -1105,7 +1105,7 @@ def Load_tablaGlosasUrgencias(request, data):
 
     urgenciasGlosas = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 

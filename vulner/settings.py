@@ -26,7 +26,7 @@ SECRET_KEY = 'fab%(kxkg02cu$elh-*5w0l)6yu$basu4rm41^^z@ct-9vrv1+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '192.168.5.130', '175.16.0.100','127.0.0.1','172.16.0.224','192.168.79.133','192.168.0.224']
+ALLOWED_HOSTS = ['localhost', '192.168.5.130', '175.16.0.100','127.0.0.1','172.16.0.224','192.168.79.133','192.168.0.224','192.168.1.6']
 
 
 # Application definition
@@ -82,7 +82,7 @@ ROOT_URLCONF = 'vulner.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['C:\\EntornosPython\\Pos3\\vulner\\templates\\'],
+        'DIRS': ['C:\\EntornosPython\\Pos5\\vulner\\templates\\'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -107,7 +107,7 @@ DATABASES = {
         'NAME': 'vulner2',
         'USER': 'postgres',
         'PASSWORD': '123456',
-        'HOST': '192.168.79.133',
+        'HOST': '192.168.37.133',
         'PORT': '5432',
     }
 }
@@ -156,6 +156,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-#STATIC_ROOT = "c:\\EntornosPython\\practicaPos3\\vulner\\static"
+#STATIC_ROOT = "c:\\EntornosPython\\practicaPos5\\vulner\\static"
 
 CRISPY_TEMPLATE_PACK ='bootstrap4'

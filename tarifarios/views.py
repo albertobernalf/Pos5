@@ -71,7 +71,7 @@ def Load_dataTarifariosProcedimientos(request, data):
 
 
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     #detalle = 'select id, "codigoHomologado", "colValorBase", "colValor1", "colValor2", "colValor3", "colValor4", "colValor5", "colValor6", "colValor7", "colValor8", "colValor9", "colValor10", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id, "tiposTarifa_id", "usuarioRegistro_id" from tarifarios_tarifariosprocedimientos'
@@ -126,7 +126,7 @@ def Load_datatarifariosDescripcionProcedimientos(request, data):
 
 
     
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curx = miConexionx.cursor()
    
     detalle = 'select tiptar.id  id,tarprod.nombre tipo, tiptar.nombre tipoTarifa, tardes.columna columna, tardes.descripcion descripcion from tarifarios_tipostarifaProducto tarprod, tarifarios_tipostarifa tiptar, tarifarios_TarifariosDescripcion tardes where tarprod.id = tiptar."tiposTarifaProducto_id" and tiptar.id = tardes."tiposTarifa_id"  and tarprod.nombre like ('  + "'%PROCE%')" + '  order by tarprod.nombre '
@@ -181,7 +181,7 @@ def GuardarDescripcionProcedimientos(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id","serviciosAdministrativos_id") VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "'," + str(serviciosAdministrativos) + ")"
@@ -233,7 +233,7 @@ def CrearTarifarioProcedimientos(request):
     miConexion3 = None
     try:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
 
@@ -316,7 +316,7 @@ def CrearItemTarifario(request):
 
     miConexion3 = None
     try:
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO tarifarios_tarifariosprocedimientos ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCups_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id","serviciosAdministrativos_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCupsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "'," + str(serviciosAdministrativos_id) + ")"
@@ -418,7 +418,7 @@ def AplicarTarifas(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
         cur3.execute(comando)
         miConexion3.commit()
@@ -534,7 +534,7 @@ def GuardarEditarTarifarioProcedimientos(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'UPDATE tarifarios_tarifariosprocedimientos SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
@@ -570,7 +570,7 @@ def TraerTarifarioProcedimientos(request):
 
     tarifariosProcedimientosDetalle = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 
@@ -625,7 +625,7 @@ def Load_dataTarifariosSuministros(request, data):
 
     tarifariosSuministros = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -676,7 +676,7 @@ def Load_datatarifariosDescripcionSuministros(request, data):
 
     tarifariosDescripcionSuministros = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -732,7 +732,7 @@ def CrearTarifarioSuministros(request):
     miConexion3 = None
     try:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
 
@@ -797,7 +797,7 @@ def Load_datatarifariosDescripcionSuministros(request, data):
 
     tarifariosDescripcionSuministros = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -849,7 +849,7 @@ def GuardarDescripcionSuministros(request):
     fechaRegistro = datetime.datetime.now()
 
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
     cur3 = miConexion3.cursor()
 
     comando = 'INSERT INTO tarifarios_tarifariosDescripcion (columna, descripcion, "fechaRegistro", "estadoReg", "tiposTarifa_id", "serviciosAdministrativos_id" ) VALUES (' + "'" + str(columna) + "'," +   "'" + str(descripcion) + "',"  "'" + str(fechaRegistro) + "',"  "'" + str(estadoReg) + "',"  "'" + str(tiposTarifa_id) + "'," + str(serviciosAdministrativos_id)  + "')"
@@ -908,7 +908,7 @@ def AplicarTarifasSuministros(request):
     miConexion3 = None
     try:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
 
             print ("Comenzamos")
@@ -990,7 +990,7 @@ def CrearItemTarifarioSuministros(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO tarifarios_tarifariossuministros ("codigoHomologado", "colValorBase", "fechaRegistro", "estadoReg", "codigoCum_id", concepto_id , "tiposTarifa_id", "usuarioRegistro_id","serviciosAdministrativos_id") VALUES ( ' + "'" + str(codigoHomologadoItem) + "'," + "'" + str( colValorBaseItem) + "',"  + "'" + str( fechaRegistro) + "'," + "'" + str( estadoReg) + "'," + "'" + str( codigoCumsItem_id) + "'," + "'" + str( conceptoId.id) + "',"  + "'" + str( tiposTarifaItem_id) + "'," + "'" + str( username_id) + "'," + str(serviciosAdministrativos_id)   + ")"
@@ -1119,7 +1119,7 @@ def GuardarEditarTarifarioSuministros(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'UPDATE tarifarios_tarifariossuministros SET "codigoHomologado" =' + str(codigoHomologadoEditar ) +  ', "colValorBase" =' + str(colValorBaseEditar ) + ',"colValor1" =' + str(colValor1Editar ) + "," + '"colValor2" =' + str(colValor2Editar )  + ', "colValor3" ='  + str(colValor3Editar )  + ',"colValor4" =' + str(colValor4Editar )  + ',"colValor5" =' + str(colValor5Editar )  + ',"colValor6" =' + str(colValor6Editar ) + ',"colValor7" =' + str(colValor7Editar ) + ',"colValor8" =' + str(colValor8Editar )  + ',"colValor9" =' + str(colValor9Editar )  + ',"colValor10" =' + str(colValor10Editar )  + ',"usuarioRegistro_id" =' + "'" + str(username_id ) + "'" + '  WHERE id=  ' + "'" + str(post_id) + "'"
@@ -1153,7 +1153,7 @@ def TraerTarifarioSuministros(request):
 
     tarifariosSuministrosDetalle = []
 
-    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur3 = miConexion3.cursor()
 

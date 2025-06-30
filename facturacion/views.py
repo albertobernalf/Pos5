@@ -62,7 +62,7 @@ def load_dataLiquidacion(request, data):
 
     # Combo Indicadores
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
     curt = miConexiont.cursor()
 
@@ -87,7 +87,7 @@ def load_dataLiquidacion(request, data):
 
     liquidacion = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",     password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",     password="123456")
     curx = miConexionx.cursor()
    
 
@@ -134,7 +134,7 @@ def PostConsultaLiquidacion(request):
 
     # Combo TiposPagos
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -160,7 +160,7 @@ def PostConsultaLiquidacion(request):
 
     # Combo FormasPago
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -184,7 +184,7 @@ def PostConsultaLiquidacion(request):
 
     # Combo Cups
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -209,7 +209,7 @@ def PostConsultaLiquidacion(request):
 
     # Combo Suministros
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -269,7 +269,7 @@ def PostConsultaLiquidacion(request):
 
     # Validacion si existe o No existe CABEZOTE
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
 
     curt = miConexiont.cursor()
 
@@ -318,7 +318,7 @@ def PostConsultaLiquidacion(request):
                 # Si no existe liquidacion CABEZOTE se debe crear con los totales, abonos, anticipos, procedimiento, suministros etc
 
 
-                miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432",       user="postgres", password="123456")
+                miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432",       user="postgres", password="123456")
                 curt = miConexiont.cursor()
 
                 if (llave[0] == 'INGRESO'  and convenioId == '0') :
@@ -383,7 +383,7 @@ def PostConsultaLiquidacion(request):
 
         # Abro Conexion
 
-        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",password="123456")
+        miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",password="123456")
         cur = miConexionx.cursor()
 
         if llave[0] == 'INGRESO':	
@@ -565,7 +565,7 @@ def load_dataLiquidacionDetalle(request, data):
 
     # Abro Conexion para la Liquidacion Detalle
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur = miConexionx.cursor()
 
@@ -612,7 +612,7 @@ def PostConsultaLiquidacionDetalle(request):
 
     # Combo Cups
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -638,7 +638,7 @@ def PostConsultaLiquidacionDetalle(request):
     # Combo Suministros
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -663,7 +663,7 @@ def PostConsultaLiquidacionDetalle(request):
     # Aqui RUTINA Leer el registro liquidacionDetalle
 
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur = miConexionx.cursor()
 
@@ -742,7 +742,7 @@ def GuardaAbonosFacturacion(request):
     miConexion3 = None
     try:
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
             cur3 = miConexion3.cursor()
             comando = 'insert into cartera_Pagos ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg", saldo, "totalAplicado", "valorEnCurso") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consecAdmision) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") +  "','" + str(valor) + "',0,0);"
             print(comando)
@@ -753,7 +753,7 @@ def GuardaAbonosFacturacion(request):
 
             # Actualizo el total recibido
 
-            miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+            miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                            password="123456")
             cur3 = miConexion3.cursor()
             comando = 'UPDATE  facturacion_liquidacion SET "totalRecibido" = "anticipos" +  "totalAbonos" + "totalCuotaModeradora" +  "totalCopagos"  WHERE id = ' + "'" + str(liquidacionId) + "'"
@@ -800,7 +800,7 @@ def PostDeleteAbonosFacturacion(request):
 
 
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'UPDATE cartera_Pagos SET "estadoReg" = ' + "'" + str('N') + "' WHERE id =  " + id
@@ -865,7 +865,7 @@ def GuardarLiquidacionDetalle(request):
     # Aqui RUTINA busca consecutivo de liquidacion
 
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",        password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",        password="123456")
     curt = miConexiont.cursor()
 
     comando = 'SELECT COALESCE(max(p.consecutivo),0) + 1 cons FROM facturacion_liquidaciondetalle p WHERE liquidacion_id = ' + liquidacionId
@@ -894,7 +894,7 @@ def GuardarLiquidacionDetalle(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'INSERT INTO facturacion_liquidaciondetalle (consecutivo,fecha, cantidad, "valorUnitario", "valorTotal",cirugia,"fechaCrea", "fechaRegistro", "estadoRegistro", "examen_id", cums_id,  "usuarioRegistro_id", liquidacion_id, "tipoRegistro", observaciones) VALUES (' + "'" +  str(consecLiquidacion)  + "','" + str(fechaRegistro) + "','" + str(cantidad) + "','"  + str(valorUnitario) + "','" + str(valorTotal)  + "','" + str('N') + "','" +  str(fechaRegistro) + "','" +  str(fechaRegistro) + "','" + str(estadoReg) + "'," + str(cups) + "," + str(suministros) +   ",'"  + str(username_id) + "'," + liquidacionId + ",'MANUAL'," + "'"  + str(observaciones) + "')"
@@ -1000,7 +1000,7 @@ def PostDeleteLiquidacionDetalle(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'UPDATE facturacion_liquidaciondetalle SET "estadoRegistro" = ' + "'" + str('N') + "' WHERE id =  " + id
@@ -1106,7 +1106,7 @@ def EditarGuardarLiquidacionDetalle(request):
     try:
 
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
         #comando = 'insert into facturacion_liquidacionDetalle ("fecha", "tipoDoc_id" , documento_id, consec,  "tipoPago_id" , "formaPago_id", valor, descripcion ,"fechaRegistro","estadoReg") values ('  + "'" + str(fechaRegistro) + "'," +  "'" + str(registroId.tipoDoc_id) + "'" + ' , ' + "'" + str(registroId.documento_id) + "'" + ', ' + "'" + str(registroId.consec) + "'" + '  , ' + "'" + str(tipoPago) + "'" + '  , ' + "'" + str(formaPago) + "'" + ', ' + "'" + str(valor) + "',"   + "'" + str(descripcion) + "','"   + str(fechaRegistro) + "'," + "'" +  str("A") + "');"
         comando = 'UPDATE facturacion_liquidaciondetalle SET fecha = ' + "'" + str(fechaRegistro) + "', observaciones = " + "'" +  str(observaciones) + "', cantidad = "  + str(cantidad) +  ',"valorUnitario" = ' + str(valorUnitario) + ', "valorTotal" = '  +      str(valorTotal) + ',"fechaCrea" = '  + "'" + str(fechaRegistro) + "'" + ',"estadoRegistro" = ' + "'" + str(estadoReg) + "'" + ',"examen_id" = ' + str(cups) +  ', cums_id = ' + str(suministros) +  ', "usuarioRegistro_id" = ' + "'" + str(username_id) + "', liquidacion_id = " + str(registroId.liquidacion_id) + ', "tipoRegistro" = ' + "'" + str(tipoRegistro) + "' WHERE id = " + str(liquidacionDetalleId)
@@ -1195,7 +1195,7 @@ def load_dataAbonosFacturacion(request, data):
 
     abonos  = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curx = miConexionx.cursor()
 
@@ -1284,7 +1284,7 @@ def FacturarCuenta(request):
 
     miConexion3 = None
     try:
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",   password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",   password="123456")
         cur3 = miConexion3.cursor()
 
         if (ingresoId.serviciosIng_id != servicioAmb.id and tipoFactura == 'FACTURA') :
@@ -1464,7 +1464,7 @@ def load_dataFacturacion(request, data):
 
     facturacion = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",     password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",     password="123456")
     curx = miConexionx.cursor()
 
     print ("bandera = " , bandera)
@@ -1509,7 +1509,7 @@ def PostConsultaFacturacion(request):
 
     # Abro Conexion
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",password="123456")
     cur = miConexionx.cursor()
 
     comando = 'select fac.id id, fac.id factura, fac."fechaFactura" fechaFactura, tip.nombre tipoDoc, documento_id documento, usu.nombre paciente, fac."consecAdmision" consecAdmision, conv.nombre nombreConvenio FROM facturacion_facturacion fac, contratacion_convenios conv, usuarios_usuarios usu, usuarios_tiposdocumento tip where fac.id = ' + "'" + str(Post_id) + "'" + '  AND  fac.convenio_id = conv.id and usu.id = fac.documento_id  and fac."tipoDoc_id" = usu."tipoDoc_id"   AND tip.id = fac."tipoDoc_id" AND fac.documento_id = usu.id  AND conv.id = fac.convenio_id '
@@ -1551,7 +1551,7 @@ def AnularFactura(request):
     miConexion3 = None
     try:
 
-        miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+        miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
         cur3 = miConexion3.cursor()
 
         comando = 'UPDATE facturacion_facturacion SET "estadoReg" = ' + "'" + str('N') + "' WHERE id =  " + str(facturacionId )
@@ -1595,7 +1595,7 @@ def ReFacturar(request):
     miConexion3 = None
     try:
 
-                miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+                miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
                 cur3 = miConexion3.cursor()
 
                 comando = 'UPDATE facturacion_facturacion SET "estadoReg" = ' + "'" + str('R') + "'" + ', "usuarioAnula_id" = ' + "'" + str(usuarioRegistro) + "'" +  ', "usuarioRegistro_id" = ' + "'" + str(usuarioRegistro) + "'" +  ', "fechaRegistro" = ' + "'" + str(fechaRegistro) + "'" + ' , "fechaAnulacion" = ' + "'" + str(fechaRegistro) + "'" +  ' WHERE id =  ' + facturacionId
@@ -1908,7 +1908,7 @@ def TrasladarConvenio(request):
     try:
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'UPDATE facturacion_liquidacion SET "totalSuministros" = ' + str(
@@ -1947,7 +1947,7 @@ def BuscoAbono(request):
 
     # Combo TiposPagos
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1972,7 +1972,7 @@ def BuscoAbono(request):
 
     # Combo FormasPago
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1995,7 +1995,7 @@ def BuscoAbono(request):
 
     # Abro Conexion
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",password="123456")
     cur = miConexionx.cursor()
 
     comando = 'select pag.id id, pag.fecha fecha, pag.consec consec, pag.valor valor , pag.descripcion descripcion, pag."estadoReg" estadoReg, pag."tipoPago_id"  tipoPago_id, pag."formaPago_id" formaPago_id,  pag.saldo saldo, pag."totalAplicado" totalAplicado, pag."valorEnCurso" valorEnCurso FROM cartera_pagos pag where pag.id = ' + "'" + str(abonoId) + "'"
@@ -2045,7 +2045,7 @@ def load_dataFacturacionDetalle(request, data):
 
     # Abro Conexion para la Liquidacion Detalle
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur = miConexionx.cursor()
 

@@ -222,7 +222,7 @@ def crearTriage(request):
         triage1 = []
 
         # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curx = miConexionx.cursor()
 
@@ -247,7 +247,7 @@ def crearTriage(request):
 
         # Combo PermisosGrales
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -286,7 +286,7 @@ def crearTriage(request):
 
         # Combo de Servicios
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT ser.id id ,ser.nombre nombre FROM sitios_serviciosSedes sed, clinico_servicios ser Where sed."sedesClinica_id" =' + "'" + str(sede) + "'" + ' AND sed."servicios_id" = ser.id AND ser.nombre =' + "'" + str('TRIAGE') + "'"
@@ -308,7 +308,7 @@ def crearTriage(request):
 
         # Combo de SubServicios
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed."sedesClinica_id" =' + "'" + str(
@@ -330,7 +330,7 @@ def crearTriage(request):
         # Fin combo SubServicios
         # Combo Habitaciones
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = ' SELECT dep.id ,dep.nombre FROM sitios_dependencias dep, sitios_dependenciasTipo tip where dep."sedesClinica_id" = ' + "'" + str(
@@ -354,7 +354,7 @@ def crearTriage(request):
 
         # Combo Especialidades
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = "SELECT id ,nombre FROM clinico_Especialidades"
@@ -377,7 +377,7 @@ def crearTriage(request):
         # Combo EspecialidadesMedicos
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT em.id ,e.nombre FROM clinico_Especialidades e, clinico_EspecialidadesMedicos em,planta_planta pl  where em."especialidades_id" = e.id and em."planta_id" = pl.id AND pl.documento = ' + "'" + str(
@@ -400,7 +400,7 @@ def crearTriage(request):
 
         # Combo Medicos
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -427,7 +427,7 @@ def crearTriage(request):
         # Combo TiposFolio
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -452,7 +452,7 @@ def crearTriage(request):
         # Combo TiposUsuario
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -477,7 +477,7 @@ def crearTriage(request):
         # Combo TiposDocumento
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -501,7 +501,7 @@ def crearTriage(request):
 
         # Combo ips
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -527,7 +527,7 @@ def crearTriage(request):
         # Combo Centros
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -551,7 +551,7 @@ def crearTriage(request):
         # Combo Diagnosticos
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -576,7 +576,7 @@ def crearTriage(request):
         # Combo Departamentos
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -601,7 +601,7 @@ def crearTriage(request):
         # Combo Ciudades
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -625,7 +625,7 @@ def crearTriage(request):
         # Combo Modulos
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -648,7 +648,7 @@ def crearTriage(request):
 
         # Combo PermisosGrales
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -675,7 +675,7 @@ def crearTriage(request):
 
         # Combo PermisosDetalle
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -701,7 +701,7 @@ def crearTriage(request):
         # Combo Vias Ingreso
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -725,7 +725,7 @@ def crearTriage(request):
         # Combo Causas Externa
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -749,7 +749,7 @@ def crearTriage(request):
         # Combo Regimenes
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -773,7 +773,7 @@ def crearTriage(request):
         # Combo Tipos Cotizante
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -797,7 +797,7 @@ def crearTriage(request):
         # Combo municipios
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -821,7 +821,7 @@ def crearTriage(request):
         # Combo localidades
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -845,7 +845,7 @@ def crearTriage(request):
         # Combo estadoCivil
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -869,7 +869,7 @@ def crearTriage(request):
         # Combo ocupaciones
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -892,7 +892,7 @@ def crearTriage(request):
         # Combo Convenios
 
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -915,7 +915,7 @@ def crearTriage(request):
 
         # Combo ripsServiciosIng
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -939,7 +939,7 @@ def crearTriage(request):
 
         # Combo ripsmodalidadGrupoServicioTecSal
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -964,7 +964,7 @@ def crearTriage(request):
 
         # Combo ripsViaIngresoServicioSalud
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -988,7 +988,7 @@ def crearTriage(request):
 
         # Combo ripsGrupoServicios
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -1012,7 +1012,7 @@ def crearTriage(request):
 
         # Combo ripsCondicionDestinoUsuarioEgreso
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -1036,7 +1036,7 @@ def crearTriage(request):
 
         # Combo ripsCausaMotivoAtencion
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -1060,7 +1060,7 @@ def crearTriage(request):
 
         # Combo ripsDestinoUsuarioEgresoRecienNacido
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -1084,7 +1084,7 @@ def crearTriage(request):
 
         # Combo ripsFinalidadConsulta
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -1151,7 +1151,7 @@ def buscarTriage(request):
     # Consigo la sede Nombre
 
     #miConexion = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexion = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexion = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur = miConexion.cursor()
     comando = "SELECT nombre   FROM sitios_sedesClinica WHERE id ='" + Sede + "'"
     cur.execute(comando)
@@ -1176,7 +1176,7 @@ def buscarTriage(request):
 
     # Combo de Servicios
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = 'SELECT sed.id id ,sed.nombre nombre FROM sitios_serviciosSedes sed, clinico_servicios ser Where sed."sedesClinica_id" =' + "'" + str(
@@ -1199,7 +1199,7 @@ def buscarTriage(request):
 
     # Combo de SubServicios
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = 'SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed."sedesClinica_id" =' + "'" + str(
@@ -1222,7 +1222,7 @@ def buscarTriage(request):
 
     # Combo TiposDOc
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT id ,nombre FROM usuarios_TiposDocumento "
@@ -1244,7 +1244,7 @@ def buscarTriage(request):
 
     # Combo Habitaciones
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = ' SELECT dep.id ,dep.nombre FROM sitios_dependencias dep, sitios_dependenciasTipo tip where dep."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' AND tip.nombre=' + "'" + str('HABITACIONES') + "'" + ' and dep."dependenciasTipo_id" = tip.id'
@@ -1267,7 +1267,7 @@ def buscarTriage(request):
     # Combo TiposDocumento
 
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1292,7 +1292,7 @@ def buscarTriage(request):
     # Combo Departamentos
 
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1317,7 +1317,7 @@ def buscarTriage(request):
     # Combo Ciudades
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1341,7 +1341,7 @@ def buscarTriage(request):
     # Combo Modulos
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1364,7 +1364,7 @@ def buscarTriage(request):
 
     # Combo PermisosGrales
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1391,7 +1391,7 @@ def buscarTriage(request):
 
     # Combo PermisosDetalle
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1417,7 +1417,7 @@ def buscarTriage(request):
     # Combo Vias Ingreso
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1441,7 +1441,7 @@ def buscarTriage(request):
     # Combo municipios
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1465,7 +1465,7 @@ def buscarTriage(request):
     # Combo localidades
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -1493,7 +1493,7 @@ def buscarTriage(request):
     ## Fin Combos para contexto
 
     #miConexion1 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexion1 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexion1 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur1 = miConexion1.cursor()
 
     detalle = 'SELECT  tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , i.consec consec , i."fechaIngreso" , i."fechaSalida", ser.nombre servicioNombreIng, dep.nombre camaNombreIng , diag.nombre dxActual FROM admisiones_ingresos i, usuarios_usuarios u, sitios_dependencias dep , clinico_servicios ser ,usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  , clinico_Diagnosticos diag , sitios_serviciosSedes sd , sitios_subServiciosSedes sub  WHERE sd."sedesClinica_id" = i."sedesClinica_id"  and sd.servicios_id  = ser.id and sd."sedesClinica_id" = sub."sedesClinica_id" and  sub."sedesClinica_id" =  i."sedesClinica_id"   and  sub."sedesClinica_id" = dep."sedesClinica_id" and dep.id = i."dependenciasActual_id"  and dep."subServiciosSedes_id" = sub.id  and  i."sedesClinica_id" = dep."sedesClinica_id" AND i."sedesClinica_id" = ' + "'" + str(
@@ -1516,7 +1516,7 @@ def buscarTriage(request):
     triage1 = []
 
     # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     cur1 = miConexionx.cursor()
 
@@ -1584,7 +1584,7 @@ def buscarSubServiciosTriage(request):
 
     # Combo de SubServicios
     #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont =psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont =psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
     #comando = 'SELECT sub.id id ,sub.nombre nombre FROM sitios_serviciosSedes sed ,sitios_subserviciossedes sub Where sed."sedesClinica_id" = ' + "'" + str(Sede) + "'" + '  and sed."sedesClinica_id" = sub."sedesClinica_id" and sed.id = sub."serviciosSedes_id" and sub."serviciosSedes_id" = ' + "'" + str(Serv) + "'"
     comando = 'SELECT sub.id id ,sub.nombre nombre FROM sitios_serviciosSedes sed ,sitios_subserviciossedes sub , clinico_servicios serv Where sed."sedesClinica_id" = ' + "'" + str(Sede) + "'" + ' and sed."sedesClinica_id" = sub."sedesClinica_id" and sed.id = sub."serviciosSedes_id"  and sub."serviciosSedes_id" = sed.id and sed.id= ' + "'" + str(Serv) + "'" + ' and sed.servicios_id=serv.id' + ' AND serv.nombre = ' + "'" + str('TRIAGE') + "'"
@@ -1625,7 +1625,7 @@ def buscarHabitaciones(request):
     # Busco la habitaciones de un Servicio
 
     #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     if Exc == 'N':
@@ -1679,7 +1679,7 @@ def buscarHabitacionesTriage(request):
     # Busco la habitaciones de un Servicio
 
     #miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
     if Exc == 'N':
@@ -1725,7 +1725,7 @@ def encuentraTriageModal(request):
         consec = 0;
         tipoDoc1 = TiposDocumento.objects.get(nombre=tiposDoc)
         print("tipodoc1 = ", tipoDoc1.id)
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -1750,7 +1750,7 @@ def encuentraTriageModal(request):
 
         # Combo de TiposTriage
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         #comando = 'SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed."sedesClinica_id" =' + "'" + str(sede) + "'" + ' AND sed."servicios_id" = ser.id and  sed."sedesClinica_id" = sub."sedesClinica_id" and sed."servicios_id" = sub."serviciosSedes_id"'
@@ -1796,7 +1796,7 @@ def UsuariosModalTriage(request):
         print ("documento = " , documento)
         print("tipodoc = " ,tipoDoc)
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT usu.nombre, usu.documento documento, usu.genero, usu."fechaNacio" fechaNacio,  usu.departamentos_id departamentos, usu.ciudades_id ciudades, usu.direccion direccion, usu.telefono telefono, usu.contacto contacto, usu."centrosC_id" centrosC, usu."tipoDoc_id" tipoDoc , usu."tiposUsuario_id" tiposUsuario, usu.municipio_id municipio, usu.localidad_id localidad, usu."estadoCivil_id" estadoCivil , usu.ocupacion_id ocupacion, correo correo  FROM usuarios_usuarios usu WHERE usu."tipoDoc_id" = ' + "'"  + str(tipoDoc) + "'" + ' AND usu.documento = ' + "'" + str(documento) + "'"
         print(comando)
@@ -1880,7 +1880,7 @@ def grabaUsuariosTriage(request):
     print(tipoDoc)
 
     #miConexion11 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexion11 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexion11 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     cur11 = miConexion11.cursor()
     comando = 'SELECT usu.id, usu."tipoDoc_id" tipoDoc, usu.documento FROM usuarios_usuarios usu WHERE usu."tipoDoc_id" = ' + "'" + str(tipoDoc) + "'" + ' AND usu.documento = ' + "'" + str(documento) + "'"
 
@@ -1908,7 +1908,7 @@ def grabaUsuariosTriage(request):
 
                  print("Entre a crear")
                  #miConexion3 = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-                 miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                 miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
                  cur3 = miConexion3.cursor()
                  comando = 'insert into usuarios_usuarios (nombre, documento, genero, "fechaNacio",  departamentos_id, ciudades_id, direccion, telefono, contacto, "centrosC_id", "tipoDoc_id", "tiposUsuario_id", "estadoCivil_id","localidad_id", "municipio_id", "ocupacion_id",  "fechaRegistro", "estadoReg") values (' + "'" + str(nombre) + "'" + ' , ' + "'" + str(documento) + "'" + ', ' + "'" + str(genero) + "'" + '  , ' + "'" + str(fechaNacio) + "'" + ', ' + "'" + str(departamentos) + "'" + '  , ' + "'" + str(ciudades) + "'" + '  , ' + "'" + str(direccion) + "'" + ', ' + "'" + str(telefono) + "'" + ', ' + "'" + str(contacto) + "'" + ', ' +  str(centrosC)  + ', ' + "'" + str(tipoDoc) + "'" + ', ' + "'" + str(tiposUsuario) + "' , '" + str(estadoCivil) + "' , '" + str(localidades) + "' , '"+ str(municipios) + "' , "+ str(ocupaciones) +  " , '"+  str(fechaRegistro) + "'" + ", 'A'" + ')'
                  print(comando)
@@ -1920,7 +1920,7 @@ def grabaUsuariosTriage(request):
         else:
                 print("Entre a actualizar")
                 #miConexion3 =  MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-                miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+                miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
                 cur3 = miConexion3.cursor()
                 comando = 'update usuarios_usuarios set nombre = ' "'" + str(nombre) +  "'"   + ', ciudades_id = ' + "'" + str(ciudades) + "'" +  ', direccion  = ' + "'" +  str(direccion) + "'" + ', genero = ' + "'" + str(genero) + "'"  + ', "fechaNacio" = ' + "'" +str(fechaNacio) + "'" +  ', telefono= ' + "'" + str(telefono) + "'" +  ', contacto= ' + "'" +  str(contacto) + "'" +  ', "centrosC_id"= ' + "'" + str(centrosC) + "'"  + ', "tiposUsuario_id" = ' + "'" + str(tiposUsuario) + "' , "   + ' municipio_id = ' + str(municipios) +   ', localidad_id = ' +  str(localidades) +  ', "estadoCivil_id"= ' +  str(estadoCivil) +  ', ocupacion_id = ' +  str(ocupaciones) +  ', correo = ' + "'" + str(correo) + "'" + ' WHERE "tipoDoc_id" = ' + str(tipoDoc) + ' AND documento = ' + "'" + str(documento) + "'"
                 print(comando)
@@ -1990,7 +1990,7 @@ def grabaTriageModal(request):
         miConexion3 = None
         try:
 
-                miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                                password="123456")
                 cur3 = miConexion3.cursor()
                 comando = 'update triage_triage set  "serviciosSedes_id" = ' + "'" + str(busServicioT) + "'," + ' "subServiciosSedes_id" = ' + "'" + str(busSubServicioP) + "',"  + ' dependencias_id= ' + "'" +  str(dependenciasP) + "'," +  ' "tipoDoc_id" = ' "'" + str(tiposDoc) + "'" + ', documento_id  = ' + "'" + str(documento_llave.id) + "'" + ', motivo = ' + "'" + str(motivo) + "'" + ', "examenFisico" = ' + "'" + str(examenFisico) + "'" + ', "frecCardiaca"= ' + "'" + str(frecCardiaca) + "'" + ', "frecRespiratoria"= ' + "'" + str(frecRespiratoria) + "'" + ', "taSist"= ' + "'" + str(taSist) + "'" + ', "taDiast" = ' + "'" + str(taDiast) + "' , " + ' "taMedia" = ' + "'" + str(taMedia) + "'" + ', glasgow = ' + "'" + str(glasgow) + "'" + ', "peso"= ' + "'" + str(peso) + "'"  +  ', estatura= ' + "'" + str(estatura) + "'"  + ', temperatura = ' + "'" + str(temperatura) + "'" + ', glucometria = ' + str(glucometria)  + ', "tipoIngreso"= ' + "'" + str(tipoIngreso) + "'" + ', observaciones = ' + "'" + str(observaciones) + "'"  +  ', "clasificacionTriage_id" = ' + "'" + str(clasificacionTriage) + "'"  +   ' WHERE "tipoDoc_id" = ' + str(tiposDoc) + ' AND documento_id = ' + "'" + str(documento_llave.id) + "';"
@@ -2036,7 +2036,7 @@ def admisionTriageModal(request):
 
     # Combo de Servicios
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = 'SELECT ser.id id ,ser.nombre nombre FROM sitios_serviciosSedes sed, clinico_servicios ser Where sed."sedesClinica_id" =' + "'" + str(
@@ -2059,7 +2059,7 @@ def admisionTriageModal(request):
 
     # Combo de SubServicios
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = 'SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed."sedesClinica_id" =' + "'" + str(
@@ -2082,7 +2082,7 @@ def admisionTriageModal(request):
 
     # Combo TiposDOc
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT id ,nombre FROM usuarios_TiposDocumento "
@@ -2104,7 +2104,7 @@ def admisionTriageModal(request):
 
     # Combo Habitaciones
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = ' SELECT dep.id ,dep.nombre FROM sitios_dependencias dep, sitios_dependenciasTipo tip where dep."sedesClinica_id" = ' + "'" + str(
@@ -2128,7 +2128,7 @@ def admisionTriageModal(request):
     # Combo TiposDocumento
 
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2153,7 +2153,7 @@ def admisionTriageModal(request):
     # Combo Departamentos
 
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2178,7 +2178,7 @@ def admisionTriageModal(request):
     # Combo Ciudades
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2204,7 +2204,7 @@ def admisionTriageModal(request):
     # Combo Causas Externa
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2228,7 +2228,7 @@ def admisionTriageModal(request):
     # Combo Regimenes
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2253,7 +2253,7 @@ def admisionTriageModal(request):
     # Combo Tipos Cotizante
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2278,7 +2278,7 @@ def admisionTriageModal(request):
     # Combo estadoCivil
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2303,7 +2303,7 @@ def admisionTriageModal(request):
     # Combo ocupaciones
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2326,7 +2326,7 @@ def admisionTriageModal(request):
 
     # Combo Especialidades
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = "SELECT id ,nombre FROM clinico_Especialidades"
@@ -2349,7 +2349,7 @@ def admisionTriageModal(request):
     # Combo EspecialidadesMedicos
 
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
     comando = 'SELECT em.id ,e.nombre FROM clinico_Especialidades e, clinico_EspecialidadesMedicos em,planta_planta pl  where em."especialidades_id" = e.id and em."planta_id" = pl.id AND pl.documento = ' + "'" + str(
@@ -2372,7 +2372,7 @@ def admisionTriageModal(request):
 
     # Combo Medicos
     # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2398,7 +2398,7 @@ def admisionTriageModal(request):
     # Combo Modulos
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2421,7 +2421,7 @@ def admisionTriageModal(request):
 
     # Combo PermisosGrales
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2448,7 +2448,7 @@ def admisionTriageModal(request):
 
     # Combo PermisosDetalle
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2474,7 +2474,7 @@ def admisionTriageModal(request):
     # Combo Vias Ingreso
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2498,7 +2498,7 @@ def admisionTriageModal(request):
     # Combo municipios
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2522,7 +2522,7 @@ def admisionTriageModal(request):
     # Combo localidades
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2547,7 +2547,7 @@ def admisionTriageModal(request):
     # Combo Acompanantes
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2572,7 +2572,7 @@ def admisionTriageModal(request):
     # Combo Responsables
 
     # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                    password="123456")
     curt = miConexiont.cursor()
 
@@ -2900,7 +2900,7 @@ def guardarAdmisionTriage(request):
                 miConexion3 = None
                 try:
 
-                    miConexion3 = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+                    miConexion3 = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                                    password="123456")
                     cur3 = miConexion3.cursor()
 
@@ -2938,7 +2938,7 @@ def guardarAdmisionTriage(request):
         triage1 = []
 
         # miConexionx = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curx = miConexionx.cursor()
 
@@ -2963,7 +2963,7 @@ def guardarAdmisionTriage(request):
 
         # Combo PermisosGrales
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -2999,7 +2999,7 @@ def guardarAdmisionTriage(request):
 
         # Combo Accesos usuario
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3028,7 +3028,7 @@ def guardarAdmisionTriage(request):
 
         # Combo de Servicios
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT ser.id id ,ser.nombre nombre FROM sitios_serviciosSedes sed, clinico_servicios ser Where sed."sedesClinica_id" =' + "'" + str(
@@ -3051,7 +3051,7 @@ def guardarAdmisionTriage(request):
 
         # Combo de SubServicios
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT sub.id id ,sub.nombre nombre  FROM sitios_serviciosSedes sed, clinico_servicios ser  , sitios_subserviciossedes sub Where sed."sedesClinica_id" =' + "'" + str(
@@ -3074,7 +3074,7 @@ def guardarAdmisionTriage(request):
 
         # Combo TiposDOc
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = "SELECT id ,nombre FROM usuarios_TiposDocumento "
@@ -3096,7 +3096,7 @@ def guardarAdmisionTriage(request):
 
         # Combo Habitaciones
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = ' SELECT dep.id ,dep.nombre FROM sitios_dependencias dep, sitios_dependenciasTipo tip where dep."sedesClinica_id" = ' + "'" + str(
@@ -3120,7 +3120,7 @@ def guardarAdmisionTriage(request):
 
         # Combo Especialidades
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = "SELECT id ,nombre FROM clinico_Especialidades"
@@ -3143,7 +3143,7 @@ def guardarAdmisionTriage(request):
         # Combo EspecialidadesMedicos
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
         comando = 'SELECT em.id ,e.nombre FROM clinico_Especialidades e, clinico_EspecialidadesMedicos em,planta_planta pl  where em."especialidades_id" = e.id and em."planta_id" = pl.id AND pl.documento = ' + "'" + str(
@@ -3166,7 +3166,7 @@ def guardarAdmisionTriage(request):
 
         # Combo Medicos
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3193,7 +3193,7 @@ def guardarAdmisionTriage(request):
         # Combo TiposFolio
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3218,7 +3218,7 @@ def guardarAdmisionTriage(request):
         # Combo TiposUsuario
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3243,7 +3243,7 @@ def guardarAdmisionTriage(request):
         # Combo TiposDocumento
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3268,7 +3268,7 @@ def guardarAdmisionTriage(request):
         # Combo Centros
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3292,7 +3292,7 @@ def guardarAdmisionTriage(request):
         # Combo Diagnosticos
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3317,7 +3317,7 @@ def guardarAdmisionTriage(request):
         # Combo Departamentos
 
         # miConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3342,7 +3342,7 @@ def guardarAdmisionTriage(request):
         # Combo Ciudades
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3366,7 +3366,7 @@ def guardarAdmisionTriage(request):
         # Combo Modulos
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3389,7 +3389,7 @@ def guardarAdmisionTriage(request):
 
         # Combo PermisosGrales
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3416,7 +3416,7 @@ def guardarAdmisionTriage(request):
 
         # Combo PermisosDetalle
 
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3442,7 +3442,7 @@ def guardarAdmisionTriage(request):
         # Combo Vias Ingreso
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3466,7 +3466,7 @@ def guardarAdmisionTriage(request):
         # Combo Causas Externa
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3490,7 +3490,7 @@ def guardarAdmisionTriage(request):
         # Combo Regimenes
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3514,7 +3514,7 @@ def guardarAdmisionTriage(request):
         # Combo Tipos Cotizante
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3538,7 +3538,7 @@ def guardarAdmisionTriage(request):
         # Combo municipios
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3562,7 +3562,7 @@ def guardarAdmisionTriage(request):
         # Combo localidades
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3586,7 +3586,7 @@ def guardarAdmisionTriage(request):
         # Combo estadoCivil
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3610,7 +3610,7 @@ def guardarAdmisionTriage(request):
         # Combo ocupaciones
 
         # iConexiont = MySQLdb.connect(host='CMKSISTEPC07', user='sa', passwd='75AAbb??', db='vulnerable')
-        miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
                                        password="123456")
         curt = miConexiont.cursor()
 
@@ -3655,7 +3655,7 @@ def Load_dataTriage(request, data):
 
     triage2 = []
 
-    miConexionx = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres",  password="123456")
+    miConexionx = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",  password="123456")
     curx = miConexionx.cursor()
 
     detalle = 'SELECT  t.id, tp.nombre tipoDoc,  u.documento documento, u.nombre  nombre , t.consec consec , dep.nombre camaNombre,t."fechaSolicita" solicita,t.motivo motivo, t."clasificacionTriage_id" triage FROM triage_triage t, usuarios_usuarios u, sitios_dependencias dep , usuarios_tiposDocumento tp , sitios_dependenciastipo deptip  ,sitios_serviciosSedes sd, clinico_servicios ser  WHERE sd."sedesClinica_id" = t."sedesClinica_id"  and t."sedesClinica_id" = dep."sedesClinica_id" AND t."sedesClinica_id" =' + "'" + str(sede) + "'" + ' AND dep."sedesClinica_id" =  sd."sedesClinica_id" AND dep.id = t.dependencias_id AND t."serviciosSedes_id" = sd.id  AND deptip.id = dep."dependenciasTipo_id" and  tp.id = u."tipoDoc_id" and t."tipoDoc_id" = u."tipoDoc_id" and  u.id = t."documento_id"  and ser.id = sd.servicios_id and dep."serviciosSedes_id" = sd.id and t."serviciosSedes_id" = sd.id and dep."tipoDoc_id" = t."tipoDoc_id" and dep."documento_id" = t."documento_id" and ser.nombre = ' + "'" + str('TRIAGE') + "'"
@@ -3689,7 +3689,7 @@ def buscarEspecialidadesMedicos(request):
     # Combo de Medicos Especialidades
 
 
-    miConexiont = psycopg2.connect(host="192.168.79.133", database="vulner2", port="5432", user="postgres", password="123456")
+    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres", password="123456")
     curt = miConexiont.cursor()
 
 
