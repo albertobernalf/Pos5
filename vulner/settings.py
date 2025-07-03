@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     'tarifas',
     'tarifarios',
     'inventarios',
+    'farmacia',
 ]
 
 MIDDLEWARE = [

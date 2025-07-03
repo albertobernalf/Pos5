@@ -2727,6 +2727,13 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         return render(request, "enfermeria/PanelEnfermeriaF.html", context)
 
 
+    if (escogeModulo == 'FARMACIA'):
+        print("ENTRE PERMSISO FARMACIA")
+        ## Aqui contexto para solo FARMACIA
+
+
+        ## FIN CONTEXTO
+        return render(request, "farmacia/PanelFarmaciaF.html", context)
 
     return render(request, "panelVacio.html", context)
 

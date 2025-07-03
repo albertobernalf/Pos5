@@ -18,9 +18,11 @@
 <div class="marco">
     <ul class="tabs">
 	<li><a href="#PanelEnfermeria"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Panel Enfermeria </a></li>
-        <li><a href="#HistoriaClinica"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Historia clinica </a></li>
+        <li><a href="#ParaClinicos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> ParaClinicos </a></li>
         <li><a href="#Medicamentos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Medicamentos </a></li>
         <li><a href="#Liquidos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Liquidos </a></li>
+	<li><a href="#NotasEnfermeria"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Notas de Enfermeria </a></li>
+ 
     </ul>
 </div>
 
@@ -74,63 +76,7 @@
             </form>
 
         	
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
-		<div class="container my-2">
-
-             
-		<div align="right" height="15px" width="50px">
-               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnAdicionarCirugia"  name="BtnAdicionarCirugia" value="Adicionar" onclick= "SolicitudCirugia()" >				    
-		</div>
-
-   			   <div class="row">
-				
-                                        <table  id= "tablaSolicitudCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
-                                           <thead>
-                                            <tr>    
-						<bold> 
- 						  <th>id</th>                             
-					     <th>Sel</th>                                               
-					     <th>Proced</th>                                               
-						 <th>Participa</th>  
-					 <th>Material</th>                                                 
-					<th>sede</th> 
-					<th>cirugia</th> 
-					<th>tipoDoc</th>  
-					<th>documento</th> 
-					<th>paciente </th> 
-					<th>nacimiento</th> 
-					<th>genero</th>  
-					<th>edad</th> 
-					<th>ingreso</th> 
-					<th>solicita</th>  
-					<th>cama</th>	
-					<th>empresa</th>
-					<th>telefono</th>
-					<th>solicitaSangre</th>		
-					<th>describeSangre</th>
-					<th>cantidadSangre</th>
-					<th>solicitaCamaUci</th>
-					<th>solicitaMicroscopio</th>
-					<th>solicitaRx</th>
-					<th>solicitaAutoSutura</th>
-					<th>solicitaOsteosintesis</th>
-					<th>solicitaBiopsia</th>
-					<th>solicitaMalla</th>
-					<th>solicitaOtros</th>
-					<th>estadoProg </th>
-					<th>anestesia</th>
-				              
-					</bold>                                  
-
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                     
-                                        </table>
-                                    </div>
-                                </div>
-
+           
  <!-- Modales Enfermeria -->
 
      <!-- FIN Espacio Modales  -->
@@ -170,54 +116,7 @@
 	
             </form>
 
-            <!-- INICIO TABLE DE  EL DATATABLE  -->
-		<div class="container my-2">
-             
-		<div align="right" height="15px" width="50px">
-               <input type="button" style="height:25px;margin-left: 0 ; margin-bottom: 0;border-top-right-radius: 0;"  size="30px" id="BtnProgramacionCirugia"  name="BtnProgramacionCirugia" value="Adicionar" onclick= "ProgramacionCirugia()" >				    
-		</div>
-
-   			   <div class="row">
-				
-                                        <table  id= "tablaProgramacionCirugia" class=" display table table-striped table-sm fs-6 nowrap" style="width: 100%";>
-                                           <thead>
-                                            <tr>    
-						<bold>                
-					     <th>Opcion</th>                                               
-					     <th>Opcion</th>                                               
-					     <th>id</th>
-					     <th>tipoDoc_id</th>
-					     <th>tipoNota</th>
-					     <th>abrev</th>
-					     <th>documento</th>
-					     <th>paciente</th>
-					     <th>sala</th>
-					    
-					     <th>nombreSala</th>
-					     <th>Procedimientos</th>
-					     <th>inicia</th>
-					     <th>hora</th>
-					     <th>Termina</th>
-					     <th>hora</th>
-  						<th>SelProg</th>
-  						<th>estadoProg</th>
-  						<th>SelCiru</th>
-						<th>estadoCirugia</th>
-
-					  
-				              
-					</bold>                                  
-
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                     
-                                        </table>
-                                    </div>
-                                </div>
-
-    <!-- Modales Historia CLinica -->
+           <!-- Modales Historia CLinica -->
 
      <!-- FIN Espacio Modales  -->
 
@@ -408,6 +307,12 @@
 
 </article>
 
+<article id="OtrosPedidos">
+        	
+	Otros Pedidos	
+
+</article>
+
 
 
      
@@ -430,12 +335,12 @@
 {% block footer %}
 <div class="marco">
     <ul class="tabs">
-	<li><a href="#NotasEnfermeria"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Notas de Enfermeria </a></li>
-        <li><a href="#Pedidos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Pedidos </a></li>
+       <li><a href="#Pedidos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Pedidos </a></li>
         <li><a href="#Devoluciones"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Devoluciones </a></li>
         <li><a href="#Turnos"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Turnos </a></li>
         <li><a href="#Dietas"><span class="fa-solid fa-user-doctor-message"></span> <span  class="tab-text"> </span> Dietas </a></li>
-
+      <li><a href="#OtrosPedidos"><span class="fa-solid fa-user-doctor-message"></span> <span class="tab-text"> </span> Otros Pedidos </a></li>
+ 
     </ul>
 </div>
 

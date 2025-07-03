@@ -3,24 +3,6 @@ from django.db import models
 # Create your models here.
 
 
-class AplicacionMedicamentos(models.Model):
-    id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,  on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoHistoria65')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
-    orden = models.IntegerField(default=0)
-    suministro = models.ForeignKey('facturacion.Suministros', blank=True, null=True, editable=True,  on_delete=models.PROTECT)
-    fecha_ini = models.DateTimeField()
-    fecha_fin = models.DateTimeField()
-    cantidadAdministrada = models.DecimalField(max_digits=15, decimal_places=2)
-    dosisAdministrada = models.DecimalField(max_digits=15, decimal_places=2)
-    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT ,   related_name='usuarioenf02')
-    estadoReg = models.CharField(max_length=1, default='A', editable=False)
-
-    def __str__(self):
-        return str(self.id)
 
 class TurnosEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
@@ -36,10 +18,7 @@ class TurnosEnfermeria(models.Model):
 
 class CuidadosEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,    on_delete=models.PROTECT, related_name='DocumentoHistoria235')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaCuidadosEnfermeria01')
     turno = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
     barraSeguridad = models.CharField(max_length=3000, blank=False, null=False, editable=True)
     cambioCama = models.CharField(max_length=100, blank=False, null=False, editable=True)
@@ -122,10 +101,7 @@ class CuidadosEnfermeria(models.Model):
 
 class DolorEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,        on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,      on_delete=models.PROTECT, related_name='DocumentoHistoria2121')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaDolorEnfermeria01')
     turno = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,     on_delete=models.PROTECT)
     fechaCreacion = models.DateTimeField()
     zona = models.CharField(max_length=3000, blank=False, null=False, editable=True)
@@ -141,10 +117,7 @@ class DolorEnfermeria(models.Model):
 
 class HeridasEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,                on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,       on_delete=models.PROTECT, related_name='DocumentoHistoria2113')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaHeridasEnfermeria01')
     turno = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,        on_delete=models.PROTECT)
     area = models.CharField(max_length=3000, blank=False, null=False, editable=True)
     tipoHerida = models.CharField(max_length=100, blank=False, null=False, editable=True)
@@ -174,10 +147,7 @@ class TipoBalanceLiquidosEnfermeria(models.Model):
 
 class PosicionPacientesEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,     on_delete=models.PROTECT, related_name='DocumentoHistoria347')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaPosicionEnfermeria01')
     fecha = models.DateTimeField()
     turno = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,      on_delete=models.PROTECT)
     horario = models.CharField(max_length=3000, blank=False, null=False, editable=True)
@@ -193,31 +163,11 @@ class PosicionPacientesEnfermeria(models.Model):
     def __str__(self):
         return str(self.id)
 
-class NotasLiquidosEnfermeria(models.Model):
-    id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,                    on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,            on_delete=models.PROTECT, related_name='DocumentoHistoria568')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
-    turno = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,             on_delete=models.PROTECT)
-    liquido = models.DecimalField(max_digits=5, decimal_places=0)
-    fecha = models.DateField()
-    hora = models.CharField(max_length=5, blank=False, null=False, editable=True)
-    tipo = models.CharField(max_length=10, blank=False, null=False, editable=True)
-    descripcion = models.CharField(max_length=200, blank=False, null=False, editable=True)
-    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,                            on_delete=models.PROTECT)
-    estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
-    def __str__(self):
-        return str(self.id)
 
 class NotasEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True, null=True, editable=True,                 on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True, null=True, editable=True,               on_delete=models.PROTECT, related_name='DocumentoHistoria111')
-    consecAdmision = models.IntegerField(default=0)
-    folio = models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaNotasEnfermeria01')
     turno = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,       on_delete=models.PROTECT)
     tipoNota = models.CharField(max_length=3000, blank=False, null=False, editable=True)
     nota = models.CharField(max_length=20000, blank=False, null=False, editable=True)
@@ -256,10 +206,7 @@ class NotasEnfermeria(models.Model):
 
 class BalanceLiquidosEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoHistoria212')
-    consecAdmision = models.IntegerField(default=0)
-    folio =  models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaBalanceLiquidosEnfermeria01')
     turno= models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     fecha=models.DateTimeField()
     tipo=models.ForeignKey('enfermeria.TipoBalanceLiquidosEnfermeria', blank=True,null= True, editable=True, on_delete=models.PROTECT)
@@ -302,14 +249,9 @@ class BalanceLiquidosEnfermeria(models.Model):
     def __str__(self):
         return str(self.id)
 
-
-
 class SignosEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    tipoDoc = models.ForeignKey('usuarios.TiposDocumento', blank=True,null= True, editable=True, on_delete=models.PROTECT)
-    documento = models.ForeignKey('usuarios.Usuarios', blank=True,null= True, editable=True, on_delete=models.PROTECT,  related_name='DocumentoHistoria3224')
-    consecAdmision = models.IntegerField(default=0)
-    folio =  models.IntegerField(default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaSignosEnfermeria01')
     turno= models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True,null= True, editable=True, on_delete=models.PROTECT)
     fecha=models.DateTimeField()
     taSistolica=models.CharField(max_length=100, blank=False,null= False,  editable=True)
@@ -402,15 +344,78 @@ class SignosEnfermeria(models.Model):
         return str(self.id)
 
 
-class HistoriaExamenes(models.Model):
+class Enfermeria(models.Model):
     id = models.AutoField(primary_key=True)
-    historiaMedicamentos = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
-    dosisFormulada = models.IntegerField(default=0)
-    cantidadFormulada = models.IntegerField(default=0)
-    consecutivoEnfermeria =  models.IntegerField(blank=True,null= True, editable=True,default=0)
+    historia = models.ForeignKey('clinico.Historia', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='HistoriaEnfermeria01')
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='servAdmEnfermeria101')
+    tipoOrden = models.CharField(max_length=1, default='C', editable=False,  blank=True, null=True,)
+    tipoMovimiento = models.CharField(max_length=1, default='F', editable=False,  blank=True, null=True,)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    estadoReg = models.CharField(max_length=1, default='A', editable=False)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT   , related_name='Planta3460')
+    estadoReg = models.CharField(max_length=1, default='A', editable=False,  blank=True, null=True,)
 
     def __str__(self):
         return str(self.id)
 
+class EnfermeriaDetalle(models.Model):
+    id = models.AutoField(primary_key=True)
+    enfermeria = models.ForeignKey('enfermeria.Enfermeria', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='Enfermeria01')
+    historiaMedicamentos = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='servAdmEnfermeria102')
+    #enfermeriaDetalle = models.ForeignKey('enfermeria.Detalle', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='enfermeriaDetalle01')
+    suministro = models.ForeignKey('facturacion.Suministros', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    dosisCantidad = models.DecimalField(max_digits=20, decimal_places=3)
+    dosisUnidad = models.ForeignKey('clinico.UnidadesDeMedidaDosis', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    viaAdministracion = models.ForeignKey('clinico.ViasAdministracion', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    frecuencia = models.ForeignKey('clinico.FrecuenciasAplicacion', blank=True, null=True, editable=True,               on_delete=models.PROTECT)
+    cantidadOrdenada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    diasTratamiento =  models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT   , related_name='Planta3462')
+    estadoReg = models.CharField(max_length=1, default='A', editable=False,  blank=True, null=True,)
+
+    def __str__(self):
+        return str(self.id)
+
+
+class EnfermeriaRecibe(models.Model):
+    id = models.AutoField(primary_key=True)
+    enfermeriaDetalle = models.ForeignKey('enfermeria.EnfermeriaDetalle', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='EnfermeriaDetalle1101')
+    despacho = models.ForeignKey('farmacia.Despachos', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='EnfermeriaDespachos01')
+    suministro = models.ForeignKey('facturacion.Suministros', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    dosisCantidad = models.DecimalField(max_digits=20, decimal_places=3)
+    dosisUnidad = models.ForeignKey('clinico.UnidadesDeMedidaDosis', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    viaAdministracion = models.ForeignKey('clinico.ViasAdministracion', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    frecuencia = models.ForeignKey('clinico.FrecuenciasAplicacion', blank=True, null=True, editable=True,               on_delete=models.PROTECT)
+    cantidadDispensada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    diasTratamiento =  models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT   , related_name='Planta3478')
+    estadoReg = models.CharField(max_length=1, default='A', editable=False,  blank=True, null=True,)
+
+    def __str__(self):
+        return str(self.id)
+
+class EnfermeriaPlaneacion(models.Model):
+    id = models.AutoField(primary_key=True)
+    enfermeriaDetalle = models.ForeignKey('enfermeria.EnfermeriaDetalle', on_delete=models.PROTECT, blank=True, null=True,  editable=True,  related_name='EnfermeriaDetalle1102')
+    consecutivo = models.IntegerField(default=0)
+    desdeFecha = models.DateTimeField(editable=True, null=True, blank=True)
+    hastaFecha = models.DateTimeField(editable=True, null=True, blank=True)
+    suministro = models.ForeignKey('facturacion.Suministros', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    dosisCantidad = models.DecimalField(max_digits=20, decimal_places=3)
+    dosisUnidad = models.ForeignKey('clinico.UnidadesDeMedidaDosis', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    viaAdministracion = models.ForeignKey('clinico.ViasAdministracion', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    frecuencia = models.ForeignKey('clinico.FrecuenciasAplicacion', blank=True, null=True, editable=True,               on_delete=models.PROTECT)
+    cantidadDispensada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    cantidadPlaneada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    cantidadAplicada = models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    diasTratamiento =  models.DecimalField(max_digits=10, decimal_places=0, blank=True, null=True, editable=True)
+    turnoEnfermeria = models.ForeignKey('enfermeria.TurnosEnfermeria', blank=True, null=True, editable=True,   on_delete=models.PROTECT) 
+    enfermeraPlanea = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT   , related_name='PlantaEnfermeraPlanea3468')
+    enfermeraAplica = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT   , related_name='PlantaEnfermera3468')
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT   , related_name='Planta3488')
+    estadoReg = models.CharField(max_length=1, default='A', editable=False,  blank=True, null=True,)
+
+    def __str__(self):
+        return str(self.id)
