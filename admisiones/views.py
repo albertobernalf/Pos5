@@ -2598,130 +2598,140 @@ def escogeAcceso(request, Sede, Username, Profesional, Documento, NombreSede, es
         print("ENTRE PERMSISO GLOSAS")
 
 
-    # Combo Convenios
+        # Combo Convenios
 
-    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curt = miConexiont.cursor()
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM contratacion_convenios c"
+        comando = "SELECT c.id id,c.nombre nombre FROM contratacion_convenios c"
 
-    curt.execute(comando)
-    print(comando)
+        curt.execute(comando)
+        print(comando)
 
-    convenios = []
+        convenios = []
 
-    for id, nombre in curt.fetchall():
-        convenios.append({'id': id, 'nombre': nombre})
+        for id, nombre in curt.fetchall():
+            convenios.append({'id': id, 'nombre': nombre})
 
-    miConexiont.close()
-    print(convenios)
+        miConexiont.close()
+        print(convenios)
 
-    context['Convenios'] = convenios
+        context['Convenios'] = convenios
 
-    # Fin combo convenios
+        # Fin combo convenios
 
-    # Combo Tipos Glosas
+        # Combo Tipos Glosas
 
-    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curt = miConexiont.cursor()
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM cartera_tiposglosas c "
+        comando = "SELECT c.id id,c.nombre nombre FROM cartera_tiposglosas c "
 
-    curt.execute(comando)
-    print(comando)
+        curt.execute(comando)
+        print(comando)
 
-    tiposGlosas = []
+        tiposGlosas = []
 
-    for id, nombre in curt.fetchall():
-        tiposGlosas.append({'id': id, 'nombre': nombre})
+        for id, nombre in curt.fetchall():
+            tiposGlosas.append({'id': id, 'nombre': nombre})
 
-    miConexiont.close()
-    print(tiposGlosas)
+        miConexiont.close()
+        print(tiposGlosas)
 
-    context['TiposGlosas'] = tiposGlosas
+        context['TiposGlosas'] = tiposGlosas
 
-    # Fin combo Tipos Glosas
+        # Fin combo Tipos Glosas
 
-    # Combo Motivos Glosas
+        # Combo Motivos Glosas
 
-    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curt = miConexiont.cursor()
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM cartera_motivosglosas c "
+        comando = "SELECT c.id id,c.nombre nombre FROM cartera_motivosglosas c "
 
-    curt.execute(comando)
-    print(comando)
+        curt.execute(comando)
+        print(comando)
 
-    motivosGlosas = []
+        motivosGlosas = []
 
-    for id, nombre in curt.fetchall():
-        motivosGlosas.append({'id': id, 'nombre': nombre})
+        for id, nombre in curt.fetchall():
+            motivosGlosas.append({'id': id, 'nombre': nombre})
 
-    miConexiont.close()
-    print(motivosGlosas)
+        miConexiont.close()
+        print(motivosGlosas)
 
-    context['MotivosGlosas'] = motivosGlosas
+        context['MotivosGlosas'] = motivosGlosas
 
-    # Fin combo motivos Glosas
-
-
-    # Combo Estados Glosas
-
-    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curt = miConexiont.cursor()
-
-    comando = "SELECT c.id id,c.nombre nombre FROM cartera_estadosglosas c WHERE c.tipo= 'RECEPCION'"
-
-    curt.execute(comando)
-    print(comando)
-
-    estadosRecepcion = []
-
-    for id, nombre in curt.fetchall():
-        estadosRecepcion.append({'id': id, 'nombre': nombre})
-
-    miConexiont.close()
-    print(estadosRecepcion)
-
-    context['EstadosRecepcion'] = estadosRecepcion
-
-    # Fin combo Estado Glosas recepcion
+        # Fin combo motivos Glosas
 
 
-    # Combo Estados Glosas Radicacion
+        # Combo Estados Glosas
 
-    miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
-                                   password="123456")
-    curt = miConexiont.cursor()
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
 
-    comando = "SELECT c.id id,c.nombre nombre FROM cartera_estadosglosas c WHERE c.tipo= 'RADICACION'"
+        comando = "SELECT c.id id,c.nombre nombre FROM cartera_estadosglosas c WHERE c.tipo= 'RECEPCION'"
 
-    curt.execute(comando)
-    print(comando)
+        curt.execute(comando)
+        print(comando)
 
-    estadosRadicacion = []
+        estadosRecepcion = []
 
-    for id, nombre in curt.fetchall():
-        estadosRadicacion.append({'id': id, 'nombre': nombre})
+        for id, nombre in curt.fetchall():
+            estadosRecepcion.append({'id': id, 'nombre': nombre})
 
-    miConexiont.close()
-    print(estadosRadicacion)
+        miConexiont.close()
+        print(estadosRecepcion)
 
-    context['EstadosRadicacion'] = estadosRadicacion
+        context['EstadosRecepcion'] = estadosRecepcion
 
-    # Fin combo Estado Glosas estadosRadicacion
+        # Fin combo Estado Glosas recepcion
 
 
-    return render(request, "cartera/PanelGlosasFU.html", context)
+        # Combo Estados Glosas Radicacion
 
+        miConexiont = psycopg2.connect(host="192.168.37.133", database="vulner2", port="5432", user="postgres",
+                                       password="123456")
+        curt = miConexiont.cursor()
+
+        comando = "SELECT c.id id,c.nombre nombre FROM cartera_estadosglosas c WHERE c.tipo= 'RADICACION'"
+
+        curt.execute(comando)
+        print(comando)
+
+        estadosRadicacion = []
+
+        for id, nombre in curt.fetchall():
+            estadosRadicacion.append({'id': id, 'nombre': nombre})
+
+        miConexiont.close()
+        print(estadosRadicacion)
+
+        context['EstadosRadicacion'] = estadosRadicacion
+
+        # Fin combo Estado Glosas estadosRadicacion
+
+
+        return render(request, "cartera/PanelGlosasFU.html", context)
+
+    if (escogeModulo == 'ENFERMERIA'):
+        print("ENTRE PERMSISO ENFERMERIA")
+        ## Aqui contexto para solo ENFERMERIA
+
+
+        ## FIN CONTEXTO
+        return render(request, "enfermeria/PanelEnfermeriaF.html", context)
 
 
 
     return render(request, "panelVacio.html", context)
+
+
+
 
 
 def retornarAdmision(request, Sede, Perfil, Username, Username_id, NombreSede):
@@ -3268,7 +3278,7 @@ def RetornarMen(request, Sede, Username,  Documento, NombreSede, Profesional):
     miConexion.close()
     print("ESTA ES EL NOMBRE DE LA SEDE :")
     print (nombreSede[0]['nombre'])
-
+    #
     context['NombreSede'] =  nombreSede[0]['nombre']
 
     # esta consulta por que se pierde de otras pantallas

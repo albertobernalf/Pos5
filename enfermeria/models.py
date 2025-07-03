@@ -16,7 +16,7 @@ class AplicacionMedicamentos(models.Model):
     cantidadAdministrada = models.DecimalField(max_digits=15, decimal_places=2)
     dosisAdministrada = models.DecimalField(max_digits=15, decimal_places=2)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT ,   related_name='usuarioenf02')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
@@ -25,8 +25,10 @@ class AplicacionMedicamentos(models.Model):
 class TurnosEnfermeria(models.Model):
     id = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=50, blank=False, null=False,  editable = True)
+    serviciosAdministrativos = models.ForeignKey('sitios.ServiciosAdministrativos', blank=True,null= True, editable=True,  on_delete=models.PROTECT,   related_name='serenf01')
+    enfermeraTurno = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True, on_delete=models.PROTECT)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,    on_delete=models.PROTECT)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,    on_delete=models.PROTECT ,   related_name='usuarioenf01')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
     def __str__(self):
@@ -111,7 +113,7 @@ class CuidadosEnfermeria(models.Model):
     curacion = models.CharField(max_length=50, blank=False, null=False,    editable = True)
     observaCuracion =models.CharField(max_length=5000, blank=False, null=False,             editable = True)
     fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
-    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,   on_delete=models.PROTECT)
+    usuarioRegistro = models.ForeignKey('planta.Planta', blank=True, null=True, editable=True,   on_delete=models.PROTECT ,   related_name='usuarioenf03')
     estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
 
@@ -400,5 +402,15 @@ class SignosEnfermeria(models.Model):
         return str(self.id)
 
 
+class HistoriaExamenes(models.Model):
+    id = models.AutoField(primary_key=True)
+    historiaMedicamentos = models.ForeignKey('clinico.HistoriaMedicamentos', blank=True,null= True, editable=True, on_delete=models.PROTECT)
+    dosisFormulada = models.IntegerField(default=0)
+    cantidadFormulada = models.IntegerField(default=0)
+    consecutivoEnfermeria =  models.IntegerField(blank=True,null= True, editable=True,default=0)
+    fechaRegistro = models.DateTimeField(editable=True, null=True, blank=True)
+    estadoReg = models.CharField(max_length=1, default='A', editable=False)
 
+    def __str__(self):
+        return str(self.id)
 
